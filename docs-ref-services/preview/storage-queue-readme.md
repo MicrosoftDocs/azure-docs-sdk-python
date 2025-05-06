@@ -1,12 +1,12 @@
 ---
 title: Azure Storage Queues client library for Python
 keywords: Azure, python, SDK, API, azure-storage-queue, storage
-ms.date: 08/07/2024
+ms.date: 05/06/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: storage
 ---
-# Azure Storage Queues client library for Python - version 12.12.0b1 
+# Azure Storage Queues client library for Python - version 12.13.0b1 
 
 
 Azure Queue storage is a service for storing large numbers of messages that can be accessed from anywhere in the world via authenticated calls using HTTP or HTTPS. A single queue message can be up to 64 KiB in size, and a queue can contain millions of messages, up to the total capacity limit of a storage account.
@@ -16,19 +16,19 @@ Common uses of Queue storage include:
 * Creating a backlog of work to process asynchronously
 * Passing messages between different parts of a distributed application
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-queue_12.12.0b1/sdk/storage/azure-storage-queue/azure/storage/queue)
+[Source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-queue_12.13.0b1/sdk/storage/azure-storage-queue/azure/storage/queue)
 | [Package (PyPI)](https://pypi.org/project/azure-storage-queue/)
 | [Package (Conda)](https://anaconda.org/microsoft/azure-storage/)
 | [API reference documentation](https://aka.ms/azsdk-python-storage-queue-ref)
-| [Product documentation](/azure/storage/)
-| [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-queue_12.12.0b1/sdk/storage/azure-storage-queue/samples)
+| [Product documentation](https://learn.microsoft.com/azure/storage/)
+| [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-queue_12.13.0b1/sdk/storage/azure-storage-queue/samples)
 
 ## Getting started
 
 ### Prerequisites
 * Python 3.8 or later is required to use this package. For more details, please read our page on [Azure SDK for Python version support policy](https://github.com/Azure/azure-sdk-for-python/wiki/Azure-SDKs-Python-version-support-policy).
 * You must have an [Azure subscription](https://azure.microsoft.com/free/) and an
-[Azure storage account](/azure/storage/common/storage-account-overview) to use this package.
+[Azure storage account](https://learn.microsoft.com/azure/storage/common/storage-account-overview) to use this package.
 
 ### Install the package
 Install the Azure Storage Queues client library for Python with [pip](https://pypi.org/project/pip/):
@@ -39,9 +39,9 @@ pip install azure-storage-queue
 
 ### Create a storage account
 If you wish to create a new storage account, you can use the
-[Azure Portal](/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal),
-[Azure PowerShell](/azure/storage/common/storage-quickstart-create-account?tabs=azure-powershell),
-or [Azure CLI](/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli):
+[Azure Portal](https://learn.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal),
+[Azure PowerShell](https://learn.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-powershell),
+or [Azure CLI](https://learn.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli):
 
 ```bash
 # Create a new resource group to hold the storage account -
@@ -66,9 +66,9 @@ service = QueueServiceClient(account_url="https://<my-storage-account-name>.queu
 
 #### Looking up the account URL
 You can find the storage account's queue service URL using the
-[Azure Portal](/azure/storage/common/storage-account-overview#storage-account-endpoints),
-[Azure PowerShell](/powershell/module/az.storage/get-azstorageaccount),
-or [Azure CLI](/cli/azure/storage/account?view=azure-cli-latest#az-storage-account-show):
+[Azure Portal](https://learn.microsoft.com/azure/storage/common/storage-account-overview#storage-account-endpoints),
+[Azure PowerShell](https://learn.microsoft.com/powershell/module/az.storage/get-azstorageaccount),
+or [Azure CLI](https://learn.microsoft.com/cli/azure/storage/account?view=azure-cli-latest#az-storage-account-show):
 
 ```bash
 # Get the queue service URL for the storage account
@@ -77,8 +77,8 @@ az storage account show -n my-storage-account-name -g my-resource-group --query 
 
 #### Types of credentials
 The `credential` parameter may be provided in a number of different forms, depending on the type of
-[authorization](/azure/storage/common/storage-auth) you wish to use:
-1. To use a [shared access signature (SAS) token](/azure/storage/common/storage-sas-overview),
+[authorization](https://learn.microsoft.com/azure/storage/common/storage-auth) you wish to use:
+1. To use a [shared access signature (SAS) token](https://learn.microsoft.com/azure/storage/common/storage-sas-overview),
    provide the token as a string. If your account URL includes the SAS token, omit the credential parameter.
    You can generate a SAS token from the Azure Portal under "Shared access signature" or use one of the `generate_sas()`
    functions to create a sas token for the storage account or queue:
@@ -99,7 +99,7 @@ The `credential` parameter may be provided in a number of different forms, depen
     queue_service_client = QueueServiceClient(account_url="https://<my_account_name>.queue.core.windows.net", credential=sas_token)
     ```
 
-2. To use a storage account [shared key](/rest/api/storageservices/authenticate-with-shared-key/)
+2. To use a storage account [shared key](https://learn.microsoft.com/rest/api/storageservices/authenticate-with-shared-key/)
    (aka account key or access key), provide the key as a string. This can be found in the Azure Portal under the "Access Keys"
    section or by running the following Azure CLI command:
 
@@ -111,29 +111,29 @@ The `credential` parameter may be provided in a number of different forms, depen
     service = QueueServiceClient(account_url="https://<my_account_name>.queue.core.windows.net", credential="<account_access_key>")
     ```
 
-3. To use an [Azure Active Directory (AAD) token credential](/azure/storage/common/storage-auth-aad),
+3. To use an [Azure Active Directory (AAD) token credential](https://learn.microsoft.com/azure/storage/common/storage-auth-aad),
    provide an instance of the desired credential type obtained from the
-   [azure-identity](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-queue_12.12.0b1/sdk/identity/azure-identity#credentials) library.
-   For example, [DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-queue_12.12.0b1/sdk/identity/azure-identity#defaultazurecredential)
+   [azure-identity](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-queue_12.13.0b1/sdk/identity/azure-identity#credentials) library.
+   For example, [DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-queue_12.13.0b1/sdk/identity/azure-identity#defaultazurecredential)
    can be used to authenticate the client.
 
    This requires some initial setup:
-   * [Install azure-identity](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-queue_12.12.0b1/sdk/identity/azure-identity#install-the-package)
-   * [Register a new AAD application](/azure/active-directory/develop/quickstart-register-app) and give permissions to access Azure Storage
-   * [Grant access](/azure/storage/common/storage-auth-aad-rbac-portal) to Azure Queue data with RBAC in the Azure Portal
+   * [Install azure-identity](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-queue_12.13.0b1/sdk/identity/azure-identity#install-the-package)
+   * [Register a new AAD application](https://learn.microsoft.com/azure/active-directory/develop/quickstart-register-app) and give permissions to access Azure Storage
+   * [Grant access](https://learn.microsoft.com/azure/storage/common/storage-auth-aad-rbac-portal) to Azure Queue data with RBAC in the Azure Portal
    * Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables:
      AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
 
    Use the returned token credential to authenticate the client:
     ```python
-        from azure.identity import DefaultAzureCredential
-        from azure.storage.queue import QueueServiceClient
-        token_credential = DefaultAzureCredential()
+    from azure.identity import DefaultAzureCredential
+    from azure.storage.queue import QueueServiceClient
+    token_credential = DefaultAzureCredential()
 
-        queue_service_client = QueueServiceClient(
-            account_url="https://<my_account_name>.queue.core.windows.net",
-            credential=token_credential
-        )
+    queue_service_client = QueueServiceClient(
+        account_url="https://<my_account_name>.queue.core.windows.net",
+        credential=token_credential
+    )
     ```
 
 #### Creating the client from a connection string
@@ -167,7 +167,7 @@ use of a dedicated client object.
 This library includes a complete async API supported on Python 3.5+. To use it, you must
 first install an async transport, such as [aiohttp](https://pypi.org/project/aiohttp/).
 See
-[azure-core documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-storage-queue_12.12.0b1/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport)
+[azure-core documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-storage-queue_12.13.0b1/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport)
 for more information.
 
 Async clients and credentials should be closed when they're no longer needed. These
@@ -334,7 +334,7 @@ the client level to enable it for all requests.
 
 ## Troubleshooting
 ### General
-Storage Queue clients raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-storage-queue_12.12.0b1/sdk/core/azure-core/README.md).
+Storage Queue clients raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-storage-queue_12.13.0b1/sdk/core/azure-core/README.md).
 
 This list can be used for reference to catch thrown exceptions. To get the specific error code of the exception, use the `error_code` attribute, i.e, `exception.error_code`.
 
@@ -372,29 +372,29 @@ service_client.get_service_stats(logging_enable=True)
 ## Next steps
 ### More sample code
 
-Get started with our [Queue samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-queue_12.12.0b1/sdk/storage/azure-storage-queue/samples).
+Get started with our [Queue samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-queue_12.13.0b1/sdk/storage/azure-storage-queue/samples).
 
 Several Storage Queues Python SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Storage Queues:
 
-* [queue_samples_hello_world.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-queue_12.12.0b1/sdk/storage/azure-storage-queue/samples/queue_samples_hello_world.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-queue_12.12.0b1/sdk/storage/azure-storage-queue/samples/queue_samples_hello_world_async.py)) - Examples found in this article:
+* [queue_samples_hello_world.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-queue_12.13.0b1/sdk/storage/azure-storage-queue/samples/queue_samples_hello_world.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-queue_12.13.0b1/sdk/storage/azure-storage-queue/samples/queue_samples_hello_world_async.py)) - Examples found in this article:
     * Client creation
     * Create a queue
     * Send messages
     * Receive messages
 
-* [queue_samples_authentication.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-queue_12.12.0b1/sdk/storage/azure-storage-queue/samples/queue_samples_authentication.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-queue_12.12.0b1/sdk/storage/azure-storage-queue/samples/queue_samples_authentication_async.py)) - Examples for authenticating and creating the client:
+* [queue_samples_authentication.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-queue_12.13.0b1/sdk/storage/azure-storage-queue/samples/queue_samples_authentication.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-queue_12.13.0b1/sdk/storage/azure-storage-queue/samples/queue_samples_authentication_async.py)) - Examples for authenticating and creating the client:
     * From a connection string
     * From a shared access key
     * From a shared access signature token
     * From Azure Active Directory
 
-* [queue_samples_service.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-queue_12.12.0b1/sdk/storage/azure-storage-queue/samples/queue_samples_service.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-queue_12.12.0b1/sdk/storage/azure-storage-queue/samples/queue_samples_service_async.py)) - Examples for interacting with the queue service:
+* [queue_samples_service.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-queue_12.13.0b1/sdk/storage/azure-storage-queue/samples/queue_samples_service.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-queue_12.13.0b1/sdk/storage/azure-storage-queue/samples/queue_samples_service_async.py)) - Examples for interacting with the queue service:
     * Get and set service properties
     * List queues in a storage account
     * Create and delete a queue from the service
     * Get the QueueClient
 
-* [queue_samples_message.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-queue_12.12.0b1/sdk/storage/azure-storage-queue/samples/queue_samples_message.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-queue_12.12.0b1/sdk/storage/azure-storage-queue/samples/queue_samples_message_async.py)) - Examples for working with queues and messages:
+* [queue_samples_message.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-queue_12.13.0b1/sdk/storage/azure-storage-queue/samples/queue_samples_message.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-queue_12.13.0b1/sdk/storage/azure-storage-queue/samples/queue_samples_message_async.py)) - Examples for working with queues and messages:
     * Set an access policy
     * Get and set queue metadata
     * Send and receive messages
@@ -402,7 +402,7 @@ Several Storage Queues Python SDK samples are available to you in the SDK's GitH
     * Peek and update messages
 
 ### Additional documentation
-For more extensive documentation on Azure Queue storage, see the [Azure Queue storage documentation](/azure/storage/queues/) on docs.microsoft.com.
+For more extensive documentation on Azure Queue storage, see the [Azure Queue storage documentation](https://learn.microsoft.com/azure/storage/queues/) on learn.microsoft.com.
 
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
