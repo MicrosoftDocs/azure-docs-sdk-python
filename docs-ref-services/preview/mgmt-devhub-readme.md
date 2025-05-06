@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-devhub, devhub
-ms.date: 05/22/2023
+ms.date: 05/06/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: devhub
