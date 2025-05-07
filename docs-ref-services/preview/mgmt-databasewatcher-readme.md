@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-databasewatcher, databasewatcher
-ms.date: 03/01/2025
+ms.date: 05/07/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: databasewatcher
