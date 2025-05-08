@@ -6,7 +6,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: cognitive-search
 ---
-# Azure AI Search client library for Python - version 11.6.0a20250507002 
+# Azure AI Search client library for Python - version 11.6.0a20250508001 
 
 
 [Azure AI Search](https://learn.microsoft.com/azure/search/) (formerly known as "Azure Cognitive Search") is an AI-powered information retrieval platform that helps developers build rich search experiences and generative AI apps that combine large language models with enterprise data.
