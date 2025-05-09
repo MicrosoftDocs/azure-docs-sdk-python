@@ -4,3 +4,4 @@
 |[Key Vault - Certificates](keyvault-certificates-readme.md)|[azure-keyvault-certificates](https://pypi.org/project/azure-keyvault-certificates)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-certificates)|
 |[Key Vault - Keys](keyvault-keys-readme.md)|[azure-keyvault-keys](https://pypi.org/project/azure-keyvault-keys)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-keys)|
 |[Key Vault - Secrets](keyvault-secrets-readme.md)|[azure-keyvault-secrets](https://pypi.org/project/azure-keyvault-secrets)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-secrets)|
+|[Key Vault - Security Domain](keyvault-securitydomain-readme.md)|[azure-keyvault-securitydomain](https://pypi.org/project/azure-keyvault-securitydomain)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-securitydomain)|
