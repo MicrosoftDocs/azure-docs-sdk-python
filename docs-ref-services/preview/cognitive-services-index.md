@@ -1,5 +1,6 @@
 | Reference | Package | Source |
 |---|---|---|
+|[AI Agents](ai-agents-readme.md)|[azure-ai-agents](https://pypi.org/project/azure-ai-agents)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/ai/azure-ai-agents)|
 |[Anomaly Detector](ai-anomalydetector-readme.md)|[azure-ai-anomalydetector](https://pypi.org/project/azure-ai-anomalydetector)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/anomalydetector/azure-ai-anomalydetector)|
 |[Content Safety](ai-contentsafety-readme.md)|[azure-ai-contentsafety](https://pypi.org/project/azure-ai-contentsafety)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/contentsafety/azure-ai-contentsafety)|
 |[Document Intelligence](ai-documentintelligence-readme.md)|[azure-ai-documentintelligence](https://pypi.org/project/azure-ai-documentintelligence)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/documentintelligence/azure-ai-documentintelligence)|

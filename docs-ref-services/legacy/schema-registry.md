@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: schemaregistry
 ---
-# Azure Schema Registry SDK for Python - preview
-## Packages - preview
+# Azure Schema Registry SDK for Python - legacy
+## Packages - legacy
 [!INCLUDE [packages](schema-registry-index.md)]
