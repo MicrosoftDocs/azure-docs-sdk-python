@@ -1,7 +1,7 @@
 ---
 title: Azure Pinecone Vector DB SDK for Python
 description: Reference for Azure Pinecone Vector DB SDK for Python
-ms.date: 05/12/2025
+ms.date: 05/13/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: pineconevectordb
