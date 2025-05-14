@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-astro, astro
-ms.date: 02/22/2024
+ms.date: 05/14/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: astro
