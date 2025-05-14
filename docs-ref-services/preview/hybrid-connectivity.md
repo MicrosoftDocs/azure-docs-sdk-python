@@ -1,7 +1,7 @@
 ---
 title: Azure Hybrid Connectivity SDK for Python
 description: Reference for Azure Hybrid Connectivity SDK for Python
-ms.date: 05/13/2025
+ms.date: 05/14/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: hybridconnectivity
