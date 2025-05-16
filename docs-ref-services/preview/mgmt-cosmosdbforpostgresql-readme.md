@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-cosmosdbforpostgresql, cosmosdbforpostgresql
-ms.date: 03/18/2024
+ms.date: 05/16/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: cosmosdbforpostgresql
