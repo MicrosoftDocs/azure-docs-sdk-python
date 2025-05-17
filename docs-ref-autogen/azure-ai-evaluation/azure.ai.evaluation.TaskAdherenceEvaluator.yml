@@ -1,0 +1,60 @@
+### YamlMime:PythonClass
+uid: azure.ai.evaluation.TaskAdherenceEvaluator
+name: TaskAdherenceEvaluator
+fullName: azure.ai.evaluation.TaskAdherenceEvaluator
+module: azure.ai.evaluation
+summary: "> [!NOTE]\n> This is an experimental class, and may change at any time.\
+  \ Please see [https://aka.ms/azuremlexperimental](https://aka.ms/azuremlexperimental)\
+  \ for more information.\n>\n\nThe Task Adherence evaluator assesses how well an\
+  \ AI-generated response follows the assigned task based on:\n\n   * Alignment with\
+  \ instructions and definitions \n\n   * Accuracy and clarity of the response \n\n\
+  \   * Proper use of provided tool definitions \n\nScoring is based on five levels:\n\
+  1. Fully Inadherent - Response completely ignores instructions.\n2. Barely Adherent\
+  \ - Partial alignment with critical gaps.\n3. Moderately Adherent - Meets core requirements\
+  \ but lacks precision.\n4. Mostly Adherent - Clear and accurate with minor issues.\n\
+  5. Fully Adherent - Flawless adherence to instructions.\n\nThe evaluation includes\
+  \ a step-by-step reasoning process, a brief explanation, and a final integer score."
+constructor:
+  syntax: TaskAdherenceEvaluator(model_config, *, threshold=3, **kwargs)
+  parameters:
+  - name: model_config
+    description: Configuration for the Azure OpenAI model.
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:azure.ai.evaluation.AzureOpenAIModelConfiguration>,
+      <xref:azure.ai.evaluation.OpenAIModelConfiguration>]
+  keywordOnlyParameters:
+  - name: threshold
+    defaultValue: '3'
+examples:
+- "Initialize and call TaskAdherenceEvaluator using Azure AI Project URL in the following\
+  \ format\n[https:/](https:/)/{resource_name}.services.ai.azure.com/api/projects/{project_name}<!--[!code-python[Main](les\\\
+  evaluation_samples_evaluate_fdp.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
+  classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"\
+  C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\
+  \\py2docfx\\\\dist_temp\\\\14\\\\azure_ai_evaluation-1.7.0\\\\samples\\\\evaluation_samples_evaluate_fdp.py\"\
+  , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
+  \   from azure.ai.evaluation import TaskAdherenceEvaluator\n\n   model_config =\
+  \ {\n       \"azure_endpoint\": os.environ.get(\"AZURE_OPENAI_ENDPOINT\"), # https://<account_name>.services.ai.azure.com\n\
+  \       \"api_key\": os.environ.get(\"AZURE_OPENAI_KEY\"),\n       \"azure_deployment\"\
+  : os.environ.get(\"AZURE_OPENAI_DEPLOYMENT\"),\n   }\n\n   task_adherence_evaluator\
+  \ = TaskAdherenceEvaluator(model_config=model_config)\n\n   query = [{'role': 'system',\
+  \ 'content': 'You are a helpful customer service agent.'}, \n    {'role': 'user',\
+  \ 'content': [{'type': 'text', 'text': 'What is the status of my order #123?'}]}]\n\
+  \n   response = [{'role': 'assistant', 'content': [{'type': 'tool_call', 'tool_call':\
+  \ {'id': 'tool_001', 'type': 'function', 'function': {'name': 'get_order', 'arguments':\
+  \ {'order_id': '123'}}}}]}, \n       {'role': 'tool', 'tool_call_id': 'tool_001',\
+  \ 'content': [{'type': 'tool_result', 'tool_result': '{ \"order\": { \"id\": \"\
+  123\", \"status\": \"shipped\" } }'}]}, \n       {'role': 'assistant', 'content':\
+  \ [{'type': 'text', 'text': 'Your order #123 has been shipped.'}]}]\n\n   tool_definitions\
+  \ = [{'name': 'get_order', 'description': 'Get order details.', 'parameters': {'type':\
+  \ 'object', 'properties': {'order_id': {'type': 'string'}}}}]\n\n   task_adherence_evaluator(\n\
+  \       query=query,\n       response=response,\n       tool_definitions=tool_definitions\n\
+  \   )\n\n   ````\n"
+attributes:
+- uid: azure.ai.evaluation.TaskAdherenceEvaluator.id
+  name: id
+  summary: Evaluator identifier, experimental and to be used only with evaluation
+    in cloud.
+  signature: id = None
