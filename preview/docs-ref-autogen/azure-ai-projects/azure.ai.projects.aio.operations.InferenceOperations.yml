@@ -3,8 +3,11 @@ uid: azure.ai.projects.aio.operations.InferenceOperations
 name: InferenceOperations
 fullName: azure.ai.projects.aio.operations.InferenceOperations
 module: azure.ai.projects.aio.operations
+summary: "> [!WARNING]\n> DO NOT instantiate this class directly.\n>\n> \n>\n> Instead,\
+  \ you should access the following operations through\n>\n> <xref:azure.ai.projects.aio.AIProjectClient>'s\n\
+  >\n> <xref:inference> attribute.\n>"
 constructor:
-  syntax: InferenceOperations(outer_instance)
+  syntax: 'InferenceOperations(outer_instance: azure.ai.projects.aio.AIProjectClient)'
   parameters:
   - name: outer_instance
     isRequired: true
@@ -12,12 +15,9 @@ methods:
 - uid: azure.ai.projects.aio.operations.InferenceOperations.get_azure_openai_client
   name: get_azure_openai_client
   summary: 'Get an authenticated AsyncAzureOpenAI client (from the *openai* package)
-    for the default
+    to use with
 
-    Azure OpenAI connection (if *connection_name* is not specificed), or from the
-    Azure OpenAI
-
-    resource given by its connection name.
+    AI models deployed to your AI Foundry Project or connected Azure OpenAI services.
 
 
     > [!NOTE]
@@ -40,14 +40,24 @@ methods:
       instead.'
     defaultValue: None
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
   - name: connection_name
-    description: 'The name of a connection to an Azure OpenAI resource in your AI
-      Foundry project.
+    description: 'Optional. If specified, the connection named here must be of type
+      Azure OpenAI.
 
-      resource. Optional. If not provided, the default Azure OpenAI connection will
-      be used.'
+      The returned AzureOpenAI client will use the inference URL specified by the
+      connected Azure OpenAI
+
+      service, and can be used with AI models deployed to that service. If not specified,
+      the returned
+
+      AzureOpenAI client will use the inference URL of the parent AI Services resource,
+      and can be used
+
+      with AI models deployed directly to your AI Foundry project.'
     defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:str>]
   return:
     description: An authenticated AsyncAzureOpenAI client
     types:
@@ -67,149 +77,93 @@ methods:
 - uid: azure.ai.projects.aio.operations.InferenceOperations.get_chat_completions_client
   name: get_chat_completions_client
   summary: 'Get an authenticated asynchronous ChatCompletionsClient (from the package
-    azure-ai-inference) for the default
+    azure-ai-inference) to use with
 
-    Azure AI Services connected resource (if *connection_name* is not specificed),
-    or from the Azure AI
-
-    Services resource given by its connection name. Keyword arguments are passed to
+    AI models deployed to your AI Foundry Project. Keyword arguments are passed to
     the constructor of
 
     ChatCompletionsClient.
 
 
-    At least one AI model that supports chat completions must be deployed in this
-    resource.
+    At least one AI model that supports chat completions must be deployed.
 
 
     > [!NOTE]
 
-    > The packages azure-ai-inference and aiohttp must be installed prior to calling
+    > The package azure-ai-inference and aiohttp must be installed prior to calling
     this method.
 
     >'
-  signature: 'async get_chat_completions_client(*, connection_name: str | None = None,
-    **kwargs) -> ChatCompletionsClient'
-  keywordOnlyParameters:
-  - name: connection_name
-    description: 'The name of a connection to an Azure AI Services resource in your
-      AI Foundry project.
-
-      resource. Optional. If not provided, the default Azure AI Services connection
-      will be used.'
-    defaultValue: None
+  signature: 'get_chat_completions_client(**kwargs: Any) -> ChatCompletionsClient'
   return:
     description: An authenticated chat completions client.
     types:
-    - <xref:azure.ai.inference.ChatCompletionsClient>
+    - <xref:azure.ai.inference.aio.ChatCompletionsClient>
   exceptions:
-  - type: azure.core.exceptions.ResourceNotFoundError
-    description: 'if an Azure AI Services connection
-
-      does not exist.'
   - type: azure.core.exceptions.ModuleNotFoundError
     description: 'if the *azure-ai-inference* package
 
       is not installed.'
-  - type: ValueError
-    description: if the connection name is an empty string.
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.ai.projects.aio.operations.InferenceOperations.get_embeddings_client
   name: get_embeddings_client
   summary: 'Get an authenticated asynchronous EmbeddingsClient (from the package azure-ai-inference)
-    for the default
+    to use with
 
-    Azure AI Services connected resource (if *connection_name* is not specificed),
-    or from the Azure AI
-
-    Services resource given by its connection name. Keyword arguments are passed to
+    AI models deployed to your AI Foundry Project. Keyword arguments are passed to
     the constructor of
 
-    EmbeddingsClient.
+    ChatCompletionsClient.
 
 
-    At least one AI model that supports text embeddings must be deployed in this resource.
+    At least one AI model that supports text embeddings must be deployed.
 
 
     > [!NOTE]
 
-    > The packages azure-ai-inference and aiohttp must be installed prior to calling
+    > The package azure-ai-inference and aiohttp must be installed prior to calling
     this method.
 
     >'
-  signature: 'async get_embeddings_client(*, connection_name: str | None = None, **kwargs)
-    -> EmbeddingsClient'
-  keywordOnlyParameters:
-  - name: connection_name
-    description: 'The name of a connection to an Azure AI Services resource in your
-      AI Foundry project.
-
-      resource. Optional. If not provided, the default Azure AI Services connection
-      will be used.'
-    defaultValue: None
+  signature: 'get_embeddings_client(**kwargs: Any) -> EmbeddingsClient'
   return:
-    description: An authenticated text embeddings client
+    description: An authenticated Embeddings client.
     types:
-    - <xref:azure.ai.inference.EmbeddingsClient>
+    - <xref:azure.ai.inference.aio.EmbeddingsClient>
   exceptions:
-  - type: azure.core.exceptions.ResourceNotFoundError
-    description: 'if an Azure AI Services connection
-
-      does not exist.'
   - type: azure.core.exceptions.ModuleNotFoundError
     description: 'if the *azure-ai-inference* package
 
       is not installed.'
-  - type: ValueError
-    description: if the connection name is an empty string.
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.ai.projects.aio.operations.InferenceOperations.get_image_embeddings_client
   name: get_image_embeddings_client
   summary: 'Get an authenticated asynchronous ImageEmbeddingsClient (from the package
-    azure-ai-inference) for the default
+    azure-ai-inference) to use with
 
-    Azure AI Services connected resource (if *connection_name* is not specificed),
-    or from the Azure AI
-
-    Services resource given by its connection name. Keyword arguments are passed to
+    AI models deployed to your AI Foundry Project. Keyword arguments are passed to
     the constructor of
 
-    ImageEmbeddingsClient.
+    ChatCompletionsClient.
 
 
-    At least one AI model that supports image embeddings must be deployed in this
-    resource.
+    At least one AI model that supports image embeddings must be deployed.
 
 
     > [!NOTE]
 
-    > The packages azure-ai-inference and aiohttp must be installed prior to calling
+    > The package azure-ai-inference and aiohttp must be installed prior to calling
     this method.
 
     >'
-  signature: 'async get_image_embeddings_client(*, connection_name: str | None = None,
-    **kwargs) -> ImageEmbeddingsClient'
-  keywordOnlyParameters:
-  - name: connection_name
-    description: 'The name of a connection to an Azure AI Services resource in your
-      AI Foundry project.
-
-      resource. Optional. If not provided, the default Azure AI Services connection
-      will be used.'
-    defaultValue: None
+  signature: 'get_image_embeddings_client(**kwargs: Any) -> ImageEmbeddingsClient'
   return:
-    description: An authenticated image embeddings client
+    description: An authenticated Image Embeddings client.
     types:
-    - <xref:azure.ai.inference.ImageEmbeddingsClient>
+    - <xref:azure.ai.inference.aio.ImageEmbeddingsClient>
   exceptions:
-  - type: azure.core.exceptions.ResourceNotFoundError
-    description: 'if an Azure AI Services connection
-
-      does not exist.'
   - type: azure.core.exceptions.ModuleNotFoundError
     description: 'if the *azure-ai-inference* package
 
       is not installed.'
-  - type: ValueError
-    description: if the connection name is an empty string.
   - type: azure.core.exceptions.HttpResponseError

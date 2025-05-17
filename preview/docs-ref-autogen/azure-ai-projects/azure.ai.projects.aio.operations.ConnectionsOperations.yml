@@ -3,97 +3,88 @@ uid: azure.ai.projects.aio.operations.ConnectionsOperations
 name: ConnectionsOperations
 fullName: azure.ai.projects.aio.operations.ConnectionsOperations
 module: azure.ai.projects.aio.operations
+summary: "> [!WARNING]\n> DO NOT instantiate this class directly.\n>\n> \n>\n> Instead,\
+  \ you should access the following operations through\n>\n> <xref:azure.ai.projects.aio.AIProjectClient>'s\n\
+  >\n> <xref:connections> attribute.\n>"
 constructor:
   syntax: ConnectionsOperations(*args, **kwargs)
 methods:
 - uid: azure.ai.projects.aio.operations.ConnectionsOperations.get
   name: get
-  summary: 'Get the properties of a single connection, given its connection name,
-    with or without
-
-    populating authentication credentials. Raises ~azure.core.exceptions.ResourceNotFoundError
-
-    exception if a connection with the given name was not found.
-
-
-    > [!NOTE]
-
-    > This method is not supported for Azure Blob Storage connections.
-
-    >'
-  signature: 'async get(*, connection_name: str, include_credentials: bool = False,
-    **kwargs: Any) -> ConnectionProperties'
-  keywordOnlyParameters:
-  - name: connection_name
-    description: Connection Name. Required.
-  - name: include_credentials
-    description: 'Whether to populate the connection properties with authentication
-      credentials.
-
-      Optional.'
-    defaultValue: 'False'
-  return:
-    description: The connection properties, or *None* if a connection with this name
-      does not exist.
+  summary: Get a connection by name.
+  signature: 'async get(name: str, *, include_credentials: bool | None = False, **kwargs:
+    Any) -> Connection'
+  parameters:
+  - name: name
+    description: The name of the resource. Required.
+    isRequired: true
     types:
-    - <xref:azure.ai.projects.models.ConnectionProperties>
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: include_credentials
+    description: Whether to include credentials in the response. Default is False.
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  return:
+    description: Connection. The Connection is compatible with MutableMapping
+    types:
+    - <xref:azure.ai.projects.models.Connection>
   exceptions:
-  - type: azure.core.exceptions.ResourceNotFoundError
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.ai.projects.aio.operations.ConnectionsOperations.get_default
   name: get_default
-  summary: 'Get the properties of the default connection of a certain connection type,
-    with or without
-
-    populating authentication credentials. Raises ~azure.core.exceptions.ResourceNotFoundError
-
-    exception if there are no connections of the given type.
-
-
-    > [!NOTE]
-
-    > get_default(connection_type=ConnectionType.AZURE_BLOB_STORAGE, include_credentials=True)
-    does not
-
-    >
-
-    > currently work. It does work with include_credentials=False.
-
-    >'
-  signature: 'async get_default(*, connection_type: ConnectionType, include_credentials:
-    bool = False, **kwargs: Any) -> ConnectionProperties'
-  keywordOnlyParameters:
+  summary: Get the default connection for a given connection type.
+  signature: 'async get_default(connection_type: str | ConnectionType, *, include_credentials:
+    bool | None = False, **kwargs: Any) -> Connection'
+  parameters:
   - name: connection_type
-    description: The connection type. Required.
-  - name: include_credentials
-    description: 'Whether to populate the connection properties with authentication
-      credentials.
-
-      Optional.'
-    defaultValue: 'False'
-  return:
-    description: The connection properties.
+    description: The type of the connection. Required.
+    isRequired: true
     types:
-    - <xref:azure.ai.projects.models.ConnectionProperties>
+    - <xref:str>
+    - <xref:azure.ai.projects.models.ConnectionType>
+  keywordOnlyParameters:
+  - name: include_credentials
+    description: Whether to include credentials in the response. Default is False.
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  return:
+    description: Connection. The Connection is compatible with MutableMapping
+    types:
+    - <xref:azure.ai.projects.models.Connection>
   exceptions:
-  - type: azure.core.exceptions.ResourceNotFoundError
+  - type: ValueError
+    description: If no default connection is found for the given type.
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.ai.projects.aio.operations.ConnectionsOperations.list
   name: list
-  summary: List the properties of all connections, or all connections of a certain
-    connection type.
-  signature: 'async list(*, connection_type: ConnectionType | None = None, **kwargs:
-    Any) -> Sequence[ConnectionProperties]'
+  summary: List all connections in the project, without populating connection credentials.
+  signature: 'list(*, connection_type: str | ConnectionType | None = None, default_connection:
+    bool | None = None, **kwargs: Any) -> AsyncIterable[Connection]'
   keywordOnlyParameters:
   - name: connection_type
-    description: 'The connection type. Optional. If provided, this method lists connections
-      of this
+    description: 'List connections of this specific type. Known values are:
 
-      type. If not provided, all connections are listed.'
+      "AzureOpenAI", "AzureBlob", "AzureStorageAccount", "CognitiveSearch", "CosmosDB",
+      "ApiKey",
+
+      "AppConfig", "AppInsights", and "CustomKeys". Default value is None.'
     defaultValue: None
-  return:
-    description: A list of connection properties
     types:
-    - <xref:typing.Iterable>[<xref:azure.ai.projects.models._models.ConnectionProperties>]
+    - <xref:str>
+    - <xref:azure.ai.projects.models.ConnectionType>
+  - name: default_connection
+    description: 'List connections that are default connections. Default value is
+
+      None.'
+    defaultValue: None
+    types:
+    - <xref:bool>
+  return:
+    description: An iterator like instance of Connection
+    types:
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.ai.projects.models.Connection>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
