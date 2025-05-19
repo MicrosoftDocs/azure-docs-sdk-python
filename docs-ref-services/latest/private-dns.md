@@ -1,7 +1,7 @@
 ---
 title: Azure Private DNS SDK for Python
 description: Reference for Azure Private DNS SDK for Python
-ms.date: 05/16/2025
+ms.date: 05/19/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: privatedns

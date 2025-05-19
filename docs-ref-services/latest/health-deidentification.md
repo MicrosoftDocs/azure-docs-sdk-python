@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: healthdeidentification
 ---
-# Azure Health Deidentification SDK for Python - preview
-## Packages - preview
+# Azure Health Deidentification SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](health-deidentification-index.md)]
