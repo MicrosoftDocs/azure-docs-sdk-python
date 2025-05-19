@@ -6,8 +6,17 @@ ms.topic: reference
 ms.devlang: python
 ms.service: service-bus-messaging
 ---
-# Azure Service Bus client library for Python - version 7.13.0b1 
+# Azure Service Bus client library for Python - version 7.13.0b1
 
+Here is a simple flow to test mermaid on pypi:
+
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
 
 Azure Service Bus is a high performance cloud-managed messaging service for providing real-time and fault-tolerant communication between distributed senders and receivers.
 
