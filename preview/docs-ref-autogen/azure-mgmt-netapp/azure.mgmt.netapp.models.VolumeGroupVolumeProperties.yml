@@ -19,16 +19,18 @@ constructor:
     bool | None = None, backup_id: str | None = None, network_features: str | _models.NetworkFeatures
     = ''Basic'', volume_type: str | None = None, data_protection: _models.VolumePropertiesDataProtection
     | None = None, accept_grow_capacity_pool_for_short_term_clone_split: str | _models.AcceptGrowCapacityPoolForShortTermCloneSplit
-    | None = None, is_restoring: bool | None = None, snapshot_directory_visible: bool
-    = True, kerberos_enabled: bool = False, security_style: str | _models.SecurityStyle
-    = ''unix'', smb_encryption: bool = False, smb_access_based_enumeration: str |
-    _models.SmbAccessBasedEnumeration | None = None, smb_non_browsable: str | _models.SmbNonBrowsable
-    | None = None, smb_continuously_available: bool = False, throughput_mibps: float
-    | None = None, encryption_key_source: str | _models.EncryptionKeySource = ''Microsoft.NetApp'',
+    | None = None, snapshot_directory_visible: bool = True, kerberos_enabled: bool
+    = False, security_style: str | _models.SecurityStyle = ''unix'', smb_encryption:
+    bool = False, smb_access_based_enumeration: str | _models.SmbAccessBasedEnumeration
+    | None = None, smb_non_browsable: str | _models.SmbNonBrowsable | None = None,
+    smb_continuously_available: bool = False, throughput_mibps: float | None = None,
+    encryption_key_source: str | _models.EncryptionKeySource = ''Microsoft.NetApp'',
     key_vault_private_endpoint_resource_id: str | None = None, ldap_enabled: bool
-    = False, cool_access: bool = False, coolness_period: int | None = None, cool_access_retrieval_policy:
-    str | _models.CoolAccessRetrievalPolicy | None = None, unix_permissions: str |
-    None = None, avs_data_store: str | _models.AvsDataStore = ''Disabled'', is_default_quota_enabled:
+    = False, ldap_server_type: str | _models.LdapServerType | None = None, cool_access:
+    bool = False, coolness_period: int | None = None, cool_access_retrieval_policy:
+    str | _models.CoolAccessRetrievalPolicy | None = None, cool_access_tiering_policy:
+    str | _models.CoolAccessTieringPolicy | None = None, unix_permissions: str | None
+    = None, avs_data_store: str | _models.AvsDataStore = ''Disabled'', is_default_quota_enabled:
     bool = False, default_user_quota_in_ki_bs: int = 0, default_group_quota_in_ki_bs:
     int = 0, capacity_pool_resource_id: str | None = None, proximity_placement_group:
     str | None = None, volume_spec_name: str | None = None, placement_rules: List[_models.PlacementKeyValuePairs]
@@ -72,11 +74,11 @@ constructor:
       soft quota used for alerting only. For regular volumes, valid values are in
       the range 50GiB to
 
-      100TiB. For large volumes, valid values are in the range 100TiB to 1PiB, and
-      on an exceptional
+      100TiB. For large volumes, valid values are in the range 100TiB to 500TiB, and
+      on an
 
-      basis, from to 2400GiB to 2400TiB. Values expressed in bytes as multiples of
-      1 GiB.'
+      exceptional basis, from to 2400GiB to 2400TiB. Values expressed in bytes as
+      multiples of 1 GiB.'
     defaultValue: '107374182400'
     types:
     - <xref:int>
@@ -158,11 +160,6 @@ constructor:
     types:
     - <xref:str>
     - <xref:azure.mgmt.netapp.models.AcceptGrowCapacityPoolForShortTermCloneSplit>
-  - name: is_restoring
-    description: Restoring.
-    defaultValue: None
-    types:
-    - <xref:bool>
   - name: snapshot_directory_visible
     description: 'If enabled (true) the volume will contain a read-only
 
@@ -256,6 +253,14 @@ constructor:
     defaultValue: 'False'
     types:
     - <xref:bool>
+  - name: ldap_server_type
+    description: 'Specifies the type of LDAP server for a given NFS volume. Known
+
+      values are: "ActiveDirectory" and "OpenLDAP".'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.netapp.models.LdapServerType>
   - name: cool_access
     description: Specifies whether Cool Access(tiering) is enabled for the volume.
     defaultValue: 'False'
@@ -282,6 +287,26 @@ constructor:
     types:
     - <xref:str>
     - <xref:azure.mgmt.netapp.models.CoolAccessRetrievalPolicy>
+  - name: cool_access_tiering_policy
+    description: 'coolAccessTieringPolicy determines which cold data blocks
+
+      are moved to cool tier. The possible values for this field are: Auto - Moves
+      cold user data
+
+      blocks in both the Snapshot copies and the active file system to the cool tier
+      tier. This
+
+      policy is the default. SnapshotOnly - Moves user data blocks of the Volume Snapshot
+      copies that
+
+      are not associated with the active file system to the cool tier. Known values
+      are: "Auto" and
+
+      "SnapshotOnly".'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.netapp.models.CoolAccessTieringPolicy>
   - name: unix_permissions
     description: 'UNIX permissions for NFS volume accepted in octal 4 digit format.
 
@@ -446,11 +471,11 @@ variables:
     quota used for alerting only. For regular volumes, valid values are in the range
     50GiB to
 
-    100TiB. For large volumes, valid values are in the range 100TiB to 1PiB, and on
-    an exceptional
+    100TiB. For large volumes, valid values are in the range 100TiB to 500TiB, and
+    on an
 
-    basis, from to 2400GiB to 2400TiB. Values expressed in bytes as multiples of 1
-    GiB.'
+    exceptional basis, from to 2400GiB to 2400TiB. Values expressed in bytes as multiples
+    of 1 GiB.'
   name: usage_threshold
   types:
   - <xref:int>
@@ -647,6 +672,13 @@ variables:
   name: ldap_enabled
   types:
   - <xref:bool>
+- description: 'Specifies the type of LDAP server for a given NFS volume. Known values
+
+    are: "ActiveDirectory" and "OpenLDAP".'
+  name: ldap_server_type
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.netapp.models.LdapServerType>
 - description: Specifies whether Cool Access(tiering) is enabled for the volume.
   name: cool_access
   types:
@@ -670,6 +702,25 @@ variables:
   types:
   - <xref:str>
   - <xref:azure.mgmt.netapp.models.CoolAccessRetrievalPolicy>
+- description: 'coolAccessTieringPolicy determines which cold data blocks are
+
+    moved to cool tier. The possible values for this field are: Auto - Moves cold
+    user data blocks
+
+    in both the Snapshot copies and the active file system to the cool tier tier.
+    This policy is
+
+    the default. SnapshotOnly - Moves user data blocks of the Volume Snapshot copies
+    that are not
+
+    associated with the active file system to the cool tier. Known values are: "Auto"
+    and
+
+    "SnapshotOnly".'
+  name: cool_access_tiering_policy
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.netapp.models.CoolAccessTieringPolicy>
 - description: 'UNIX permissions for NFS volume accepted in octal 4 digit format.
     First
 
