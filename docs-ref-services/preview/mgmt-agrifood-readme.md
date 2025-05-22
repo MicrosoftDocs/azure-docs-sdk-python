@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-agrifood, agrifood
-ms.date: 12/27/2022
+ms.date: 05/22/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: agrifood
