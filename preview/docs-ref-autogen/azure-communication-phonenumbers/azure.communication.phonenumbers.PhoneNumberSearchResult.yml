@@ -11,7 +11,8 @@ constructor:
   syntax: 'PhoneNumberSearchResult(*, search_id: str, phone_numbers: List[str], phone_number_type:
     str | _models.PhoneNumberType, assignment_type: str | _models.PhoneNumberAssignmentType,
     capabilities: _models.PhoneNumberCapabilities, cost: _models.PhoneNumberCost,
-    search_expires_by: datetime, error_code: int | None = None, error: str | _models.PhoneNumberSearchResultError
+    search_expires_by: datetime, is_agreement_to_not_resell_required: bool | None
+    = None, error_code: int | None = None, error: str | _models.PhoneNumberSearchResultError
     | None = None, **kwargs: Any)'
   keywordOnlyParameters:
   - name: search_id
@@ -54,6 +55,16 @@ constructor:
       Required.'
     types:
     - <xref:datetime.datetime>
+  - name: is_agreement_to_not_resell_required
+    description: 'Indicates if do not resell agreement is required.
+
+      If true, the phone numbers cannot be acquired unless the customer provides explicit
+      agreement
+
+      to not resell them.'
+    defaultValue: None
+    types:
+    - <xref:bool>
   - name: error_code
     description: The error code of the search.
     defaultValue: None
@@ -117,6 +128,15 @@ variables:
   name: search_expires_by
   types:
   - <xref:datetime.datetime>
+- description: 'Indicates if do not resell agreement is required. If
+
+    true, the phone numbers cannot be acquired unless the customer provides explicit
+    agreement to
+
+    not resell them.'
+  name: is_agreement_to_not_resell_required
+  types:
+  - <xref:bool>
 - description: The error code of the search.
   name: error_code
   types:
@@ -150,12 +170,15 @@ methods:
     ~typing.Dict[str, ~typing.Any], ~typing.Any], ~typing.Any] = <function attribute_transformer>,
     **kwargs: ~typing.Any) -> MutableMapping[str, Any]'
   parameters:
+  - name: keep_readonly
+    description: If you want to serialize the readonly attributes
+    defaultValue: 'True'
+    types:
+    - <xref:bool>
   - name: key_transformer
     description: A key transformer function.
     types:
     - <xref:function>
-  - name: keep_readonly
-    defaultValue: 'True'
   return:
     description: A dict JSON compatible object
     types:
@@ -163,7 +186,7 @@ methods:
 - uid: azure.communication.phonenumbers.PhoneNumberSearchResult.deserialize
   name: deserialize
   summary: Parse a str using the RestAPI syntax and return a model.
-  signature: 'deserialize(data: Any, content_type: str | None = None) -> ModelType'
+  signature: 'deserialize(data: Any, content_type: str | None = None) -> Self'
   parameters:
   - name: data
     description: A str using RestAPI structure. JSON by default.
@@ -177,8 +200,11 @@ methods:
     - <xref:str>
   return:
     description: An instance of this model
+    types:
+    - <xref:typing.Self>
   exceptions:
-  - type: DeserializationError if something went wrong
+  - type: DeserializationError
+    description: if something went wrong
 - uid: azure.communication.phonenumbers.PhoneNumberSearchResult.enable_additional_properties_sending
   name: enable_additional_properties_sending
   signature: enable_additional_properties_sending() -> None
@@ -193,24 +219,30 @@ methods:
 
     and last_rest_key_case_insensitive_extractor)'
   signature: 'from_dict(data: Any, key_extractors: Callable[[str, Dict[str, Any],
-    Any], Any] | None = None, content_type: str | None = None) -> ModelType'
+    Any], Any] | None = None, content_type: str | None = None) -> Self'
   parameters:
   - name: data
     description: A dict using RestAPI structure
     isRequired: true
     types:
     - <xref:dict>
+  - name: key_extractors
+    description: A key extractor function.
+    defaultValue: None
+    types:
+    - <xref:function>
   - name: content_type
     description: JSON by default, set application/xml if XML.
     defaultValue: None
     types:
     - <xref:str>
-  - name: key_extractors
-    defaultValue: None
   return:
     description: An instance of this model
+    types:
+    - <xref:typing.Self>
   exceptions:
-  - type: DeserializationError if something went wrong
+  - type: DeserializationError
+    description: if something went wrong
 - uid: azure.communication.phonenumbers.PhoneNumberSearchResult.is_xml_model
   name: is_xml_model
   signature: is_xml_model() -> bool

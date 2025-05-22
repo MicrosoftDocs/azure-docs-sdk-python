@@ -3,20 +3,24 @@ uid: azure.communication.phonenumbers.aio.PhoneNumbersClient
 name: PhoneNumbersClient
 fullName: azure.communication.phonenumbers.aio.PhoneNumbersClient
 module: azure.communication.phonenumbers.aio
-summary: "A client to interact with the AzureCommunicationService Phone Numbers gateway.\n\
-  \nThis client provides operations to interact with the phone numbers service\n:param\
-  \ str endpoint:\n\n   The endpoint url for Azure Communication Service resource."
+summary: 'A client to interact with the AzureCommunicationService Phone Numbers gateway.
+
+
+  This client provides operations to interact with the phone numbers service'
 constructor:
   syntax: 'PhoneNumbersClient(endpoint: str, credential: AsyncTokenCredential | AzureKeyCredential,
     **kwargs: Any)'
   parameters:
+  - name: endpoint
+    description: The endpoint url for Azure Communication Service resource.
+    isRequired: true
+    types:
+    - <xref:str>
   - name: credential
     description: The credential we use to authenticate against the service.
     isRequired: true
     types:
     - <xref:typing.Union>[<xref:AsyncTokenCredential>, <xref:AzureKeyCredential>]
-  - name: endpoint
-    isRequired: true
   keywordOnlyParameters:
   - name: api_version
     description: 'Azure Communication Phone Number API version.
@@ -30,8 +34,8 @@ methods:
 - uid: azure.communication.phonenumbers.aio.PhoneNumbersClient.begin_purchase_phone_numbers
   name: begin_purchase_phone_numbers
   summary: Purchases phone numbers.
-  signature: 'async begin_purchase_phone_numbers(search_id: str, **kwargs: Any) ->
-    AsyncLROPoller[None]'
+  signature: 'async begin_purchase_phone_numbers(search_id: str, *, agree_to_not_resell:
+    bool = False, **kwargs: Any) -> AsyncLROPoller[None]'
   parameters:
   - name: search_id
     description: The search id.
@@ -39,6 +43,14 @@ methods:
     types:
     - <xref:str>
   keywordOnlyParameters:
+  - name: agree_to_not_resell
+    description: 'The agreement to not resell the phone numbers. Defaults to False
+      if
+
+      not provided.'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
   - name: continuation_token
     description: A continuation token to restart a poller from a saved state.
     types:
@@ -58,6 +70,51 @@ methods:
     types:
     - <xref:int>
   return:
+    description: A poller to wait on the purchase operation.
+    types:
+    - <xref:azure.core.polling.AsyncLROPoller>[<xref:None>]
+- uid: azure.communication.phonenumbers.aio.PhoneNumbersClient.begin_purchase_reservation
+  name: begin_purchase_reservation
+  summary: 'Starts the purchase of all phone numbers in the reservation.
+
+
+    Starts a long running operation to purchase all of the phone numbers in the reservation.
+
+    Purchase can only be started for active reservations that at least one phone number.
+    If any of
+
+    the phone numbers in the reservation is from a country where reselling is not
+    permitted, do not
+
+    resell agreement is required.
+
+
+    The agreement to not resell is a legal requirement in some countries in order
+    to purchase phone numbers.
+
+    For more information on which countries require this agreement, please refer to
+    this documentation:
+
+    [https://learn.microsoft.com/azure/communication-services/concepts/numbers/sub-eligibility-number-capability](https://learn.microsoft.com/azure/communication-services/concepts/numbers/sub-eligibility-number-capability)'
+  signature: 'async begin_purchase_reservation(reservation_id: str, *, agree_to_not_resell:
+    bool = False, **kwargs: Any) -> AsyncLROPoller[None]'
+  parameters:
+  - name: reservation_id
+    description: The id of the reservation. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: agree_to_not_resell
+    description: 'The agreement to not resell the phone numbers. Defaults to False
+      if
+
+      not provided.'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  return:
+    description: A poller to wait on the purchase operation.
     types:
     - <xref:azure.core.polling.AsyncLROPoller>[<xref:None>]
 - uid: azure.communication.phonenumbers.aio.PhoneNumbersClient.begin_release_phone_number
@@ -91,14 +148,15 @@ methods:
     types:
     - <xref:int>
   return:
+    description: A poller to wait on the release operation.
     types:
     - <xref:azure.core.polling.AsyncLROPoller>[<xref:None>]
 - uid: azure.communication.phonenumbers.aio.PhoneNumbersClient.begin_search_available_phone_numbers
   name: begin_search_available_phone_numbers
   summary: Search for available phone numbers to purchase.
   signature: 'async begin_search_available_phone_numbers(country_code: str, phone_number_type:
-    str, assignment_type: str, capabilities: PhoneNumberCapabilities, **kwargs) ->
-    AsyncLROPoller[PhoneNumberSearchResult]'
+    str, assignment_type: str, capabilities: PhoneNumberCapabilities, **kwargs: Any)
+    -> AsyncLROPoller[PhoneNumberSearchResult]'
   parameters:
   - name: country_code
     description: The ISO 3166-2 country code, e.g. US.
@@ -112,7 +170,7 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-    - <xref:azure.communication.phonenumbers.models.PhoneNumberType>
+    - <xref:azure.communication.phonenumbers.PhoneNumberType>
   - name: assignment_type
     description: 'Required. The assignment type of the phone numbers to search for.
       A
@@ -124,12 +182,12 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-    - <xref:azure.communication.phonenumbers.models.PhoneNumberAssignmentType>
+    - <xref:azure.communication.phonenumbers.PhoneNumberAssignmentType>
   - name: capabilities
     description: Required. Capabilities of a phone number.
     isRequired: true
     types:
-    - <xref:azure.communication.phonenumbers.models.PhoneNumberCapabilities>
+    - <xref:azure.communication.phonenumbers.PhoneNumberCapabilities>
   keywordOnlyParameters:
   - name: area_code
     description: 'The area code of the desired phone number, e.g. 425. If not set,
@@ -160,13 +218,15 @@ methods:
     types:
     - <xref:int>
   return:
+    description: A poller to wait on the search results.
     types:
     - <xref:azure.core.polling.AsyncLROPoller>[<xref:azure.communication.phonenumbers.PhoneNumberSearchResult>]
 - uid: azure.communication.phonenumbers.aio.PhoneNumbersClient.begin_update_phone_number_capabilities
   name: begin_update_phone_number_capabilities
   summary: Updates the capabilities of a phone number.
   signature: 'async begin_update_phone_number_capabilities(phone_number: str, sms:
-    str = None, calling: str = None, **kwargs: Any) -> AsyncLROPoller[PurchasedPhoneNumber]'
+    str | PhoneNumberCapabilityType | None = None, calling: str | PhoneNumberCapabilityType
+    | None = None, **kwargs: Any) -> AsyncLROPoller[PurchasedPhoneNumber]'
   parameters:
   - name: phone_number
     description: 'The phone number id in E.164 format. The leading plus can be either
@@ -176,18 +236,18 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  - name: calling
-    description: Capability value for calling.
-    defaultValue: None
-    types:
-    - <xref:str>
-    - <xref:azure.communication.phonenumbers.models.PhoneNumberCapabilityType>
   - name: sms
     description: Capability value for SMS.
     defaultValue: None
     types:
     - <xref:str>
-    - <xref:azure.communication.phonenumbers.models.PhoneNumberCapabilityType>
+    - <xref:azure.communication.phonenumbers.PhoneNumberCapabilityType>
+  - name: calling
+    description: Capability value for calling.
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.communication.phonenumbers.PhoneNumberCapabilityType>
   keywordOnlyParameters:
   - name: continuation_token
     description: A continuation token to restart a poller from a saved state.
@@ -208,22 +268,155 @@ methods:
     types:
     - <xref:int>
   return:
+    description: A poller to wait on the update operation.
     types:
     - <xref:azure.core.polling.AsyncLROPoller>[<xref:azure.communication.phonenumbers.PurchasedPhoneNumber>]
+- uid: azure.communication.phonenumbers.aio.PhoneNumbersClient.browse_available_phone_numbers
+  name: browse_available_phone_numbers
+  summary: 'Browses for available phone numbers to purchase.
+
+
+    Browses for available phone numbers to purchase. The response will be a randomized
+    list of
+
+    phone numbers available to purchase matching the browsing criteria. This operation
+    is not
+
+    paginated. Since the results are randomized, repeating the same request will not
+    guarantee the
+
+    same results.'
+  signature: 'async browse_available_phone_numbers(*, country_code: str, phone_number_type:
+    str | PhoneNumberType, sms_capability: str | PhoneNumberCapabilityType | None
+    = None, calling_capability: str | PhoneNumberCapabilityType | None = None, assignment_type:
+    str | PhoneNumberAssignmentType | None = None, phone_number_prefixes: List[str]
+    | None = None, **kwargs: Any) -> PhoneNumbersBrowseResult'
+  keywordOnlyParameters:
+  - name: country_code
+    description: The ISO 3166-2 country code, e.g. US. Required.
+    types:
+    - <xref:str>
+  - name: phone_number_type
+    description: 'Required. The type of phone numbers to search for, e.g. geographic,
+
+      or tollFree. Possible values include: "geographic", "tollFree".'
+    types:
+    - <xref:str>
+    - <xref:azure.communication.phonenumbers.PhoneNumberType>
+  - name: sms_capability
+    description: 'The SMS capability to search for. Known values are: "inbound",
+
+      "outbound", "inbound_outbound", "none".'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.communication.phonenumbers.PhoneNumberCapabilityType>
+  - name: calling_capability
+    description: 'The calling capability to search for. Known values are: "inbound",
+
+      "outbound", "inbound_outbound", "none".'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.communication.phonenumbers.PhoneNumberCapabilityType>
+  - name: assignment_type
+    description: 'Represents the assignment type of the offering. Also known as the
+      use
+
+      case. Known values are: "person" and "application".'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.communication.phonenumbers.PhoneNumberAssignmentType>
+  - name: phone_number_prefixes
+    description: 'The phone number prefix to match. If specified, the search will
+
+      be limited to phone numbers that start with any of the given prefixes.'
+    defaultValue: None
+    types:
+    - <xref:list>[<xref:str>]
+  return:
+    description: A list of available phone numbers matching the browsing criteria.
+    types:
+    - <xref:azure.communication.phonenumbers.PhoneNumbersBrowseResult>
 - uid: azure.communication.phonenumbers.aio.PhoneNumbersClient.close
   name: close
   summary: 'Close the :class:
 
     *~azure.communication.phonenumbers.aio.PhoneNumbersClient* session.'
   signature: async close() -> None
+- uid: azure.communication.phonenumbers.aio.PhoneNumbersClient.create_or_update_reservation
+  name: create_or_update_reservation
+  summary: 'Creates or updates a reservation by its ID.
+
+
+    Updates the reservation with the given ID if it exists; or creates a new one otherwise.
+
+    The response will be the updated state of the reservation.
+
+    Updating a reservation will extend the expiration time of the reservation to 15
+    minutes
+
+    after the last change, up to a maximum of 2 hours from creation time.
+
+    Partial success is possible, in which case the result will contain phone numbers
+    with error status.'
+  signature: 'async create_or_update_reservation(*, reservation_id: str, numbers_to_add:
+    List[AvailablePhoneNumber] | None = None, numbers_to_remove: List[str] | None
+    = None, **kwargs: Any) -> PhoneNumbersReservation'
+  keywordOnlyParameters:
+  - name: reservation_id
+    description: 'The ID of the reservation. It must be a valid UUID. If a reservation,
+
+      with that ID exists it will be updated; ortherwise a new reservation will be
+      created.'
+  - name: numbers_to_add
+    description: List of phone numbers to add to the reservation.
+    defaultValue: None
+    types:
+    - <xref:list>[<xref:azure.communication.phonenumbers.AvailablePhoneNumber>]
+  - name: numbers_to_remove
+    description: List of phone number IDs to remove from the reservation.
+    defaultValue: None
+    types:
+    - <xref:list>[<xref:str>]
+  return:
+    description: The updated reservation
+    types:
+    - <xref:azure.communication.phonenumbers.PhoneNumbersReservation>
+- uid: azure.communication.phonenumbers.aio.PhoneNumbersClient.delete_reservation
+  name: delete_reservation
+  summary: 'Deletes a reservation by its ID.
+
+
+    Deletes the reservation with the given ID. Any phone number in the reservation
+    will be released
+
+    and made available for others to purchase. Only reservations with ''active'' status
+    can be
+
+    deleted.'
+  signature: 'async delete_reservation(reservation_id: str, **kwargs: Any) -> None'
+  parameters:
+  - name: reservation_id
+    description: The id of the reservation. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: None
+    types:
+    - <xref:None>
 - uid: azure.communication.phonenumbers.aio.PhoneNumbersClient.from_connection_string
   name: from_connection_string
-  summary: "Create PhoneNumbersClient from a Connection String.\n:param str conn_str:\n\
-    \n   A connection string to an Azure Communication Service resource."
+  summary: Create PhoneNumbersClient from a Connection String.
   signature: 'from_connection_string(conn_str: str, **kwargs: Any) -> PhoneNumbersClient'
   parameters:
   - name: conn_str
+    description: A connection string to an Azure Communication Service resource.
     isRequired: true
+    types:
+    - <xref:str>
   return:
     description: Instance of PhoneNumbersClient.
     types:
@@ -246,48 +439,29 @@ methods:
     description: The details of the given purchased phone number.
     types:
     - <xref:azure.communication.phonenumbers.PurchasedPhoneNumber>
+- uid: azure.communication.phonenumbers.aio.PhoneNumbersClient.get_reservation
+  name: get_reservation
+  summary: 'Gets a reservation by its ID.
+
+
+    Retrieves the reservation with the given ID, including all of the phone numbers
+    associated with
+
+    it.'
+  signature: 'async get_reservation(reservation_id: str, **kwargs: Any) -> PhoneNumbersReservation'
+  parameters:
+  - name: reservation_id
+    description: The id of the reservation. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: PhoneNumbersReservation
+    types:
+    - <xref:azure.communication.phonenumbers.PhoneNumbersReservation>
 - uid: azure.communication.phonenumbers.aio.PhoneNumbersClient.list_available_area_codes
   name: list_available_area_codes
-  summary: 'Gets the list of available area codes.
-
-
-    "geographic" and "tollFree". Required.
-
-    :type phone_number_type: ~azure.communication.phonenumbers.models.PhoneNumberType
-
-    :param assignment_type: Filter by assignmentType, e.g. User, Application. Known
-    values are:
-
-    "person" and "application". Default value is None.
-
-    :type assignment_type: ~azure.communication.phonenumbers.models.PhoneNumberAssignmentType
-
-    :param locality: The name of locality in which to search for the area code. e.g.
-    Seattle.
-
-    This is required if the phone number type is Geographic. Default value is None.
-
-    :type locality: str
-
-    :keyword administrative_division: The name of the state or province in which to
-    search for the
-
-    area code. e.g. California. Default value is None.
-
-    :type administrative_division: str
-
-    :keyword skip: An optional parameter for how many entries to skip, for pagination
-    purposes. The
-
-    default value is 0. Default value is 0.
-
-    :paramtype skip: int
-
-    :return: An iterator like instance of PhoneNumberAreaCode
-
-    :rtype: ~azure.core.paging.ItemPaged[~azure.communication.phonenumbers.models.PhoneNumberAreaCode]
-
-    :raises ~azure.core.exceptions.HttpResponseError:'
+  summary: Gets the list of available area codes.
   signature: 'list_available_area_codes(country_code: str, phone_number_type: PhoneNumberType,
     **kwargs: Any) -> AsyncItemPaged[PhoneNumberAreaCode]'
   parameters:
@@ -298,8 +472,45 @@ methods:
     - <xref:str>
   - name: phone_number_type
     description: 'Filter by phone number type, e.g. Geographic, TollFree. Known values
-      are:'
+      are:
+
+      "geographic" and "tollFree". Required.'
     isRequired: true
+    types:
+    - <xref:azure.communication.phonenumbers.PhoneNumberType>
+  keywordOnlyParameters:
+  - name: assignment_type
+    description: 'Filter by assignmentType, e.g. User, Application. Known values are:
+
+      "person" and "application". Default value is None.'
+    types:
+    - <xref:azure.communication.phonenumbers.PhoneNumberAssignmentType>
+  - name: locality
+    description: 'The name of locality in which to search for the area code. e.g.
+      Seattle.
+
+      This is required if the phone number type is Geographic. Default value is None.'
+    types:
+    - <xref:str>
+  - name: administrative_division
+    description: 'The name of the state or province in which to search for the
+
+      area code. e.g. California. Default value is None.'
+    types:
+    - <xref:str>
+  - name: skip
+    description: 'An optional parameter for how many entries to skip, for pagination
+      purposes. The
+
+      default value is 0. Default value is 0.'
+    types:
+    - <xref:int>
+  return:
+    description: An iterator like instance of PhoneNumberAreaCode
+    types:
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.communication.phonenumbers.PhoneNumberAreaCode>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.communication.phonenumbers.aio.PhoneNumbersClient.list_available_countries
   name: list_available_countries
   summary: 'Gets the list of supported countries.
@@ -334,14 +545,13 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
   - name: administrative_division
     description: 'An optional parameter for the name of the state or province
 
       in which to search for the area code. e.g. California. Default value is None.'
-    isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
   - name: skip
     description: 'An optional parameter for how many entries to skip, for pagination
       purposes. The
@@ -361,28 +571,26 @@ methods:
 
 
     List available offerings of capabilities with rates for the given country/region.'
-  signature: 'list_available_offerings(country_code: str, **kwargs) -> AsyncItemPaged[PhoneNumberOffering]'
+  signature: 'list_available_offerings(country_code: str, **kwargs: Any) -> AsyncItemPaged[PhoneNumberOffering]'
   parameters:
   - name: country_code
     description: The ISO 3166-2 country/region code, e.g. US. Required.
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
   - name: phone_number_type
     description: 'Filter by phoneNumberType, e.g. Geographic, TollFree. Known values
 
       are: "geographic" and "tollFree". Default value is None.'
-    isRequired: true
     types:
-    - <xref:azure.communication.phonenumbers.models.PhoneNumberType>
+    - <xref:azure.communication.phonenumbers.PhoneNumberType>
   - name: assignment_type
     description: 'Filter by assignmentType, e.g. User, Application. Known values are:
 
       "person" and "application". Default value is None.'
-    isRequired: true
     types:
-    - <xref:azure.communication.phonenumbers.models.PhoneNumberAssignmentType>
-  keywordOnlyParameters:
+    - <xref:azure.communication.phonenumbers.PhoneNumberAssignmentType>
   - name: skip
     description: 'An optional parameter for how many entries to skip, for pagination
       purposes. The
@@ -424,11 +632,33 @@ methods:
     - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.communication.phonenumbers.PurchasedPhoneNumber>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+- uid: azure.communication.phonenumbers.aio.PhoneNumbersClient.list_reservations
+  name: list_reservations
+  summary: 'Lists all reservations.
+
+
+    Retrieves a paginated list of all phone number reservations. Note that the reservations
+    will
+
+    not be populated with the phone numbers associated with them.'
+  signature: 'list_reservations(*, max_page_size=100, **kwargs: Any) -> AsyncItemPaged[PhoneNumbersReservation]'
+  keywordOnlyParameters:
+  - name: max_page_size
+    description: 'An optional parameter for how many entries to return, for pagination
+
+      purposes. The default value is 100. Default value is 100.'
+    defaultValue: '100'
+    types:
+    - <xref:int>
+  return:
+    description: An iterator like instance of PhoneNumbersReservationItem
+    types:
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.communication.phonenumbers.PhoneNumbersReservation>]
 - uid: azure.communication.phonenumbers.aio.PhoneNumbersClient.search_operator_information
   name: search_operator_information
   summary: Searches for operator information for a given list of phone numbers.
-  signature: 'search_operator_information(phone_numbers, options: OperatorInformationOptions
-    | None = None, **kwargs) -> OperatorInformationResult'
+  signature: 'async search_operator_information(phone_numbers: str | List[str], *,
+    options: OperatorInformationOptions | None = None, **kwargs: Any) -> OperatorInformationResult'
   parameters:
   - name: phone_numbers
     description: The phone number(s) whose operator information should be searched
@@ -436,12 +666,11 @@ methods:
     types:
     - <xref:str>
     - <xref:list>[<xref:str>]
+  keywordOnlyParameters:
   - name: options
     description: 'Options to modify the search.  Please note: use of options can affect
       the cost of the search.'
     defaultValue: None
-    types:
-    - <xref:OperatorInformationOptions>
   return:
     description: A search result containing operator information associated with the
       requested phone numbers
