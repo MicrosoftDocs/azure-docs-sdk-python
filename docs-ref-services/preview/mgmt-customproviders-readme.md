@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-customproviders, customproviders
-ms.date: 11/01/2022
+ms.date: 05/23/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: customproviders
