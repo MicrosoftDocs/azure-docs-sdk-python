@@ -1,7 +1,7 @@
 ---
 title: Azure Sitemanager SDK for Python
 description: Reference for Azure Sitemanager SDK for Python
-ms.date: 05/28/2025
+ms.date: 05/29/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: sitemanager
