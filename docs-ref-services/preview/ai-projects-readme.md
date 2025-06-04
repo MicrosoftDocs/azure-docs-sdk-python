@@ -1,12 +1,12 @@
 ---
 title: Azure AI Projects client library for Python
 keywords: Azure, python, SDK, API, azure-ai-projects, ai
-ms.date: 05/16/2025
+ms.date: 06/04/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: ai
 ---
-# Azure AI Projects client library for Python - version 1.0.0b11 
+# Azure AI Projects client library for Python - version 1.0.0a20250604001 
 
 
 The AI Projects client library (in preview) is part of the Azure AI Foundry SDK, and provides easy access to
@@ -27,8 +27,8 @@ resources in your Azure AI Foundry Project. Use it to:
 please see new code snippets below and the samples folder. Agents are now implemented in a separate package `azure-ai-agents`
 which will get installed automatically when you install `azure-ai-projects`. You can continue using ".agents"
 operations on the `AIProjectsClient` to create, run and delete agents, as before.
-See [full set of Agents samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-projects_1.0.0b11/sdk/ai/azure-ai-agents/samples)
-in their new location. Also see the [change log for the 1.0.0b11 release](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-projects_1.0.0b11/sdk/ai/azure-ai-projects/CHANGELOG.md).
+See [full set of Agents samples](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/ai/azure-ai-agents/samples)
+in their new location. Also see the [change log for the 1.0.0b11 release](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/ai/azure-ai-projects/CHANGELOG.md).
 
 [Product documentation](https://aka.ms/azsdk/azure-ai-projects/product-doc)
 | [Samples][samples]
@@ -98,11 +98,13 @@ project_client = AIProjectClient.from_connection_string(
 )
 ```
 
+**Note:** Support for project connection string and hub-based projects has been discontinued. We recommend creating a new Azure AI Foundry resource utilizing project endpoint. If this is not possible, please pin the version of or pin the version of `azure-ai-projects` to `1.0.0b10` or earlier.
+
 ## Examples
 
 ### Performing Agent operations
 
-The `.agents` property on the `AIProjectsClient` gives you access to an authenticated `AgentsClient` from the `azure-ai-agents` package. Below we show how to create an Agent and delete it. To see what you can do with the `agent` you created, see the [many samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-projects_1.0.0b11/sdk/ai/azure-ai-agents/samples) associated with the `azure-ai-agents` package.
+The `.agents` property on the `AIProjectsClient` gives you access to an authenticated `AgentsClient` from the `azure-ai-agents` package. Below we show how to create an Agent and delete it. To see what you can do with the `agent` you created, see the [many samples](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/ai/azure-ai-agents/samples) associated with the `azure-ai-agents` package.
 
 The code below assumes `model_deployment_name` (a string) is defined. It's the deployment name of an AI model in your Foundry Project, as shown in the "Models + endpoints" tab, under the "Name" column.
 
@@ -117,7 +119,7 @@ agent = project_client.agents.create_agent(
 print(f"Created agent, agent ID: {agent.id}")
 
 # Do something with your Agent!
-# See samples here https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-projects_1.0.0b11/sdk/ai/azure-ai-agents/samples
+# See samples here https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/ai/azure-ai-agents/samples
 
 project_client.agents.delete_agent(agent.id)
 print("Deleted agent")
@@ -499,7 +501,7 @@ To report an issue with the client library, or request additional features, plea
 
 ## Next steps
 
-Have a look at the [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-projects_1.0.0b11/sdk/ai/azure-ai-projects/samples) folder, containing fully runnable Python code for synchronous and asynchronous clients.
+Have a look at the [Samples](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/ai/azure-ai-projects/samples) folder, containing fully runnable Python code for synchronous and asynchronous clients.
 
 ## Contributing
 
