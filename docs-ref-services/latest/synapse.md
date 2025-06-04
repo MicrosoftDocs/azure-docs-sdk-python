@@ -1,7 +1,7 @@
 ---
 title: Azure Synapse SDK for Python
 description: Reference for Azure Synapse SDK for Python
-ms.date: 06/03/2025
+ms.date: 06/04/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: synapse-analytics
