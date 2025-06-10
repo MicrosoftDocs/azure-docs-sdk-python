@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-hdinsight, hdinsight
-ms.date: 09/10/2024
+ms.date: 06/10/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: hdinsight
