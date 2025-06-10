@@ -1,6 +1,6 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-resource, resources
+keywords: Azure, python, SDK, API, azure-mgmt-resource-templatespecs, resources
 ms.date: 06/10/2025
 ms.topic: reference
 ms.devlang: python
@@ -8,7 +8,7 @@ ms.service: resources
 ---
 # Microsoft Azure SDK for Python
 
-This is the Microsoft Azure Resource Management Client Library.
+This is the Microsoft Azure Resource Templatespecs Management Client Library.
 This package has been tested with Python 3.9+.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
@@ -26,7 +26,7 @@ _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For
 ### Install the package
 
 ```bash
-pip install azure-mgmt-resource
+pip install azure-mgmt-resource-templatespecs
 pip install azure-identity
 ```
 
@@ -44,17 +44,17 @@ With above configuration, client can be authenticated by following code:
 
 ```python
 from azure.identity import DefaultAzureCredential
-from azure.mgmt.resource import ResourceManagementClient
+from azure.mgmt.resource.templatespecs import TemplateSpecsClient
 import os
 
 sub_id = os.getenv("AZURE_SUBSCRIPTION_ID")
-client = ResourceManagementClient(credential=DefaultAzureCredential(), subscription_id=sub_id)
+client = TemplateSpecsClient(credential=DefaultAzureCredential(), subscription_id=sub_id)
 ```
 
 ## Examples
 
 Code samples for this package can be found at:
-- [Search Resource Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
+- [Search Resource Templatespecs Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
 - [Azure Python Mgmt SDK Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
