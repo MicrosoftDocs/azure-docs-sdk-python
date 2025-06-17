@@ -1,7 +1,7 @@
 ---
 title: Azure SQL Virtual Machine SDK for Python
 description: Reference for Azure SQL Virtual Machine SDK for Python
-ms.date: 06/16/2025
+ms.date: 06/17/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: sqlvirtualmachine
