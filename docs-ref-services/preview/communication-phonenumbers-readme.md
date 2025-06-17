@@ -1,12 +1,12 @@
 ---
 title: Azure Communication Phone Numbers Package client library for Python
 keywords: Azure, python, SDK, API, azure-communication-phonenumbers, communication
-ms.date: 05/21/2025
+ms.date: 06/17/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: communication
 ---
-# Azure Communication Phone Numbers Package client library for Python - version 1.3.0b1 
+# Azure Communication Phone Numbers Package client library for Python - version 1.3.0a20250617001 
 
 
 Azure Communication Phone Numbers client package is used to administer Phone Numbers.
@@ -100,7 +100,7 @@ The Browse and Reservations APIs provide an alternate way to acquire phone numbe
 
 The browse operation retrieves a random sample of phone numbers that are available for purchase for a given country, with optional filtering criteria to narrow down results. The returned phone numbers are not reserved for any customer.
 
-Reservations represent a collection of phone numbers that are locked by a specific customer and are awaiting purchase. They have an expiration time of 15 minutes after the last modification or 2 hours from creation time. A reservation can include numbers from different countries, in contrast with the Search operation. Customers can Create, Retrieve, Modify (by adding and removing numbers), Delete, and Purchase reservations. Purchasing a reservation is an LRO.
+Reservations represent a collection of phone numbers that are locked by a specific customer and are awaiting purchase. They have an expiration time of 15 minutes after the last modification or 2 hours from creation time. A reservation can include numbers from different countries, in contrast with the Search operation. Customers can create, retrieve, modify (by adding and removing numbers), delete, and purchase reservations. Purchasing a reservation is an LRO.
 
 ### SIP routing client
 
@@ -133,7 +133,7 @@ print(result.country_code)
 print(result.phone_number)
 ```
 
-#### Broswing and Reserving Available Phone Numbers
+#### Browsing and Reserving Available Phone Numbers
 
 Use the Browse and Reservations API to reserve a phone number
 
@@ -310,7 +310,7 @@ The Phone Numbers Administration client will raise exceptions defined in [Azure 
 # Next steps
 ## More sample code
 
-Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-phonenumbers_1.3.0b1/sdk/communication/azure-communication-phonenumbers/samples) directory for detailed examples of how to use this library.
+Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/communication/azure-communication-phonenumbers/samples) directory for detailed examples of how to use this library.
 
 ## Provide Feedback
 
@@ -327,5 +327,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 <!-- LINKS -->
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-phonenumbers_1.3.0b1/sdk/core/azure-core/README.md
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md
 
