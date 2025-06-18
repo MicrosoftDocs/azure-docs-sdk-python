@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-storageactions, storageactions
-ms.date: 04/21/2025
+ms.date: 06/18/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: storageactions
