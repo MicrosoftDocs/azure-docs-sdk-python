@@ -3,21 +3,21 @@ uid: azure.health.deidentification.models.DeidentificationJob
 name: DeidentificationJob
 fullName: azure.health.deidentification.models.DeidentificationJob
 module: azure.health.deidentification.models
-summary: 'A job containing a batch of documents to de-identify.
-
-
-  Readonly variables are only populated by the server, and will be ignored when sending
-  a request.
-
-
-  All required parameters must be populated in order to send to server.'
+summary: A job containing a batch of documents to de-identify.
 constructor:
   syntax: 'DeidentificationJob(*args: Any, **kwargs: Any)'
 variables:
 - description: The name of a job. Required.
-  name: name
+  name: job_name
   types:
   - <xref:str>
+- description: 'Operation to perform on the input documents. Known values are: "Redact",
+
+    "Surrogate", and "Tag".'
+  name: operation_type
+  types:
+  - <xref:str>
+  - <xref:azure.health.deidentification.models.DeidentificationOperationType>
 - description: Storage location to perform the operation on. Required.
   name: source_location
   types:
@@ -26,34 +26,22 @@ variables:
   name: target_location
   types:
   - <xref:azure.health.deidentification.models.TargetStorageLocation>
-- description: 'Operation to perform on the input documents. Known values are: "Redact",
-
-    "Surrogate", and "Tag".'
-  name: operation
+- description: Customization parameters to override default service behaviors.
+  name: customizations
   types:
-  - <xref:str>
-  - <xref:azure.health.deidentification.models.OperationType>
-- description: Data type of the input documents. "Plaintext"
-  name: data_type
-  types:
-  - <xref:str>
-  - <xref:azure.health.deidentification.models.DocumentDataType>
-- description: Format of the redacted output. Only valid when Operation is Redact.
-  name: redaction_format
-  types:
-  - <xref:str>
+  - <xref:azure.health.deidentification.models.DeidentificationJobCustomizationOptions>
 - description: 'Current status of a job. Required. Known values are: "NotStarted",
     "Running",
 
-    "Succeeded", "PartialFailed", "Failed", and "Canceled".'
+    "Succeeded", "Failed", and "Canceled".'
   name: status
   types:
   - <xref:str>
-  - <xref:azure.health.deidentification.models.JobStatus>
+  - <xref:azure.health.deidentification.models.OperationStatus>
 - description: Error when job fails in it's entirety.
   name: error
   types:
-  - <xref:azure.health.deidentification.models.Error>
+  - <xref:azure.core.ODataV4Format>
 - description: 'Date and time when the job was completed.
 
 
@@ -75,11 +63,11 @@ variables:
 - description: Summary of a job. Exists only when the job is completed.
   name: summary
   types:
-  - <xref:azure.health.deidentification.models.JobSummary>
+  - <xref:azure.health.deidentification.models.DeidentificationJobSummary>
 methods:
 - uid: azure.health.deidentification.models.DeidentificationJob.as_dict
   name: as_dict
-  summary: Return a dict that can be JSONify using json.dump.
+  summary: Return a dict that can be turned into json using json.dump.
   signature: 'as_dict(*, exclude_readonly: bool = False) -> Dict[str, Any]'
   keywordOnlyParameters:
   - name: exclude_readonly
@@ -93,12 +81,23 @@ methods:
     - <xref:dict>
 - uid: azure.health.deidentification.models.DeidentificationJob.clear
   name: clear
+  summary: Remove all items from D.
   signature: clear() -> None
 - uid: azure.health.deidentification.models.DeidentificationJob.copy
   name: copy
   signature: copy() -> Model
 - uid: azure.health.deidentification.models.DeidentificationJob.get
   name: get
+  summary: 'Get the value for key if key is in the dictionary, else default.
+
+    :param str key: The key to look up.
+
+    :param any default: The value to return if key is not in the dictionary. Defaults
+    to None
+
+    :returns: D[k] if k in D, else d.
+
+    :rtype: any'
   signature: 'get(key: str, default: Any = None) -> Any'
   parameters:
   - name: key
@@ -108,11 +107,30 @@ methods:
 - uid: azure.health.deidentification.models.DeidentificationJob.items
   name: items
   signature: items() -> ItemsView[str, Any]
+  return:
+    description: set-like object providing a view on D's items
+    types:
+    - <xref:typing.ItemsView>
 - uid: azure.health.deidentification.models.DeidentificationJob.keys
   name: keys
   signature: keys() -> KeysView[str]
+  return:
+    description: a set-like object providing a view on D's keys
+    types:
+    - <xref:typing.KeysView>
 - uid: azure.health.deidentification.models.DeidentificationJob.pop
   name: pop
+  summary: 'Removes specified key and return the corresponding value.
+
+    :param str key: The key to pop.
+
+    :param any default: The value to return if key is not in the dictionary
+
+    :returns: The value corresponding to the key.
+
+    :rtype: any
+
+    :raises KeyError: If key is not found and default is not given.'
   signature: 'pop(key: str, default: ~typing.Any = <object object>) -> Any'
   parameters:
   - name: key
@@ -120,9 +138,25 @@ methods:
   - name: default
 - uid: azure.health.deidentification.models.DeidentificationJob.popitem
   name: popitem
+  summary: 'Removes and returns some (key, value) pair
+
+    :returns: The (key, value) pair.
+
+    :rtype: tuple
+
+    :raises KeyError: if D is empty.'
   signature: popitem() -> Tuple[str, Any]
 - uid: azure.health.deidentification.models.DeidentificationJob.setdefault
   name: setdefault
+  summary: 'Same as calling D.get(k, d), and setting D[k]=d if k not found
+
+    :param str key: The key to look up.
+
+    :param any default: The value to set if key is not in the dictionary
+
+    :returns: D[k] if k in D, else d.
+
+    :rtype: any'
   signature: 'setdefault(key: str, default: ~typing.Any = <object object>) -> Any'
   parameters:
   - name: key
@@ -130,23 +164,34 @@ methods:
   - name: default
 - uid: azure.health.deidentification.models.DeidentificationJob.update
   name: update
+  summary: 'Updates D from mapping/iterable E and F.
+
+    :param any args: Either a mapping object or an iterable of key-value pairs.'
   signature: 'update(*args: Any, **kwargs: Any) -> None'
 - uid: azure.health.deidentification.models.DeidentificationJob.values
   name: values
   signature: values() -> ValuesView[Any]
+  return:
+    description: an object providing a view on D's values
+    types:
+    - <xref:typing.ValuesView>
 attributes:
 - uid: azure.health.deidentification.models.DeidentificationJob.created_at
   name: created_at
   summary: Date and time when the job was created. Required.
   signature: 'created_at: datetime'
-- uid: azure.health.deidentification.models.DeidentificationJob.data_type
-  name: data_type
-  summary: Data type of the input documents. "Plaintext"
-  signature: 'data_type: str | _models.DocumentDataType | None'
+- uid: azure.health.deidentification.models.DeidentificationJob.customizations
+  name: customizations
+  summary: Customization parameters to override default service behaviors.
+  signature: 'customizations: _models.DeidentificationJobCustomizationOptions | None'
 - uid: azure.health.deidentification.models.DeidentificationJob.error
   name: error
   summary: Error when job fails in it's entirety.
-  signature: 'error: _models.Error | None'
+  signature: 'error: ODataV4Format | None'
+- uid: azure.health.deidentification.models.DeidentificationJob.job_name
+  name: job_name
+  summary: The name of a job. Required.
+  signature: 'job_name: str'
 - uid: azure.health.deidentification.models.DeidentificationJob.last_updated_at
   name: last_updated_at
   summary: 'Date and time when the job was completed.
@@ -157,20 +202,12 @@ attributes:
 
     If the job failed, this is the time when the job failed. Required.'
   signature: 'last_updated_at: datetime'
-- uid: azure.health.deidentification.models.DeidentificationJob.name
-  name: name
-  summary: The name of a job. Required.
-  signature: 'name: str'
-- uid: azure.health.deidentification.models.DeidentificationJob.operation
-  name: operation
+- uid: azure.health.deidentification.models.DeidentificationJob.operation_type
+  name: operation_type
   summary: '"Redact", "Surrogate", and
 
     "Tag".'
-  signature: 'operation: str | _models.OperationType | None'
-- uid: azure.health.deidentification.models.DeidentificationJob.redaction_format
-  name: redaction_format
-  summary: Format of the redacted output. Only valid when Operation is Redact.
-  signature: 'redaction_format: str | None'
+  signature: 'operation_type: str | _models.DeidentificationOperationType | None'
 - uid: azure.health.deidentification.models.DeidentificationJob.source_location
   name: source_location
   summary: Storage location to perform the operation on. Required.
@@ -183,12 +220,12 @@ attributes:
   name: status
   summary: '"NotStarted", "Running",
 
-    "Succeeded", "PartialFailed", "Failed", and "Canceled".'
-  signature: 'status: str | _models.JobStatus'
+    "Succeeded", "Failed", and "Canceled".'
+  signature: 'status: str | _models.OperationStatus'
 - uid: azure.health.deidentification.models.DeidentificationJob.summary
   name: summary
   summary: Summary of a job. Exists only when the job is completed.
-  signature: 'summary: _models.JobSummary | None'
+  signature: 'summary: _models.DeidentificationJobSummary | None'
 - uid: azure.health.deidentification.models.DeidentificationJob.target_location
   name: target_location
   summary: Target location to store output of operation. Required.
