@@ -6,7 +6,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: ai
 ---
-# Azure AI Inference client library for Python - version 1.0.0a20250624001 
+# Azure AI Inference client library for Python - version 1.0.0a20250624002 
 
 
 Use the Inference client library (in preview) to:
