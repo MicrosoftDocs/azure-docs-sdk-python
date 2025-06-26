@@ -46,9 +46,10 @@ methods:
     Retrieving IncomingCall event can be set on Azure Communication Service''s Azure
     Portal.'
   signature: 'answer_call(incoming_call_context: str, callback_url: str, *, cognitive_services_endpoint:
-    str | None = None, operation_context: str | None = None, media_streaming: MediaStreamingOptions
-    | None = None, transcription: TranscriptionOptions | None = None, **kwargs) ->
-    CallConnectionProperties'
+    str | None = None, backup_cognitive_services_endpoint: str | None = None, sip_headers:
+    Dict[str, str] | None = None, voip_headers: Dict[str, str] | None = None, operation_context:
+    str | None = None, media_streaming: MediaStreamingOptions | None = None, transcription:
+    TranscriptionOptions | None = None, **kwargs) -> CallConnectionProperties'
   parameters:
   - name: incoming_call_context
     description: 'This can be read from body of IncomingCall event.
@@ -68,16 +69,35 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
+  - name: backup_cognitive_services_endpoint
+    description: The endpoint url of the Azure Backup Cognitive Services resource
+      attached.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: sip_headers
+    description: Sip Headers for PSTN Call
+    defaultValue: None
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
+    - <xref:None>
+  - name: voip_headers
+    description: Voip Headers for Voip Call
+    defaultValue: None
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
+    - <xref:None>
   - name: operation_context
     description: The operation context.
     defaultValue: None
     types:
     - <xref:str>
   - name: media_streaming
-    description: Media Streaming Configuration.
+    description: Media Streaming Options.
     defaultValue: None
     types:
     - <xref:azure.communication.callautomation.MediaStreamingOptions>
+    - <xref:None>
   - name: transcription
     description: Configuration of live transcription.
     defaultValue: None
@@ -96,9 +116,9 @@ methods:
 - uid: azure.communication.callautomation.CallAutomationClient.connect_call
   name: connect_call
   signature: 'connect_call(callback_url: str, *, server_call_id: str, cognitive_services_endpoint:
-    str | None = None, operation_context: str | None = None, media_streaming: ''MediaStreamingOptions''
-    | None = None, transcription: ''TranscriptionOptions'' | None = None, **kwargs)
-    -> CallConnectionProperties'
+    str | None = None, backup_cognitive_services_endpoint: str | None = None, operation_context:
+    str | None = None, media_streaming: ''MediaStreamingOptions'' | None = None, transcription:
+    ''TranscriptionOptions'' | None = None, **kwargs) -> CallConnectionProperties'
   parameters:
   - name: callback_url
     isRequired: true
@@ -108,9 +128,11 @@ methods:
   signature: 'create_call(target_participant: CommunicationIdentifier | List[CommunicationIdentifier],
     callback_url: str, *, source_caller_id_number: PhoneNumberIdentifier | None =
     None, source_display_name: str | None = None, operation_context: str | None =
-    None, cognitive_services_endpoint: str | None = None, media_streaming: MediaStreamingOptions
-    | None = None, transcription: TranscriptionOptions | None = None, **kwargs) ->
-    CallConnectionProperties'
+    None, cognitive_services_endpoint: str | None = None, backup_cognitive_services_endpoint:
+    str | None = None, sip_headers: Dict[str, str] | None = None, voip_headers: Dict[str,
+    str] | None = None, media_streaming: MediaStreamingOptions | None = None, transcription:
+    TranscriptionOptions | None = None, teams_app_source: MicrosoftTeamsAppIdentifier
+    | None = None, **kwargs) -> CallConnectionProperties'
   parameters:
   - name: target_participant
     description: Call invitee's information.
@@ -153,8 +175,27 @@ methods:
     types:
     - <xref:str>
     - <xref:None>
+  - name: backup_cognitive_services_endpoint
+    description: The identifier of the Backup Cognitive Service resource assigned
+      to this call.
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:None>
+  - name: sip_headers
+    description: Sip Headers for PSTN Call
+    defaultValue: None
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
+    - <xref:None>
+  - name: voip_headers
+    description: Voip Headers for Voip Call
+    defaultValue: None
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
+    - <xref:None>
   - name: media_streaming
-    description: Media Streaming Configuration.
+    description: Media Streaming Options.
     defaultValue: None
     types:
     - <xref:azure.communication.callautomation.MediaStreamingOptions>
@@ -164,6 +205,17 @@ methods:
     defaultValue: None
     types:
     - <xref:azure.communication.callautomation.TranscriptionOptions>
+    - <xref:None>
+  - name: teams_app_source
+    description: 'Overrides default client source by a MicrosoftTeamsAppIdentifier
+      type source.
+
+      Required for creating call with Teams resource account ID.
+
+      This is per-operation setting and does not change the client''s default source.'
+    defaultValue: None
+    types:
+    - <xref:azure.communication.callautomation.MicrosoftTeamsAppIdentifier>
     - <xref:None>
   return:
     description: CallConnectionProperties
@@ -180,9 +232,7 @@ methods:
   signature: 'create_group_call(target_participants: List[CommunicationIdentifier],
     callback_url: str, *, source_caller_id_number: PhoneNumberIdentifier | None =
     None, source_display_name: str | None = None, operation_context: str | None =
-    None, cognitive_services_endpoint: str | None = None, media_streaming: MediaStreamingOptions
-    | None = None, transcription: TranscriptionOptions | None = None, **kwargs) ->
-    CallConnectionProperties'
+    None, cognitive_services_endpoint: str | None = None, **kwargs) -> CallConnectionProperties'
   parameters:
   - name: target_participants
     description: A list of targets.
@@ -220,18 +270,6 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
-  - name: media_streaming
-    description: Media Streaming Configuration.
-    defaultValue: None
-    types:
-    - <xref:azure.communication.callautomation.MediaStreamingOptions>
-    - <xref:None>
-  - name: transcription
-    description: Configuration of live transcription.
-    defaultValue: None
-    types:
-    - <xref:azure.communication.callautomation.TranscriptionOptions>
-    - <xref:None>
   return:
     description: CallConnectionProperties
     types:
@@ -334,6 +372,23 @@ methods:
     - <xref:azure.communication.callautomation.RecordingProperties>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+- uid: azure.communication.callautomation.CallAutomationClient.get_recording_response
+  name: get_recording_response
+  summary: 'Get call recording result.
+
+    :param recording_id: The recording id.
+
+    :type recording_id: str
+
+    :return: recording result
+
+    :rtype: ~azure.communication.callautomation.RecordingResult
+
+    :raises ~azure.core.exceptions.HttpResponseError:'
+  signature: 'get_recording_response(recording_id: str, **kwargs) -> RecordingResult'
+  parameters:
+  - name: recording_id
+    isRequired: true
 - uid: azure.communication.callautomation.CallAutomationClient.pause_recording
   name: pause_recording
   summary: Pause recording the call.
@@ -354,7 +409,8 @@ methods:
   name: redirect_call
   summary: Redirect incoming call to a specific target.
   signature: 'redirect_call(incoming_call_context: str, target_participant: CommunicationIdentifier,
-    **kwargs) -> None'
+    *, sip_headers: Dict[str, str] | None = None, voip_headers: Dict[str, str] | None
+    = None, **kwargs) -> None'
   parameters:
   - name: incoming_call_context
     description: 'This can be read from body of IncomingCall event.
@@ -368,6 +424,19 @@ methods:
     isRequired: true
     types:
     - <xref:azure.communication.callautomation.CommunicationIdentifier>
+  keywordOnlyParameters:
+  - name: sip_headers
+    description: Sip Headers for PSTN Call
+    defaultValue: None
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
+    - <xref:None>
+  - name: voip_headers
+    description: Voip Headers for Voip Call
+    defaultValue: None
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
+    - <xref:None>
   return:
     description: None
     types:
