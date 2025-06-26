@@ -1,6 +1,6 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-containerservicefleet, containerservice
+keywords: Azure, python, SDK, API, azure-mgmt-containerservicesafeguards, containerservice
 ms.date: 06/26/2025
 ms.topic: reference
 ms.devlang: python
@@ -8,8 +8,8 @@ ms.service: containerservice
 ---
 # Microsoft Azure SDK for Python
 
-This is the Microsoft Azure Containerservicefleet Management Client Library.
-This package has been tested with Python 3.8+.
+This is the Microsoft Azure Containerservicesafeguards Management Client Library.
+This package has been tested with Python 3.9+.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
 ## _Disclaimer_
@@ -20,13 +20,13 @@ _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For
 
 ### Prerequisites
 
-- Python 3.8+ is required to use this package.
+- Python 3.9+ is required to use this package.
 - [Azure subscription](https://azure.microsoft.com/free/)
 
 ### Install the package
 
 ```bash
-pip install azure-mgmt-containerservicefleet
+pip install azure-mgmt-containerservicesafeguards
 pip install azure-identity
 ```
 
@@ -44,17 +44,17 @@ With above configuration, client can be authenticated by following code:
 
 ```python
 from azure.identity import DefaultAzureCredential
-from azure.mgmt.containerservicefleet import ContainerServiceFleetMgmtClient
+from azure.mgmt.containerservicesafeguards import ContainerServiceSafeguardsMgmtClient
 import os
 
 sub_id = os.getenv("AZURE_SUBSCRIPTION_ID")
-client = ContainerServiceFleetMgmtClient(credential=DefaultAzureCredential(), subscription_id=sub_id)
+client = ContainerServiceSafeguardsMgmtClient(credential=DefaultAzureCredential(), subscription_id=sub_id)
 ```
 
 ## Examples
 
 Code samples for this package can be found at:
-- [Search Containerservicefleet Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
+- [Search Containerservicesafeguards Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
 - [Azure Python Mgmt SDK Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
