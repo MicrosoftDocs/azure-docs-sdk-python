@@ -1,18 +1,18 @@
 ---
 title: Azure Maps Timezone Package client library for Python
 keywords: Azure, python, SDK, API, azure-maps-timezone, maps
-ms.date: 02/18/2025
+ms.date: 06/28/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: maps
 ---
-# Azure Maps Timezone Package client library for Python - version 1.0.0b1 
+# Azure Maps Timezone Package client library for Python - version 1.0.0a20250628001 
 
 
 This package contains a Python SDK for Azure Maps Services for Timezone.
 Read more about Azure Maps Services [here](https://learn.microsoft.com/azure/azure-maps/)
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-timezone_1.0.0b1/sdk/maps/azure-maps-timezone) | [API reference documentation](https://learn.microsoft.com/rest/api/maps/timezone) | [Product documentation](https://learn.microsoft.com/azure/azure-maps/)
+[Source code](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/maps/azure-maps-timezone) | [API reference documentation](https://learn.microsoft.com/rest/api/maps/timezone) | [Product documentation](https://learn.microsoft.com/azure/azure-maps/)
 
 ## _Disclaimer_
 
@@ -167,7 +167,7 @@ Once you initialized a `MapsTimeZoneClient` class, you can explore the methods o
 ### Async Clients
 
 This library includes a complete async API supported on Python 3.8+. To use it, you must first install an async transport, such as [aiohttp](https://pypi.org/project/aiohttp/).
-See [azure-core documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-maps-timezone_1.0.0b1/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport) for more information.
+See [azure-core documentation](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport) for more information.
 
 Async clients and credentials should be closed when they're no longer needed. These objects are async context managers and define async `close` methods.
 
@@ -353,7 +353,7 @@ if __name__ == '__main__':
 
 ### General
 
-Maps Timezone clients raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-maps-timezone_1.0.0b1/sdk/core/azure-core/README.md).
+Maps Timezone clients raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md).
 
 This list can be used for reference to catch thrown exceptions. To get the specific error code of the exception, use the `error_code` attribute, i.e, `exception.error_code`.
 
@@ -393,7 +393,7 @@ Still running into issues? If you encounter any bugs or have suggestions, please
 
 ### More sample code
 
-Get started with our [Maps Timezone samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-timezone_1.0.0b1/sdk/maps/azure-maps-timezone/samples) ([Async Version samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-timezone_1.0.0b1/sdk/maps/azure-maps-timezone/samples/async_samples)).
+Get started with our [Maps Timezone samples](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/maps/azure-maps-timezone/samples) ([Async Version samples](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/maps/azure-maps-timezone/samples/async_samples)).
 
 Several Azure Maps Timezone Python SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Maps Timezone
 
@@ -412,7 +412,7 @@ python samples/convert_windows_timezone_to_iana.py
 
 > Notes: `--pre` flag can be optionally added, it is to include pre-release and development versions for `pip install`. By default, `pip` only finds stable versions.
 
-Further detail please refer to [Samples Introduction](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-timezone_1.0.0b1/sdk/maps/azure-maps-timezone/samples/README.md)
+Further detail please refer to [Samples Introduction](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/maps/azure-maps-timezone/samples/README.md)
 
 ### Additional documentation
 
@@ -428,11 +428,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 <!-- LINKS -->
 [azure_subscription]: https://azure.microsoft.com/free/
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/blob/azure-maps-timezone_1.0.0b1/sdk/identity/azure-identity
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/identity/azure-identity
 [azure_portal]: https://portal.azure.com
 [azure_cli]: https://learn.microsoft.com/cli/azure
 [azure-key-credential]: https://aka.ms/azsdk/python/core/azurekeycredential
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-timezone_1.0.0b1/sdk/identity/azure-identity#defaultazurecredential
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#defaultazurecredential
 [register_ms_entra_id_app]: https://learn.microsoft.com/powershell/module/Az.Resources/New-AzADApplication?view=azps-8.0.0
 [maps_authentication_ms_entra_id]: https://learn.microsoft.com/azure/azure-maps/how-to-manage-authentication
 [create_new_application_registration]: https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/applicationsListBlade/quickStartType/AspNetWebAppQuickstartPage/sourceType/docs
