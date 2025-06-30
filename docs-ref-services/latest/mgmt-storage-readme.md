@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-storage, storage
-ms.date: 05/22/2025
+ms.date: 06/30/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: storage
