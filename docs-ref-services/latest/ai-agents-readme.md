@@ -1,13 +1,13 @@
 ---
 title: Azure AI Agents client library for Python
 keywords: Azure, python, SDK, API, azure-ai-agents, ai
-ms.date: 06/09/2025
+ms.date: 07/01/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: ai
 ---
 <!-- PIPY LONG DESCRIPTION BEGIN -->
-# Azure AI Agents client library for Python - version 1.0.1 
+# Azure AI Agents client library for Python - version 1.0.2 
 
 
 Use the AI Agents client library to:
@@ -382,9 +382,9 @@ for message in messages:
 
 You can enhance your Agents by defining callback functions as function tools. These can be provided to `create_agent` via either the `toolset` parameter or the combination of `tools` and `tool_resources`. Here are the distinctions:
 
-For more details about requirements and specification of functions, refer to [Function Tool Specifications](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.0.1/sdk/ai/azure-ai-agents/FunctionTool.md)
+For more details about requirements and specification of functions, refer to [Function Tool Specifications](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.0.2/sdk/ai/azure-ai-agents/FunctionTool.md)
 
-Here is an example to use [user functions](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.0.1/sdk/ai/azure-ai-agents/samples/utils/user_functions.py) in `toolset`:
+Here is an example to use [user functions](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.0.2/sdk/ai/azure-ai-agents/samples/utils/user_functions.py) in `toolset`:
 <!-- SNIPPET:sample_agents_stream_eventhandler_with_toolset.create_agent_with_function_tool -->
 
 ```python
@@ -403,7 +403,7 @@ agent = agents_client.create_agent(
 
 <!-- END SNIPPET -->
 
-For asynchronous functions, you must import `AgentsClient` from `azure.ai.agents.aio` and use `AsyncFunctionTool`.   Here is an example using [asynchronous user functions](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.0.1/sdk/ai/azure-ai-agents/samples/agents_async/sample_agents_functions_async.py):
+For asynchronous functions, you must import `AgentsClient` from `azure.ai.agents.aio` and use `AsyncFunctionTool`.   Here is an example using [asynchronous user functions](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.0.2/sdk/ai/azure-ai-agents/samples/agents_async/sample_agents_functions_async.py):
 
 ```python
 from azure.ai.agents.aio import AgentsClient
@@ -428,8 +428,8 @@ agent = await agents_client.create_agent(
 
 <!-- END SNIPPET -->
 
-Notice that if `enable_auto_function_calls` is called, the SDK will invoke the functions automatically during `create_and_process` or streaming.  If you prefer to execute them manually, refer to [`sample_agents_stream_eventhandler_with_functions.py`](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.0.1/sdk/ai/azure-ai-agents/samples/agents_streaming/sample_agents_stream_eventhandler_with_functions.py) or
-[`sample_agents_functions.py`](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.0.1/sdk/ai/azure-ai-agents/samples/agents_tools/sample_agents_functions.py)
+Notice that if `enable_auto_function_calls` is called, the SDK will invoke the functions automatically during `create_and_process` or streaming.  If you prefer to execute them manually, refer to [`sample_agents_stream_eventhandler_with_functions.py`](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.0.2/sdk/ai/azure-ai-agents/samples/agents_streaming/sample_agents_stream_eventhandler_with_functions.py) or
+[`sample_agents_functions.py`](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.0.2/sdk/ai/azure-ai-agents/samples/agents_tools/sample_agents_functions.py)
 
 ### Create Agent With Azure Function Call
 
@@ -894,7 +894,7 @@ message = agents_client.messages.create(
 
 To process your message, you can use `runs.create`, `runs.create_and_process`, or `runs.stream`.
 
-`create_run` requests the Agent to process the message without polling for the result. If you are using `function tools` regardless as `toolset` or not, your code is responsible for polling for the result and acknowledging the status of `Run`. When the status is `requires_action`, your code is responsible for calling the function tools. For a code sample, visit [`sample_agents_functions.py`](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.0.1/sdk/ai/azure-ai-agents/samples/agents_tools/sample_agents_functions.py).
+`create_run` requests the Agent to process the message without polling for the result. If you are using `function tools` regardless as `toolset` or not, your code is responsible for polling for the result and acknowledging the status of `Run`. When the status is `requires_action`, your code is responsible for calling the function tools. For a code sample, visit [`sample_agents_functions.py`](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.0.2/sdk/ai/azure-ai-agents/samples/agents_tools/sample_agents_functions.py).
 
 Here is an example of `runs.create` and poll until the run is completed:
 
@@ -1006,7 +1006,7 @@ with agents_client.runs.stream(thread_id=thread.id, agent_id=agent.id, event_han
 
 <!-- END SNIPPET -->
 
-As you can see, this SDK parses the events and produces various event types similar to OpenAI agents. In your use case, you might not be interested in handling all these types and may decide to parse the events on your own. To achieve this, please refer to [override base event handler](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.0.1/sdk/ai/azure-ai-agents/samples/agents_streaming/sample_agents_stream_with_base_override_eventhandler.py).
+As you can see, this SDK parses the events and produces various event types similar to OpenAI agents. In your use case, you might not be interested in handling all these types and may decide to parse the events on your own. To achieve this, please refer to [override base event handler](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.0.2/sdk/ai/azure-ai-agents/samples/agents_streaming/sample_agents_stream_with_base_override_eventhandler.py).
 
 ```
 Note: Multiple streaming processes may be chained behind the scenes.
@@ -1236,7 +1236,7 @@ To report an issue with the client library, or request additional features, plea
 
 ## Next steps
 
-Have a look at the [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agents_1.0.1/sdk/ai/azure-ai-agents/samples) folder, containing fully runnable Python code for synchronous and asynchronous clients.
+Have a look at the [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agents_1.0.2/sdk/ai/azure-ai-agents/samples) folder, containing fully runnable Python code for synchronous and asynchronous clients.
 
 Explore the [AI Starter Template](https://aka.ms/azsdk/azure-ai-agents/python/ai-starter-template). This template creates an Azure AI Foundry hub, project and connected resources including Azure OpenAI Service, AI Search and more. It also deploys a simple chat application to Azure Container Apps.
 
@@ -1261,9 +1261,9 @@ additional questions or comments.
 [samples]: https://aka.ms/azsdk/azure-ai-projects/python/samples/
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [entra_id]: https://learn.microsoft.com/azure/ai-services/authentication?tabs=powershell#authenticate-with-microsoft-entra-id
-[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agents_1.0.1/sdk/identity/azure-identity#credentials
+[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agents_1.0.2/sdk/identity/azure-identity#credentials
 [azure_identity_pip]: https://pypi.org/project/azure-identity/
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agents_1.0.1/sdk/identity/azure-identity#defaultazurecredential
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agents_1.0.2/sdk/identity/azure-identity#defaultazurecredential
 [pip]: https://pypi.org/project/pip/
 [azure_sub]: https://azure.microsoft.com/free/
 [evaluators]: https://learn.microsoft.com/azure/ai-studio/how-to/develop/evaluate-sdk
