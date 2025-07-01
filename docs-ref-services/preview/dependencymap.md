@@ -1,7 +1,7 @@
 ---
 title: Azure Dependencymap SDK for Python
 description: Reference for Azure Dependencymap SDK for Python
-ms.date: 06/30/2025
+ms.date: 07/01/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: dependencymap

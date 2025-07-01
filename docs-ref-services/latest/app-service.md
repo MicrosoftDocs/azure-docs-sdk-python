@@ -1,7 +1,7 @@
 ---
 title: Azure App Service SDK for Python
 description: Reference for Azure App Service SDK for Python
-ms.date: 06/30/2025
+ms.date: 07/01/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: appservice
