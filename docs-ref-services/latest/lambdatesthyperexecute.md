@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: lambdatesthyperexecute
 ---
-# Azure Lambdatesthyperexecute SDK for Python - preview
-## Packages - preview
+# Azure Lambdatesthyperexecute SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](lambdatesthyperexecute-index.md)]

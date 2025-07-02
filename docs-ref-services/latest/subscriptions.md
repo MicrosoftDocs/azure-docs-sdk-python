@@ -1,7 +1,7 @@
 ---
 title: Azure Subscriptions SDK for Python
 description: Reference for Azure Subscriptions SDK for Python
-ms.date: 07/01/2025
+ms.date: 07/02/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: subscriptions
