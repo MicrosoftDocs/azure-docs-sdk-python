@@ -66,10 +66,14 @@ functions:
     types:
     - <xref:typing.Optional>[<xref:str>]
   - name: azure_ai_project
-    description: Logs evaluation results to AI Studio if set.
+    description: 'The Azure AI project, which can either be a string representing
+      the project endpoint
+
+      or an instance of AzureAIProject. It contains subscription id, resource group,
+      and project name.'
     defaultValue: None
     types:
-    - <xref:typing.Optional>[<xref:azure.ai.evaluation.AzureAIProject>]
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:azure.ai.evaluation.AzureAIProject>]]
   - name: fail_on_evaluator_errors
     description: 'Whether or not the evaluation should cancel early with an EvaluationException
 
@@ -83,6 +87,11 @@ functions:
     defaultValue: 'False'
     types:
     - <xref:bool>
+  - name: user_agent
+    description: A string to append to the default user-agent sent with evaluation
+      http requests
+    types:
+    - <xref:typing.Optional>[<xref:str>]
   return:
     description: Evaluation results.
     types:
@@ -93,31 +102,31 @@ functions:
     evaluation_samples_evaluate_fdp.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
     classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\":\
     \ \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\
-    \\dist_temp\\\\15\\\\azure_ai_evaluation-1.8.0\\\\samples\\\\evaluation_samples_evaluate_fdp.py\"\
+    \\dist_temp\\\\15\\\\azure_ai_evaluation-1.9.0\\\\samples\\\\evaluation_samples_evaluate_fdp.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   import os\n   from azure.ai.evaluation import evaluate, RelevanceEvaluator,\
     \ CoherenceEvaluator, IntentResolutionEvaluator\n\n   model_config = {\n     \
-    \  \"azure_endpoint\": os.environ.get(\"AZURE_OPENAI_ENDPOINT\"), # https://<account_name>.services.ai.azure.com\n\
+    \  \"azure_endpoint\": os.environ.get(\"AZURE_OPENAI_ENDPOINT\"),  # https://<account_name>.services.ai.azure.com\n\
     \       \"api_key\": os.environ.get(\"AZURE_OPENAI_KEY\"),\n       \"azure_deployment\"\
     : os.environ.get(\"AZURE_OPENAI_DEPLOYMENT\"),\n   }\n\n   print(os.getcwd())\n\
     \   path = \"./sdk/evaluation/azure-ai-evaluation/samples/data/evaluate_test_data.jsonl\"\
     \n\n   evaluate(\n       data=path,\n       evaluators={\n           \"coherence\"\
-    \          : CoherenceEvaluator(model_config=model_config),\n           \"relevance\"\
-    \          : RelevanceEvaluator(model_config=model_config),\n           \"intent_resolution\"\
-    \  : IntentResolutionEvaluator(model_config=model_config),\n       },\n      \
-    \ evaluator_config={\n           \"coherence\": {\n               \"column_mapping\"\
-    : {\n                   \"response\": \"${data.response}\",\n                \
-    \   \"query\": \"${data.query}\",\n               },\n           },\n        \
-    \   \"relevance\": {\n               \"column_mapping\": {\n                 \
-    \  \"response\": \"${data.response}\",\n                   \"context\": \"${data.context}\"\
+    : CoherenceEvaluator(model_config=model_config),\n           \"relevance\": RelevanceEvaluator(model_config=model_config),\n\
+    \           \"intent_resolution\": IntentResolutionEvaluator(model_config=model_config),\n\
+    \       },\n       evaluator_config={\n           \"coherence\": {\n         \
+    \      \"column_mapping\": {\n                   \"response\": \"${data.response}\"\
     ,\n                   \"query\": \"${data.query}\",\n               },\n     \
-    \      },\n       },\n   )\n\n\n   ````\n"
+    \      },\n           \"relevance\": {\n               \"column_mapping\": {\n\
+    \                   \"response\": \"${data.response}\",\n                   \"\
+    context\": \"${data.context}\",\n                   \"query\": \"${data.query}\"\
+    ,\n               },\n           },\n       },\n   )\n\n\n   ````\n"
 classes:
 - azure.ai.evaluation.AzureAIProject
 - azure.ai.evaluation.AzureOpenAIGrader
 - azure.ai.evaluation.AzureOpenAILabelGrader
 - azure.ai.evaluation.AzureOpenAIModelConfiguration
+- azure.ai.evaluation.AzureOpenAIScoreModelGrader
 - azure.ai.evaluation.AzureOpenAIStringCheckGrader
 - azure.ai.evaluation.AzureOpenAITextSimilarityGrader
 - azure.ai.evaluation.BleuScoreEvaluator
