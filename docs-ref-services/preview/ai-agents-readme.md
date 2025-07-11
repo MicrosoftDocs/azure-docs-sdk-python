@@ -1,13 +1,13 @@
 ---
 title: Azure AI Agents client library for Python
 keywords: Azure, python, SDK, API, azure-ai-agents, ai
-ms.date: 06/30/2025
+ms.date: 07/11/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: ai
 ---
 <!-- PIPY LONG DESCRIPTION BEGIN -->
-# Azure AI Agents client library for Python - version 1.1.0b3 
+# Azure AI Agents client library for Python - version 1.1.0b4 
 
 
 Use the AI Agents client library to:
@@ -46,7 +46,9 @@ To report an issue with the client library, or request additional features, plea
     - [Azure Function Call](#create-agent-with-azure-function-call)
     - [OpenAPI](#create-agent-with-openapi)
     - [Fabric data](#create-an-agent-with-fabric)
+    - [Connected agents](#create-an-agent-using-another-agents)
     - [Deep Research](#create-agent-with-deep-research)
+    - [MCP](#create-agent-with-mcp)
   - [Create thread](#create-thread) with
     - [Tool resource](#create-thread-with-tool-resource)
   - [Create message](#create-message) with:
@@ -60,7 +62,9 @@ To report an issue with the client library, or request additional features, plea
   - [Tracing](#tracing)
     - [Installation](#installation)
     - [How to enable tracing](#how-to-enable-tracing)
+    - [Enabling content recording](#enabling-content-recording)
     - [How to trace your own functions](#how-to-trace-your-own-functions)
+    - [Adding custom attributes to spans](#adding-custom-attributes-to-spans)
 - [Troubleshooting](#troubleshooting)
   - [Logging](#logging)
   - [Reporting issues](#reporting-issues)
@@ -91,7 +95,7 @@ pip install azure-ai-agents
 
 ### Create and authenticate the client
 
-To use this SDK, start by creating an `AIProjectClient`. For more information on `azure-ai-projects`, refer to its [README](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.1.0b3/sdk/ai/azure-ai-projects/README.md).
+To use this SDK, start by creating an `AIProjectClient`. For more information on `azure-ai-projects`, refer to its [README](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.1.0b4/sdk/ai/azure-ai-projects/README.md).
 
 Here is an example of creating a synchronous `AIProjectClient`:
 
@@ -382,7 +386,7 @@ with project_client:
 
 ### Create Agent with Deep Research
 
-To enable your Agent to do a detailed research of a topic, use the `DeepResearchTool` along with a connection to a Bing Grounding resource.
+To enable your Agent to do detailed research of a topic, use the `DeepResearchTool` along with a connection to a Bing Grounding resource.
 This scenarios requires you to specify two model deployments. One is the generic chat model that does arbitration, and is
 specified as usual when you call the `create_agent` method. The other is the Deep Research model, which is specified
 when you define the `DeepResearchTool`.
@@ -392,7 +396,7 @@ Here is an example:
 <!-- SNIPPET:sample_agents_deep_research.create_agent_with_deep_research_tool -->
 
 ```python
-conn_id = os.environ["AZURE_BING_CONNECTION_ID"]
+conn_id = project_client.connections.get(name=os.environ["BING_RESOURCE_NAME"]).id
 
 # Initialize a Deep Research tool with Bing Connection ID and Deep Research model deployment name
 deep_research_tool = DeepResearchTool(
@@ -421,6 +425,92 @@ with project_client:
 > **Limitation**: The Deep Research tool is currently recommended **only** in non-streaming scenarios.
 > Using it with streaming can work, but it may occasionally time-out and is therefore not yet recommended.
 
+### Create Agent with MCP
+
+To enable your Agent to connect to a MCP server, use the `McpTool` along with a server URI to a MCP server and a label for that server.
+Note that approval to send data to that server is required by default (but can be set to not required for each run).
+
+Here is an example:
+
+<!-- SNIPPET:sample_agents_mcp.create_agent_with_mcp_tool -->
+
+```python
+# Initialize agent MCP tool
+mcp_tool = McpTool(
+    server_label=mcp_server_label,
+    server_url=mcp_server_url,
+    allowed_tools=[],  # Optional: specify allowed tools
+)
+
+# You can also add or remove allowed tools dynamically
+search_api_code = "search_azure_rest_api_code"
+mcp_tool.allow_tool(search_api_code)
+print(f"Allowed tools: {mcp_tool.allowed_tools}")
+
+# Create agent with MCP tool and process agent run
+with project_client:
+    agents_client = project_client.agents
+
+    # Create a new agent.
+    # NOTE: To reuse existing agent, fetch it with get_agent(agent_id)
+    agent = agents_client.create_agent(
+        model=os.environ["MODEL_DEPLOYMENT_NAME"],
+        name="my-mcp-agent",
+        instructions="You are a helpful agent that can use MCP tools to assist users. Use the available MCP tools to answer questions and perform tasks.",
+        tools=mcp_tool.definitions,
+    )
+```
+
+<!-- END SNIPPET -->
+
+The tool approval flow looks like this:
+
+<!-- SNIPPET:sample_agents_mcp.handle_tool_approvals -->
+
+```python
+# Create and process agent run in thread with MCP tools
+mcp_tool.update_headers("SuperSecret", "123456")
+# mcp_tool.set_approval_mode("never")  # Uncomment to disable approval requirement
+run = agents_client.runs.create(thread_id=thread.id, agent_id=agent.id, tool_resources=mcp_tool.resources)
+print(f"Created run, ID: {run.id}")
+
+while run.status in ["queued", "in_progress", "requires_action"]:
+    time.sleep(1)
+    run = agents_client.runs.get(thread_id=thread.id, run_id=run.id)
+
+    if run.status == "requires_action" and isinstance(run.required_action, SubmitToolApprovalAction):
+        tool_calls = run.required_action.submit_tool_approval.tool_calls
+        if not tool_calls:
+            print("No tool calls provided - cancelling run")
+            agents_client.runs.cancel(thread_id=thread.id, run_id=run.id)
+            break
+
+        tool_approvals = []
+        for tool_call in tool_calls:
+            if isinstance(tool_call, RequiredMcpToolCall):
+                try:
+                    print(f"Approving tool call: {tool_call}")
+                    tool_approvals.append(
+                        ToolApproval(
+                            tool_call_id=tool_call.id,
+                            approve=True,
+                            headers=mcp_tool.headers,
+                        )
+                    )
+                except Exception as e:
+                    print(f"Error approving tool_call {tool_call.id}: {e}")
+
+        print(f"tool_approvals: {tool_approvals}")
+        if tool_approvals:
+            agents_client.runs.submit_tool_outputs(
+                thread_id=thread.id, run_id=run.id, tool_approvals=tool_approvals
+            )
+
+    print(f"Current run status: {run.status}")
+```
+
+<!-- END SNIPPET -->
+
 ### Create Agent with Azure AI Search
 
 Azure AI Search is an enterprise search system for high-performance applications. It integrates with Azure OpenAI Service and Azure Machine Learning, offering advanced search technologies like vector search and full-text search. Ideal for knowledge base insights, information discovery, and automation. Creating an Agent with Azure AI Search requires an existing Azure AI Search Index. For more information and setup guides, see [Azure AI Search Tool Guide](https://learn.microsoft.com/azure/ai-services/agents/how-to/tools/azure-ai-search?tabs=azurecli%2Cpython&pivots=overview-azure-ai-search).
@@ -430,33 +520,29 @@ Here is an example to integrate Azure AI Search:
 <!-- SNIPPET:sample_agents_azure_ai_search.create_agent_with_azure_ai_search_tool -->
 
 ```python
-with AIProjectClient(
-    endpoint=os.environ["PROJECT_ENDPOINT"],
-    credential=DefaultAzureCredential(),
-) as project_client:
-    conn_id = project_client.connections.get_default(ConnectionType.AZURE_AI_SEARCH).id
+conn_id = project_client.connections.get_default(ConnectionType.AZURE_AI_SEARCH).id
 
-    print(conn_id)
+print(conn_id)
 
-    # Initialize agent AI search tool and add the search index connection id
-    ai_search = AzureAISearchTool(
-        index_connection_id=conn_id,
-        index_name="sample_index",
-        query_type=AzureAISearchQueryType.SIMPLE,
-        top_k=3,
-        filter="",
-    )
+# Initialize agent AI search tool and add the search index connection id
+ai_search = AzureAISearchTool(
+    index_connection_id=conn_id,
+    index_name="sample_index",
+    query_type=AzureAISearchQueryType.SIMPLE,
+    top_k=3,
+    filter="",
+)
 
-    # Create agent with AI search tool and process agent run
-    agents_client = project_client.agents
+# Create agent with AI search tool and process agent run
+agents_client = project_client.agents
 
-    agent = agents_client.create_agent(
-        model=os.environ["MODEL_DEPLOYMENT_NAME"],
-        name="my-agent",
-        instructions="You are a helpful agent",
-        tools=ai_search.definitions,
-        tool_resources=ai_search.resources,
-    )
+agent = agents_client.create_agent(
+    model=os.environ["MODEL_DEPLOYMENT_NAME"],
+    name="my-agent",
+    instructions="You are a helpful agent",
+    tools=ai_search.definitions,
+    tool_resources=ai_search.resources,
+)
 ```
 
 <!-- END SNIPPET -->
@@ -493,9 +579,9 @@ for message in messages:
 
 You can enhance your Agents by defining callback functions as function tools. These can be provided to `create_agent` via either the `toolset` parameter or the combination of `tools` and `tool_resources`. Here are the distinctions:
 
-For more details about requirements and specification of functions, refer to [Function Tool Specifications](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.1.0b3/sdk/ai/azure-ai-agents/FunctionTool.md)
+For more details about requirements and specification of functions, refer to [Function Tool Specifications](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.1.0b4/sdk/ai/azure-ai-agents/FunctionTool.md)
 
-Here is an example to use [user functions](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.1.0b3/sdk/ai/azure-ai-agents/samples/utils/user_functions.py) in `toolset`:
+Here is an example to use [user functions](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.1.0b4/sdk/ai/azure-ai-agents/samples/utils/user_functions.py) in `toolset`:
 <!-- SNIPPET:sample_agents_stream_eventhandler_with_toolset.create_agent_with_function_tool -->
 
 ```python
@@ -514,7 +600,7 @@ agent = agents_client.create_agent(
 
 <!-- END SNIPPET -->
 
-For asynchronous functions, you must import `AgentsClient` from `azure.ai.agents.aio` and use `AsyncFunctionTool`.   Here is an example using [asynchronous user functions](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.1.0b3/sdk/ai/azure-ai-agents/samples/agents_async/sample_agents_functions_async.py):
+For asynchronous functions, you must import `AgentsClient` from `azure.ai.agents.aio` and use `AsyncFunctionTool`.   Here is an example using [asynchronous user functions](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.1.0b4/sdk/ai/azure-ai-agents/samples/agents_async/sample_agents_functions_async.py):
 
 ```python
 from azure.ai.agents.aio import AgentsClient
@@ -539,8 +625,12 @@ agent = await agents_client.create_agent(
 
 <!-- END SNIPPET -->
 
-Notice that if `enable_auto_function_calls` is called, the SDK will invoke the functions automatically during `create_and_process` or streaming.  If you prefer to execute them manually, refer to [`sample_agents_stream_eventhandler_with_functions.py`](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.1.0b3/sdk/ai/azure-ai-agents/samples/agents_streaming/sample_agents_stream_eventhandler_with_functions.py) or
-[`sample_agents_functions.py`](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.1.0b3/sdk/ai/azure-ai-agents/samples/agents_tools/sample_agents_functions.py)
+When `enable_auto_function_calls` is called, the SDK will automatically invoke functions during both `create_and_process` and streaming workflows. This simplifies agent logic by handling function execution internally.  Furthermore, although function tools and definitions are preserved in Agent service, their function implements are not.  Therefore, if your code queries earlier created agents through `update_agents` or `get_agents` function, you MUST also provide the function implementations through `enable_auto_function_calls` to complete auto function callings.
+
+- For examples of automatic function calls in action, refer to [`sample_agents_auto_function_call.py`](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.1.0b4/sdk/ai/azure-ai-agents/samples/agents_tools/sample_agents_auto_function_call.py) or [`sample_agents_auto_function_call_async.py`](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.1.0b4/sdk/ai/azure-ai-agents/samples/agents_async/sample_agents_auto_function_call_async.py).
+- If you prefer to manage function execution manually, refer to [`sample_agents_stream_eventhandler_with_functions.py`](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.1.0b4/sdk/ai/azure-ai-agents/samples/agents_streaming/sample_agents_stream_eventhandler_with_functions.py) or
+[`sample_agents_functions.py`](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.1.0b4/sdk/ai/azure-ai-agents/samples/agents_tools/sample_agents_functions.py).
+
 
 ### Create Agent With Azure Function Call
 
@@ -642,6 +732,7 @@ def foo(arguments: func.QueueMessage, outputQueue: func.Out[str]) -> None:
 To deploy your function to Azure properly, follow Microsoft's official documentation step by step:
 
 [Azure Functions Python Developer Guide](https://learn.microsoft.com/azure/azure-functions/create-first-function-cli-python?tabs=windows%2Cbash%2Cazure-cli%2Cbrowser)
+**Note:** The Azure Function may be only used in standard agent setup. Please follow the [instruction](https://github.com/azure-ai-foundry/foundry-samples/tree/main/samples/microsoft/infrastructure-setup/41-standard-agent-setup) to deploy an agent, capable of calling Azure Functions.
 
 **Summary of required steps:**
 
@@ -703,13 +794,6 @@ Below is an example of how to create an Azure Logic App utility tool and registe
 <!-- SNIPPET:sample_agents_logic_apps.register_logic_app -->
 
 ```python
-
-# Create the agents client
-project_client = AIProjectClient(
-    endpoint=os.environ["PROJECT_ENDPOINT"],
-    credential=DefaultAzureCredential(),
-)
-
 # Extract subscription and resource group from the project scope
 subscription_id = os.environ["SUBSCRIPTION_ID"]
 resource_group = os.environ["resource_group_name"]
@@ -806,6 +890,180 @@ with project_client:
         instructions="You are a helpful agent",
         tools=fabric.definitions,
     )
+```
+
+<!-- END SNIPPET -->
+
+### Create an Agent using another agents
+
+We can use `ConnectedAgentTool` to call specialized agents. In the example below we will create two agents, one is returning the Microsoft stock price and another returns weather. Note that the `ConnectedAgentTool` does not support local functions, we will use Azure function to return weather. The code of that function is given below; please see [Azure Function Call](#create-agent-with-azure-function-call) section for the instructions on how to deploy Azure Function.
+
+```python
+import azure.functions as func
+import datetime
+import json
+import logging
+
+app = func.FunctionApp()
+
+@app.function_name(name="GetWeather")
+@app.queue_trigger(
+    arg_name="arguments",
+    queue_name="weather-input",
+    connection="AzureWebJobsStorage")
+@app.queue_output(
+    arg_name="outputQueue",
+    queue_name="weather-output",
+    connection="AzureWebJobsStorage")
+def foo(arguments: func.QueueMessage, outputQueue: func.Out[str]) -> None:
+    """
+    The function, answering question about weather.
+
+    :param arguments: The arguments, containing json serialized request.
+    :param outputQueue: The output queue to write messages to.
+    """
+
+    parsed_args = json.loads(arguments.get_body().decode('utf-8'))
+    location = parsed_args.get("Location")
+    try:
+        response = {
+            "Value": "60 degrees and cloudy" if location == "Seattle" else "10 degrees and sunny",
+            "CorrelationId": parsed_args['CorrelationId']
+        }
+        outputQueue.set(json.dumps(response))
+        logging.info(f'The function returns the following message: {json.dumps(response)}')
+    except Exception as e:
+        logging.error(f"Error processing message: {e}")
+        raise
+```
+We will define two agents that has descriptions, explaining when they need to be called.
+
+<!-- SNIPPET:sample_agents_multiple_connected_agents.create_two_toy_agents -->
+
+```python
+connected_agent_name = "stock_price_bot"
+weather_agent_name = "weather_bot"
+
+stock_price_agent = agents_client.create_agent(
+    model=os.environ["MODEL_DEPLOYMENT_NAME"],
+    name=connected_agent_name,
+    instructions=(
+        "Your job is to get the stock price of a company. If asked for the Microsoft stock price, always return $350."
+    ),
+)
+
+azure_function_tool = AzureFunctionTool(
+    name="GetWeather",
+    description="Get answers from the weather bot.",
+    parameters={
+        "type": "object",
+        "properties": {
+            "Location": {"type": "string", "description": "The location to get the weather for."},
+        },
+    },
+    input_queue=AzureFunctionStorageQueue(
+        queue_name="weather-input",
+        storage_service_endpoint=storage_service_endpoint,
+    ),
+    output_queue=AzureFunctionStorageQueue(
+        queue_name="weather-output",
+        storage_service_endpoint=storage_service_endpoint,
+    ),
+)
+
+weather_agent = agents_client.create_agent(
+    model=os.environ["MODEL_DEPLOYMENT_NAME"],
+    name=weather_agent_name,
+    instructions=(
+        "Your job is to get the weather for a given location. "
+        "Use the provided function to get the weather in the given location."
+    ),
+    tools=azure_function_tool.definitions,
+)
+
+# Initialize Connected Agent tools with the agent id, name, and description
+connected_agent = ConnectedAgentTool(
+    id=stock_price_agent.id, name=connected_agent_name, description="Gets the stock price of a company"
+)
+connected_weather_agent = ConnectedAgentTool(
+    id=weather_agent.id, name=weather_agent_name, description="Gets the weather for a given location"
+)
+```
+
+<!-- END SNIPPET -->
+
+Add the `ConnectedAgentTool`-s to main agent.
+
+<!-- SNIPPET:sample_agents_multiple_connected_agents.create_agent_with_connected_agent_tool -->
+
+```python
+# Create agent with the Connected Agent tool and process assistant run
+agent = agents_client.create_agent(
+    model=os.environ["MODEL_DEPLOYMENT_NAME"],
+    name="my-assistant",
+    instructions="You are a helpful assistant, and use the connected agents to get stock prices and weather.",
+    tools=[
+        connected_agent.definitions[0],
+        connected_weather_agent.definitions[0],
+    ],
+)
+```
+
+<!-- END SNIPPET -->
+
+Create thread and run.
+
+<!-- SNIPPET:sample_agents_multiple_connected_agents.run_agent_with_connected_agent_tool -->
+
+```python
+# Create thread for communication
+thread = agents_client.threads.create()
+print(f"Created thread, ID: {thread.id}")
+
+# Create message to thread
+message = agents_client.messages.create(
+    thread_id=thread.id,
+    role=MessageRole.USER,
+    content="What is the stock price of Microsoft and the weather in Seattle?",
+)
+print(f"Created message, ID: {message.id}")
+
+# Create and process Agent run in thread with tools
+run = agents_client.runs.create_and_process(thread_id=thread.id, agent_id=agent.id)
+print(f"Run finished with status: {run.status}")
+```
+
+<!-- END SNIPPET -->
+
+To understand what calls were made by the main agent to the connected ones, we will list run steps.
+
+<!-- SNIPPET:sample_agents_multiple_connected_agents.list_tool_calls -->
+
+```python
+for run_step in agents_client.run_steps.list(thread_id=thread.id, run_id=run.id, order=ListSortOrder.ASCENDING):
+    if isinstance(run_step.step_details, RunStepToolCallDetails):
+        for tool_call in run_step.step_details.tool_calls:
+            print(
+                f"\tAgent: {tool_call._data['connected_agent']['name']} "
+                f"query: {tool_call._data['connected_agent']['arguments']} ",
+                f"output: {tool_call._data['connected_agent']['output']}",
+            )
+```
+
+<!-- END SNIPPET -->
+
+The messages contain references, marked by unicode opening and closing brackets, which cannot be printed by python `print` command. To fix this issue we will replace them by ASCII brackets.
+
+<!-- SNIPPET:sample_agents_multiple_connected_agents.list_messages -->
+
+```python
+# Fetch and log all messages
+messages = agents_client.messages.list(thread_id=thread.id, order=ListSortOrder.ASCENDING)
+for msg in messages:
+    if msg.text_messages:
+        last_text = msg.text_messages[-1]
+        text = last_text.text.value.replace("\u3010", "[").replace("\u3011", "]")
+        print(f"{msg.role}: {text}")
 ```
 
 <!-- END SNIPPET -->
@@ -1030,7 +1288,7 @@ message = agents_client.messages.create(
 
 To process your message, you can use `runs.create`, `runs.create_and_process`, or `runs.stream`.
 
-`runs.create` requests the Agent to process the message without polling for the result. If you are using `function tools`, your code is responsible for polling for the result and acknowledging the status of `Run`. When the status is `requires_action`, your code is responsible for calling the function tools. For a code sample, visit [`sample_agents_functions.py`](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.1.0b3/sdk/ai/azure-ai-agents/samples/agents_tools/sample_agents_functions.py).
+`runs.create` requests the Agent to process the message without polling for the result. If you are using `function tools`, your code is responsible for polling for the result and acknowledging the status of `Run`. When the status is `requires_action`, your code is responsible for calling the function tools. For a code sample, visit [`sample_agents_functions.py`](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.1.0b4/sdk/ai/azure-ai-agents/samples/agents_tools/sample_agents_functions.py).
 
 Here is an example of `runs.create` and poll until the run is completed:
 
@@ -1070,7 +1328,7 @@ run = agents_client.runs.create_and_process(thread_id=thread.id, agent_id=agent.
 
 <!-- END SNIPPET -->
 
-With streaming, polling need not be considered. If `function tools` were added to the agents, you should decide to have the function tools called manually or automatically.  Please visit [`manual function call sample`](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.1.0b3/sdk/ai/azure-ai-agents/samples/agents_streaming/sample_agents_stream_eventhandler_with_functions.py) or [`automatic function call sample`](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.1.0b3/sdk/ai/azure-ai-agents/samples/agents_streaming/sample_agents_stream_iteration_with_toolset.py).    
+With streaming, polling need not be considered. If `function tools` were added to the agents, you should decide to have the function tools called manually or automatically.  Please visit [`manual function call sample`](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.1.0b4/sdk/ai/azure-ai-agents/samples/agents_streaming/sample_agents_stream_eventhandler_with_functions.py) or [`automatic function call sample`](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.1.0b4/sdk/ai/azure-ai-agents/samples/agents_streaming/sample_agents_stream_iteration_with_toolset.py).    
 
 Here is a basic example of streaming:
 
@@ -1152,7 +1410,7 @@ with agents_client.runs.stream(thread_id=thread.id, agent_id=agent.id, event_han
 
 <!-- END SNIPPET -->
 
-As you can see, this SDK parses the events and produces various event types similar to OpenAI agents. In your use case, you might not be interested in handling all these types and may decide to parse the events on your own. To achieve this, please refer to [override base event handler](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.1.0b3/sdk/ai/azure-ai-agents/samples/agents_streaming/sample_agents_stream_with_base_override_eventhandler.py).
+As you can see, this SDK parses the events and produces various event types similar to OpenAI agents. In your use case, you might not be interested in handling all these types and may decide to parse the events on your own. To achieve this, please refer to [override base event handler](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agents_1.1.0b4/sdk/ai/azure-ai-agents/samples/agents_streaming/sample_agents_stream_with_base_override_eventhandler.py).
 
 ```
 Note: Multiple streaming processes may be chained behind the scenes.
@@ -1317,6 +1575,14 @@ from azure.ai.agents.telemetry import enable_telemetry
 
 enable_telemetry(destination=sys.stdout)
 ```
+
+### Enabling content recording
+Content recording controles whether message contents and tool call related details, such as parameters and return values, are captured with the traces.
+To enable content recording set the `AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED` environment variable value to `true`. If the environment variable is not set, then the value will default to `false`.
+
+
+**Important:** The `AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED` environment variable only controls content recording for built-in agent traces. When you use the `@trace_function` decorator on your own functions, all parameters and return values are always traced.
+
 ### How to trace your own functions
 
 The decorator `trace_function` is provided for tracing your own function calls using OpenTelemetry. By default the function name is used as the name for the span. Alternatively you can provide the name for the span as a parameter to the decorator.
@@ -1331,6 +1597,44 @@ This decorator handles various data types for function parameters and return val
 Object types are omitted, and the corresponding parameter is not traced.
 
 The parameters are recorded in attributes `code.function.parameter.<parameter_name>` and the return value is recorder in attribute `code.function.return.value`
+
+### Adding custom attributes to spans
+
+Define your own span processor which adds your custom attributes:
+
+<!-- SNIPPET:sample_agents_basics_with_console_tracing_custom_attributes.custom_attribute_span_processor -->
+
+```python
+class CustomAttributeSpanProcessor(SpanProcessor):
+    def __init__(self):
+        pass
+
+    def on_start(self, span: Span, parent_context=None):
+        # Add this attribute to all spans
+        span.set_attribute("trace_sample.sessionid", "123")
+
+        # Add another attribute only to create_message spans
+        if span.name == "create_message":
+            span.set_attribute("trace_sample.message.context", "abc")
+
+    def on_end(self, span: ReadableSpan):
+        # Clean-up logic can be added here if necessary
+        pass
+```
+
+<!-- END SNIPPET -->
+
+Add the span processor to trace provider:
+
+<!-- SNIPPET:sample_agents_basics_with_console_tracing_custom_attributes.add_custom_span_processor_to_tracer_provider -->
+
+```python
+provider = cast(TracerProvider, trace.get_tracer_provider())
+provider.add_span_processor(CustomAttributeSpanProcessor())
+```
+
+<!-- END SNIPPET -->
+
 
 ## Troubleshooting
 
@@ -1383,7 +1687,7 @@ To report an issue with the client library, or request additional features, plea
 
 ## Next steps
 
-Have a look at the [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agents_1.1.0b3/sdk/ai/azure-ai-agents/samples) folder, containing fully runnable Python code for synchronous and asynchronous clients.
+Have a look at the [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agents_1.1.0b4/sdk/ai/azure-ai-agents/samples) folder, containing fully runnable Python code for synchronous and asynchronous clients.
 
 Explore the [AI Starter Template](https://aka.ms/azsdk/azure-ai-agents/python/ai-starter-template). This template creates an Azure AI Foundry hub, project and connected resources including Azure OpenAI Service, AI Search and more. It also deploys a simple chat application to Azure Container Apps.
 
@@ -1408,9 +1712,9 @@ additional questions or comments.
 [samples]: https://aka.ms/azsdk/azure-ai-projects/python/samples/
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [entra_id]: https://learn.microsoft.com/azure/ai-services/authentication?tabs=powershell#authenticate-with-microsoft-entra-id
-[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agents_1.1.0b3/sdk/identity/azure-identity#credentials
+[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agents_1.1.0b4/sdk/identity/azure-identity#credentials
 [azure_identity_pip]: https://pypi.org/project/azure-identity/
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agents_1.1.0b3/sdk/identity/azure-identity#defaultazurecredential
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agents_1.1.0b4/sdk/identity/azure-identity#defaultazurecredential
 [pip]: https://pypi.org/project/pip/
 [azure_sub]: https://azure.microsoft.com/free/
 [evaluators]: https://learn.microsoft.com/azure/ai-studio/how-to/develop/evaluate-sdk
