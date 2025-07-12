@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-computefleet, computefleet
-ms.date: 07/23/2024
+ms.date: 07/12/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: computefleet
