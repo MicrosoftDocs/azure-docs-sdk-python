@@ -1,12 +1,12 @@
 ---
 title: Azure Cosmos DB SQL API client library for Python
 keywords: Azure, python, SDK, API, azure-cosmos, cosmos
-ms.date: 06/19/2025
+ms.date: 07/14/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: cosmos
 ---
-# Azure Cosmos DB SQL API client library for Python - version 4.13.0b2 
+# Azure Cosmos DB SQL API client library for Python - version 4.14.0b1 
 
 
 ## _Disclaimer_
@@ -34,7 +34,7 @@ Use the Azure Cosmos DB SQL API SDK for Python to manage databases and the JSON 
 
 ### Important update on Python 2.x Support
 
-New releases of this SDK won't support Python 2.x starting January 1st, 2022. Please check the [CHANGELOG](https://github.com/Azure/azure-sdk-for-python/blob/azure-cosmos_4.13.0b2/sdk/cosmos/azure-cosmos/CHANGELOG.md) for more information.
+New releases of this SDK won't support Python 2.x starting January 1st, 2022. Please check the [CHANGELOG](https://github.com/Azure/azure-sdk-for-python/blob/azure-cosmos_4.14.0b1/sdk/cosmos/azure-cosmos/CHANGELOG.md) for more information.
 
 ### Prerequisites
 
@@ -677,7 +677,38 @@ as well as containing the list of failed responses for the failed request.
 
 For more information on Transactional Batch, see [Azure Cosmos DB Transactional Batch][cosmos_transactional_batch].
 
-### Public Preview - Vector Embeddings and Vector Indexes
+### Native Retryable Writes
+We have added native retryable writes to the SDK, a feature that can be used by customers who don't mind the
+non-idempotency of these retries and would instead like to ensure that the given operation executed in case of timeouts
+or connectivity issues (status codes 408, 5xx).
+
+This feature can be enabled either at the client level, to retry all write operations under these conditions, 
+or at the per-request level to enable the retries for an individual request.
+
+If enabled at the client level, the one exception to the rule would be patch requests, since the operations can change
+the nature of the overall request - replace, set, and copy for example would be idempotent while add, move or remove would
+not be idempotent unless combined with patch precondition checks. So, for patch we allow opting-in into automatic
+retries only on the request options level.
+
+The snippet below shows how to enable this feature at the client and request level:
+```python
+cosmos_client = CosmosClient(
+    url=URL,
+    credential=KEY,
+    retry_write=True,  # enables native retryable writes at the client level
+)
+
+database = cosmos_client.get_database_client(DATABASE_NAME)
+container = database.get_container_client(CONTAINER_NAME)
+
+container.create_item(
+    item_body,
+    retry_write=True  # enables native retryable writes at the request level
+)
+```
+
+
+### Vector Embeddings and Vector Indexes
 We have added new capabilities to utilize vector embeddings and vector indexing for users to leverage vector
 search utilizing our Cosmos SDK. These two container-level configurations have to be turned on at the account-level
 before you can use them.
@@ -764,7 +795,7 @@ database.create_container(id=container_id, partition_key=PartitionKey(path="/id"
 ```
 ***Note: vector embeddings and vector indexes CANNOT be edited by container replace operations. They are only available directly through creation.***
 
-### Public Preview - Vector Search
+### Vector Search
 
 With the addition of the vector indexing and vector embedding capabilities, the SDK can now perform order by vector search queries.
 These queries specify the VectorDistance to use as a metric within the query text. These must always use a TOP or LIMIT clause within the query though,
@@ -1034,7 +1065,7 @@ to use this functionality are the following:
 pip install azure-core-tracing-opentelemetry
 pip install opentelemetry-sdk
 ```
-For more information on this, we recommend taking a look at this [document](https://github.com/Azure/azure-sdk-for-python/blob/azure-cosmos_4.13.0b2/sdk/core/azure-core-tracing-opentelemetry/README.md) 
+For more information on this, we recommend taking a look at this [document](https://github.com/Azure/azure-sdk-for-python/blob/azure-cosmos_4.14.0b1/sdk/core/azure-core-tracing-opentelemetry/README.md) 
 from Azure Core describing how to set it up. We have also added a [sample file][telemetry_sample] to show how it can
 be used with our SDK. This works the same way regardless of the Cosmos client you are using.
 
@@ -1052,11 +1083,11 @@ For more extensive documentation on the Cosmos DB service, see the [Azure Cosmos
 [cosmos_container]: https://learn.microsoft.com/azure/cosmos-db/databases-containers-items#azure-cosmos-containers
 [cosmos_database]: https://learn.microsoft.com/azure/cosmos-db/databases-containers-items#azure-cosmos-databases
 [cosmos_docs]: https://learn.microsoft.com/azure/cosmos-db/
-[cosmos_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.13.0b2/sdk/cosmos/azure-cosmos/samples
+[cosmos_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.14.0b1/sdk/cosmos/azure-cosmos/samples
 [cosmos_pypi]: https://pypi.org/project/azure-cosmos/
 [cosmos_http_status_codes]: https://learn.microsoft.com/rest/api/cosmos-db/http-status-codes-for-cosmosdb
 [cosmos_item]: https://learn.microsoft.com/azure/cosmos-db/databases-containers-items#azure-cosmos-items
-[cosmos_models]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.13.0b2/sdk/cosmos/azure-cosmos/azure/cosmos/_models.py
+[cosmos_models]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.14.0b1/sdk/cosmos/azure-cosmos/azure/cosmos/_models.py
 [cosmos_request_units]: https://learn.microsoft.com/azure/cosmos-db/request-units
 [cosmos_resources]: https://learn.microsoft.com/azure/cosmos-db/databases-containers-items
 [cosmos_sql_queries]: https://learn.microsoft.com/azure/cosmos-db/how-to-sql-query
@@ -1073,26 +1104,26 @@ For more extensive documentation on the Cosmos DB service, see the [Azure Cosmos
 [ref_cosmosclient]: https://aka.ms/azsdk-python-cosmos-ref-cosmos-client
 [ref_database]: https://aka.ms/azsdk-python-cosmos-ref-database
 [ref_httpfailure]: https://aka.ms/azsdk-python-cosmos-ref-http-failure
-[sample_database_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.13.0b2/sdk/cosmos/azure-cosmos/samples/database_management.py
-[sample_document_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.13.0b2/sdk/cosmos/azure-cosmos/samples/document_management.py
-[sample_document_mgmt_async]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.13.0b2/sdk/cosmos/azure-cosmos/samples/document_management_async.py
-[sample_examples_misc]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.13.0b2/sdk/cosmos/azure-cosmos/samples/examples.py
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.13.0b2/sdk/cosmos/azure-cosmos
+[sample_database_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.14.0b1/sdk/cosmos/azure-cosmos/samples/database_management.py
+[sample_document_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.14.0b1/sdk/cosmos/azure-cosmos/samples/document_management.py
+[sample_document_mgmt_async]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.14.0b1/sdk/cosmos/azure-cosmos/samples/document_management_async.py
+[sample_examples_misc]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.14.0b1/sdk/cosmos/azure-cosmos/samples/examples.py
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.14.0b1/sdk/cosmos/azure-cosmos
 [venv]: https://docs.python.org/3/library/venv.html
 [virtualenv]: https://virtualenv.pypa.io
-[telemetry_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.13.0b2/sdk/cosmos/azure-cosmos/samples/tracing_open_telemetry.py
-[timeouts_document]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.13.0b2/sdk/cosmos/azure-cosmos/docs/TimeoutAndRetriesConfig.md
+[telemetry_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.14.0b1/sdk/cosmos/azure-cosmos/samples/tracing_open_telemetry.py
+[timeouts_document]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.14.0b1/sdk/cosmos/azure-cosmos/docs/TimeoutAndRetriesConfig.md
 [cosmos_transactional_batch]: https://learn.microsoft.com/azure/cosmos-db/nosql/transactional-batch
-[cosmos_concurrency_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.13.0b2/sdk/cosmos/azure-cosmos/samples/concurrency_sample.py
-[cosmos_index_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.13.0b2/sdk/cosmos/azure-cosmos/samples/index_management.py
-[cosmos_index_sample_async]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.13.0b2/sdk/cosmos/azure-cosmos/samples/index_management_async.py
+[cosmos_concurrency_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.14.0b1/sdk/cosmos/azure-cosmos/samples/concurrency_sample.py
+[cosmos_index_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.14.0b1/sdk/cosmos/azure-cosmos/samples/index_management.py
+[cosmos_index_sample_async]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.14.0b1/sdk/cosmos/azure-cosmos/samples/index_management_async.py
 [RRF]: https://learn.microsoft.com/azure/search/hybrid-search-ranking
 [BM25]: https://learn.microsoft.com/azure/search/index-similarity-and-scoring
 [cosmos_fts]: https://aka.ms/cosmosfulltextsearch
 [cosmos_index_policy_change]: https://learn.microsoft.com/azure/cosmos-db/index-policy#modifying-the-indexing-policy
-[cosmos_throughput_bucket_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.13.0b2/sdk/cosmos/azure-cosmos/samples/throughput_bucket_management.py
-[cosmos_throughput_bucket_sample_async]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.13.0b2/sdk/cosmos/azure-cosmos/samples/throughput_bucket_management_async.py
-[cosmos_diagnostics_filter_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-cosmos_4.13.0b2/sdk/cosmos/azure-cosmos/samples/diagnostics_filter_sample.py
+[cosmos_throughput_bucket_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.14.0b1/sdk/cosmos/azure-cosmos/samples/throughput_bucket_management.py
+[cosmos_throughput_bucket_sample_async]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.14.0b1/sdk/cosmos/azure-cosmos/samples/throughput_bucket_management_async.py
+[cosmos_diagnostics_filter_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-cosmos_4.14.0b1/sdk/cosmos/azure-cosmos/samples/diagnostics_filter_sample.py
 [cosmos_throughput_bucket_configuration]: https://learn.microsoft.com/azure/cosmos-db/nosql/throughput-buckets#configuring-throughput-buckets
 
 ## Contributing
