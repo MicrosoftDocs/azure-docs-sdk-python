@@ -54,8 +54,8 @@ methods:
     | None = None, post_trigger_include: str | None = None, indexing_directive: int
     | None = None, enable_automatic_id_generation: bool = False, session_token: str
     | None = None, initial_headers: Dict[str, str] | None = None, priority: Literal[''High'',
-    ''Low''] | None = None, no_response: bool | None = None, throughput_bucket: int
-    | None = None, **kwargs: Any) -> CosmosDict'
+    ''Low''] | None = None, no_response: bool | None = None, retry_write: bool | None
+    = None, throughput_bucket: int | None = None, **kwargs: Any) -> CosmosDict'
   parameters:
   - name: body
     description: A dict-like object representing the item to create.
@@ -131,6 +131,17 @@ methods:
       will be determined from
 
       client-level options.'
+    defaultValue: None
+    types:
+    - <xref:bool>
+  - name: retry_write
+    description: 'Indicates whether the SDK should automatically retry this write
+      operation, even if
+
+      the operation is not guaranteed to be idempotent. This should only be enabled
+      if the application can
+
+      tolerate such risks or has logic to safely detect and handle duplicate operations.'
     defaultValue: None
     types:
     - <xref:bool>
@@ -258,8 +269,8 @@ methods:
     *, pre_trigger_include: str | None = None, post_trigger_include: str | None =
     None, session_token: str | None = None, initial_headers: Dict[str, str] | None
     = None, etag: str | None = None, match_condition: MatchConditions | None = None,
-    priority: Literal[''High'', ''Low''] | None = None, throughput_bucket: int | None
-    = None, **kwargs: Any) -> None'
+    priority: Literal[''High'', ''Low''] | None = None, retry_write: bool | None =
+    None, throughput_bucket: int | None = None, **kwargs: Any) -> None'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to be deleted.
@@ -329,6 +340,17 @@ methods:
       This excluded_location will override existing excluded_locations in client level.'
     types:
     - <xref:list>[<xref:str>]
+  - name: retry_write
+    description: 'Indicates whether the SDK should automatically retry this write
+      operation, even if
+
+      the operation is not guaranteed to be idempotent. This should only be enabled
+      if the application can
+
+      tolerate such risks or has logic to safely detect and handle duplicate operations.'
+    defaultValue: None
+    types:
+    - <xref:bool>
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
@@ -616,7 +638,8 @@ methods:
     pre_trigger_include: str | None = None, post_trigger_include: str | None = None,
     session_token: str | None = None, etag: str | None = None, match_condition: MatchConditions
     | None = None, priority: Literal[''High'', ''Low''] | None = None, no_response:
-    bool | None = None, throughput_bucket: int | None = None, **kwargs: Any) -> CosmosDict'
+    bool | None = None, retry_write: bool | None = None, throughput_bucket: int |
+    None = None, **kwargs: Any) -> CosmosDict'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to be patched.
@@ -692,6 +715,17 @@ methods:
       will be determined from
 
       client-level options.'
+    defaultValue: None
+    types:
+    - <xref:bool>
+  - name: retry_write
+    description: 'Indicates whether the SDK should automatically retry this write
+      operation, even if
+
+      the operation is not guaranteed to be idempotent. This should only be enabled
+      if the application can
+
+      tolerate such risks or has logic to safely detect and handle duplicate operations.'
     defaultValue: None
     types:
     - <xref:bool>
@@ -913,7 +947,7 @@ methods:
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    37\\\\azure_cosmos-4.13.0b2\\\\samples\\\\examples_async.py\", \"xml:space\":\
+    37\\\\azure_cosmos-4.14.0b1\\\\samples\\\\examples_async.py\", \"xml:space\":\
     \ \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           import\
     \ json\n\n           async for queried_item in container.query_items(\n      \
@@ -923,7 +957,7 @@ methods:
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    37\\\\azure_cosmos-4.13.0b2\\\\samples\\\\examples_async.py\", \"xml:space\":\
+    37\\\\azure_cosmos-4.14.0b1\\\\samples\\\\examples_async.py\", \"xml:space\":\
     \ \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           discontinued_items\
     \ = container.query_items(\n               query='SELECT * FROM products p WHERE\
@@ -1257,7 +1291,7 @@ methods:
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    37\\\\azure_cosmos-4.13.0b2\\\\samples\\\\examples_async.py\", \"xml:space\":\
+    37\\\\azure_cosmos-4.14.0b1\\\\samples\\\\examples_async.py\", \"xml:space\":\
     \ \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           item\
     \ = await container.read_item(\"item2\", partition_key=\"Widget\")\n         \
@@ -1274,7 +1308,8 @@ methods:
     None, session_token: str | None = None, initial_headers: Dict[str, str] | None
     = None, etag: str | None = None, match_condition: MatchConditions | None = None,
     priority: Literal[''High'', ''Low''] | None = None, no_response: bool | None =
-    None, throughput_bucket: int | None = None, **kwargs: Any) -> CosmosDict'
+    None, retry_write: bool | None = None, throughput_bucket: int | None = None, **kwargs:
+    Any) -> CosmosDict'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to be replaced.
@@ -1347,6 +1382,17 @@ methods:
     defaultValue: None
     types:
     - <xref:bool>
+  - name: retry_write
+    description: 'Indicates whether the SDK should automatically retry this write
+      operation, even if
+
+      the operation is not guaranteed to be idempotent. This should only be enabled
+      if the application can
+
+      tolerate such risks or has logic to safely detect and handle duplicate operations.'
+    defaultValue: None
+    types:
+    - <xref:bool>
   - name: throughput_bucket
     description: The desired throughput bucket for the client
     defaultValue: None
@@ -1416,8 +1462,8 @@ methods:
     | None = None, post_trigger_include: str | None = None, session_token: str | None
     = None, initial_headers: Dict[str, str] | None = None, etag: str | None = None,
     match_condition: MatchConditions | None = None, priority: Literal[''High'', ''Low'']
-    | None = None, no_response: bool | None = None, throughput_bucket: int | None
-    = None, **kwargs: Any) -> CosmosDict'
+    | None = None, no_response: bool | None = None, retry_write: bool | None = None,
+    throughput_bucket: int | None = None, **kwargs: Any) -> CosmosDict'
   parameters:
   - name: body
     description: A dict-like object representing the item to update or insert.
@@ -1482,6 +1528,17 @@ methods:
       will be determined from
 
       client-level options.'
+    defaultValue: None
+    types:
+    - <xref:bool>
+  - name: retry_write
+    description: 'Indicates whether the SDK should automatically retry this write
+      operation, even if
+
+      the operation is not guaranteed to be idempotent. This should only be enabled
+      if the application can
+
+      tolerate such risks or has logic to safely detect and handle duplicate operations.'
     defaultValue: None
     types:
     - <xref:bool>
