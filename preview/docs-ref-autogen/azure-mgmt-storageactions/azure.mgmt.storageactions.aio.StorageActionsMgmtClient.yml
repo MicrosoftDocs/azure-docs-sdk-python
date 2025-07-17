@@ -6,10 +6,10 @@ module: azure.mgmt.storageactions.aio
 summary: The Azure Storage Actions Management API.
 constructor:
   syntax: 'StorageActionsMgmtClient(credential: AsyncTokenCredential, subscription_id:
-    str, base_url: str = ''https://management.azure.com'', **kwargs: Any)'
+    str, base_url: str | None = None, **kwargs: Any)'
   parameters:
   - name: credential
-    description: Credential needed for the client to connect to Azure. Required.
+    description: Credential used to authenticate requests to the service. Required.
     isRequired: true
     types:
     - <xref:azure.core.credentials_async.AsyncTokenCredential>
@@ -19,16 +19,15 @@ constructor:
     types:
     - <xref:str>
   - name: base_url
-    description: Service URL. Default value is "`https://management.azure.com`".
-    defaultValue: https://management.azure.com
+    description: Service host. Default value is None.
+    defaultValue: None
     types:
     - <xref:str>
   keywordOnlyParameters:
   - name: api_version
-    description: 'Api Version. Default value is "2023-01-01". Note that overriding
-      this
+    description: 'The API version to use for this operation. Default value is "2023-01-01".
 
-      default value may result in unsupported behavior.'
+      Note that overriding this default value may result in unsupported behavior.'
     types:
     - <xref:str>
   - name: polling_interval
@@ -46,15 +45,56 @@ variables:
   name: storage_tasks
   types:
   - <xref:azure.mgmt.storageactions.aio.operations.StorageTasksOperations>
-- description: StorageTaskAssignmentOperations operations
-  name: storage_task_assignment
-  types:
-  - <xref:azure.mgmt.storageactions.aio.operations.StorageTaskAssignmentOperations>
 - description: StorageTasksReportOperations operations
   name: storage_tasks_report
   types:
   - <xref:azure.mgmt.storageactions.aio.operations.StorageTasksReportOperations>
+- description: StorageTaskAssignmentOperations operations
+  name: storage_task_assignment
+  types:
+  - <xref:azure.mgmt.storageactions.aio.operations.StorageTaskAssignmentOperations>
 methods:
 - uid: azure.mgmt.storageactions.aio.StorageActionsMgmtClient.close
   name: close
   signature: async close() -> None
+- uid: azure.mgmt.storageactions.aio.StorageActionsMgmtClient.send_request
+  name: send_request
+  summary: 'Runs the network request through the client''s chained policies.
+
+
+    ```
+
+
+    >>> from azure.core.rest import HttpRequest
+
+    >>> request = HttpRequest("GET", "https://www.example.org/")
+
+    <HttpRequest [GET], url: ''https://www.example.org/''>
+
+    >>> response = await client.send_request(request)
+
+    <AsyncHttpResponse: 200 OK>
+
+    ```
+
+
+    For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> Awaitable[AsyncHttpResponse]'
+  parameters:
+  - name: request
+    description: The network request you want to make. Required.
+    isRequired: true
+    types:
+    - <xref:azure.core.rest.HttpRequest>
+  keywordOnlyParameters:
+  - name: stream
+    description: Whether the response payload will be streamed. Defaults to False.
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  return:
+    description: The response of your network call. Does not do error handling on
+      your response.
+    types:
+    - <xref:azure.core.rest.AsyncHttpResponse>
