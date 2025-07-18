@@ -12,7 +12,10 @@ summary: 'A client to interact with a specific Queue.
 constructor:
   syntax: 'QueueClient(account_url: str, queue_name: str, credential: str | Dict[str,
     str] | AzureNamedKeyCredential | AzureSasCredential | TokenCredential | None =
-    None, **kwargs: Any)'
+    None, *, api_version: str | None = None, secondary_hostname: str | None = None,
+    message_encode_policy: BinaryBase64EncodePolicy | TextBase64EncodePolicy | None
+    = None, message_decode_policy: BinaryBase64DecodePolicy | TextBase64DecodePolicy
+    | None = None, audience: str | None = None, **kwargs: Any)'
   parameters:
   - name: account_url
     description: 'The URL to the storage account. In order to create a client given
@@ -63,24 +66,36 @@ constructor:
 
       compatible with the current SDK. Setting to an older version may result in reduced
       feature compatibility.'
+    defaultValue: None
     types:
     - <xref:str>
   - name: secondary_hostname
     description: The hostname of the secondary endpoint.
+    defaultValue: None
     types:
     - <xref:str>
   - name: message_encode_policy
     description: 'The encoding policy to use on outgoing messages.
 
-      Default is not to encode messages. Other options include <xref:azure.storage.queue.TextBase64EncodePolicy>,
+      Default is not to encode messages. Other options include ~azure.storage.queue.TextBase64EncodePolicy,
 
-      <xref:azure.storage.queue.BinaryBase64EncodePolicy> or *None*.'
+      ~azure.storage.queue.BinaryBase64EncodePolicy or *None*.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.queue.BinaryBase64EncodePolicy>
+    - <xref:azure.storage.queue.TextBase64EncodePolicy>
+    - <xref:None>
   - name: message_decode_policy
     description: 'The decoding policy to use on incoming messages.
 
-      Default value is not to decode messages. Other options include <xref:azure.storage.queue.TextBase64DecodePolicy>,
+      Default value is not to decode messages. Other options include ~azure.storage.queue.TextBase64DecodePolicy,
 
-      <xref:azure.storage.queue.BinaryBase64DecodePolicy> or *None*.'
+      ~azure.storage.queue.BinaryBase64DecodePolicy or *None*.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.queue.BinaryBase64DecodePolicy>
+    - <xref:azure.storage.queue.TextBase64DecodePolicy>
+    - <xref:None>
   - name: audience
     description: 'The audience to use when requesting tokens for Azure Active Directory
 
@@ -88,40 +103,42 @@ constructor:
       The value could be
 
       [https://storage.azure.com/](https://storage.azure.com/) (default) or [https:/](https:/)/<account>.queue.core.windows.net.'
+    defaultValue: None
     types:
     - <xref:str>
 examples:
 - "Create the queue client with url and credential.<!--[!code-python[Main](les\\queue_samples_message.py\
   \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
   : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\x64\\\
-  \\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\257\\\\azure_storage_queue-12.12.0\\\
+  \\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\257\\\\azure_storage_queue-12.13.0\\\
   \\samples\\\\queue_samples_message.py\", \"xml:space\": \"preserve\", \"force\"\
   : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-  linenos\": false} -->\n\n````python\n\n   token_auth_queue = QueueClient.from_queue_url(\n\
-  \       queue_url=queue.url,\n       credential=sas_token\n   )\n\n   ````\n"
+  linenos\": false} -->\n\n````python\n\n   token_auth_queue = QueueClient.from_queue_url(queue_url=queue.url,\
+  \ credential=sas_token)\n\n   ````\n"
 methods:
 - uid: azure.storage.queue.QueueClient.clear_messages
   name: clear_messages
   summary: Deletes all messages from the specified queue.
-  signature: 'clear_messages(**kwargs: Any) -> None'
+  signature: 'clear_messages(*, timeout: int | None = None, **kwargs: Any) -> None'
   keywordOnlyParameters:
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
 
-      [https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
 
       This value is not tracked or validated on the client. To configure client-side
       network timesouts
 
       see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-queue#other-client--per-operation-configuration).'
+    defaultValue: None
     types:
     - <xref:int>
   examples:
   - "Clears all messages.<!--[!code-python[Main](les\\queue_samples_message.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\\
-    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\257\\\\azure_storage_queue-12.12.0\\\
+    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\257\\\\azure_storage_queue-12.13.0\\\
     \\samples\\\\queue_samples_message.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   queue.clear_messages()\n\n   ````\n"
@@ -130,7 +147,7 @@ methods:
   summary: 'This method is to close the sockets opened by the client.
 
     It need not be used when using with a context manager.'
-  signature: close()
+  signature: close() -> None
 - uid: azure.storage.queue.QueueClient.create_queue
   name: create_queue
   summary: 'Creates a new queue in the storage account.
@@ -139,8 +156,8 @@ methods:
     If a queue with the same name already exists, the operation fails with
 
     a *ResourceExistsError*.'
-  signature: 'create_queue(*, metadata: Dict[str, str] | None = None, **kwargs: Any)
-    -> None'
+  signature: 'create_queue(*, metadata: Dict[str, str] | None = None, timeout: int
+    | None = None, **kwargs: Any) -> None'
   keywordOnlyParameters:
   - name: metadata
     description: 'A dict containing name-value pairs to associate with the queue as
@@ -150,17 +167,18 @@ methods:
       were created, but are case-insensitive when set or read.'
     defaultValue: None
     types:
-    - <xref:typing.Dict>[<xref:str>,<xref:str>]
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
 
-      [https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
 
       This value is not tracked or validated on the client. To configure client-side
       network timesouts
 
       see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-queue#other-client--per-operation-configuration).'
+    defaultValue: None
     types:
     - <xref:int>
   return:
@@ -173,7 +191,7 @@ methods:
   - "Create a queue.<!--[!code-python[Main](les\\queue_samples_hello_world.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\\
-    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\257\\\\azure_storage_queue-12.12.0\\\
+    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\257\\\\azure_storage_queue-12.13.0\\\
     \\samples\\\\queue_samples_hello_world.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   queue.create_queue()\n\n   ````\n"
@@ -204,7 +222,7 @@ methods:
 
     operation.'
   signature: 'delete_message(message: str | QueueMessage, pop_receipt: str | None
-    = None, **kwargs: Any) -> None'
+    = None, *, timeout: int | None = None, **kwargs: Any) -> None'
   parameters:
   - name: message
     description: The message object or id identifying the message to delete.
@@ -224,19 +242,20 @@ methods:
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
 
-      [https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
 
       This value is not tracked or validated on the client. To configure client-side
       network timesouts
 
       see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-queue#other-client--per-operation-configuration).'
+    defaultValue: None
     types:
     - <xref:int>
   examples:
   - "Delete a message.<!--[!code-python[Main](les\\queue_samples_message.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\\
-    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\257\\\\azure_storage_queue-12.12.0\\\
+    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\257\\\\azure_storage_queue-12.13.0\\\
     \\samples\\\\queue_samples_message.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   # Get the message at the front of the\
@@ -258,19 +277,20 @@ methods:
 
     If an operation is attempted against the queue while it was being deleted,
 
-    an <xref:azure.storage.queue.HttpResponseError> will be thrown.'
-  signature: 'delete_queue(**kwargs: Any) -> None'
+    an ~azure.core.exceptions.HttpResponseError will be thrown.'
+  signature: 'delete_queue(*, timeout: int | None = None, **kwargs: Any) -> None'
   keywordOnlyParameters:
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
 
-      [https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
 
       This value is not tracked or validated on the client. To configure client-side
       network timesouts
 
       see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-queue#other-client--per-operation-configuration).'
+    defaultValue: None
     types:
     - <xref:int>
   return:
@@ -280,7 +300,7 @@ methods:
   - "Delete a queue.<!--[!code-python[Main](les\\queue_samples_hello_world.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\\
-    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\257\\\\azure_storage_queue-12.12.0\\\
+    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\257\\\\azure_storage_queue-12.13.0\\\
     \\samples\\\\queue_samples_hello_world.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   queue.delete_queue()\n\n   ````\n"
@@ -289,7 +309,10 @@ methods:
   summary: Create QueueClient from a Connection String.
   signature: 'from_connection_string(conn_str: str, queue_name: str, credential: str
     | Dict[str, str] | AzureNamedKeyCredential | AzureSasCredential | TokenCredential
-    | None = None, **kwargs: Any) -> Self'
+    | None = None, *, api_version: str | None = None, secondary_hostname: str | None
+    = None, message_encode_policy: BinaryBase64EncodePolicy | TextBase64EncodePolicy
+    | None = None, message_decode_policy: BinaryBase64DecodePolicy | TextBase64DecodePolicy
+    | None = None, audience: str | None = None, **kwargs: Any) -> Self'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Storage account.
@@ -330,6 +353,42 @@ methods:
     - <xref:dict>[<xref:str>, <xref:str>]
     - <xref:None>
   keywordOnlyParameters:
+  - name: api_version
+    description: 'The Storage API version to use for requests. Default value is the
+      most recent service version that is
+
+      compatible with the current SDK. Setting to an older version may result in reduced
+      feature compatibility.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: secondary_hostname
+    description: The hostname of the secondary endpoint.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: message_encode_policy
+    description: 'The encoding policy to use on outgoing messages.
+
+      Default is not to encode messages. Other options include ~azure.storage.queue.TextBase64EncodePolicy,
+
+      ~azure.storage.queue.BinaryBase64EncodePolicy or *None*.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.queue.BinaryBase64EncodePolicy>
+    - <xref:azure.storage.queue.TextBase64EncodePolicy>
+    - <xref:None>
+  - name: message_decode_policy
+    description: 'The decoding policy to use on incoming messages.
+
+      Default value is not to decode messages. Other options include ~azure.storage.queue.TextBase64DecodePolicy,
+
+      ~azure.storage.queue.BinaryBase64DecodePolicy or *None*.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.queue.BinaryBase64DecodePolicy>
+    - <xref:azure.storage.queue.TextBase64DecodePolicy>
+    - <xref:None>
   - name: audience
     description: 'The audience to use when requesting tokens for Azure Active Directory
 
@@ -337,6 +396,7 @@ methods:
       The value could be
 
       [https://storage.azure.com/](https://storage.azure.com/) (default) or [https:/](https:/)/<account>.queue.core.windows.net.'
+    defaultValue: None
     types:
     - <xref:str>
   return:
@@ -348,16 +408,22 @@ methods:
     queue_samples_message.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
     ToolCache\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
-    \\257\\\\azure_storage_queue-12.12.0\\\\samples\\\\queue_samples_message.py\"\
+    \\257\\\\azure_storage_queue-12.13.0\\\\samples\\\\queue_samples_message.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   from azure.storage.queue import QueueClient\n   queue = QueueClient.from_connection_string(self.connection_string,\
-    \ \"myqueue1\")\n\n   ````\n"
+    \n   from azure.storage.queue import QueueClient\n\n   queue = QueueClient.from_connection_string(self.connection_string,\
+    \ \"myqueue1\")\n   if queue.account_name is None:\n       print(\"Connection\
+    \ string did not provide an account name.\" + \"\\n\" + \"Test: set_access_policy\"\
+    )\n       sys.exit(1)\n\n   ````\n"
 - uid: azure.storage.queue.QueueClient.from_queue_url
   name: from_queue_url
   summary: A client to interact with a specific Queue.
   signature: 'from_queue_url(queue_url: str, credential: str | Dict[str, str] | AzureNamedKeyCredential
-    | AzureSasCredential | TokenCredential | None = None, **kwargs: Any) -> Self'
+    | AzureSasCredential | TokenCredential | None = None, *, api_version: str | None
+    = None, secondary_hostname: str | None = None, message_encode_policy: BinaryBase64EncodePolicy
+    | TextBase64EncodePolicy | None = None, message_decode_policy: BinaryBase64DecodePolicy
+    | TextBase64DecodePolicy | None = None, audience: str | None = None, **kwargs:
+    Any) -> Self'
   parameters:
   - name: queue_url
     description: The full URI to the queue, including SAS token if used.
@@ -394,6 +460,42 @@ methods:
     - <xref:dict>[<xref:str>, <xref:str>]
     - <xref:None>
   keywordOnlyParameters:
+  - name: api_version
+    description: 'The Storage API version to use for requests. Default value is the
+      most recent service version that is
+
+      compatible with the current SDK. Setting to an older version may result in reduced
+      feature compatibility.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: secondary_hostname
+    description: The hostname of the secondary endpoint.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: message_encode_policy
+    description: 'The encoding policy to use on outgoing messages.
+
+      Default is not to encode messages. Other options include ~azure.storage.queue.TextBase64EncodePolicy,
+
+      ~azure.storage.queue.BinaryBase64EncodePolicy or *None*.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.queue.BinaryBase64EncodePolicy>
+    - <xref:azure.storage.queue.TextBase64EncodePolicy>
+    - <xref:None>
+  - name: message_decode_policy
+    description: 'The decoding policy to use on incoming messages.
+
+      Default value is not to decode messages. Other options include ~azure.storage.queue.TextBase64DecodePolicy,
+
+      ~azure.storage.queue.BinaryBase64DecodePolicy or *None*.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.queue.BinaryBase64DecodePolicy>
+    - <xref:azure.storage.queue.TextBase64DecodePolicy>
+    - <xref:None>
   - name: audience
     description: 'The audience to use when requesting tokens for Azure Active Directory
 
@@ -401,6 +503,7 @@ methods:
       The value could be
 
       [https://storage.azure.com/](https://storage.azure.com/) (default) or [https:/](https:/)/<account>.queue.core.windows.net.'
+    defaultValue: None
     types:
     - <xref:str>
   return:
@@ -412,18 +515,20 @@ methods:
   summary: 'Returns details about any stored access policies specified on the
 
     queue that may be used with Shared Access Signatures.'
-  signature: 'get_queue_access_policy(**kwargs: Any) -> Dict[str, AccessPolicy]'
+  signature: 'get_queue_access_policy(*, timeout: int | None = None, **kwargs: Any)
+    -> Dict[str, AccessPolicy]'
   keywordOnlyParameters:
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
 
-      [https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
 
       This value is not tracked or validated on the client. To configure client-side
       network timesouts
 
       see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-queue#other-client--per-operation-configuration).'
+    defaultValue: None
     types:
     - <xref:int>
   return:
@@ -436,10 +541,12 @@ methods:
 
 
     The data returned does not include the queue''s list of messages.'
-  signature: 'get_queue_properties(**kwargs: Any) -> QueueProperties'
+  signature: 'get_queue_properties(*, timeout: int | None = None, **kwargs: Any) ->
+    QueueProperties'
   keywordOnlyParameters:
   - name: timeout
     description: The timeout parameter is expressed in seconds.
+    defaultValue: None
     types:
     - <xref:int>
   return:
@@ -450,7 +557,7 @@ methods:
   - "Get the properties on the queue.<!--[!code-python[Main](les\\queue_samples_message.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\257\\\\azure_storage_queue-12.12.0\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\257\\\\azure_storage_queue-12.13.0\\\
     \\samples\\\\queue_samples_message.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   properties = queue.get_queue_properties().metadata\n\
@@ -481,7 +588,8 @@ methods:
     If the key-encryption-key or resolver field is set on the local service object,
 
     the messages will be decrypted before being returned.'
-  signature: 'peek_messages(max_messages: int | None = None, **kwargs: Any) -> List[QueueMessage]'
+  signature: 'peek_messages(max_messages: int | None = None, *, timeout: int | None
+    = None, **kwargs: Any) -> List[QueueMessage]'
   parameters:
   - name: max_messages
     description: 'A nonzero integer value that specifies the number of
@@ -497,28 +605,28 @@ methods:
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
 
-      [https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
 
       This value is not tracked or validated on the client. To configure client-side
       network timesouts
 
       see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-queue#other-client--per-operation-configuration).'
+    defaultValue: None
     types:
     - <xref:int>
   return:
-    description: 'A list of <xref:azure.storage.queue.QueueMessage> objects. Note
-      that
+    description: 'A list of ~azure.storage.queue.QueueMessage objects. Note that
 
       next_visible_on and pop_receipt will not be populated as peek does
 
       not pop the message and can only retrieve already visible messages.'
     types:
-    - <xref:list>[<xref:azure.storage.queue.QueueMessage>]
+    - <xref:typing.List>[<xref:azure.storage.queue.QueueMessage>]
   examples:
   - "Peek messages.<!--[!code-python[Main](les\\queue_samples_message.py )]-->\n\n\
     <!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\\
-    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\257\\\\azure_storage_queue-12.12.0\\\
+    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\257\\\\azure_storage_queue-12.13.0\\\
     \\samples\\\\queue_samples_message.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   # Peek at one message at the front of\
@@ -545,8 +653,8 @@ methods:
     the message will be
 
     decrypted before being returned.'
-  signature: 'receive_message(*, visibility_timeout: int | None = None, **kwargs:
-    Any) -> QueueMessage | None'
+  signature: 'receive_message(*, visibility_timeout: int | None = None, timeout: int
+    | None = None, **kwargs: Any) -> QueueMessage | None'
   keywordOnlyParameters:
   - name: visibility_timeout
     description: 'If not specified, the default value is 30. Specifies the
@@ -567,12 +675,13 @@ methods:
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
 
-      [https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
 
       This value is not tracked or validated on the client. To configure client-side
       network timesouts
 
       see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-queue#other-client--per-operation-configuration).'
+    defaultValue: None
     types:
     - <xref:int>
   return:
@@ -584,7 +693,7 @@ methods:
   - "Receive one message from the queue.<!--[!code-python[Main](les\\queue_samples_message.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\257\\\\azure_storage_queue-12.12.0\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\257\\\\azure_storage_queue-12.13.0\\\
     \\samples\\\\queue_samples_message.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   # Pop two messages from the front of\
@@ -618,7 +727,8 @@ methods:
 
     decrypted before being returned.'
   signature: 'receive_messages(*, messages_per_page: int | None = None, visibility_timeout:
-    int | None = None, max_messages: int | None = None, **kwargs: Any) -> ItemPaged[QueueMessage]'
+    int | None = None, max_messages: int | None = None, timeout: int | None = None,
+    **kwargs: Any) -> ItemPaged[QueueMessage]'
   keywordOnlyParameters:
   - name: visibility_timeout
     description: 'If not specified, the default value is 30. Specifies the
@@ -645,12 +755,13 @@ methods:
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
 
-      [https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
 
       This value is not tracked or validated on the client. To configure client-side
       network timesouts
 
       see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-queue#other-client--per-operation-configuration).'
+    defaultValue: None
     types:
     - <xref:int>
   - name: messages_per_page
@@ -663,7 +774,7 @@ methods:
   - "Receive messages from the queue.<!--[!code-python[Main](les\\queue_samples_message.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\257\\\\azure_storage_queue-12.12.0\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\257\\\\azure_storage_queue-12.13.0\\\
     \\samples\\\\queue_samples_message.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   # Receive messages one-by-one\n   messages\
@@ -695,7 +806,8 @@ methods:
 
     encrypt the content before uploading.'
   signature: 'send_message(content: object | None, *, visibility_timeout: int | None
-    = None, time_to_live: int | None = None, **kwargs: Any) -> QueueMessage'
+    = None, time_to_live: int | None = None, timeout: int | None = None, **kwargs:
+    Any) -> QueueMessage'
   parameters:
   - name: content
     description: 'Message content. Allowed type is determined by the encode_function
@@ -736,18 +848,19 @@ methods:
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
 
-      [https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
 
       This value is not tracked or validated on the client. To configure client-side
       network timesouts
 
       see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-queue#other-client--per-operation-configuration).'
+    defaultValue: None
     types:
     - <xref:int>
   return:
-    description: 'A <xref:azure.storage.queue.QueueMessage> object.
+    description: 'A ~azure.storage.queue.QueueMessage object.
 
-      This object is also populated with the content although it is not
+      This object is also populated with the content, although it is not
 
       returned from the service.'
     types:
@@ -756,7 +869,7 @@ methods:
   - "Send messages.<!--[!code-python[Main](les\\queue_samples_message.py )]-->\n\n\
     <!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\\
-    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\257\\\\azure_storage_queue-12.12.0\\\
+    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\257\\\\azure_storage_queue-12.13.0\\\
     \\samples\\\\queue_samples_message.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   queue.send_message(\"message1\")\n \
@@ -788,9 +901,9 @@ methods:
 
     that is associated with the stored access policy will throw an
 
-    <xref:azure.storage.queue.HttpResponseError> until the access policy becomes active.'
+    ~azure.core.exceptions.HttpResponseError until the access policy becomes active.'
   signature: 'set_queue_access_policy(signed_identifiers: Dict[str, AccessPolicy],
-    **kwargs: Any) -> None'
+    *, timeout: int | None = None, **kwargs: Any) -> None'
   parameters:
   - name: signed_identifiers
     description: 'SignedIdentifier access policies to associate with the queue.
@@ -806,26 +919,27 @@ methods:
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
 
-      [https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
 
       This value is not tracked or validated on the client. To configure client-side
       network timesouts
 
       see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-queue#other-client--per-operation-configuration).'
+    defaultValue: None
     types:
     - <xref:int>
   examples:
   - "Set an access policy on the queue.<!--[!code-python[Main](les\\queue_samples_message.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\257\\\\azure_storage_queue-12.12.0\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\257\\\\azure_storage_queue-12.13.0\\\
     \\samples\\\\queue_samples_message.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   # Create an access policy\n   from azure.storage.queue\
-    \ import AccessPolicy, QueueSasPermissions\n   access_policy = AccessPolicy()\n\
+    \ import AccessPolicy, QueueSasPermissions\n\n   access_policy = AccessPolicy()\n\
     \   access_policy.start = datetime.utcnow() - timedelta(hours=1)\n   access_policy.expiry\
     \ = datetime.utcnow() + timedelta(hours=1)\n   access_policy.permission = QueueSasPermissions(read=True)\n\
-    \   identifiers = {'my-access-policy-id': access_policy}\n\n   # Set the access\
+    \   identifiers = {\"my-access-policy-id\": access_policy}\n\n   # Set the access\
     \ policy\n   queue.set_queue_access_policy(identifiers)\n\n   ````\n"
 - uid: azure.storage.queue.QueueClient.set_queue_metadata
   name: set_queue_metadata
@@ -833,8 +947,8 @@ methods:
 
 
     Metadata is associated with the queue as name-value pairs.'
-  signature: 'set_queue_metadata(metadata: Dict[str, str] | None = None, **kwargs:
-    Any) -> Dict[str, Any]'
+  signature: 'set_queue_metadata(metadata: Dict[str, str] | None = None, *, timeout:
+    int | None = None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: metadata
     description: 'A dict containing name-value pairs to associate with the
@@ -848,12 +962,13 @@ methods:
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
 
-      [https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
 
       This value is not tracked or validated on the client. To configure client-side
       network timesouts
 
       see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-queue#other-client--per-operation-configuration).'
+    defaultValue: None
     types:
     - <xref:int>
   return:
@@ -864,11 +979,12 @@ methods:
   - "Set metadata on the queue.<!--[!code-python[Main](les\\queue_samples_message.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\257\\\\azure_storage_queue-12.12.0\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\257\\\\azure_storage_queue-12.13.0\\\
     \\samples\\\\queue_samples_message.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-    linenos\": false} -->\n\n````python\n\n   metadata = {'foo': 'val1', 'bar': 'val2',\
-    \ 'baz': 'val3'}\n   queue.set_queue_metadata(metadata=metadata)\n\n   ````\n"
+    linenos\": false} -->\n\n````python\n\n   metadata = {\"foo\": \"val1\", \"bar\"\
+    : \"val2\", \"baz\": \"val3\"}\n   queue.set_queue_metadata(metadata=metadata)\n\
+    \n   ````\n"
 - uid: azure.storage.queue.QueueClient.update_message
   name: update_message
   summary: 'Updates the visibility timeout of a message. You can also use this
@@ -897,7 +1013,7 @@ methods:
     encrypt the content before uploading.'
   signature: 'update_message(message: str | QueueMessage, pop_receipt: str | None
     = None, content: object | None = None, *, visibility_timeout: int | None = None,
-    **kwargs: Any) -> QueueMessage'
+    timeout: int | None = None, **kwargs: Any) -> QueueMessage'
   parameters:
   - name: message
     description: The message object or id identifying the message to update.
@@ -940,16 +1056,17 @@ methods:
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
 
-      [https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
 
       This value is not tracked or validated on the client. To configure client-side
       network timesouts
 
       see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-queue#other-client--per-operation-configuration).'
+    defaultValue: None
     types:
     - <xref:int>
   return:
-    description: 'A <xref:azure.storage.queue.QueueMessage> object. For convenience,
+    description: 'A ~azure.storage.queue.QueueMessage object. For convenience,
 
       this object is also populated with the content, although it is not returned
       by the service.'
@@ -959,14 +1076,14 @@ methods:
   - "Update a message.<!--[!code-python[Main](les\\queue_samples_message.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\\
-    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\257\\\\azure_storage_queue-12.12.0\\\
+    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\257\\\\azure_storage_queue-12.13.0\\\
     \\samples\\\\queue_samples_message.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   # Send a message\n   queue.send_message(\"\
     update me\")\n\n   # Receive the message\n   messages = queue.receive_messages()\n\
     \n   # Update the message\n   list_result = next(messages)\n   message = queue.update_message(\n\
-    \       list_result.id,\n       pop_receipt=list_result.pop_receipt,\n       visibility_timeout=0,\n\
-    \       content=\"updated\")\n\n   ````\n"
+    \       list_result.id, pop_receipt=list_result.pop_receipt, visibility_timeout=0,\
+    \ content=\"updated\"\n   )\n\n   ````\n"
 attributes:
 - uid: azure.storage.queue.QueueClient.api_version
   name: api_version
@@ -981,18 +1098,21 @@ attributes:
 
     By default this will be "primary". Options include "primary" and "secondary".'
   return:
+    description: The current location mode.
     types:
     - <xref:str>
 - uid: azure.storage.queue.QueueClient.primary_endpoint
   name: primary_endpoint
   summary: The full primary endpoint URL.
   return:
+    description: The full primary endpoint URL.
     types:
     - <xref:str>
 - uid: azure.storage.queue.QueueClient.primary_hostname
   name: primary_hostname
   summary: The hostname of the primary endpoint.
   return:
+    description: The hostname of the primary endpoint.
     types:
     - <xref:str>
 - uid: azure.storage.queue.QueueClient.secondary_endpoint
@@ -1005,10 +1125,12 @@ attributes:
 
     *secondary_hostname* keyword argument on instantiation.'
   return:
+    description: The full secondary endpoint URL.
     types:
     - <xref:str>
   exceptions:
   - type: ValueError
+    description: If no secondary endpoint is configured.
 - uid: azure.storage.queue.QueueClient.secondary_hostname
   name: secondary_hostname
   summary: 'The hostname of the secondary endpoint.
@@ -1019,6 +1141,7 @@ attributes:
 
     *secondary_hostname* keyword argument on instantiation.'
   return:
+    description: The hostname of the secondary endpoint, or None if not configured.
     types:
     - <xref:typing.Optional>[<xref:str>]
 - uid: azure.storage.queue.QueueClient.url
@@ -1028,8 +1151,8 @@ attributes:
 
     This could be either the primary endpoint,
 
-    or the secondary endpoint depending on the current <xref:azure.storage.queue.QueueClient.location_mode>.
-
-    :returns: The full endpoint URL to this entity, including SAS token if used.
-
-    :rtype: str'
+    or the secondary endpoint depending on the current <xref:azure.storage.queue.QueueClient.location_mode>.'
+  return:
+    description: The full endpoint URL to this entity, including SAS token if used.
+    types:
+    - <xref:str>

@@ -212,7 +212,7 @@ methods:
   summary: 'This method is to close the sockets opened by the client.
 
     It need not be used when using with a context manager.'
-  signature: close()
+  signature: close() -> None
 - uid: azure.storage.blob.ContainerClient.create_container
   name: create_container
   summary: 'Creates a new container under the specified account. If the container
@@ -286,7 +286,9 @@ methods:
     Soft deleted blob or snapshot is accessible through <xref:azure.storage.blob.ContainerClient.list_blobs>
     specifying *include=["deleted"]*
 
-    option. Soft-deleted blob or snapshot can be restored using <xref:azure.storage.blob.BlobClient.undelete>'
+    option. Soft-deleted blob or snapshot can be restored using
+
+    <xref:azure.storage.blob.BlobClient.undelete_blob>'
   signature: 'delete_blob(blob: str, delete_snapshots: str | None = None, **kwargs:
     Any) -> None'
   parameters:
@@ -375,6 +377,7 @@ methods:
     types:
     - <xref:int>
   return:
+    description: None
     types:
     - <xref:None>
 - uid: azure.storage.blob.ContainerClient.delete_blobs
@@ -400,7 +403,7 @@ methods:
     Soft deleted blobs or snapshots are accessible through <xref:azure.storage.blob.ContainerClient.list_blobs>
     specifying *include=["deleted"]*
 
-    Soft-deleted blobs or snapshots can be restored using <xref:azure.storage.blob.BlobClient.undelete>
+    Soft-deleted blobs or snapshots can be restored using <xref:azure.storage.blob.BlobClient.undelete_blob>
 
 
     The maximum number of blobs that can be deleted in a single request is 256.'
@@ -555,6 +558,7 @@ methods:
     types:
     - <xref:int>
   return:
+    description: None
     types:
     - <xref:None>
 - uid: azure.storage.blob.ContainerClient.download_blob
@@ -1660,7 +1664,8 @@ methods:
 
     as delimited by the specified delimiter character.'
   signature: 'walk_blobs(name_starts_with: str | None = None, include: str | List[str]
-    | None = None, delimiter: str = ''/'', **kwargs: Any) -> ItemPaged[BlobProperties]'
+    | None = None, delimiter: str = ''/'', **kwargs: Any) -> ItemPaged[BlobProperties
+    | BlobPrefix]'
   parameters:
   - name: name_starts_with
     description: 'Filters the results to return only blobs whose names
@@ -1706,9 +1711,10 @@ methods:
     types:
     - <xref:int>
   return:
-    description: An iterable (auto-paging) response of BlobProperties.
+    description: An iterable (auto-paging) response of BlobProperties or BlobPrefix.
     types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:azure.storage.blob.BlobProperties>]
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.storage.blob.BlobProperties>
+    - <xref:azure.storage.blob.BlobPrefix>]
 attributes:
 - uid: azure.storage.blob.ContainerClient.api_version
   name: api_version
@@ -1723,18 +1729,21 @@ attributes:
 
     By default this will be "primary". Options include "primary" and "secondary".'
   return:
+    description: The current location mode.
     types:
     - <xref:str>
 - uid: azure.storage.blob.ContainerClient.primary_endpoint
   name: primary_endpoint
   summary: The full primary endpoint URL.
   return:
+    description: The full primary endpoint URL.
     types:
     - <xref:str>
 - uid: azure.storage.blob.ContainerClient.primary_hostname
   name: primary_hostname
   summary: The hostname of the primary endpoint.
   return:
+    description: The hostname of the primary endpoint.
     types:
     - <xref:str>
 - uid: azure.storage.blob.ContainerClient.secondary_endpoint
@@ -1747,10 +1756,12 @@ attributes:
 
     *secondary_hostname* keyword argument on instantiation.'
   return:
+    description: The full secondary endpoint URL.
     types:
     - <xref:str>
   exceptions:
   - type: ValueError
+    description: If no secondary endpoint is configured.
 - uid: azure.storage.blob.ContainerClient.secondary_hostname
   name: secondary_hostname
   summary: 'The hostname of the secondary endpoint.
@@ -1761,6 +1772,7 @@ attributes:
 
     *secondary_hostname* keyword argument on instantiation.'
   return:
+    description: The hostname of the secondary endpoint, or None if not configured.
     types:
     - <xref:typing.Optional>[<xref:str>]
 - uid: azure.storage.blob.ContainerClient.url
@@ -1770,8 +1782,8 @@ attributes:
 
     This could be either the primary endpoint,
 
-    or the secondary endpoint depending on the current <xref:azure.storage.blob.ContainerClient.location_mode>.
-
-    :returns: The full endpoint URL to this entity, including SAS token if used.
-
-    :rtype: str'
+    or the secondary endpoint depending on the current <xref:azure.storage.blob.ContainerClient.location_mode>.'
+  return:
+    description: The full endpoint URL to this entity, including SAS token if used.
+    types:
+    - <xref:str>
