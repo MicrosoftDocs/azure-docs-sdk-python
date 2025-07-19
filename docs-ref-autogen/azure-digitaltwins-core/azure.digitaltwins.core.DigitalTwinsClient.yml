@@ -22,18 +22,16 @@ methods:
 - uid: azure.digitaltwins.core.DigitalTwinsClient.create_models
   name: create_models
   summary: Create one or more models. When any error occurs, no models are uploaded.
-  signature: 'create_models(dtdl_models: List[Dict[str, object]], **kwargs: Any) ->
-    List[DigitalTwinsModelData]'
+  signature: 'create_models(dtdl_models: List[MutableMapping[str, Any]], **kwargs:
+    Any) -> List[DigitalTwinsModelData]'
   parameters:
-  - name: model_list
+  - name: dtdl_models
     description: 'The set of models to create.
 
       Each dict corresponds to exactly one model.'
     isRequired: true
     types:
-    - <xref:typing.List>[<xref:typing.Dict>[<xref:str>,<xref:object>]]
-  - name: dtdl_models
-    isRequired: true
+    - <xref:typing.List>[<xref:typing.MutableMapping>[<xref:str>, <xref:typing.Any>]]
   return:
     description: The list of created models.
     types:
@@ -180,7 +178,7 @@ methods:
   name: get_component
   summary: Get a component on a digital twin.
   signature: 'get_component(digital_twin_id: str, component_name: str, **kwargs: Any)
-    -> Dict[str, object]'
+    -> MutableMapping[str, Any]'
   parameters:
   - name: digital_twin_id
     description: The ID of the digital twin.
@@ -195,7 +193,7 @@ methods:
   return:
     description: Dictionary containing the component.
     types:
-    - <xref:typing.Dict>[<xref:str>, <xref:object>]
+    - <xref:typing.MutableMapping>[<xref:str>, <xref:typing.Any>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   - type: azure.core.exceptions.ResourceNotFoundError
@@ -205,7 +203,8 @@ methods:
 - uid: azure.digitaltwins.core.DigitalTwinsClient.get_digital_twin
   name: get_digital_twin
   summary: Get a digital twin.
-  signature: 'get_digital_twin(digital_twin_id: str, **kwargs: Any) -> Dict[str, object]'
+  signature: 'get_digital_twin(digital_twin_id: str, **kwargs: Any) -> MutableMapping[str,
+    Any]'
   parameters:
   - name: digital_twin_id
     description: The ID of the digital twin.
@@ -215,7 +214,7 @@ methods:
   return:
     description: Dictionary containing the twin.
     types:
-    - <xref:typing.Dict>[<xref:str>, <xref:object>]
+    - <xref:typing.MutableMapping>[<xref:str>, <xref:typing.Any>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   - type: azure.core.exceptions.ResourceNotFoundError
@@ -271,7 +270,7 @@ methods:
   name: get_relationship
   summary: Get a relationship on a digital twin.
   signature: 'get_relationship(digital_twin_id: str, relationship_id: str, **kwargs:
-    Any) -> Dict[str, object]'
+    Any) -> MutableMapping[str, Any]'
   parameters:
   - name: digital_twin_id
     description: The ID of the digital twin.
@@ -286,7 +285,7 @@ methods:
   return:
     description: Dictionary containing the relationship.
     types:
-    - <xref:typing.Dict>[<xref:str>, <xref:object>]
+    - <xref:typing.MutableMapping>[<xref:str>, <xref:typing.Any>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   - type: azure.core.exceptions.ResourceNotFoundError
@@ -367,7 +366,7 @@ methods:
   name: list_relationships
   summary: Retrieve relationships for a digital twin.
   signature: 'list_relationships(digital_twin_id: str, relationship_id: str | None
-    = None, **kwargs: Any) -> ItemPaged[Dict[str, object]]'
+    = None, **kwargs: Any) -> ItemPaged[MutableMapping[str, Any]]'
   parameters:
   - name: digital_twin_id
     description: The ID of the digital twin.
@@ -384,7 +383,7 @@ methods:
   return:
     description: An iterator instance of list of relationships
     types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:typing.Dict>[<xref:str>,<xref:object>]]
+    - <xref:ItemPaged>[<xref:typing.MutableMapping>[<xref:str>, <xref:typing.Any>]]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   - type: azure.core.exceptions.ResourceNotFoundError
@@ -393,12 +392,15 @@ methods:
       digital twin with the provided ID.'
 - uid: azure.digitaltwins.core.DigitalTwinsClient.publish_component_telemetry
   name: publish_component_telemetry
-  summary: 'Publish telemetry from a digital twin''s component, which is then consumed
-    by
+  summary: 'Publish telemetry from a digital twin. The result is then
 
-    one or many destination endpoints (subscribers) defined under.'
+    consumed by one or many destination endpoints (subscribers) defined under
+
+    DigitalTwinsEventRoute. These event routes need to be set before publishing
+
+    a telemetry message, in order for the telemetry message to be consumed.'
   signature: 'publish_component_telemetry(digital_twin_id: str, component_name: str,
-    telemetry: object, **kwargs: Any) -> None'
+    telemetry: MutableMapping[str, Any], **kwargs: Any) -> None'
   parameters:
   - name: digital_twin_id
     description: The ID of the digital twin.
@@ -414,7 +416,7 @@ methods:
     description: The telemetry data to be sent.
     isRequired: true
     types:
-    - <xref:object>
+    - <xref:typing.MutableMapping>[<xref:str>, <xref:typing.Any>]
   keywordOnlyParameters:
   - name: message_id
     description: The message ID. If not specified, a UUID will be generated.
@@ -432,11 +434,15 @@ methods:
       digital twin with the provided ID or the component name is invalid.'
 - uid: azure.digitaltwins.core.DigitalTwinsClient.publish_telemetry
   name: publish_telemetry
-  summary: 'Publish telemetry from a digital twin, which is then consumed by
+  summary: 'Publish telemetry from a digital twin. The result is then
 
-    one or many destination endpoints (subscribers) defined under.'
-  signature: 'publish_telemetry(digital_twin_id: str, telemetry: object, **kwargs:
-    Any) -> None'
+    consumed by one or many destination endpoints (subscribers) defined under
+
+    DigitalTwinsEventRoute. These event routes need to be set before publishing
+
+    a telemetry message, in order for the telemetry message to be consumed.'
+  signature: 'publish_telemetry(digital_twin_id: str, telemetry: MutableMapping[str,
+    Any], **kwargs: Any) -> None'
   parameters:
   - name: digital_twin_id
     description: The ID of the digital twin
@@ -447,7 +453,7 @@ methods:
     description: The telemetry data to be sent
     isRequired: true
     types:
-    - <xref:object>
+    - <xref:typing.MutableMapping>[<xref:str>, <xref:typing.Any>]
   keywordOnlyParameters:
   - name: message_id
     description: The message ID. If not specified, a UUID will be generated.
@@ -474,8 +480,8 @@ methods:
     For more details on query limitations, see
 
     [https://docs.microsoft.com/azure/digital-twins/how-to-query-graph#query-limitations](https://docs.microsoft.com/azure/digital-twins/how-to-query-graph#query-limitations)'
-  signature: 'query_twins(query_expression: str, **kwargs: Any) -> ItemPaged[Dict[str,
-    object]]'
+  signature: 'query_twins(query_expression: str, **kwargs: Any) -> ItemPaged[MutableMapping[str,
+    Any]]'
   parameters:
   - name: query_expression
     description: The query expression to execute.
@@ -492,7 +498,7 @@ methods:
   name: update_component
   summary: Update properties of a component on a digital twin using a JSON patch.
   signature: 'update_component(digital_twin_id: str, component_name: str, json_patch:
-    List[Dict[str, object]], **kwargs: Any) -> None'
+    Sequence[MutableMapping[str, Any]], **kwargs: Any) -> None'
   parameters:
   - name: digital_twin_id
     description: The ID of the digital twin.
@@ -534,8 +540,8 @@ methods:
 - uid: azure.digitaltwins.core.DigitalTwinsClient.update_digital_twin
   name: update_digital_twin
   summary: Update a digital twin using a JSON patch.
-  signature: 'update_digital_twin(digital_twin_id: str, json_patch: List[Dict[str,
-    object]], **kwargs: Any) -> None'
+  signature: 'update_digital_twin(digital_twin_id: str, json_patch: Sequence[MutableMapping[str,
+    Any]], **kwargs: Any) -> None'
   parameters:
   - name: digital_twin_id
     description: The ID of the digital twin.
@@ -550,7 +556,7 @@ methods:
       Operations are limited to *add*, *replace* and *remove*.'
     isRequired: true
     types:
-    - <xref:typing.List>[<xref:typing.Dict>[<xref:str>,<xref:object>]]
+    - <xref:typing.Sequence>[<xref:typing.MutableMapping>[<xref:str>, <xref:typing.Any>]]
   keywordOnlyParameters:
   - name: match_condition
     description: The condition under which to perform the operation.
@@ -576,7 +582,7 @@ methods:
   summary: Updates the properties of a relationship on a digital twin using a JSON
     patch.
   signature: 'update_relationship(digital_twin_id: str, relationship_id: str, json_patch:
-    List[Dict[str, object]], **kwargs: Any) -> None'
+    Sequence[MutableMapping[str, Any]], **kwargs: Any) -> None'
   parameters:
   - name: digital_twin_id
     description: The ID of the digital twin.
@@ -594,7 +600,7 @@ methods:
       to the relationship properties.'
     isRequired: true
     types:
-    - <xref:typing.List>[<xref:typing.Dict>[<xref:str>,<xref:object>]]
+    - <xref:typing.Sequence>[<xref:typing.MutableMapping>[<xref:str>, <xref:typing.Any>]]
   keywordOnlyParameters:
   - name: match_condition
     description: The condition under which to perform the operation.
@@ -621,7 +627,7 @@ methods:
   name: upsert_digital_twin
   summary: Create or update a digital twin.
   signature: 'upsert_digital_twin(digital_twin_id: str, digital_twin: Dict[str, object],
-    **kwargs: Any) -> Dict[str, object]'
+    **kwargs: Any) -> MutableMapping[str, Any]'
   parameters:
   - name: digital_twin_id
     description: The ID of the digital twin.
@@ -648,7 +654,7 @@ methods:
   return:
     description: Dictionary containing the created or updated twin.
     types:
-    - <xref:typing.Dict>[<xref:str>, <xref:object>]
+    - <xref:typing.MutableMapping>[<xref:str>, <xref:typing.Any>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   - type: azure.core.exceptions.ResourceExistsError
@@ -679,7 +685,7 @@ methods:
   name: upsert_relationship
   summary: Create or update a relationship on a digital twin.
   signature: 'upsert_relationship(digital_twin_id: str, relationship_id: str, relationship:
-    Dict[str, object], **kwargs: Any) -> Dict[str, object]'
+    Dict[str, object], **kwargs: Any) -> MutableMapping[str, Any]'
   parameters:
   - name: digital_twin_id
     description: The ID of the digital twin.
@@ -711,7 +717,7 @@ methods:
   return:
     description: The created or updated relationship.
     types:
-    - <xref:typing.Dict>[<xref:str>, <xref:object>]
+    - <xref:typing.MutableMapping>[<xref:str>, <xref:typing.Any>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   - type: azure.core.exceptions.ResourceNotFoundError
