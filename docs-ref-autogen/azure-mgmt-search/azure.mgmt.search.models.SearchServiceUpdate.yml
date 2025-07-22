@@ -3,25 +3,28 @@ uid: azure.mgmt.search.models.SearchServiceUpdate
 name: SearchServiceUpdate
 fullName: azure.mgmt.search.models.SearchServiceUpdate
 module: azure.mgmt.search.models
-summary: 'The parameters used to update an Azure Cognitive Search service.
+summary: 'The parameters used to update an Azure AI Search service.
 
 
   Variables are only populated by the server, and will be ignored when sending a request.'
 constructor:
   syntax: 'SearchServiceUpdate(*, sku: _models.Sku | None = None, location: str |
     None = None, tags: Dict[str, str] | None = None, identity: _models.Identity |
-    None = None, replica_count: int = 1, partition_count: int = 1, hosting_mode: str
-    | _models.HostingMode = ''default'', public_network_access: str | _models.PublicNetworkAccess
-    = ''enabled'', network_rule_set: _models.NetworkRuleSet | None = None, encryption_with_cmk:
+    None = None, replica_count: int = 1, partition_count: int = 1, endpoint: str |
+    None = None, hosting_mode: str | _models.HostingMode = ''default'', compute_type:
+    str | _models.ComputeType | None = None, public_network_access: str | _models.PublicNetworkAccess
+    = ''enabled'', network_rule_set: _models.NetworkRuleSet | None = None, data_exfiltration_protections:
+    List[str | _models.SearchDataExfiltrationProtection] | None = None, encryption_with_cmk:
     _models.EncryptionWithCmk | None = None, disable_local_auth: bool | None = None,
     auth_options: _models.DataPlaneAuthOptions | None = None, semantic_search: str
-    | _models.SearchSemanticSearch | None = None, **kwargs: Any)'
+    | _models.SearchSemanticSearch | None = None, upgrade_available: str | _models.UpgradeAvailable
+    | None = None, **kwargs: Any)'
   keywordOnlyParameters:
   - name: sku
-    description: 'The SKU of the Search Service, which determines price tier and capacity
+    description: 'The SKU of the search service, which determines price tier and capacity
       limits.
 
-      This property is required when creating a new Search Service.'
+      This property is required when creating a new search service.'
     defaultValue: None
     types:
     - <xref:azure.mgmt.search.models.Sku>
@@ -29,7 +32,7 @@ constructor:
     description: 'The geographic location of the resource. This must be one of the
       supported
 
-      and registered Azure Geo Regions (for example, West US, East US, Southeast Asia,
+      and registered Azure geo regions (for example, West US, East US, Southeast Asia,
       and so forth).
 
       This property is required when creating a new resource.'
@@ -42,7 +45,10 @@ constructor:
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: identity
-    description: The identity of the resource.
+    description: 'Details about the search service identity. A null value indicates
+      that the
+
+      search service has no identity assigned.'
     defaultValue: None
     types:
     - <xref:azure.mgmt.search.models.Identity>
@@ -71,6 +77,11 @@ constructor:
     defaultValue: '1'
     types:
     - <xref:int>
+  - name: endpoint
+    description: The endpoint of the Azure AI Search service.
+    defaultValue: None
+    types:
+    - <xref:str>
   - name: hosting_mode
     description: 'Applicable only for the standard3 SKU. You can set this property
       to
@@ -89,6 +100,16 @@ constructor:
     types:
     - <xref:str>
     - <xref:azure.mgmt.search.models.HostingMode>
+  - name: compute_type
+    description: 'Configure this property to support the search service using either
+      the
+
+      Default Compute or Azure Confidential Compute. Known values are: "default" and
+      "confidential".'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.search.models.ComputeType>
   - name: public_network_access
     description: 'This value can be set to ''enabled'' to avoid breaking changes on
 
@@ -98,18 +119,32 @@ constructor:
       is not allowed, and private endpoint connections would be the exclusive access
       method. Known
 
-      values are: "enabled" and "disabled".'
+      values are: "enabled", "disabled", and "securedByPerimeter".'
     defaultValue: enabled
     types:
     - <xref:str>
     - <xref:azure.mgmt.search.models.PublicNetworkAccess>
   - name: network_rule_set
-    description: 'Network specific rules that determine how the Azure Cognitive Search
+    description: 'Network specific rules that determine how the Azure AI Search
 
       service may be reached.'
     defaultValue: None
     types:
     - <xref:azure.mgmt.search.models.NetworkRuleSet>
+  - name: data_exfiltration_protections
+    description: 'A list of data exfiltration scenarios that are
+
+      explicitly disallowed for the search service. Currently, the only supported
+      value is ''All'' to
+
+      disable all possible data export scenarios with more fine grained controls planned
+      for the
+
+      future.'
+    defaultValue: None
+    types:
+    - <xref:list>[<xref:str>
+    - <xref:azure.mgmt.search.models.SearchDataExfiltrationProtection>]
   - name: encryption_with_cmk
     description: 'Specifies any policy regarding encryption of resources (such as
 
@@ -138,18 +173,26 @@ constructor:
   - name: semantic_search
     description: 'Sets options that control the availability of semantic search. This
 
-      configuration is only possible for certain Azure Cognitive Search SKUs in certain
-      locations.
+      configuration is only possible for certain Azure AI Search SKUs in certain locations.
+      Known
 
-      Known values are: "disabled", "free", and "standard".'
+      values are: "disabled", "free", and "standard".'
     defaultValue: None
     types:
     - <xref:str>
     - <xref:azure.mgmt.search.models.SearchSemanticSearch>
-variables:
-- description: 'Fully qualified resource ID for the resource. Ex -
+  - name: upgrade_available
+    description: 'Indicates if the search service has an upgrade available. Known
 
-    /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.'
+      values are: "notAvailable" and "available".'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.search.models.UpgradeAvailable>
+variables:
+- description: 'Fully qualified resource ID for the resource. E.g.
+
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".'
   name: id
   types:
   - <xref:str>
@@ -164,17 +207,23 @@ variables:
   name: type
   types:
   - <xref:str>
-- description: 'The SKU of the Search Service, which determines price tier and capacity
+- description: 'Azure Resource Manager metadata containing createdBy and modifiedBy
+
+    information.'
+  name: system_data
+  types:
+  - <xref:azure.mgmt.search.models.SystemData>
+- description: 'The SKU of the search service, which determines price tier and capacity
     limits. This
 
-    property is required when creating a new Search Service.'
+    property is required when creating a new search service.'
   name: sku
   types:
   - <xref:azure.mgmt.search.models.Sku>
 - description: 'The geographic location of the resource. This must be one of the supported
     and
 
-    registered Azure Geo Regions (for example, West US, East US, Southeast Asia, and
+    registered Azure geo regions (for example, West US, East US, Southeast Asia, and
     so forth).
 
     This property is required when creating a new resource.'
@@ -185,7 +234,10 @@ variables:
   name: tags
   types:
   - <xref:dict>[<xref:str>, <xref:str>]
-- description: The identity of the resource.
+- description: 'Details about the search service identity. A null value indicates
+    that the
+
+    search service has no identity assigned.'
   name: identity
   types:
   - <xref:azure.mgmt.search.models.Identity>
@@ -208,6 +260,10 @@ variables:
   name: partition_count
   types:
   - <xref:int>
+- description: The endpoint of the Azure AI Search service.
+  name: endpoint
+  types:
+  - <xref:str>
 - description: 'Applicable only for the standard3 SKU. You can set this property to
     enable
 
@@ -225,6 +281,15 @@ variables:
   types:
   - <xref:str>
   - <xref:azure.mgmt.search.models.HostingMode>
+- description: 'Configure this property to support the search service using either
+    the
+
+    Default Compute or Azure Confidential Compute. Known values are: "default" and
+    "confidential".'
+  name: compute_type
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.search.models.ComputeType>
 - description: 'This value can be set to ''enabled'' to avoid breaking changes on
 
     existing customer resources and templates. If set to ''disabled'', traffic over
@@ -233,7 +298,7 @@ variables:
     is not allowed, and private endpoint connections would be the exclusive access
     method. Known
 
-    values are: "enabled" and "disabled".'
+    values are: "enabled", "disabled", and "securedByPerimeter".'
   name: public_network_access
   types:
   - <xref:str>
@@ -259,16 +324,19 @@ variables:
     state, the service will reject all API requests. ''error'': The search service
     is in an error
 
-    state. If your service is in the degraded, disabled, or error states, it means
-    the Azure
+    state. ''stopped'': The search service is in a subscription that''s disabled.
+    If your service is
 
-    Cognitive Search team is actively investigating the underlying issue. Dedicated
-    services in
+    in the degraded, disabled, or error states, it means the Azure AI Search team
+    is actively
 
-    these states are still chargeable based on the number of search units provisioned.
-    Known values
+    investigating the underlying issue. Dedicated services in these states are still
+    chargeable
 
-    are: "running", "provisioning", "deleting", "degraded", "disabled", and "error".'
+    based on the number of search units provisioned. Known values are: "running",
+    "provisioning",
+
+    "deleting", "degraded", "disabled", "error", and "stopped".'
   name: status
   types:
   - <xref:str>
@@ -282,10 +350,10 @@ variables:
     service. Provisioning is an intermediate state that occurs while service capacity
     is being
 
-    established. After capacity is set up, provisioningState changes to either ''succeeded''
+    established. After capacity is set up, provisioningState changes to either ''Succeeded''
     or
 
-    ''failed''. Client applications can poll provisioning status (the recommended
+    ''Failed''. Client applications can poll provisioning status (the recommended
     polling interval is
 
     from 30 seconds to one minute) by using the Get Search Service operation to see
@@ -294,7 +362,7 @@ variables:
     operation is completed. If you are using the free service, this value tends to
     come back as
 
-    ''succeeded'' directly in the call to Create search service. This is because the
+    ''Succeeded'' directly in the call to Create search service. This is because the
     free service
 
     uses capacity that is already set up. Known values are: "succeeded", "provisioning",
@@ -305,12 +373,23 @@ variables:
   types:
   - <xref:str>
   - <xref:azure.mgmt.search.models.ProvisioningState>
-- description: 'Network specific rules that determine how the Azure Cognitive Search
+- description: 'Network specific rules that determine how the Azure AI Search service
 
-    service may be reached.'
+    may be reached.'
   name: network_rule_set
   types:
   - <xref:azure.mgmt.search.models.NetworkRuleSet>
+- description: 'A list of data exfiltration scenarios that are explicitly
+
+    disallowed for the search service. Currently, the only supported value is ''All''
+    to disable all
+
+    possible data export scenarios with more fine grained controls planned for the
+    future.'
+  name: data_exfiltration_protections
+  types:
+  - <xref:list>[<xref:str>
+  - <xref:azure.mgmt.search.models.SearchDataExfiltrationProtection>]
 - description: 'Specifies any policy regarding encryption of resources (such as
 
     indexes) using customer manager keys within a search service.'
@@ -331,25 +410,45 @@ variables:
   name: auth_options
   types:
   - <xref:azure.mgmt.search.models.DataPlaneAuthOptions>
-- description: 'The list of private endpoint connections to the Azure
-
-    Cognitive Search service.'
-  name: private_endpoint_connections
-  types:
-  - <xref:list>[<xref:azure.mgmt.search.models.PrivateEndpointConnection>]
 - description: 'Sets options that control the availability of semantic search. This
 
-    configuration is only possible for certain Azure Cognitive Search SKUs in certain
-    locations.
+    configuration is only possible for certain Azure AI Search SKUs in certain locations.
+    Known
 
-    Known values are: "disabled", "free", and "standard".'
+    values are: "disabled", "free", and "standard".'
   name: semantic_search
   types:
   - <xref:str>
   - <xref:azure.mgmt.search.models.SearchSemanticSearch>
+- description: 'The list of private endpoint connections to the Azure AI
+
+    Search service.'
+  name: private_endpoint_connections
+  types:
+  - <xref:list>[<xref:azure.mgmt.search.models.PrivateEndpointConnection>]
 - description: 'The list of shared private link resources managed by the
 
-    Azure Cognitive Search service.'
+    Azure AI Search service.'
   name: shared_private_link_resources
   types:
   - <xref:list>[<xref:azure.mgmt.search.models.SharedPrivateLinkResource>]
+- description: 'A system generated property representing the service''s etag that
+    can be for
+
+    optimistic concurrency control during updates.'
+  name: e_tag
+  types:
+  - <xref:str>
+- description: 'Indicates if the search service has an upgrade available. Known values
+
+    are: "notAvailable" and "available".'
+  name: upgrade_available
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.search.models.UpgradeAvailable>
+- description: 'The date and time the search service was last upgraded. This field
+
+    will be null until the service gets upgraded for the first time.'
+  name: service_upgraded_at
+  types:
+  - <xref:datetime.datetime>
