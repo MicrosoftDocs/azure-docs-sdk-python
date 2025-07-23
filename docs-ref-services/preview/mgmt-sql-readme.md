@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-sql, sql
-ms.date: 03/26/2025
+ms.date: 07/23/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: sql
