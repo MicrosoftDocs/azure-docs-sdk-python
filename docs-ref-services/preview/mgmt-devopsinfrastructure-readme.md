@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-devopsinfrastructure, devopsinfrastructure
-ms.date: 05/29/2024
+ms.date: 07/24/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: devopsinfrastructure
