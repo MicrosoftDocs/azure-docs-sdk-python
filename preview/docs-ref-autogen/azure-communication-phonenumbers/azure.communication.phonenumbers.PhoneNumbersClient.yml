@@ -25,9 +25,15 @@ constructor:
   - name: api_version
     description: 'Azure Communication Phone Number API version.
 
-      The default value is "2022-01-11-preview2".
+      The default value is "2025-06-01".
 
       Note that overriding this default value may result in unsupported behavior.'
+    types:
+    - <xref:str>
+  - name: accepted_language
+    description: 'The locale to display in the localized fields in responses. e.g.
+
+      ''en-US''. Default value is None.'
     types:
     - <xref:str>
 methods:
@@ -80,13 +86,10 @@ methods:
 
     Starts a long running operation to purchase all of the phone numbers in the reservation.
 
-    Purchase can only be started for active reservations that at least one phone number.
-    If any of
+    Purchase can only be started for active reservations that have at least one phone
+    number.
 
-    the phone numbers in the reservation is from a country where reselling is not
-    permitted, do not
-
-    resell agreement is required.
+    If any number requires a do-not-resell agreement, that agreement must be provided.
 
 
     The agreement to not resell is a legal requirement in some countries in order
@@ -361,7 +364,7 @@ methods:
   - name: reservation_id
     description: 'The ID of the reservation. It must be a valid UUID. If a reservation,
 
-      with that ID exists it will be updated; ortherwise a new reservation will be
+      with that ID exists it will be updated; otherwise a new reservation will be
       created.'
     types:
     - <xref:str>
@@ -456,8 +459,9 @@ methods:
 - uid: azure.communication.phonenumbers.PhoneNumbersClient.list_available_area_codes
   name: list_available_area_codes
   summary: Gets the list of available area codes.
-  signature: 'list_available_area_codes(country_code: str, phone_number_type: PhoneNumberType,
-    **kwargs: Any) -> ItemPaged[PhoneNumberAreaCode]'
+  signature: 'list_available_area_codes(country_code: str, phone_number_type: PhoneNumberType
+    | str, *, administrative_division: str | None = None, assignment_type: str | PhoneNumberAssignmentType
+    | None = None, locality: str | None = None, skip: int = 0, **kwargs: Any) -> ItemPaged[PhoneNumberAreaCode]'
   parameters:
   - name: country_code
     description: The ISO 3166-2 country/region two letter code, e.g. US. Required.
@@ -465,31 +469,36 @@ methods:
     types:
     - <xref:str>
   - name: phone_number_type
-    description: 'Filter by phone number type, e.g. Geographic, TollFree. Known values
-      are:
+    description: 'Filter by phone number type, e.g. geographic, tollFree, mobile.
 
-      "geographic" and "tollFree". Required.'
+      Required.'
     isRequired: true
     types:
+    - <xref:str>
     - <xref:azure.communication.phonenumbers.PhoneNumberType>
   keywordOnlyParameters:
   - name: assignment_type
-    description: 'Filter by assignmentType, e.g. User, Application. Known values are:
+    description: 'Filter by assignment type, e.g. User, Application. Known values
+      are:
 
       "person" and "application". Default value is None.'
+    defaultValue: None
     types:
+    - <xref:str>
     - <xref:azure.communication.phonenumbers.PhoneNumberAssignmentType>
   - name: locality
     description: 'The name of locality in which to search for the area code. e.g.
       Seattle.
 
       This is required if the phone number type is Geographic. Default value is None.'
+    defaultValue: None
     types:
     - <xref:str>
   - name: administrative_division
     description: 'The name of the state or province in which to search for the
 
       area code. e.g. California. Default value is None.'
+    defaultValue: None
     types:
     - <xref:str>
   - name: skip
@@ -497,6 +506,7 @@ methods:
       purposes. The
 
       default value is 0. Default value is 0.'
+    defaultValue: '0'
     types:
     - <xref:int>
   return:
@@ -511,13 +521,14 @@ methods:
 
 
     Gets the list of supported countries.'
-  signature: 'list_available_countries(**kwargs: Any) -> ItemPaged[PhoneNumberCountry]'
+  signature: 'list_available_countries(*, skip: int = 0, **kwargs: Any) -> ItemPaged[PhoneNumberCountry]'
   keywordOnlyParameters:
   - name: skip
     description: 'An optional parameter for how many entries to skip, for pagination
       purposes. The
 
       default value is 0. Default value is 0.'
+    defaultValue: '0'
     types:
     - <xref:int>
   return:
@@ -532,7 +543,9 @@ methods:
 
 
     Gets the list of cities or towns with available phone numbers.'
-  signature: 'list_available_localities(country_code: str, **kwargs: Any) -> ItemPaged[PhoneNumberLocality]'
+  signature: 'list_available_localities(country_code: str, *, phone_number_type: str
+    | PhoneNumberType | None = None, administrative_division: str | None = None, skip:
+    int = 0, **kwargs: Any) -> ItemPaged[PhoneNumberLocality]'
   parameters:
   - name: country_code
     description: The ISO 3166-2 country/region two letter code, e.g. US. Required.
@@ -540,10 +553,19 @@ methods:
     types:
     - <xref:str>
   keywordOnlyParameters:
+  - name: phone_number_type
+    description: 'An optional parameter for the type of phone numbers,
+
+      e.g. geographic, tollFree, mobile. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.communication.phonenumbers.PhoneNumberType>
   - name: administrative_division
     description: 'An optional parameter for the name of the state or province
 
       in which to search for the area code. e.g. California. Default value is None.'
+    defaultValue: None
     types:
     - <xref:str>
   - name: skip
@@ -551,6 +573,7 @@ methods:
       purposes. The
 
       default value is 0. Default value is 0.'
+    defaultValue: '0'
     types:
     - <xref:int>
   return:
@@ -565,7 +588,9 @@ methods:
 
 
     List available offerings of capabilities with rates for the given country/region.'
-  signature: 'list_available_offerings(country_code: str, **kwargs: Any) -> ItemPaged[PhoneNumberOffering]'
+  signature: 'list_available_offerings(country_code: str, *, phone_number_type: str
+    | PhoneNumberType | None = None, assignment_type: str | PhoneNumberAssignmentType
+    | None = None, skip: int = 0, **kwargs: Any) -> ItemPaged[PhoneNumberOffering]'
   parameters:
   - name: country_code
     description: The ISO 3166-2 country/region two letter code, e.g. US. Required.
@@ -574,22 +599,28 @@ methods:
     - <xref:str>
   keywordOnlyParameters:
   - name: phone_number_type
-    description: 'Filter by phoneNumberType, e.g. Geographic, TollFree. Known values
+    description: 'Filter by phone number type, e.g. geographic, tollFree, mobile.
 
-      are: "geographic" and "tollFree". Default value is None.'
+      Default value is None.'
+    defaultValue: None
     types:
+    - <xref:str>
     - <xref:azure.communication.phonenumbers.PhoneNumberType>
   - name: assignment_type
-    description: 'Filter by assignmentType, e.g. User, Application. Known values are:
+    description: 'Filter by assignment type, e.g. User, Application. Known values
+      are:
 
       "person" and "application". Default value is None.'
+    defaultValue: None
     types:
+    - <xref:str>
     - <xref:azure.communication.phonenumbers.PhoneNumberAssignmentType>
   - name: skip
     description: 'An optional parameter for how many entries to skip, for pagination
       purposes. The
 
       default value is 0. Default value is 0.'
+    defaultValue: '0'
     types:
     - <xref:int>
   return:
@@ -601,13 +632,14 @@ methods:
 - uid: azure.communication.phonenumbers.PhoneNumbersClient.list_purchased_phone_numbers
   name: list_purchased_phone_numbers
   summary: Gets the list of all purchased phone numbers.
-  signature: 'list_purchased_phone_numbers(**kwargs: Any) -> ItemPaged[PurchasedPhoneNumber]'
+  signature: 'list_purchased_phone_numbers(*, skip: int = 0, **kwargs: Any) -> ItemPaged[PurchasedPhoneNumber]'
   keywordOnlyParameters:
   - name: skip
     description: 'An optional parameter for how many entries to skip, for pagination
       purposes. The
 
       default value is 0. Default value is 0.'
+    defaultValue: '0'
     types:
     - <xref:int>
   - name: top
