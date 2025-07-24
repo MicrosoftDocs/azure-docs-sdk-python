@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: carbonoptimization
 ---
-# Azure Carbonoptimization SDK for Python - preview
-## Packages - preview
+# Azure Carbonoptimization SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](carbonoptimization-index.md)]
