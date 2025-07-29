@@ -1,3 +1,3 @@
 | Reference | Package | Source |
 |---|---|---|
-|[unknown](messaging-webpubsubclient-readme.md)|[azure-messaging-webpubsubclient](https://pypi.org/project/azure-messaging-webpubsubclient)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/webpubsub/azure-messaging-webpubsubclient)|
+|[unknown](monitor-querymetrics-readme.md)|[azure-monitor-querymetrics](https://pypi.org/project/azure-monitor-querymetrics)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/monitor/azure-monitor-querymetrics)|

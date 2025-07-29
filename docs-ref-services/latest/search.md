@@ -1,7 +1,7 @@
 ---
 title: Azure Search SDK for Python
 description: Reference for Azure Search SDK for Python
-ms.date: 07/28/2025
+ms.date: 07/29/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: cognitive-search
