@@ -13,11 +13,12 @@ constructor:
     None = None, replica_count: int = 1, partition_count: int = 1, endpoint: str |
     None = None, hosting_mode: str | _models.HostingMode = ''default'', compute_type:
     str | _models.ComputeType | None = None, public_network_access: str | _models.PublicNetworkAccess
-    = ''enabled'', network_rule_set: _models.NetworkRuleSet | None = None, disabled_data_exfiltration_options:
-    List[str | _models.SearchDisabledDataExfiltrationOption] | None = None, encryption_with_cmk:
+    = ''enabled'', network_rule_set: _models.NetworkRuleSet | None = None, data_exfiltration_protections:
+    List[str | _models.SearchDataExfiltrationProtection] | None = None, encryption_with_cmk:
     _models.EncryptionWithCmk | None = None, disable_local_auth: bool | None = None,
     auth_options: _models.DataPlaneAuthOptions | None = None, semantic_search: str
-    | _models.SearchSemanticSearch | None = None, **kwargs: Any)'
+    | _models.SearchSemanticSearch | None = None, upgrade_available: str | _models.UpgradeAvailable
+    | None = None, **kwargs: Any)'
   keywordOnlyParameters:
   - name: sku
     description: 'The SKU of the search service, which determines price tier and capacity
@@ -103,7 +104,7 @@ constructor:
     description: 'Configure this property to support the search service using either
       the
 
-      default compute or Azure Confidential Compute. Known values are: "default" and
+      Default Compute or Azure Confidential Compute. Known values are: "default" and
       "confidential".'
     defaultValue: None
     types:
@@ -118,7 +119,7 @@ constructor:
       is not allowed, and private endpoint connections would be the exclusive access
       method. Known
 
-      values are: "enabled" and "disabled".'
+      values are: "enabled", "disabled", and "securedByPerimeter".'
     defaultValue: enabled
     types:
     - <xref:str>
@@ -130,7 +131,7 @@ constructor:
     defaultValue: None
     types:
     - <xref:azure.mgmt.search.models.NetworkRuleSet>
-  - name: disabled_data_exfiltration_options
+  - name: data_exfiltration_protections
     description: 'A list of data exfiltration scenarios that are
 
       explicitly disallowed for the search service. Currently, the only supported
@@ -143,7 +144,7 @@ constructor:
     defaultValue: None
     types:
     - <xref:list>[<xref:str>
-    - <xref:azure.mgmt.search.models.SearchDisabledDataExfiltrationOption>]
+    - <xref:azure.mgmt.search.models.SearchDataExfiltrationProtection>]
   - name: encryption_with_cmk
     description: 'Specifies any policy regarding encryption of resources (such as
 
@@ -180,11 +181,18 @@ constructor:
     types:
     - <xref:str>
     - <xref:azure.mgmt.search.models.SearchSemanticSearch>
-variables:
-- description: 'Fully qualified resource ID for the resource. Ex -
+  - name: upgrade_available
+    description: 'Indicates if the search service has an upgrade available. Known
 
-    /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.  #
-    pylint: disable=line-too-long'
+      values are: "notAvailable" and "available".'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.search.models.UpgradeAvailable>
+variables:
+- description: 'Fully qualified resource ID for the resource. E.g.
+
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".'
   name: id
   types:
   - <xref:str>
@@ -199,6 +207,12 @@ variables:
   name: type
   types:
   - <xref:str>
+- description: 'Azure Resource Manager metadata containing createdBy and modifiedBy
+
+    information.'
+  name: system_data
+  types:
+  - <xref:azure.mgmt.search.models.SystemData>
 - description: 'The SKU of the search service, which determines price tier and capacity
     limits. This
 
@@ -227,12 +241,6 @@ variables:
   name: identity
   types:
   - <xref:azure.mgmt.search.models.Identity>
-- description: 'Azure Resource Manager metadata containing createdBy and modifiedBy
-
-    information.'
-  name: system_data
-  types:
-  - <xref:azure.mgmt.search.models.SystemData>
 - description: 'The number of replicas in the search service. If specified, it must
     be a
 
@@ -276,7 +284,7 @@ variables:
 - description: 'Configure this property to support the search service using either
     the
 
-    default compute or Azure Confidential Compute. Known values are: "default" and
+    Default Compute or Azure Confidential Compute. Known values are: "default" and
     "confidential".'
   name: compute_type
   types:
@@ -290,7 +298,7 @@ variables:
     is not allowed, and private endpoint connections would be the exclusive access
     method. Known
 
-    values are: "enabled" and "disabled".'
+    values are: "enabled", "disabled", and "securedByPerimeter".'
   name: public_network_access
   types:
   - <xref:str>
@@ -357,10 +365,10 @@ variables:
     ''Succeeded'' directly in the call to Create search service. This is because the
     free service
 
-    uses capacity that is already set up. Known values are: "Succeeded", "Provisioning",
+    uses capacity that is already set up. Known values are: "succeeded", "provisioning",
     and
 
-    "Failed".'
+    "failed".'
   name: provisioning_state
   types:
   - <xref:str>
@@ -371,19 +379,17 @@ variables:
   name: network_rule_set
   types:
   - <xref:azure.mgmt.search.models.NetworkRuleSet>
-- description: 'A list of data exfiltration scenarios that are
+- description: 'A list of data exfiltration scenarios that are explicitly
 
-    explicitly disallowed for the search service. Currently, the only supported value
-    is ''All'' to
+    disallowed for the search service. Currently, the only supported value is ''All''
+    to disable all
 
-    disable all possible data export scenarios with more fine grained controls planned
-    for the
-
+    possible data export scenarios with more fine grained controls planned for the
     future.'
-  name: disabled_data_exfiltration_options
+  name: data_exfiltration_protections
   types:
   - <xref:list>[<xref:str>
-  - <xref:azure.mgmt.search.models.SearchDisabledDataExfiltrationOption>]
+  - <xref:azure.mgmt.search.models.SearchDataExfiltrationProtection>]
 - description: 'Specifies any policy regarding encryption of resources (such as
 
     indexes) using customer manager keys within a search service.'
@@ -433,13 +439,16 @@ variables:
   name: e_tag
   types:
   - <xref:str>
-- description: Indicates whether or not the search service has an upgrade available.
+- description: 'Indicates if the search service has an upgrade available. Known values
+
+    are: "notAvailable" and "available".'
   name: upgrade_available
   types:
-  - <xref:bool>
+  - <xref:str>
+  - <xref:azure.mgmt.search.models.UpgradeAvailable>
 - description: 'The date and time the search service was last upgraded. This field
 
     will be null until the service gets upgraded for the first time.'
-  name: service_upgrade_date
+  name: service_upgraded_at
   types:
   - <xref:datetime.datetime>
