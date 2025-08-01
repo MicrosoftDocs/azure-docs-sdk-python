@@ -12,7 +12,7 @@ summary: 'The Azure SQL Database management API provides a RESTful set of web se
   update, and delete databases.'
 constructor:
   syntax: 'SqlManagementClient(credential: AsyncTokenCredential, subscription_id:
-    str, base_url: str = ''https://management.azure.com'', **kwargs: Any)'
+    str, base_url: str | None = None, **kwargs: Any)'
   parameters:
   - name: credential
     description: Credential needed for the client to connect to Azure. Required.
@@ -25,13 +25,13 @@ constructor:
     types:
     - <xref:str>
   - name: base_url
-    description: Service URL. Default value is "`https://management.azure.com`".
-    defaultValue: https://management.azure.com
+    description: Service URL. Default value is None.
+    defaultValue: None
     types:
     - <xref:str>
   keywordOnlyParameters:
   - name: api_version
-    description: 'Api Version. Default value is "2024-05-01-preview". Note that overriding
+    description: 'Api Version. Default value is "2024-11-01-preview". Note that overriding
 
       this default value may result in unsupported behavior.'
     types:
@@ -69,18 +69,6 @@ variables:
   name: extended_server_blob_auditing_policies
   types:
   - <xref:azure.mgmt.sql.aio.operations.ExtendedServerBlobAuditingPoliciesOperations>
-- description: DataMaskingPoliciesOperations operations
-  name: data_masking_policies
-  types:
-  - <xref:azure.mgmt.sql.aio.operations.DataMaskingPoliciesOperations>
-- description: DataMaskingRulesOperations operations
-  name: data_masking_rules
-  types:
-  - <xref:azure.mgmt.sql.aio.operations.DataMaskingRulesOperations>
-- description: DataWarehouseUserActivitiesOperations operations
-  name: data_warehouse_user_activities
-  types:
-  - <xref:azure.mgmt.sql.aio.operations.DataWarehouseUserActivitiesOperations>
 - description: DatabaseAdvancedThreatProtectionSettingsOperations operations
   name: database_advanced_threat_protection_settings
   types:
@@ -113,6 +101,10 @@ variables:
   name: database_recommended_actions
   types:
   - <xref:azure.mgmt.sql.aio.operations.DatabaseRecommendedActionsOperations>
+- description: DatabasesOperations operations
+  name: databases
+  types:
+  - <xref:azure.mgmt.sql.aio.operations.DatabasesOperations>
 - description: DatabaseSchemasOperations operations
   name: database_schemas
   types:
@@ -157,20 +149,28 @@ variables:
   name: database_vulnerability_assessment_rule_baselines
   types:
   - <xref:azure.mgmt.sql.aio.operations.DatabaseVulnerabilityAssessmentRuleBaselinesOperations>
+- description: DatabaseVulnerabilityAssessmentsOperations operations
+  name: database_vulnerability_assessments
+  types:
+  - <xref:azure.mgmt.sql.aio.operations.DatabaseVulnerabilityAssessmentsOperations>
 - description: 'DatabaseVulnerabilityAssessmentScansOperations
 
     operations'
   name: database_vulnerability_assessment_scans
   types:
   - <xref:azure.mgmt.sql.aio.operations.DatabaseVulnerabilityAssessmentScansOperations>
-- description: DatabaseVulnerabilityAssessmentsOperations operations
-  name: database_vulnerability_assessments
+- description: DataMaskingPoliciesOperations operations
+  name: data_masking_policies
   types:
-  - <xref:azure.mgmt.sql.aio.operations.DatabaseVulnerabilityAssessmentsOperations>
-- description: DatabasesOperations operations
-  name: databases
+  - <xref:azure.mgmt.sql.aio.operations.DataMaskingPoliciesOperations>
+- description: DataMaskingRulesOperations operations
+  name: data_masking_rules
   types:
-  - <xref:azure.mgmt.sql.aio.operations.DatabasesOperations>
+  - <xref:azure.mgmt.sql.aio.operations.DataMaskingRulesOperations>
+- description: DataWarehouseUserActivitiesOperations operations
+  name: data_warehouse_user_activities
+  types:
+  - <xref:azure.mgmt.sql.aio.operations.DataWarehouseUserActivitiesOperations>
 - description: DeletedServersOperations operations
   name: deleted_servers
   types:
@@ -207,22 +207,22 @@ variables:
   name: geo_backup_policies
   types:
   - <xref:azure.mgmt.sql.aio.operations.GeoBackupPoliciesOperations>
-- description: IPv6FirewallRulesOperations operations
-  name: ipv6_firewall_rules
-  types:
-  - <xref:azure.mgmt.sql.aio.operations.IPv6FirewallRulesOperations>
 - description: InstanceFailoverGroupsOperations operations
   name: instance_failover_groups
   types:
   - <xref:azure.mgmt.sql.aio.operations.InstanceFailoverGroupsOperations>
-- description: InstancePoolsOperations operations
-  name: instance_pools
-  types:
-  - <xref:azure.mgmt.sql.aio.operations.InstancePoolsOperations>
 - description: InstancePoolOperationsOperations operations
   name: instance_pool_operations
   types:
   - <xref:azure.mgmt.sql.aio.operations.InstancePoolOperationsOperations>
+- description: InstancePoolsOperations operations
+  name: instance_pools
+  types:
+  - <xref:azure.mgmt.sql.aio.operations.InstancePoolsOperations>
+- description: IPv6FirewallRulesOperations operations
+  name: ipv6_firewall_rules
+  types:
+  - <xref:azure.mgmt.sql.aio.operations.IPv6FirewallRulesOperations>
 - description: JobAgentsOperations operations
   name: job_agents
   types:
@@ -239,6 +239,10 @@ variables:
   name: job_private_endpoints
   types:
   - <xref:azure.mgmt.sql.aio.operations.JobPrivateEndpointsOperations>
+- description: JobsOperations operations
+  name: jobs
+  types:
+  - <xref:azure.mgmt.sql.aio.operations.JobsOperations>
 - description: JobStepExecutionsOperations operations
   name: job_step_executions
   types:
@@ -259,10 +263,6 @@ variables:
   name: job_versions
   types:
   - <xref:azure.mgmt.sql.aio.operations.JobVersionsOperations>
-- description: JobsOperations operations
-  name: jobs
-  types:
-  - <xref:azure.mgmt.sql.aio.operations.JobsOperations>
 - description: LedgerDigestUploadsOperations operations
   name: ledger_digest_uploads
   types:
@@ -315,6 +315,10 @@ variables:
   name: managed_database_restore_details
   types:
   - <xref:azure.mgmt.sql.aio.operations.ManagedDatabaseRestoreDetailsOperations>
+- description: ManagedDatabasesOperations operations
+  name: managed_databases
+  types:
+  - <xref:azure.mgmt.sql.aio.operations.ManagedDatabasesOperations>
 - description: ManagedDatabaseSchemasOperations operations
   name: managed_database_schemas
   types:
@@ -351,18 +355,14 @@ variables:
   name: managed_database_vulnerability_assessment_rule_baselines
   types:
   - <xref:azure.mgmt.sql.aio.operations.ManagedDatabaseVulnerabilityAssessmentRuleBaselinesOperations>
-- description: ManagedDatabaseVulnerabilityAssessmentScansOperations operations
-  name: managed_database_vulnerability_assessment_scans
-  types:
-  - <xref:azure.mgmt.sql.aio.operations.ManagedDatabaseVulnerabilityAssessmentScansOperations>
 - description: ManagedDatabaseVulnerabilityAssessmentsOperations operations
   name: managed_database_vulnerability_assessments
   types:
   - <xref:azure.mgmt.sql.aio.operations.ManagedDatabaseVulnerabilityAssessmentsOperations>
-- description: ManagedDatabasesOperations operations
-  name: managed_databases
+- description: ManagedDatabaseVulnerabilityAssessmentScansOperations operations
+  name: managed_database_vulnerability_assessment_scans
   types:
-  - <xref:azure.mgmt.sql.aio.operations.ManagedDatabasesOperations>
+  - <xref:azure.mgmt.sql.aio.operations.ManagedDatabaseVulnerabilityAssessmentScansOperations>
 - description: ManagedInstanceAdministratorsOperations operations
   name: managed_instance_administrators
   types:
@@ -407,6 +407,10 @@ variables:
   name: managed_instance_private_link_resources
   types:
   - <xref:azure.mgmt.sql.aio.operations.ManagedInstancePrivateLinkResourcesOperations>
+- description: ManagedInstancesOperations operations
+  name: managed_instances
+  types:
+  - <xref:azure.mgmt.sql.aio.operations.ManagedInstancesOperations>
 - description: ManagedInstanceTdeCertificatesOperations operations
   name: managed_instance_tde_certificates
   types:
@@ -415,10 +419,6 @@ variables:
   name: managed_instance_vulnerability_assessments
   types:
   - <xref:azure.mgmt.sql.aio.operations.ManagedInstanceVulnerabilityAssessmentsOperations>
-- description: ManagedInstancesOperations operations
-  name: managed_instances
-  types:
-  - <xref:azure.mgmt.sql.aio.operations.ManagedInstancesOperations>
 - description: ManagedLedgerDigestUploadsOperations operations
   name: managed_ledger_digest_uploads
   types:
@@ -538,6 +538,10 @@ variables:
   name: server_operations
   types:
   - <xref:azure.mgmt.sql.aio.operations.ServerOperationsOperations>
+- description: ServersOperations operations
+  name: servers
+  types:
+  - <xref:azure.mgmt.sql.aio.operations.ServersOperations>
 - description: ServerSecurityAlertPoliciesOperations operations
   name: server_security_alert_policies
   types:
@@ -558,10 +562,6 @@ variables:
   name: server_vulnerability_assessments
   types:
   - <xref:azure.mgmt.sql.aio.operations.ServerVulnerabilityAssessmentsOperations>
-- description: ServersOperations operations
-  name: servers
-  types:
-  - <xref:azure.mgmt.sql.aio.operations.ServersOperations>
 - description: SqlAgentOperations operations
   name: sql_agent
   types:
