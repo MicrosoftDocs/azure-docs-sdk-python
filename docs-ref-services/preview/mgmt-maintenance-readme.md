@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-maintenance, maintenance
-ms.date: 05/20/2024
+ms.date: 08/01/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: maintenance
