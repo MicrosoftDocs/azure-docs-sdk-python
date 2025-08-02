@@ -6,21 +6,25 @@ module: azure.ai.evaluation
 summary: "> [!NOTE]\n> This is an experimental class, and may change at any time.\
   \ Please see [https://aka.ms/azuremlexperimental](https://aka.ms/azuremlexperimental)\
   \ for more information.\n>\n\nThe Tool Call Accuracy evaluator assesses how accurately\
-  \ an AI uses tools by examining:\n   * Relevance to the conversation \n\n   * Parameter\
-  \ correctness according to tool definitions \n\n   * Parameter value extraction\
-  \ from the conversation \n\nThe evaluator uses a binary scoring system (0 or 1):\n\
-  \   * Score 0: The tool call is irrelevant or contains information not in the conversation/definition\
-  \ \n\n   * Score 1: The tool call is relevant with properly extracted parameters\
-  \ from the conversation \n\nThis evaluation focuses on measuring whether tool calls\
-  \ meaningfully contribute to addressing\nuser needs while properly following tool\
-  \ definitions and using information present in the\nconversation history.\n\n> [!NOTE]\n\
-  > To align with our support of a diverse set of models, an output key without the\
-  \ gpt_ prefix has been added.\n>\n> To maintain backwards compatibility, the old\
-  \ key with the gpt_ prefix is still be present in the output;\n>\n> however, it\
-  \ is recommended to use the new key moving forward as the old key will be deprecated\
-  \ in the future.\n>"
+  \ an AI uses tools by examining:\n   * Relevance to the conversation. \n\n   * Parameter\
+  \ correctness according to tool definitions. \n\n   * Parameter value extraction\
+  \ from the conversation. \n\nThe evaluator uses a scoring rubric of 1 to 5:\n  \
+  \ * Score 1: The tool calls are irrelevant \n\n   * Score 2: The tool calls are\
+  \ partially relevant, but not enough tools were called or the parameters were not\
+  \ correctly passed. \n\n   * Score 3: The tool calls are relevant, but there were\
+  \ unnecessary, excessive tool calls made. \n\n   * Score 4: The tool calls are relevant,\
+  \ but some tools returned errors and agent retried calling them again and succeeded.\
+  \ \n\n   * Score 5: The tool calls are relevant, and all parameters were correctly\
+  \ passed. \n\nThis evaluation focuses on measuring whether tool calls meaningfully\
+  \ contribute to addressing\nuser needs while properly following tool definitions\
+  \ and using information present in the\nconversation history.\n\n> [!NOTE]\n> To\
+  \ align with our support of a diverse set of models, an output key without the gpt_\
+  \ prefix has been added.\n>\n> To maintain backwards compatibility, the old key\
+  \ with the gpt_ prefix is still be present in the output;\n>\n> however, it is recommended\
+  \ to use the new key moving forward as the old key will be deprecated in the future.\n\
+  >"
 constructor:
-  syntax: ToolCallAccuracyEvaluator(model_config, *, threshold=0.8, **kwargs)
+  syntax: ToolCallAccuracyEvaluator(model_config, *, threshold=3, **kwargs)
   parameters:
   - name: model_config
     description: Configuration for the Azure OpenAI model.
@@ -30,14 +34,14 @@ constructor:
       <xref:azure.ai.evaluation.OpenAIModelConfiguration>]
   keywordOnlyParameters:
   - name: threshold
-    defaultValue: '0.8'
+    defaultValue: '3'
 examples:
 - "Initialize and call ToolCallAccuracyEvaluator using Azure AI Project URL in the\
   \ following format\n[https:/](https:/)/{resource_name}.services.ai.azure.com/api/projects/{project_name}<!--[!code-python[Main](les\\\
   evaluation_samples_evaluate_fdp.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
   classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"\
   C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\
-  \\dist_temp\\\\15\\\\azure_ai_evaluation-1.9.0\\\\samples\\\\evaluation_samples_evaluate_fdp.py\"\
+  \\dist_temp\\\\15\\\\azure_ai_evaluation-1.10.0\\\\samples\\\\evaluation_samples_evaluate_fdp.py\"\
   , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
   : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
   \   from azure.ai.evaluation import ToolCallAccuracyEvaluator\n\n   model_config\
@@ -62,4 +66,4 @@ attributes:
   name: id
   summary: Evaluator identifier, experimental and to be used only with evaluation
     in cloud.
-  signature: id = 'id'
+  signature: id = 'azureai://built-in/evaluators/tool_call_accuracy'
