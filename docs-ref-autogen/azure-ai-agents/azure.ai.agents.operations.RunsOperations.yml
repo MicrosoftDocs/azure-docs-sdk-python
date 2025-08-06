@@ -34,20 +34,20 @@ methods:
     | None = None, content_type: str = ''application/json'', model: str | None = None,
     instructions: str | None = None, additional_instructions: str | None = None, additional_messages:
     List[_models.ThreadMessageOptions] | None = None, tools: List[_models.ToolDefinition]
-    | None = None, temperature: float | None = None, top_p: float | None = None, max_prompt_tokens:
-    int | None = None, max_completion_tokens: int | None = None, truncation_strategy:
-    _models.TruncationObject | None = None, tool_choice: ''_types.AgentsToolChoiceOption''
-    | None = None, response_format: ''_types.AgentsResponseFormatOption'' | None =
-    None, parallel_tool_calls: bool | None = None, metadata: Dict[str, str] | None
-    = None, **kwargs: Any) -> _models.ThreadRun'
+    | None = None, tool_resources: _models.ToolResources | None = None, temperature:
+    float | None = None, top_p: float | None = None, max_prompt_tokens: int | None
+    = None, max_completion_tokens: int | None = None, truncation_strategy: _models.TruncationObject
+    | None = None, tool_choice: ''_types.AgentsToolChoiceOption'' | None = None, response_format:
+    ''_types.AgentsResponseFormatOption'' | None = None, parallel_tool_calls: bool
+    | None = None, metadata: Dict[str, str] | None = None, **kwargs: Any) -> _models.ThreadRun'
   parameters:
   - name: thread_id
-    description: Required.
+    description: The ID of the thread to run.
     isRequired: true
     types:
     - <xref:str>
   - name: body
-    description: Is either a JSON type or a IO[bytes] type. Required.
+    description: The run configuration data, either as JSON or binary content.
     types:
     - <xref:JSON>
     - <xref:typing.IO>[<xref:bytes>]
@@ -66,8 +66,8 @@ methods:
     - <xref:list>[<xref:str>
     - <xref:azure.ai.agents.models.RunAdditionalFieldList>]
   - name: agent_id
-    description: The ID of the agent that should run the thread. Required.
-    defaultValue: <object object at 0x00000163A99EE670>
+    description: The ID of the agent that should run the thread.
+    defaultValue: <object object at 0x000001A89A10E670>
     types:
     - <xref:str>
   - name: model
@@ -110,6 +110,14 @@ methods:
     defaultValue: None
     types:
     - <xref:list>[<xref:azure.ai.agents.models.ToolDefinition>]
+  - name: tool_resources
+    description: 'The overridden enabled tool resources that the agent should use
+      to run
+
+      the thread. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agents.models.ToolResources>
   - name: temperature
     description: 'What sampling temperature to use, between 0 and 2. Higher values
       like 0.8
@@ -196,15 +204,13 @@ methods:
   - name: response_format
     description: 'Specifies the format that the model must output. Is one of the
 
-      following types: str, Union[str, "_models.AgentsApiResponseFormatMode"],
+      following types: str, Union[str, "_models.AgentsResponseFormatMode"],
 
-      AgentsApiResponseFormat Default value is None.'
+      AgentsResponseFormat Default value is None.'
     defaultValue: None
     types:
-    - <xref:str>
-    - <xref:str>
-    - <xref:azure.ai.agents.models.AgentsApiResponseFormatMode>
-    - <xref:azure.ai.agents.models.AgentsApiResponseFormat>
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:azure.ai.agents.models.AgentsResponseFormatMode>,
+      <xref:azure.ai.agents.models.AgentsResponseFormat>, <xref:azure.ai.agents.models.ResponseFormatJsonSchemaType>]]
   - name: parallel_tool_calls
     description: 'If `true` functions will run in parallel during tool use.
 
@@ -234,7 +240,7 @@ methods:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.ai.agents.operations.RunsOperations.create_and_process
   name: create_and_process
-  summary: Creates a new run for an agent thread and processes the run.
+  summary: Create a run and process it to completion.
   signature: 'create_and_process(thread_id: str, *, agent_id: str, include: List[str
     | RunAdditionalFieldList] | None = None, model: str | None = None, instructions:
     str | None = None, additional_instructions: str | None = None, additional_messages:
@@ -247,13 +253,13 @@ methods:
     Any) -> ThreadRun'
   parameters:
   - name: thread_id
-    description: Required.
+    description: The ID of the thread to run.
     isRequired: true
     types:
     - <xref:str>
   keywordOnlyParameters:
   - name: agent_id
-    description: The ID of the agent that should run the thread. Required.
+    description: The ID of agent used for runs execution.
     types:
     - <xref:str>
   - name: include
@@ -393,15 +399,13 @@ methods:
   - name: response_format
     description: 'Specifies the format that the model must output. Is one of the
 
-      following types: str, Union[str, "_models.AgentsApiResponseFormatMode"],
+      following types: str, Union[str, "_models.AgentsResponseFormatMode"],
 
-      AgentsApiResponseFormat Default value is None.'
+      AgentsResponseFormat Default value is None.'
     defaultValue: None
     types:
-    - <xref:str>
-    - <xref:str>
-    - <xref:azure.ai.agents.models.AgentsApiResponseFormatMode>
-    - <xref:azure.ai.agents.models.AgentsApiResponseFormat>
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:azure.ai.agents.models.AgentsResponseFormatMode>,
+      <xref:azure.ai.agents.models.AgentsResponseFormat>, <xref:azure.ai.agents.models.ResponseFormatJsonSchemaType>]]
   - name: parallel_tool_calls
     description: 'If `true` functions will run in parallel during tool use.
 
@@ -463,7 +467,7 @@ methods:
   name: list
   summary: Gets a list of runs for a specified thread.
   signature: 'list(thread_id: str, *, limit: int | None = None, order: str | ListSortOrder
-    | None = None, before: str | None = None, **kwargs: Any) -> Iterable[ThreadRun]'
+    | None = None, before: str | None = None, **kwargs: Any) -> ItemPaged[ThreadRun]'
   parameters:
   - name: thread_id
     description: Identifier of the thread. Required.
@@ -519,21 +523,21 @@ methods:
     | None = None, agent_id: str, content_type: str = ''application/json'', model:
     str | None = None, instructions: str | None = None, additional_instructions: str
     | None = None, additional_messages: List[_models.ThreadMessageOptions] | None
-    = None, tools: List[_models.ToolDefinition] | None = None, temperature: float
-    | None = None, top_p: float | None = None, max_prompt_tokens: int | None = None,
-    max_completion_tokens: int | None = None, truncation_strategy: _models.TruncationObject
-    | None = None, tool_choice: ''_types.AgentsToolChoiceOption'' | None = None, response_format:
-    ''_types.AgentsResponseFormatOption'' | None = None, parallel_tool_calls: bool
-    | None = None, metadata: Dict[str, str] | None = None, event_handler: None = None,
-    **kwargs: Any) -> _models.AgentRunStream[_models.AgentEventHandler]'
+    = None, tools: List[_models.ToolDefinition] | None = None, tool_resources: _models.ToolResources
+    | None = None, temperature: float | None = None, top_p: float | None = None, max_prompt_tokens:
+    int | None = None, max_completion_tokens: int | None = None, truncation_strategy:
+    _models.TruncationObject | None = None, tool_choice: ''_types.AgentsToolChoiceOption''
+    | None = None, response_format: ''_types.AgentsResponseFormatOption'' | None =
+    None, parallel_tool_calls: bool | None = None, metadata: Dict[str, str] | None
+    = None, event_handler: None = None, **kwargs: Any) -> _models.AgentRunStream[_models.AgentEventHandler]'
   parameters:
   - name: thread_id
-    description: Required.
+    description: The ID of the thread to create a run stream for.
     isRequired: true
     types:
     - <xref:str>
   - name: body
-    description: Is either a JSON type or a IO[bytes] type. Required.
+    description: The run configuration data, either as JSON or binary content.
     types:
     - <xref:JSON>
     - <xref:typing.IO>[<xref:bytes>]
@@ -552,8 +556,8 @@ methods:
     - <xref:list>[<xref:str>
     - <xref:azure.ai.agents.models.RunAdditionalFieldList>]
   - name: agent_id
-    description: The ID of the agent that should run the thread. Required.
-    defaultValue: <object object at 0x00000163A99EE670>
+    description: The ID of the agent that should run the thread.
+    defaultValue: <object object at 0x000001A89A10E670>
     types:
     - <xref:str>
   - name: model
@@ -596,6 +600,14 @@ methods:
     defaultValue: None
     types:
     - <xref:list>[<xref:azure.ai.agents.models.ToolDefinition>]
+  - name: tool_resources
+    description: 'The overridden enabled tool resources that the agent should use
+      to run
+
+      the thread. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agents.models.ToolResources>
   - name: temperature
     description: 'What sampling temperature to use, between 0 and 2. Higher values
       like 0.8
@@ -682,15 +694,13 @@ methods:
   - name: response_format
     description: 'Specifies the format that the model must output. Is one of the
 
-      following types: str, Union[str, "_models.AgentsApiResponseFormatMode"],
+      following types: str, Union[str, "_models.AgentsResponseFormatMode"],
 
-      AgentsApiResponseFormat Default value is None.'
+      AgentsResponseFormat Default value is None.'
     defaultValue: None
     types:
-    - <xref:str>
-    - <xref:str>
-    - <xref:azure.ai.agents.models.AgentsApiResponseFormatMode>
-    - <xref:azure.ai.agents.models.AgentsApiResponseFormat>
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:azure.ai.agents.models.AgentsResponseFormatMode>,
+      <xref:azure.ai.agents.models.AgentsResponseFormat>, <xref:azure.ai.agents.models.ResponseFormatJsonSchemaType>]]
   - name: parallel_tool_calls
     description: 'If `true` functions will run in parallel during tool use.
 
@@ -740,24 +750,25 @@ methods:
     | None = None, **kwargs: Any) -> _models.ThreadRun'
   parameters:
   - name: thread_id
-    description: Required.
+    description: The ID of the thread that contains the run waiting for tool outputs
+      to be submitted.
     isRequired: true
     types:
     - <xref:str>
   - name: run_id
-    description: Required.
+    description: The ID of the run waiting for tool outputs to be submitted.
     isRequired: true
     types:
     - <xref:str>
   - name: body
-    description: Is either a JSON type or a IO[bytes] type. Required.
+    description: The tool outputs to submit, either as JSON or binary content.
     types:
     - <xref:JSON>
     - <xref:typing.IO>[<xref:bytes>]
   keywordOnlyParameters:
   - name: tool_outputs
     description: Required.
-    defaultValue: <object object at 0x00000163A99EE670>
+    defaultValue: <object object at 0x000001A89A10E670>
     types:
     - <xref:list>[<xref:azure.ai.agents.models.ToolOutput>]
   return:
@@ -781,24 +792,25 @@ methods:
     = ''application/json'', **kwargs: Any) -> None'
   parameters:
   - name: thread_id
-    description: Required.
+    description: The ID of the thread that contains the run waiting for tool outputs
+      to be submitted.
     isRequired: true
     types:
     - <xref:str>
   - name: run_id
-    description: Required.
+    description: The ID of the run waiting for tool outputs to be submitted.
     isRequired: true
     types:
     - <xref:str>
   - name: body
-    description: Is either a JSON type or a IO[bytes] type. Required.
+    description: The tool call results serialized to JSON or binary data.
     types:
     - <xref:JSON>
     - <xref:typing.IO>[<xref:bytes>]
   keywordOnlyParameters:
   - name: tool_outputs
     description: Required.
-    defaultValue: <object object at 0x00000163A99EE670>
+    defaultValue: <object object at 0x000001A89A10E670>
     types:
     - <xref:list>[<xref:azure.ai.agents.models.ToolOutput>]
   - name: event_handler
