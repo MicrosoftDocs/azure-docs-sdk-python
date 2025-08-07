@@ -1,17 +1,17 @@
 ---
 title: Azure Identity client library for Python
 keywords: Azure, python, SDK, API, azure-identity, entra-id
-ms.date: 07/15/2025
+ms.date: 08/07/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: entra-id
 ---
-# Azure Identity client library for Python - version 1.23.1 
+# Azure Identity client library for Python - version 1.24.0 
 
 
 The Azure Identity library provides [Microsoft Entra ID](https://learn.microsoft.com/entra/fundamentals/whatis) ([formerly Azure Active Directory](https://learn.microsoft.com/entra/fundamentals/new-name)) token authentication support across the Azure SDK. It provides a set of [`TokenCredential`][token_cred_ref]/[`SupportsTokenInfo`][supports_token_info_ref] implementations, which can be used to construct Azure SDK clients that support Microsoft Entra token authentication.
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.23.1/sdk/identity/azure-identity)
+[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.24.0/sdk/identity/azure-identity)
 | [Package (PyPI)](https://pypi.org/project/azure-identity/)
 | [Package (Conda)](https://anaconda.org/microsoft/azure-identity/)
 | [API reference documentation][ref_docs]
@@ -117,6 +117,14 @@ DefaultAzureCredential(managed_identity_client_id=client_id)
 
 Alternatively, set the environment variable `AZURE_CLIENT_ID` to the identity's client ID.
 
+#### Authenticate Using Visual Studio Code with `DefaultAzureCredential`
+
+To authenticate using Visual Studio Code, ensure you have signed in through the **Azure Resources** extension. The signed-in user is then picked up automatically by `DefaultAzureCredential`. Currently, this is only supported on Windows and WSL. To use this method of authentication, ensure the following prerequisites are met:
+
+- [Azure Resources Extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureresourcegroups) is installed in Visual Studio Code.
+- You are signed in using the `Azure: Sign In` command in VS Code.
+- You have the [`azure-identity-broker`][azure_identity_broker] package installed.
+
 ### Define a custom authentication flow with `ChainedTokenCredential`
 
 While `DefaultAzureCredential` is generally the quickest way to authenticate apps for Azure, you can create a customized chain of credentials to be considered. `ChainedTokenCredential` enables users to combine multiple credential instances to define a customized chain of credentials. For more information, see [ChainedTokenCredential overview][ctc_overview].
@@ -165,7 +173,7 @@ client = SecretClient("https://my-vault.vault.azure.net", default_credential)
 
 ### Examples
 
-These examples demonstrate authenticating `SecretClient` from the [`azure-keyvault-secrets`](https://github.com/Azure/azure-sdk-for-python/tree/azure-identity_1.23.1/sdk/keyvault/azure-keyvault-secrets) library with `ManagedIdentityCredential`.
+These examples demonstrate authenticating `SecretClient` from the [`azure-keyvault-secrets`](https://github.com/Azure/azure-sdk-for-python/tree/azure-identity_1.24.0/sdk/keyvault/azure-keyvault-secrets) library with `ManagedIdentityCredential`.
 
 
 #### Authenticate with a user-assigned managed identity
@@ -318,11 +326,11 @@ Token caching is a feature provided by the Azure Identity library that allows ap
 - Improve resilience and performance.
 - Reduce the number of requests made to Microsoft Entra ID to obtain access tokens.
 
-The Azure Identity library offers both in-memory and persistent disk caching. For more information, see the [token caching documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.23.1/sdk/identity/azure-identity/TOKEN_CACHING.md).
+The Azure Identity library offers both in-memory and persistent disk caching. For more information, see the [token caching documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.24.0/sdk/identity/azure-identity/TOKEN_CACHING.md).
 
 ## Brokered authentication
 
-An authentication broker is an application that runs on a user’s machine and manages the authentication handshakes and token maintenance for connected accounts. Currently, only the Windows Web Account Manager (WAM) is supported. To enable support, use the [`azure-identity-broker`][azure_identity_broker] package. For details on authenticating using WAM, see the [broker plugin documentation][azure_identity_broker_readme].
+An authentication broker is an application that runs on a user’s machine and manages the authentication handshakes and token maintenance for connected accounts. Currently, only the Windows Web Account Manager (WAM) is supported. Authentication via WAM is used by `DefaultAzureCredential` to enable secure sign-in. To enable support, use the [`azure-identity-broker`][azure_identity_broker] package. For details on authenticating using WAM, see the [broker plugin documentation][azure_identity_broker_readme].
 
 ## Troubleshooting
 
@@ -379,11 +387,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azure_cli]: https://learn.microsoft.com/cli/azure
 [azure_developer_cli]:https://aka.ms/azure-dev
 [azure_powershell]: https://learn.microsoft.com/powershell/azure
-[azure_core_transport_doc]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.23.1/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport
+[azure_core_transport_doc]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.24.0/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport
 [azure_identity_broker]: https://pypi.org/project/azure-identity-broker
-[azure_identity_broker_readme]: https://github.com/Azure/azure-sdk-for-python/tree/azure-identity_1.23.1/sdk/identity/azure-identity-broker
-[azure_keyvault_secrets]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.23.1/sdk/keyvault/azure-keyvault-secrets
-[azure_storage_blob]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.23.1/sdk/storage/azure-storage-blob
+[azure_identity_broker_readme]: https://github.com/Azure/azure-sdk-for-python/tree/azure-identity_1.24.0/sdk/identity/azure-identity-broker
+[azure_keyvault_secrets]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.24.0/sdk/keyvault/azure-keyvault-secrets
+[azure_storage_blob]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.24.0/sdk/storage/azure-storage-blob
 [b2c]: https://learn.microsoft.com/azure/active-directory-b2c/overview
 [cae]: https://learn.microsoft.com/entra/identity/conditional-access/concept-continuous-access-evaluation
 [cert_cred_ref]: https://aka.ms/azsdk/python/identity/certificatecredential
@@ -404,6 +412,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [ref_docs_aio]: https://aka.ms/azsdk/python/identity/aio/docs
 [token_cred_ref]: https://learn.microsoft.com/python/api/azure-core/azure.core.credentials.tokencredential?view=azure-python
 [supports_token_info_ref]: https://learn.microsoft.com/python/api/azure-core/azure.core.credentials.supportstokeninfo?view=azure-python
-[troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.23.1/sdk/identity/azure-identity/TROUBLESHOOTING.md
+[troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.24.0/sdk/identity/azure-identity/TROUBLESHOOTING.md
 [workload_id_cred_ref]: https://aka.ms/azsdk/python/identity/workloadidentitycredential
 
