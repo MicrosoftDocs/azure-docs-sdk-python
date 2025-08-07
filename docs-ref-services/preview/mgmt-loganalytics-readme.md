@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-loganalytics, azure-monitor
-ms.date: 11/05/2024
+ms.date: 08/07/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: azure-monitor
