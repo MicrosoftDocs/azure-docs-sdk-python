@@ -1,7 +1,7 @@
 ---
 title: Azure Dynatrace SDK for Python
 description: Reference for Azure Dynatrace SDK for Python
-ms.date: 08/06/2025
+ms.date: 08/07/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: dynatrace
