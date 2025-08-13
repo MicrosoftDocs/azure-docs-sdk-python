@@ -814,93 +814,63 @@ methods:
     name is "products," and is aliased as "p" for easier referencing in
 
     the WHERE clause.'
-  signature: 'query_items(query: str, *, parameters: List[Dict[str, object]] | None
-    = None, partition_key: str | int | float | bool | Sequence[str | int | float |
-    bool | None] | Type[NonePartitionKeyValue] | None = None, max_item_count: int
-    | None = None, enable_scan_in_query: bool | None = None, populate_query_metrics:
-    bool | None = None, populate_index_metrics: bool | None = None, session_token:
-    str | None = None, initial_headers: Dict[str, str] | None = None, max_integrated_cache_staleness_in_ms:
-    int | None = None, priority: Literal[''High'', ''Low''] | None = None, continuation_token_limit:
-    int | None = None, response_hook: Callable[[Mapping[str, str], Dict[str, Any]],
-    None] | None = None, throughput_bucket: int | None = None, **kwargs: Any) -> AsyncItemPaged[Dict[str,
-    Any]]'
+  signature: 'query_items(query: str, *, continuation_token_limit: int | None = None,
+    enable_scan_in_query: bool | None = None, initial_headers: Dict[str, str] | None
+    = None, max_integrated_cache_staleness_in_ms: int | None = None, max_item_count:
+    int | None = None, parameters: List[Dict[str, object]] | None = None, partition_key:
+    PartitionKeyType | None = None, populate_index_metrics: bool | None = None, populate_query_metrics:
+    bool | None = None, priority: Literal[''High'', ''Low''] | None = None, response_hook:
+    Callable[[Mapping[str, str], Dict[str, Any]], None] | None = None, session_token:
+    str | None = None, throughput_bucket: int | None = None, **kwargs: Any)'
   parameters:
-  - name: query
-    description: The Azure Cosmos DB SQL query to execute.
+  - name: args
+    description: args
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:typing.Any>
   keywordOnlyParameters:
-  - name: parameters
-    description: 'Optional array of parameters to the query.
-
-      Each parameter is a dict() with ''name'' and ''value'' keys.
-
-      Ignored if no query is provided.'
-    defaultValue: None
-    types:
-    - <xref:typing.List>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
-  - name: partition_key
-    description: 'Specifies the partition key value for the item. If none is provided,
-
-      a cross-partition query will be executed.'
-    defaultValue: None
-    types:
-    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.Sequence>[<xref:typing.Union>[<xref:str>,
-      <xref:int>, <xref:float>, <xref:bool>, <xref:None>]]]
-  - name: max_item_count
-    description: Max number of items to be returned in the enumeration operation.
-    defaultValue: None
-    types:
-    - <xref:int>
-  - name: enable_scan_in_query
-    description: 'Allow scan on the queries which couldn''t be served as
-
-      indexing was opted out on the requested paths.'
-    defaultValue: None
-    types:
-    - <xref:bool>
-  - name: populate_query_metrics
-    description: Enable returning query metrics in response headers.
-    defaultValue: None
-    types:
-    - <xref:bool>
-  - name: populate_index_metrics
-    description: 'Used to obtain the index metrics to understand how the query engine
-      used
-
-      existing indexes and how it could use potential new indexes. Please note that
-      this options will incur
-
-      overhead, so it should be enabled only when debugging slow queries.'
-    defaultValue: None
-    types:
-    - <xref:bool>
-  - name: session_token
-    description: Token for use with Session consistency.
-    defaultValue: None
-    types:
-    - <xref:str>
-  - name: initial_headers
-    description: Initial headers to be sent as part of the request.
-    defaultValue: None
-    types:
-    - <xref:dict>[<xref:str>, <xref:str>]
-  - name: response_hook
-    description: A callable invoked with the response metadata.
-    defaultValue: None
-    types:
-    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
-      <xref:typing.Any>]], <xref:None>]
   - name: continuation_token_limit
     description: 'The size limit in kb of the response continuation token in the query
 
       response. Valid values are positive integers.
 
       A value of 0 is the same as not passing a value (default no limit).'
-    defaultValue: None
     types:
     - <xref:int>
+  - name: enable_cross_partition_query
+    description: 'Allows sending of more than one request to
+
+      execute the query in the Azure Cosmos DB service.
+
+      More than one request is necessary if the query is not scoped to single partition
+      key value.'
+    types:
+    - <xref:bool>
+  - name: enable_scan_in_query
+    description: 'Allow scan on the queries which couldn''t be served as
+
+      indexing was opted out on the requested paths.'
+    types:
+    - <xref:bool>
+  - name: excluded_locations
+    description: 'Excluded locations to be skipped from preferred locations. The locations
+
+      in this list are specified as the names of the Azure Cosmos locations like,
+      ''West US'', ''East US'' and so on.
+
+      If all preferred locations were excluded, primary/hub location will be used.
+
+      This excluded_location will override existing excluded_locations in client level.'
+    types:
+    - <xref:list>[<xref:str>]
+  - name: feed_range
+    description: The feed range that is used to define the scope.
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+  - name: initial_headers
+    description: Initial headers to be sent as part of the request.
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
   - name: max_integrated_cache_staleness_in_ms
     description: 'The max cache staleness for the integrated cache in
 
@@ -908,9 +878,39 @@ methods:
       or Eventual consistency,
 
       responses are guaranteed to be no staler than this value.'
-    defaultValue: None
     types:
     - <xref:int>
+  - name: max_item_count
+    description: Max number of items to be returned in the enumeration operation.
+    types:
+    - <xref:int>
+  - name: parameters
+    description: 'Optional array of parameters to the query.
+
+      Each parameter is a dict() with ''name'' and ''value'' keys.
+
+      Ignored if no query is provided.'
+    types:
+    - '[<xref:typing.List>[<xref:typing.Dict>[<xref:str>, <xref:object>]]]'
+  - name: partition_key
+    description: Partition key at which the query request is targeted.
+    types:
+    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.Sequence>[<xref:typing.Union>[<xref:str>,
+      <xref:int>, <xref:float>, <xref:bool>, <xref:None>]]]
+  - name: populate_index_metrics
+    description: 'Used to obtain the index metrics to understand how the query engine
+      used
+
+      existing indexes and how it could use potential new indexes. Please note that
+      this option will incur
+
+      overhead, so it should be enabled only when debugging slow queries.'
+    types:
+    - <xref:bool>
+  - name: populate_query_metrics
+    description: Enable returning query metrics in response headers.
+    types:
+    - <xref:bool>
   - name: priority
     description: 'Priority based execution allows users to set a priority for each
 
@@ -919,45 +919,45 @@ methods:
 
       before high priority requests start getting throttled. Feature must first be
       enabled at the account level.'
-    defaultValue: None
     types:
     - <xref:typing.Literal>["High", "Low"]
+  - name: query
+    description: The Azure Cosmos DB SQL query to execute.
+    types:
+    - <xref:str>
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]], <xref:None>]
+  - name: session_token
+    description: Token for use with Session consistency.
+    types:
+    - <xref:str>
   - name: throughput_bucket
-    description: The desired throughput bucket for the client
-    defaultValue: None
+    description: The desired throughput bucket for the client.
     types:
     - <xref:int>
-  - name: excluded_locations
-    description: 'Excluded locations to be skipped from preferred locations. The locations
-
-      in this list are specified as the names of the azure Cosmos locations like,
-      ''West US'', ''East US'' and so on.
-
-      If all preferred locations were excluded, primary/hub location will be used.
-
-      This excluded_location will override existing excluded_locations in client level.'
-    types:
-    - <xref:list>[<xref:str>]
   return:
-    description: An AsyncItemPaged of items (dicts).
+    description: An Iterable of items (dicts).
     types:
-    - <xref:AsyncItemPaged>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:ItemPaged>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
   examples:
   - "Get all products that have not been discontinued:<!--[!code-python[Main](les\\\
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    37\\\\azure_cosmos-4.14.0b1\\\\samples\\\\examples_async.py\", \"xml:space\":\
+    37\\\\azure_cosmos-4.14.0b2\\\\samples\\\\examples_async.py\", \"xml:space\":\
     \ \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           import\
-    \ json\n\n           async for queried_item in container.query_items(\n      \
-    \             query='SELECT * FROM products p WHERE p.productModel <> \"DISCONTINUED\"\
-    '\n           ):\n               print(json.dumps(queried_item, indent=True))\n\
-    \n   ````\n\nParameterized query to get all products that have been discontinued:<!--[!code-python[Main](les\\\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           async\
+    \ for queried_item in container.query_items(\n                   query='SELECT\
+    \ * FROM products p WHERE p.productModel <> \"DISCONTINUED\"'\n           ):\n\
+    \               print(json.dumps(queried_item, indent=True))\n\n   ````\n\nParameterized\
+    \ query to get all products that have been discontinued:<!--[!code-python[Main](les\\\
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    37\\\\azure_cosmos-4.14.0b1\\\\samples\\\\examples_async.py\", \"xml:space\":\
+    37\\\\azure_cosmos-4.14.0b2\\\\samples\\\\examples_async.py\", \"xml:space\":\
     \ \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           discontinued_items\
     \ = container.query_items(\n               query='SELECT * FROM products p WHERE\
@@ -1291,7 +1291,7 @@ methods:
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    37\\\\azure_cosmos-4.14.0b1\\\\samples\\\\examples_async.py\", \"xml:space\":\
+    37\\\\azure_cosmos-4.14.0b2\\\\samples\\\\examples_async.py\", \"xml:space\":\
     \ \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           item\
     \ = await container.read_item(\"item2\", partition_key=\"Widget\")\n         \
