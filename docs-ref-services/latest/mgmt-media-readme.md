@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-media, media
-ms.date: 06/03/2025
+ms.date: 08/14/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: media
