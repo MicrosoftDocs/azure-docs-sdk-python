@@ -263,32 +263,65 @@ methods:
     - <xref:azure.messaging.webpubsubservice.aio.WebPubSubServiceClient>
 - uid: azure.messaging.webpubsubservice.aio.WebPubSubServiceClient.get_client_access_token
   name: get_client_access_token
-  summary: "Generate token for the client to connect Azure Web PubSub service.\nGenerate\
-    \ token for the client to connect Azure Web PubSub service.\n:keyword user_id:\
-    \ User Id.\n:paramtype user_id: str\n:keyword roles: Roles that the connection\
-    \ with the generated token will have.\n:paramtype roles: list[str]\n:keyword minutes_to_expire:\
-    \ The expire time of the generated token.\n:paramtype minutes_to_expire: int\n\
-    :keyword dict[str, any] jwt_headers: Any headers you want to pass to jwt encoding.\n\
-    :keyword api_version: Api Version. The default value is \"2021-10-01\". Note that\
-    \ overriding this\n\n   default value may result in unsupported behavior."
+  summary: Generate token for the client to connect Azure Web PubSub service.
   signature: 'async get_client_access_token(*, user_id: str | None = None, roles:
     List[str] | None = None, minutes_to_expire: int | None = 60, jwt_headers: Dict[str,
-    Any] = None, **kwargs: Any) -> MutableMapping[str, Any]'
+    Any] = None, groups: List[str] | None = None, client_protocol: str | None = ''Default'',
+    **kwargs: Any) -> MutableMapping[str, Any]'
   keywordOnlyParameters:
   - name: user_id
+    description: User Id.
     defaultValue: None
+    types:
+    - <xref:str>
   - name: roles
+    description: Roles that the connection with the generated token will have.
     defaultValue: None
+    types:
+    - <xref:list>[<xref:str>]
   - name: minutes_to_expire
+    description: The expire time of the generated token.
     defaultValue: '60'
+    types:
+    - <xref:int>
   - name: jwt_headers
+    description: Any headers you want to pass to jwt encoding.
     defaultValue: None
+    types:
+    - <xref:dict>[<xref:str>, <xref:any>]
+  - name: groups
+    description: Groups that the connection will join when it connects. Default value
+      is None.
+    defaultValue: None
+    types:
+    - <xref:list>[<xref:str>]
+  - name: api_version
+    description: 'Api Version. The default value is "2021-10-01". Note that overriding
+      this
+
+      default value may result in unsupported behavior.'
+    types:
+    - <xref:str>
+  - name: client_protocol
+    description: 'The type of client protocol. Case-insensitive. If not set, it''s
+      "Default". For Web
+
+      PubSub for Socket.IO, "SocketIO" type is supported. For Web PubSub, the valid
+      values are
+
+      ''Default'', ''MQTT''. Known values are: "Default", "MQTT" and "SocketIO". Default
+      value is "Default".'
+    defaultValue: Default
   return:
     description: JSON object
     types:
     - <xref:JSON>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "\n```\n\n>>> get_client_access_token()\n{\n    'baseUrl': 'wss://contoso.com/api/webpubsub/client/hubs/theHub',\n\
+    \    'token': '<access-token>...',\n    'url': 'wss://contoso.com/api/webpubsub/client/hubs/theHub?access_token=<access-token>...'\n\
+    }\n```\n"
 - uid: azure.messaging.webpubsubservice.aio.WebPubSubServiceClient.grant_permission
   name: grant_permission
   summary: 'Grant permission to the connection.
@@ -387,6 +420,43 @@ methods:
     - <xref:bool>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+- uid: azure.messaging.webpubsubservice.aio.WebPubSubServiceClient.list_connections
+  name: list_connections
+  summary: 'List connections in a group.
+
+
+    List connections in a group.'
+  signature: 'list_connections(*, group: str, top: int | None = None, **kwargs: Any)
+    -> AsyncItemPaged[GroupMember]'
+  keywordOnlyParameters:
+  - name: group
+    description: 'Target group name, whose length should be greater than 0 and less
+      than 1025.
+
+      Required.'
+    types:
+    - <xref:str>
+  - name: top
+    description: 'The maximum number of connections to return. If the value is not
+      set, then all
+
+      the connections in a group are returned. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  return:
+    description: An iterator like instance of GroupMember object
+    types:
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.messaging.webpubsubservice.GroupMember>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+    \   connections = client.list_connections(\n       group=\"group_name\",\n   \
+    \    top=100\n   )\n\n   async for member in connections:\n       assert member.connection_id\
+    \ is not None\n   ````\n"
 - uid: azure.messaging.webpubsubservice.aio.WebPubSubServiceClient.remove_connection_from_all_groups
   name: remove_connection_from_all_groups
   summary: 'Remove a connection from all groups.
@@ -542,7 +612,8 @@ methods:
 
 
     For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
-  signature: 'send_request(request: HttpRequest, **kwargs: Any) -> Awaitable[AsyncHttpResponse]'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> Awaitable[AsyncHttpResponse]'
   parameters:
   - name: request
     description: The network request you want to make. Required.
@@ -552,6 +623,7 @@ methods:
   keywordOnlyParameters:
   - name: stream
     description: Whether the response payload will be streamed. Defaults to False.
+    defaultValue: 'False'
     types:
     - <xref:bool>
   return:
@@ -565,14 +637,15 @@ methods:
 
 
     Broadcast content inside request body to all the connected client connections.'
-  signature: 'async send_to_all(message: IO, *, excluded: List[str] | None = None,
-    filter: str | None = None, **kwargs: Any) -> None'
+  signature: 'async send_to_all(message: IO | str | MutableMapping[str, Any], *, excluded:
+    List[str] | None = None, filter: str | None = None, content_type: str | None =
+    None, **kwargs: Any) -> None'
   parameters:
   - name: message
     description: The payload body. Required.
     isRequired: true
     types:
-    - <xref:typing.IO>
+    - <xref:typing.Union>[<xref:typing.IO>, <xref:str>, <xref:JSON>]
   keywordOnlyParameters:
   - name: excluded
     description: Excluded connection Ids. Default value is None.
@@ -584,6 +657,12 @@ methods:
       the
 
       messages. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: content_type
+    description: The content type of the payload. Default value is None. Allowed values
+      are 'application/json', 'application/octet-stream' and 'text/plain'
     defaultValue: None
     types:
     - <xref:str>
@@ -599,8 +678,8 @@ methods:
 
 
     Send content inside request body to the specific connection.'
-  signature: 'async send_to_connection(connection_id: str, message: IO, **kwargs:
-    Any) -> None'
+  signature: 'async send_to_connection(connection_id: str, message: IO | str | MutableMapping[str,
+    Any], *, content_type: str | None = None, **kwargs: Any) -> None'
   parameters:
   - name: connection_id
     description: The connection Id. Required.
@@ -611,7 +690,14 @@ methods:
     description: The payload body. Required.
     isRequired: true
     types:
-    - <xref:typing.IO>
+    - <xref:typing.Union>[<xref:typing.IO>, <xref:str>, <xref:JSON>]
+  keywordOnlyParameters:
+  - name: content_type
+    description: The content type of the payload. Default value is None. Allowed values
+      are 'application/json', 'application/octet-stream' and 'text/plain'
+    defaultValue: None
+    types:
+    - <xref:str>
   return:
     description: None
     types:
@@ -624,8 +710,9 @@ methods:
 
 
     Send content inside request body to a group of connections.'
-  signature: 'async send_to_group(group: str, message: IO, *, excluded: List[str]
-    | None = None, filter: str | None = None, **kwargs: Any) -> None'
+  signature: 'async send_to_group(group: str, message: IO | str | MutableMapping[str,
+    Any], *, excluded: List[str] | None = None, filter: str | None = None, content_type:
+    str | None = None, **kwargs: Any) -> None'
   parameters:
   - name: group
     description: 'Target group name, which length should be greater than 0 and less
@@ -639,7 +726,7 @@ methods:
     description: The payload body. Required.
     isRequired: true
     types:
-    - <xref:typing.IO>
+    - <xref:typing.Union>[<xref:typing.IO>, <xref:str>, <xref:JSON>]
   keywordOnlyParameters:
   - name: excluded
     description: Excluded connection Ids. Default value is None.
@@ -651,6 +738,12 @@ methods:
       the
 
       messages. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: content_type
+    description: The content type of the payload. Default value is None. Allowed values
+      are 'application/json', 'application/octet-stream' and 'text/plain'
     defaultValue: None
     types:
     - <xref:str>
@@ -666,8 +759,9 @@ methods:
 
 
     Send content inside request body to the specific user.'
-  signature: 'async send_to_user(user_id: str, message: IO, *, filter: str | None
-    = None, **kwargs: Any) -> None'
+  signature: 'async send_to_user(user_id: str, message: IO | str | MutableMapping[str,
+    Any], *, filter: str | None = None, content_type: str | None = None, **kwargs:
+    Any) -> None'
   parameters:
   - name: user_id
     description: The user Id. Required.
@@ -678,13 +772,19 @@ methods:
     description: The payload body. Required.
     isRequired: true
     types:
-    - <xref:typing.IO>
+    - <xref:typing.Union>[<xref:typing.IO>, <xref:str>, <xref:JSON>]
   keywordOnlyParameters:
   - name: filter
     description: 'Following OData filter syntax to filter out the subscribers receiving
       the
 
       messages. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: content_type
+    description: The content type of the payload. Default value is None. Allowed values
+      are 'application/json', 'application/octet-stream' and 'text/plain'
     defaultValue: None
     types:
     - <xref:str>
