@@ -1,7 +1,7 @@
 ---
 title: Azure FarmBeats SDK for Python
 description: Reference for Azure FarmBeats SDK for Python
-ms.date: 08/14/2025
+ms.date: 08/15/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: farmbeats
