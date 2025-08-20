@@ -1,7 +1,7 @@
 ---
 title: Azure Resource-Deployments SDK for Python
 description: Reference for Azure Resource-Deployments SDK for Python
-ms.date: 08/19/2025
+ms.date: 08/20/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: resource-deployments
