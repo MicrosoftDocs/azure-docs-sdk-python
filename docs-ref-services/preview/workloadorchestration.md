@@ -1,7 +1,7 @@
 ---
 title: Azure Workloadorchestration SDK for Python
 description: Reference for Azure Workloadorchestration SDK for Python
-ms.date: 08/20/2025
+ms.date: 08/21/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: workloadorchestration
