@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-support, support
-ms.date: 03/21/2024
+ms.date: 08/23/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: support
