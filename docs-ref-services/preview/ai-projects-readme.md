@@ -1,12 +1,12 @@
 ---
 title: Azure AI Projects client library for Python
 keywords: Azure, python, SDK, API, azure-ai-projects, ai
-ms.date: 08/05/2025
+ms.date: 08/26/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: ai
 ---
-# Azure AI Projects client library for Python - version 1.1.0b2 
+# Azure AI Projects client library for Python - version 1.1.0b3 
 
 
 The AI Projects client library (in preview) is part of the Azure AI Foundry SDK, and provides easy access to
@@ -98,12 +98,9 @@ project_client = AIProjectClient(
 
 ### Performing Agent operations
 
-The `.agents` property on the `AIProjectsClient` gives you access to an authenticated `AgentsClient` from the `azure-ai-agents` package. Below we show how to create an Agent and delete it. To see what you can do with the Agent you created, see the [many samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-projects_1.1.0b2/sdk/ai/azure-ai-agents/samples) and the [README.md](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-projects_1.1.0b2/sdk/ai/azure-ai-agents) file of the dependent `azure-ai-agents` package.
+The `.agents` property on the `AIProjectsClient` gives you access to an authenticated `AgentsClient` from the `azure-ai-agents` package. Below we show how to create an Agent and delete it. To see what you can do with the Agent you created, see the [many samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-projects_1.1.0b3/sdk/ai/azure-ai-agents/samples) and the [README.md](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-projects_1.1.0b3/sdk/ai/azure-ai-agents) file of the dependent `azure-ai-agents` package.
 
-The code below assumes the following:
-
-* `model_deployment_name` (a string) is defined. It's the deployment name of an AI model in your Foundry Project, as shown in the "Models + endpoints" tab, under the "Name" column.
-* `connection_name` (a string) is defined. It's the name of the connection to a resource of type "Azure OpenAI", as shown in the "Connected resources" tab, under the "Name" column, in the "Management Center" of your Foundry Project.
+The code below assumes `model_deployment_name` (a string) is defined. It's the deployment name of an AI model in your Foundry Project, as shown in the "Models + endpoints" tab, under the "Name" column.
 
 <!-- SNIPPET:sample_agents.agents_sample -->
 
@@ -116,7 +113,7 @@ agent = project_client.agents.create_agent(
 print(f"Created agent, agent ID: {agent.id}")
 
 # Do something with your Agent!
-# See samples here https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-projects_1.1.0b2/sdk/ai/azure-ai-agents/samples
+# See samples here https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-projects_1.1.0b3/sdk/ai/azure-ai-agents/samples
 
 project_client.agents.delete_agent(agent.id)
 print("Deleted agent")
@@ -131,8 +128,11 @@ These could be OpenAI models, Microsoft models, or models from other providers.
 Use the code below to get an authenticated [AzureOpenAI](https://github.com/openai/openai-python?tab=readme-ov-file#microsoft-azure-openai)
 from the [openai](https://pypi.org/project/openai/) package, and execute a chat completions or responses calls.
 
-The code below assumes `model_deployment_name` (a string) is defined. It's the deployment name of an AI model in your
+The code below assumes the following:
+
+* `model_deployment_name` (a string) is defined. It's the deployment name of an AI model in your
 Foundry Project, or a connected Azure OpenAI resource. As shown in the "Models + endpoints" tab, under the "Name" column.
+* `connection_name` (a string) is defined. It's the name of the connection to a resource of type "Azure OpenAI", as shown in the "Connected resources" tab, under the "Name" column, in the "Management Center" of your Foundry Project.
 
 Update the `api_version` value with one found in the "Data plane - inference" row [in this table](https://learn.microsoft.com/azure/ai-foundry/openai/reference#api-specs).
 
@@ -454,7 +454,7 @@ The AI Projects client library can be configured to emit OpenTelemetry traces fo
 
 * [Trace AI applications using OpenAI SDK](https://learn.microsoft.com/azure/ai-foundry/how-to/develop/trace-application)
 * Chat-completion samples with console or Azure Monitor tracing enabled. See `samples\inference\azure-openai` folder.
-* The Tracing section in the [README.md file of the azure-ai-agents package](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-projects_1.1.0b2/sdk/ai/azure-ai-agents/README.md#tracing).
+* The Tracing section in the [README.md file of the azure-ai-agents package](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-projects_1.1.0b3/sdk/ai/azure-ai-agents/README.md#tracing).
 
 ## Troubleshooting
 
@@ -529,7 +529,7 @@ To report an issue with the client library, or request additional features, plea
 
 ## Next steps
 
-Have a look at the [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-projects_1.1.0b2/sdk/ai/azure-ai-projects/samples) folder, containing fully runnable Python code for synchronous and asynchronous clients.
+Have a look at the [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-projects_1.1.0b3/sdk/ai/azure-ai-projects/samples) folder, containing fully runnable Python code for synchronous and asynchronous clients.
 
 ## Contributing
 
