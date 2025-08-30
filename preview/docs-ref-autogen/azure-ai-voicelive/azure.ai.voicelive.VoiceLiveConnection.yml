@@ -1,0 +1,115 @@
+### YamlMime:PythonClass
+uid: azure.ai.voicelive.VoiceLiveConnection
+name: VoiceLiveConnection
+fullName: azure.ai.voicelive.VoiceLiveConnection
+module: azure.ai.voicelive
+summary: "Represents a live WebSocket connection to the Azure Voice Live API.\n\n\
+  This class exposes resource helpers:\n\n* <xref:session> \u2013 manage session configuration\
+  \ updates. \n\n* <xref:response> \u2013 create or cancel model responses. \n\n*\
+  \ <xref:input_audio_buffer> \u2013 append/commit/clear captured audio. \n\n* <xref:output_audio_buffer>\
+  \ \u2013 clear generated audio output. \n\n* <xref:conversation> \u2013 manage conversation\
+  \ items. \n\n* <xref:transcription_session> \u2013 update transcription configuration.\
+  \ \n\nInstances are yielded by <xref:azure.ai.voicelive.connect>.\n\nInitialize\
+  \ a VoiceLiveConnection."
+constructor:
+  syntax: VoiceLiveConnection(connection)
+  parameters:
+  - name: connection
+    description: The underlying WebSocket connection.
+    isRequired: true
+variables:
+- description: Resource for managing session configuration and updates.
+  name: session
+  types:
+  - <xref:azure.ai.voicelive.SessionResource>
+- description: Resource for creating and cancelling model responses.
+  name: response
+  types:
+  - <xref:azure.ai.voicelive.ResponseResource>
+- description: Resource for appending, committing, and clearing input audio.
+  name: input_audio_buffer
+  types:
+  - <xref:azure.ai.voicelive.InputAudioBufferResource>
+- description: Resource for clearing generated audio output.
+  name: output_audio_buffer
+  types:
+  - <xref:azure.ai.voicelive.OutputAudioBufferResource>
+- description: Resource for managing the conversation and its items.
+  name: conversation
+  types:
+  - <xref:azure.ai.voicelive.ConversationResource>
+- description: Resource for updating transcription session parameters.
+  name: transcription_session
+  types:
+  - <xref:azure.ai.voicelive.TranscriptionSessionResource>
+methods:
+- uid: azure.ai.voicelive.VoiceLiveConnection.close
+  name: close
+  summary: 'Close the WebSocket connection.
+
+
+    Gracefully terminates the connection to the Voice Live service and
+
+    releases the underlying socket resources.'
+  signature: 'close(*, code: int = 1000, reason: str = '''') -> None'
+  keywordOnlyParameters:
+  - name: code
+    description: WebSocket close code to send to the server. Defaults to `1000` (Normal
+      Closure).
+    defaultValue: '1000'
+    types:
+    - <xref:type>
+  - name: code
+    description: int
+  - name: reason
+    description: Optional reason string to include in the close frame.
+    types:
+    - <xref:type>
+  - name: reason
+    description: str
+  return:
+    description: None
+    types:
+    - <xref:None>
+- uid: azure.ai.voicelive.VoiceLiveConnection.recv
+  name: recv
+  summary: Receive and parse the next message as a typed event.
+  signature: recv() -> ServerEvent
+  return:
+    description: A parsed server event.
+    types:
+    - <xref:azure.ai.voicelive.models.ServerEvent>
+  exceptions:
+  - type: azure.ai.voicelive.ConnectionError
+    description: If the connection is closed or the message cannot be parsed.
+- uid: azure.ai.voicelive.VoiceLiveConnection.recv_bytes
+  name: recv_bytes
+  summary: Receive raw bytes from the connection.
+  signature: recv_bytes() -> bytes
+  return:
+    description: The raw message bytes.
+    types:
+    - <xref:bytes>
+  exceptions:
+  - type: azure.ai.voicelive.ConnectionClosed
+    description: If the connection is closed.
+- uid: azure.ai.voicelive.VoiceLiveConnection.send
+  name: send
+  summary: "Send an event to the server over the active WebSocket connection.\n\n\
+    Supported input types:\n\n* **Mapping-like object** (e.g., `dict`, `MappingProxyType`)\
+    \ \u2014 converted to\n\n     a plain `dict` and then JSON-encoded. Any nested\
+    \ SDK models are serialized\n     using the fallback serializer `_json_default()`.\n\
+    \n* **ClientEvent model instance** \u2014 converted to a plain dictionary via\n\
+    \n     `as_dict()` (preserving REST field names and discriminators), then JSON-encoded.\n\
+    \n* **Other objects** \u2014 directly passed to `json.dumps()` with `_json_default()`\n\
+    \n     handling non-JSON-native values."
+  signature: 'send(event: Mapping[str, Any] | ClientEvent) -> None'
+  parameters:
+  - name: event
+    description: The event to send.
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:typing.Mapping>[<xref:str>, <xref:typing.Any>], <xref:azure.ai.voicelive.models.ClientEvent>]
+  exceptions:
+  - type: azure.ai.voicelive.ConnectionError
+    description: If serialization or the WebSocket send fails.
