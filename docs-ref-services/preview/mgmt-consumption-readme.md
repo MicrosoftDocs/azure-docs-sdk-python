@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-consumption, consumption
-ms.date: 12/08/2022
+ms.date: 09/01/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: consumption
