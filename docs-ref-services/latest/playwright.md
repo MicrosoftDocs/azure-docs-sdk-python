@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: playwright
 ---
-# Azure Playwright SDK for Python - preview
-## Packages - preview
+# Azure Playwright SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](playwright-index.md)]
