@@ -1,7 +1,7 @@
 ---
 title: Azure PostgreSQL  Flexible Servers SDK for Python
 description: Reference for Azure PostgreSQL  Flexible Servers SDK for Python
-ms.date: 09/02/2025
+ms.date: 09/03/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: postgresqlflexibleservers
