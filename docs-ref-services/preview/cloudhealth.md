@@ -1,7 +1,7 @@
 ---
 title: Azure Cloudhealth SDK for Python
 description: Reference for Azure Cloudhealth SDK for Python
-ms.date: 09/03/2025
+ms.date: 09/04/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: cloudhealth
