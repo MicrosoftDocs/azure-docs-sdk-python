@@ -6,7 +6,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: appconfiguration
 ---
-# Azure App Configuration client library for Python - version 1.7.2a20250905001 
+# Azure App Configuration client library for Python - version 1.7.2a20250905002 
 
 
 Azure App Configuration is a managed service that helps developers centralize their application configurations simply and securely.
