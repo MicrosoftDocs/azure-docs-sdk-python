@@ -9,16 +9,19 @@ summary: "> [!WARNING]\n> DO NOT instantiate this class directly.\n>\n> \n>\n> I
 constructor:
   syntax: BillingAccountsOperations(*args, **kwargs)
 methods:
-- uid: azure.mgmt.billing.operations.BillingAccountsOperations.begin_update
-  name: begin_update
-  summary: 'Updates the properties of a billing account. Currently, displayName and
-    address can be updated.
+- uid: azure.mgmt.billing.operations.BillingAccountsOperations.begin_add_payment_terms
+  name: begin_add_payment_terms
+  summary: 'Adds payment terms to all the billing profiles under the billing account.
+    Currently, payment
 
-    The operation is supported only for billing accounts with agreement type Microsoft
+    terms can be added only on billing accounts that have Agreement Type as ''Microsoft
     Customer
 
-    Agreement.'
-  signature: 'begin_update(billing_account_name: str, parameters: _models.BillingAccountUpdateRequest,
+    Agreement'' and AccountType as ''Enterprise''. This action needs pre-authorization
+    and only Field
+
+    Sellers are authorized to add the payment terms and is not a self-serve action.'
+  signature: 'begin_add_payment_terms(billing_account_name: str, parameters: List[_models.PaymentTerm],
     *, content_type: str = ''application/json'', **kwargs: Any) -> LROPoller[_models.BillingAccount]'
   parameters:
   - name: billing_account_name
@@ -27,45 +30,14 @@ methods:
     types:
     - <xref:str>
   - name: parameters
-    description: 'Request parameters that are provided to the update billing account
+    description: 'The properties of payment term. Is either a [PaymentTerm] type or
+      a
 
-      operation. Is either a model type or a IO type. Required.'
+      IO[bytes] type. Required.'
     isRequired: true
     types:
-    - <xref:azure.mgmt.billing.models.BillingAccountUpdateRequest>
-    - <xref:typing.IO>
-  keywordOnlyParameters:
-  - name: content_type
-    description: 'Body Parameter content-type. Known values are: ''application/json''.
-
-      Default value is None.'
-    types:
-    - <xref:str>
-  - name: cls
-    description: A custom type or function that will be passed the direct response
-    types:
-    - <xref:callable>
-  - name: continuation_token
-    description: A continuation token to restart a poller from a saved state.
-    types:
-    - <xref:str>
-  - name: polling
-    description: 'By default, your polling method will be ARMPolling. Pass in False
-      for this
-
-      operation to not poll, or pass in your own initialized polling object for a
-      personal polling
-
-      strategy.'
-    types:
-    - <xref:bool>
-    - <xref:azure.core.polling.PollingMethod>
-  - name: polling_interval
-    description: 'Default waiting time between two polls for LRO operations if no
-
-      Retry-After header is present.'
-    types:
-    - <xref:int>
+    - <xref:list>[<xref:azure.mgmt.billing.models.PaymentTerm>]
+    - <xref:typing.IO>[<xref:bytes>]
   return:
     description: 'An instance of LROPoller that returns either BillingAccount or the
       result of
@@ -75,54 +47,238 @@ methods:
     - <xref:azure.core.polling.LROPoller>[<xref:azure.mgmt.billing.models.BillingAccount>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-- uid: azure.mgmt.billing.operations.BillingAccountsOperations.get
-  name: get
-  summary: Gets a billing account by its ID.
-  signature: 'get(billing_account_name: str, expand: str | None = None, **kwargs:
-    Any) -> BillingAccount'
+  seeAlsoContent: "\n\n  * [https://docs.microsoft.com/en-us/rest/api/billing/](https://docs.microsoft.com/en-us/rest/api/billing/)\
+    \ \n"
+- uid: azure.mgmt.billing.operations.BillingAccountsOperations.begin_cancel_payment_terms
+  name: begin_cancel_payment_terms
+  summary: 'Cancels all the payment terms on billing account that falls after the
+    cancellation date in the
+
+    request. Currently, cancel payment terms is only served by admin actions and is
+    not a
+
+    self-serve action.'
+  signature: 'begin_cancel_payment_terms(billing_account_name: str, parameters: datetime,
+    **kwargs: Any) -> LROPoller[BillingAccount]'
   parameters:
   - name: billing_account_name
     description: The ID that uniquely identifies a billing account. Required.
     isRequired: true
     types:
     - <xref:str>
-  - name: expand
-    description: 'May be used to expand the soldTo, invoice sections and billing profiles.
-      Default
+  - name: parameters
+    description: Date after which any payment terms that needs to be cancelled. Required.
+    isRequired: true
+    types:
+    - <xref:datetime.datetime>
+  return:
+    description: 'An instance of LROPoller that returns either BillingAccount or the
+      result of
 
-      value is None.'
-    defaultValue: None
+      cls(response)'
+    types:
+    - <xref:azure.core.polling.LROPoller>[<xref:azure.mgmt.billing.models.BillingAccount>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  seeAlsoContent: "\n\n  * [https://docs.microsoft.com/en-us/rest/api/billing/](https://docs.microsoft.com/en-us/rest/api/billing/)\
+    \ \n"
+- uid: azure.mgmt.billing.operations.BillingAccountsOperations.begin_update
+  name: begin_update
+  summary: 'Updates the properties of a billing account. Currently, displayName and
+    address can be updated
+
+    for billing accounts with agreement type Microsoft Customer Agreement. Currently
+    address and
+
+    notification email address can be updated for billing accounts with agreement
+    type Microsoft
+
+    Online Services Agreement. Currently, purchase order number can be edited for
+    billing accounts
+
+    with agreement type Enterprise Agreement.'
+  signature: 'begin_update(billing_account_name: str, parameters: _models.BillingAccountPatch,
+    *, content_type: str = ''application/json'', **kwargs: Any) -> LROPoller[_models.BillingAccount]'
+  parameters:
+  - name: billing_account_name
+    description: The ID that uniquely identifies a billing account. Required.
+    isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: cls
-    description: A custom type or function that will be passed the direct response
+  - name: parameters
+    description: 'A billing account. Is either a BillingAccountPatch type or a IO[bytes]
+      type.
+
+      Required.'
+    isRequired: true
     types:
-    - <xref:callable>
+    - <xref:azure.mgmt.billing.models.BillingAccountPatch>
+    - <xref:typing.IO>[<xref:bytes>]
+  return:
+    description: 'An instance of LROPoller that returns either BillingAccount or the
+      result of
+
+      cls(response)'
+    types:
+    - <xref:azure.core.polling.LROPoller>[<xref:azure.mgmt.billing.models.BillingAccount>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  seeAlsoContent: "\n\n  * [https://docs.microsoft.com/en-us/rest/api/billing/](https://docs.microsoft.com/en-us/rest/api/billing/)\
+    \ \n"
+- uid: azure.mgmt.billing.operations.BillingAccountsOperations.confirm_transition
+  name: confirm_transition
+  summary: 'Gets the transition details for a billing account that has transitioned
+    from agreement type
+
+    Microsoft Online Services Program to agreement type Microsoft Customer Agreement.'
+  signature: 'confirm_transition(billing_account_name: str, **kwargs: Any) -> TransitionDetails'
+  parameters:
+  - name: billing_account_name
+    description: The ID that uniquely identifies a billing account. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: TransitionDetails or the result of cls(response)
+    types:
+    - <xref:azure.mgmt.billing.models.TransitionDetails>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  seeAlsoContent: "\n\n  * [https://docs.microsoft.com/en-us/rest/api/billing/](https://docs.microsoft.com/en-us/rest/api/billing/)\
+    \ \n"
+- uid: azure.mgmt.billing.operations.BillingAccountsOperations.get
+  name: get
+  summary: Gets a billing account by its ID.
+  signature: 'get(billing_account_name: str, **kwargs: Any) -> BillingAccount'
+  parameters:
+  - name: billing_account_name
+    description: The ID that uniquely identifies a billing account. Required.
+    isRequired: true
+    types:
+    - <xref:str>
   return:
     description: BillingAccount or the result of cls(response)
     types:
     - <xref:azure.mgmt.billing.models.BillingAccount>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+  seeAlsoContent: "\n\n  * [https://docs.microsoft.com/en-us/rest/api/billing/](https://docs.microsoft.com/en-us/rest/api/billing/)\
+    \ \n"
 - uid: azure.mgmt.billing.operations.BillingAccountsOperations.list
   name: list
   summary: Lists the billing accounts that a user has access to.
-  signature: 'list(expand: str | None = None, **kwargs: Any) -> Iterable[BillingAccount]'
+  signature: 'list(include_all: bool = False, include_all_without_billing_profiles:
+    bool = False, include_deleted: bool = False, include_pending_agreement: bool =
+    False, include_resellee: bool = False, legal_owner_tid: str | None = None, legal_owner_oid:
+    str | None = None, filter: str | None = None, expand: str | None = None, top:
+    int | None = None, skip: int | None = None, search: str | None = None, **kwargs:
+    Any) -> Iterable[BillingAccount]'
   parameters:
+  - name: include_all
+    description: 'When true, results will include Billing Accounts that the user does
+      not
+
+      have a direct role assignment on if the user has one of the following AAD roles:
+      Global
+
+      Administrator, Global Reader, Billing Administrator. Default value is False.'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: include_all_without_billing_profiles
+    description: 'When true, results will include Billing Accounts
+
+      that are not fully created if the user has one of the following AAD roles: Global
+
+      Administrator, Global Reader, Billing Administrator. Default value is False.'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: include_deleted
+    description: 'When true, results will include any billing accounts in a deleted
+
+      state. Default value is False.'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: include_pending_agreement
+    description: 'Includes billing accounts with agreement pending signature
+
+      that the user has access to. Default value is False.'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: include_resellee
+    description: 'Includes the customer''s billing account of Microsoft Partner Agreement
+
+      that the user has access to. Default value is False.'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: legal_owner_tid
+    description: 'Must be combined with legalOwnerOID, results will only include Billing
+
+      Accounts for whom is legally responsible for the Billing Accounts. Optional.
+      Default value is
+
+      None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: legal_owner_oid
+    description: 'Must be combined with legalOwnerTID, results will only include Billing
+
+      Accounts for whom is legally responsible for the Billing Accounts. Optional.
+      Default value is
+
+      None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: filter
+    description: 'The filter query option allows clients to filter a collection of
+      resources that
+
+      are addressed by a request URL. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
   - name: expand
-    description: 'May be used to expand the soldTo, invoice sections and billing profiles.
-      Default
+    description: 'Expand is allowed for SoldTo and EnrollmentDetails/PONumber. Default
+      value is
+
+      None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: top
+    description: 'The top query option requests the number of items in the queried
+      collection to be
+
+      included in the result. The maximum supported value for top is 50. Default value
+      is None.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: skip
+    description: 'The skip query option requests the number of items in the queried
+      collection that
+
+      are to be skipped and not included in the result. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: search
+    description: 'The search query option allows clients to request items within a
+      collection
+
+      matching a free-text search expression. search is only supported for string
+      fields. Default
 
       value is None.'
     defaultValue: None
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: cls
-    description: A custom type or function that will be passed the direct response
-    types:
-    - <xref:callable>
   return:
     description: An iterator like instance of either BillingAccount or the result
       of cls(response)
@@ -130,6 +286,8 @@ methods:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.mgmt.billing.models.BillingAccount>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+  seeAlsoContent: "\n\n  * [https://docs.microsoft.com/en-us/rest/api/billing/](https://docs.microsoft.com/en-us/rest/api/billing/)\
+    \ \n"
 - uid: azure.mgmt.billing.operations.BillingAccountsOperations.list_invoice_sections_by_create_subscription_permission
   name: list_invoice_sections_by_create_subscription_permission
   summary: 'Lists the invoice sections for which the user has permission to create
@@ -140,18 +298,21 @@ methods:
 
     Agreement.'
   signature: 'list_invoice_sections_by_create_subscription_permission(billing_account_name:
-    str, **kwargs: Any) -> Iterable[InvoiceSectionWithCreateSubPermission]'
+    str, filter: str | None = None, **kwargs: Any) -> Iterable[InvoiceSectionWithCreateSubPermission]'
   parameters:
   - name: billing_account_name
     description: The ID that uniquely identifies a billing account. Required.
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: cls
-    description: A custom type or function that will be passed the direct response
+  - name: filter
+    description: 'The filter query option allows clients to filter a collection of
+      resources that
+
+      are addressed by a request URL. Default value is None.'
+    defaultValue: None
     types:
-    - <xref:callable>
+    - <xref:str>
   return:
     description: 'An iterator like instance of either InvoiceSectionWithCreateSubPermission
       or the
@@ -161,6 +322,39 @@ methods:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.mgmt.billing.models.InvoiceSectionWithCreateSubPermission>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+  seeAlsoContent: "\n\n  * [https://docs.microsoft.com/en-us/rest/api/billing/](https://docs.microsoft.com/en-us/rest/api/billing/)\
+    \ \n"
+- uid: azure.mgmt.billing.operations.BillingAccountsOperations.validate_payment_terms
+  name: validate_payment_terms
+  summary: 'Validates payment terms on a billing account with agreement type ''Microsoft
+    Customer Agreement''
+
+    and account type ''Enterprise''.'
+  signature: 'validate_payment_terms(billing_account_name: str, parameters: List[_models.PaymentTerm],
+    *, content_type: str = ''application/json'', **kwargs: Any) -> _models.PaymentTermsEligibilityResult'
+  parameters:
+  - name: billing_account_name
+    description: The ID that uniquely identifies a billing account. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: parameters
+    description: 'The properties of payment term. Is either a [PaymentTerm] type or
+      a
+
+      IO[bytes] type. Required.'
+    isRequired: true
+    types:
+    - <xref:list>[<xref:azure.mgmt.billing.models.PaymentTerm>]
+    - <xref:typing.IO>[<xref:bytes>]
+  return:
+    description: PaymentTermsEligibilityResult or the result of cls(response)
+    types:
+    - <xref:azure.mgmt.billing.models.PaymentTermsEligibilityResult>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  seeAlsoContent: "\n\n  * [https://docs.microsoft.com/en-us/rest/api/billing/](https://docs.microsoft.com/en-us/rest/api/billing/)\
+    \ \n"
 attributes:
 - uid: azure.mgmt.billing.operations.BillingAccountsOperations.models
   name: models

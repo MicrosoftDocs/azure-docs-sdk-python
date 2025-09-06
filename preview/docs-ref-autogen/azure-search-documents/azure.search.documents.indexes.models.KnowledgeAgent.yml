@@ -8,10 +8,12 @@ summary: 'KnowledgeAgent.
 
   All required parameters must be populated in order to send to server.'
 constructor:
-  syntax: 'KnowledgeAgent(*, name: str, models: List[_models.KnowledgeAgentModel],
-    target_indexes: List[_models.KnowledgeAgentTargetIndex], request_limits: _models.KnowledgeAgentRequestLimits
-    | None = None, e_tag: str | None = None, encryption_key: _models.SearchResourceEncryptionKey
-    | None = None, description: str | None = None, **kwargs: Any)'
+  syntax: 'KnowledgeAgent(*, name: str, models: list[''_models.KnowledgeAgentModel''],
+    knowledge_sources: list[''_models.KnowledgeSourceReference''], output_configuration:
+    _models.KnowledgeAgentOutputConfiguration | None = None, request_limits: _models.KnowledgeAgentRequestLimits
+    | None = None, retrieval_instructions: str | None = None, e_tag: str | None =
+    None, encryption_key: _models.SearchResourceEncryptionKey | None = None, description:
+    str | None = None, **kwargs: Any)'
   keywordOnlyParameters:
   - name: name
     description: The name of the knowledge agent. Required.
@@ -21,10 +23,14 @@ constructor:
     description: Contains configuration options on how to connect to AI models. Required.
     types:
     - <xref:list>[<xref:azure.search.documents.indexes.models.KnowledgeAgentModel>]
-  - name: target_indexes
+  - name: knowledge_sources
     description: Required.
     types:
-    - <xref:list>[<xref:azure.search.documents.indexes.models.KnowledgeAgentTargetIndex>]
+    - <xref:list>[<xref:azure.search.documents.indexes.models.KnowledgeSourceReference>]
+  - name: output_configuration
+    defaultValue: None
+    types:
+    - <xref:azure.search.documents.indexes.models.KnowledgeAgentOutputConfiguration>
   - name: request_limits
     description: 'Guardrails to limit how much resources are utilized for a single
       agent
@@ -33,6 +39,13 @@ constructor:
     defaultValue: None
     types:
     - <xref:azure.search.documents.indexes.models.KnowledgeAgentRequestLimits>
+  - name: retrieval_instructions
+    description: 'Instructions considered by the knowledge agent when developing
+
+      query plan.'
+    defaultValue: None
+    types:
+    - <xref:str>
   - name: e_tag
     description: The ETag of the agent.
     defaultValue: None
@@ -79,15 +92,24 @@ variables:
   types:
   - <xref:list>[<xref:azure.search.documents.indexes.models.KnowledgeAgentModel>]
 - description: Required.
-  name: target_indexes
+  name: knowledge_sources
   types:
-  - <xref:list>[<xref:azure.search.documents.indexes.models.KnowledgeAgentTargetIndex>]
+  - <xref:list>[<xref:azure.search.documents.indexes.models.KnowledgeSourceReference>]
+- name: output_configuration
+  types:
+  - <xref:azure.search.documents.indexes.models.KnowledgeAgentOutputConfiguration>
 - description: 'Guardrails to limit how much resources are utilized for a single agent
 
     retrieval request.'
   name: request_limits
   types:
   - <xref:azure.search.documents.indexes.models.KnowledgeAgentRequestLimits>
+- description: 'Instructions considered by the knowledge agent when developing
+
+    query plan.'
+  name: retrieval_instructions
+  types:
+  - <xref:str>
 - description: The ETag of the agent.
   name: e_tag
   types:
@@ -133,7 +155,7 @@ methods:
     \ \n\n* last_restapi_key_transformer \n\nIf you want XML serialization, you can\
     \ pass the kwargs is_xml=True."
   signature: 'as_dict(keep_readonly: bool = True, key_transformer: ~typing.Callable[[str,
-    ~typing.Dict[str, ~typing.Any], ~typing.Any], ~typing.Any] = <function attribute_transformer>,
+    dict[str, typing.Any], ~typing.Any], ~typing.Any] = <function attribute_transformer>,
     **kwargs: ~typing.Any) -> MutableMapping[str, Any]'
   parameters:
   - name: keep_readonly
@@ -184,7 +206,7 @@ methods:
     extractors (rest_key_case_insensitive_extractor, attribute_key_case_insensitive_extractor
 
     and last_rest_key_case_insensitive_extractor)'
-  signature: 'from_dict(data: Any, key_extractors: Callable[[str, Dict[str, Any],
+  signature: 'from_dict(data: Any, key_extractors: Callable[[str, dict[str, Any],
     Any], Any] | None = None, content_type: str | None = None) -> Self'
   parameters:
   - name: data
