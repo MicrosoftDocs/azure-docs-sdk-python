@@ -9,17 +9,23 @@ summary: 'Base type for activity records.
   You probably want to use the sub-classes and not this class directly. Known sub-classes
   are:
 
-  KnowledgeAgentSearchActivityRecord, KnowledgeAgentSemanticRankerActivityRecord,
+  KnowledgeAgentRetrievalActivityRecord, KnowledgeAgentModelAnswerSynthesisActivityRecord,
 
-  KnowledgeAgentModelQueryPlanningActivityRecord
+  KnowledgeAgentModelQueryPlanningActivityRecord, KnowledgeAgentSemanticRerankerActivityRecord
 
 
   All required parameters must be populated in order to send to server.'
 constructor:
-  syntax: 'KnowledgeAgentActivityRecord(*, id: int, **kwargs: Any)'
+  syntax: 'KnowledgeAgentActivityRecord(*, id: int, elapsed_ms: int | None = None,
+    **kwargs: Any)'
   keywordOnlyParameters:
   - name: id
     description: The ID of the activity record. Required.
+    types:
+    - <xref:int>
+  - name: elapsed_ms
+    description: The elapsed time in milliseconds for the retrieval activity.
+    defaultValue: None
     types:
     - <xref:int>
 variables:
@@ -31,6 +37,10 @@ variables:
   name: type
   types:
   - <xref:str>
+- description: The elapsed time in milliseconds for the retrieval activity.
+  name: elapsed_ms
+  types:
+  - <xref:int>
 methods:
 - uid: azure.search.documents.agent.models.KnowledgeAgentActivityRecord.as_dict
   name: as_dict
@@ -44,7 +54,7 @@ methods:
     \ \n\n* last_restapi_key_transformer \n\nIf you want XML serialization, you can\
     \ pass the kwargs is_xml=True."
   signature: 'as_dict(keep_readonly: bool = True, key_transformer: ~typing.Callable[[str,
-    ~typing.Dict[str, ~typing.Any], ~typing.Any], ~typing.Any] = <function attribute_transformer>,
+    dict[str, typing.Any], ~typing.Any], ~typing.Any] = <function attribute_transformer>,
     **kwargs: ~typing.Any) -> MutableMapping[str, Any]'
   parameters:
   - name: keep_readonly
@@ -95,7 +105,7 @@ methods:
     extractors (rest_key_case_insensitive_extractor, attribute_key_case_insensitive_extractor
 
     and last_rest_key_case_insensitive_extractor)'
-  signature: 'from_dict(data: Any, key_extractors: Callable[[str, Dict[str, Any],
+  signature: 'from_dict(data: Any, key_extractors: Callable[[str, dict[str, Any],
     Any], Any] | None = None, content_type: str | None = None) -> Self'
   parameters:
   - name: data

@@ -6,7 +6,7 @@ module: azure.synapse.artifacts.models
 summary: 'Office365 linked service.
 
 
-  All required parameters must be populated in order to send to server.'
+  All required parameters must be populated in order to send to Azure.'
 constructor:
   syntax: 'Office365LinkedService(*, office365_tenant_id: MutableMapping[str, Any],
     service_principal_tenant_id: MutableMapping[str, Any], service_principal_id: MutableMapping[str,
@@ -14,8 +14,11 @@ constructor:
     MutableMapping[str, Any]] | None = None, version: str | None = None, connect_via:
     _models.IntegrationRuntimeReference | None = None, description: str | None = None,
     parameters: Dict[str, _models.ParameterSpecification] | None = None, annotations:
-    List[MutableMapping[str, Any]] | None = None, encrypted_credential: MutableMapping[str,
-    Any] | None = None, **kwargs: Any)'
+    List[MutableMapping[str, Any]] | None = None, service_principal_credential_type:
+    MutableMapping[str, Any] | None = None, service_principal_embedded_cert: _models.SecretBase
+    | None = None, service_principal_embedded_cert_password: _models.SecretBase |
+    None = None, encrypted_credential: MutableMapping[str, Any] | None = None, **kwargs:
+    Any)'
   keywordOnlyParameters:
   - name: additional_properties
     description: 'Unmatched properties from the message are deserialized to this
@@ -70,6 +73,39 @@ constructor:
     - <xref:JSON>
   - name: service_principal_key
     description: Specify the application's key. Required.
+    types:
+    - <xref:azure.synapse.artifacts.models.SecretBase>
+  - name: service_principal_credential_type
+    description: 'The service principal credential type for
+
+      authentication.''ServicePrincipalKey'' for key/secret, ''ServicePrincipalCert''
+      for certificate. If
+
+      not specified, ''ServicePrincipalKey'' is in use. Type: string (or Expression
+      with resultType
+
+      string).'
+    defaultValue: None
+    types:
+    - <xref:JSON>
+  - name: service_principal_embedded_cert
+    description: 'Specify the base64 encoded certificate of your
+
+      application registered in Azure Active Directory. Type: string (or Expression
+      with resultType
+
+      string).'
+    defaultValue: None
+    types:
+    - <xref:azure.synapse.artifacts.models.SecretBase>
+  - name: service_principal_embedded_cert_password
+    description: 'Specify the password of your certificate if
+
+      your certificate has a password and you are using AadServicePrincipal authentication.
+      Type:
+
+      string (or Expression with resultType string).'
+    defaultValue: None
     types:
     - <xref:azure.synapse.artifacts.models.SecretBase>
   - name: encrypted_credential
@@ -135,6 +171,36 @@ variables:
   name: service_principal_key
   types:
   - <xref:azure.synapse.artifacts.models.SecretBase>
+- description: 'The service principal credential type for
+
+    authentication.''ServicePrincipalKey'' for key/secret, ''ServicePrincipalCert''
+    for certificate. If
+
+    not specified, ''ServicePrincipalKey'' is in use. Type: string (or Expression
+    with resultType
+
+    string).'
+  name: service_principal_credential_type
+  types:
+  - <xref:JSON>
+- description: 'Specify the base64 encoded certificate of your
+
+    application registered in Azure Active Directory. Type: string (or Expression
+    with resultType
+
+    string).'
+  name: service_principal_embedded_cert
+  types:
+  - <xref:azure.synapse.artifacts.models.SecretBase>
+- description: 'Specify the password of your certificate if
+
+    your certificate has a password and you are using AadServicePrincipal authentication.
+    Type:
+
+    string (or Expression with resultType string).'
+  name: service_principal_embedded_cert_password
+  types:
+  - <xref:azure.synapse.artifacts.models.SecretBase>
 - description: 'The encrypted credential used for authentication. Credentials are
 
     encrypted using the integration runtime credential manager. Type: string (or Expression
@@ -160,15 +226,12 @@ methods:
     ~typing.Dict[str, ~typing.Any], ~typing.Any], ~typing.Any] = <function attribute_transformer>,
     **kwargs: ~typing.Any) -> MutableMapping[str, Any]'
   parameters:
-  - name: keep_readonly
-    description: If you want to serialize the readonly attributes
-    defaultValue: 'True'
-    types:
-    - <xref:bool>
   - name: key_transformer
     description: A key transformer function.
     types:
     - <xref:function>
+  - name: keep_readonly
+    defaultValue: 'True'
   return:
     description: A dict JSON compatible object
     types:
@@ -176,7 +239,7 @@ methods:
 - uid: azure.synapse.artifacts.models.Office365LinkedService.deserialize
   name: deserialize
   summary: Parse a str using the RestAPI syntax and return a model.
-  signature: 'deserialize(data: Any, content_type: str | None = None) -> Self'
+  signature: 'deserialize(data: Any, content_type: str | None = None) -> ModelType'
   parameters:
   - name: data
     description: A str using RestAPI structure. JSON by default.
@@ -190,11 +253,8 @@ methods:
     - <xref:str>
   return:
     description: An instance of this model
-    types:
-    - <xref:typing.Self>
   exceptions:
-  - type: DeserializationError
-    description: if something went wrong
+  - type: DeserializationError if something went wrong
 - uid: azure.synapse.artifacts.models.Office365LinkedService.enable_additional_properties_sending
   name: enable_additional_properties_sending
   signature: enable_additional_properties_sending() -> None
@@ -209,27 +269,22 @@ methods:
 
     and last_rest_key_case_insensitive_extractor)'
   signature: 'from_dict(data: Any, key_extractors: Callable[[str, Dict[str, Any],
-    Any], Any] | None = None, content_type: str | None = None) -> Self'
+    Any], Any] | None = None, content_type: str | None = None) -> ModelType'
   parameters:
   - name: data
     description: A dict using RestAPI structure
     isRequired: true
     types:
     - <xref:dict>
-  - name: key_extractors
-    description: A key extractor function.
-    defaultValue: None
-    types:
-    - <xref:function>
   - name: content_type
     description: JSON by default, set application/xml if XML.
     defaultValue: None
     types:
     - <xref:str>
+  - name: key_extractors
+    defaultValue: None
   return:
     description: An instance of this model
-    types:
-    - <xref:typing.Self>
   exceptions:
   - type: DeserializationError if something went wrong
 - uid: azure.synapse.artifacts.models.Office365LinkedService.is_xml_model
@@ -237,7 +292,7 @@ methods:
   signature: is_xml_model() -> bool
 - uid: azure.synapse.artifacts.models.Office365LinkedService.serialize
   name: serialize
-  summary: 'Return the JSON that would be sent to server from this model.
+  summary: 'Return the JSON that would be sent to azure from this model.
 
 
     This is an alias to *as_dict(full_restapi_key_transformer, keep_readonly=False)*.

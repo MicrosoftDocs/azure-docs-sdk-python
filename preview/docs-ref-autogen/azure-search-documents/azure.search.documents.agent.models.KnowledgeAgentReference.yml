@@ -9,12 +9,13 @@ summary: 'Base type for references.
   You probably want to use the sub-classes and not this class directly. Known sub-classes
   are:
 
-  KnowledgeAgentAzureSearchDocReference
+  KnowledgeAgentAzureBlobReference, KnowledgeAgentSearchIndexReference
 
 
   All required parameters must be populated in order to send to server.'
 constructor:
-  syntax: 'KnowledgeAgentReference(*, id: str, activity_source: int, **kwargs: Any)'
+  syntax: 'KnowledgeAgentReference(*, id: str, activity_source: int, source_data:
+    dict[str, Any] | None = None, reranker_score: float | None = None, **kwargs: Any)'
   keywordOnlyParameters:
   - name: id
     description: The ID of the reference. Required.
@@ -24,6 +25,16 @@ constructor:
     description: The source activity ID for the reference. Required.
     types:
     - <xref:int>
+  - name: source_data
+    description: Dictionary of `<any>`.
+    defaultValue: None
+    types:
+    - <xref:dict>[<xref:str>, <xref:any>]
+  - name: reranker_score
+    description: The reranker score for the document reference.
+    defaultValue: None
+    types:
+    - <xref:float>
 variables:
 - description: The type of the reference. Required.
   name: type
@@ -37,6 +48,14 @@ variables:
   name: activity_source
   types:
   - <xref:int>
+- description: Dictionary of `<any>`.
+  name: source_data
+  types:
+  - <xref:dict>[<xref:str>, <xref:any>]
+- description: The reranker score for the document reference.
+  name: reranker_score
+  types:
+  - <xref:float>
 methods:
 - uid: azure.search.documents.agent.models.KnowledgeAgentReference.as_dict
   name: as_dict
@@ -50,7 +69,7 @@ methods:
     \ \n\n* last_restapi_key_transformer \n\nIf you want XML serialization, you can\
     \ pass the kwargs is_xml=True."
   signature: 'as_dict(keep_readonly: bool = True, key_transformer: ~typing.Callable[[str,
-    ~typing.Dict[str, ~typing.Any], ~typing.Any], ~typing.Any] = <function attribute_transformer>,
+    dict[str, typing.Any], ~typing.Any], ~typing.Any] = <function attribute_transformer>,
     **kwargs: ~typing.Any) -> MutableMapping[str, Any]'
   parameters:
   - name: keep_readonly
@@ -101,7 +120,7 @@ methods:
     extractors (rest_key_case_insensitive_extractor, attribute_key_case_insensitive_extractor
 
     and last_rest_key_case_insensitive_extractor)'
-  signature: 'from_dict(data: Any, key_extractors: Callable[[str, Dict[str, Any],
+  signature: 'from_dict(data: Any, key_extractors: Callable[[str, dict[str, Any],
     Any], Any] | None = None, content_type: str | None = None) -> Self'
   parameters:
   - name: data

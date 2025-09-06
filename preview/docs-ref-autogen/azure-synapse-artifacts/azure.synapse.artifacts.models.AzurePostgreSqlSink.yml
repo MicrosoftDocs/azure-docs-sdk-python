@@ -3,17 +3,19 @@ uid: azure.synapse.artifacts.models.AzurePostgreSqlSink
 name: AzurePostgreSqlSink
 fullName: azure.synapse.artifacts.models.AzurePostgreSqlSink
 module: azure.synapse.artifacts.models
-summary: 'A copy activity Azure PostgreSQL sink.
+summary: 'A copy activity Azure Database for PostgreSQL sink.
 
 
-  All required parameters must be populated in order to send to server.'
+  All required parameters must be populated in order to send to Azure.'
 constructor:
   syntax: 'AzurePostgreSqlSink(*, additional_properties: Dict[str, MutableMapping[str,
     Any]] | None = None, write_batch_size: MutableMapping[str, Any] | None = None,
     write_batch_timeout: MutableMapping[str, Any] | None = None, sink_retry_count:
     MutableMapping[str, Any] | None = None, sink_retry_wait: MutableMapping[str, Any]
     | None = None, max_concurrent_connections: MutableMapping[str, Any] | None = None,
-    pre_copy_script: MutableMapping[str, Any] | None = None, **kwargs: Any)'
+    pre_copy_script: MutableMapping[str, Any] | None = None, write_method: str | _models.AzurePostgreSqlWriteMethodEnum
+    | None = None, upsert_settings: _models.AzurePostgreSqlSinkUpsertSettings | None
+    = None, **kwargs: Any)'
   keywordOnlyParameters:
   - name: additional_properties
     description: 'Unmatched properties from the message are deserialized to this
@@ -64,6 +66,19 @@ constructor:
     defaultValue: None
     types:
     - <xref:JSON>
+  - name: write_method
+    description: 'The write behavior for the operation. Default is Bulk Insert. Known
+
+      values are: "BulkInsert", "CopyCommand", and "Upsert".'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.synapse.artifacts.models.AzurePostgreSqlWriteMethodEnum>
+  - name: upsert_settings
+    description: Azure Database for PostgreSQL upsert option settings.
+    defaultValue: None
+    types:
+    - <xref:azure.synapse.artifacts.models.AzurePostgreSqlSinkUpsertSettings>
 variables:
 - description: 'Unmatched properties from the message are deserialized to this
 
@@ -111,6 +126,18 @@ variables:
   name: pre_copy_script
   types:
   - <xref:JSON>
+- description: 'The write behavior for the operation. Default is Bulk Insert. Known
+    values
+
+    are: "BulkInsert", "CopyCommand", and "Upsert".'
+  name: write_method
+  types:
+  - <xref:str>
+  - <xref:azure.synapse.artifacts.models.AzurePostgreSqlWriteMethodEnum>
+- description: Azure Database for PostgreSQL upsert option settings.
+  name: upsert_settings
+  types:
+  - <xref:azure.synapse.artifacts.models.AzurePostgreSqlSinkUpsertSettings>
 methods:
 - uid: azure.synapse.artifacts.models.AzurePostgreSqlSink.as_dict
   name: as_dict
@@ -127,15 +154,12 @@ methods:
     ~typing.Dict[str, ~typing.Any], ~typing.Any], ~typing.Any] = <function attribute_transformer>,
     **kwargs: ~typing.Any) -> MutableMapping[str, Any]'
   parameters:
-  - name: keep_readonly
-    description: If you want to serialize the readonly attributes
-    defaultValue: 'True'
-    types:
-    - <xref:bool>
   - name: key_transformer
     description: A key transformer function.
     types:
     - <xref:function>
+  - name: keep_readonly
+    defaultValue: 'True'
   return:
     description: A dict JSON compatible object
     types:
@@ -143,7 +167,7 @@ methods:
 - uid: azure.synapse.artifacts.models.AzurePostgreSqlSink.deserialize
   name: deserialize
   summary: Parse a str using the RestAPI syntax and return a model.
-  signature: 'deserialize(data: Any, content_type: str | None = None) -> Self'
+  signature: 'deserialize(data: Any, content_type: str | None = None) -> ModelType'
   parameters:
   - name: data
     description: A str using RestAPI structure. JSON by default.
@@ -157,11 +181,8 @@ methods:
     - <xref:str>
   return:
     description: An instance of this model
-    types:
-    - <xref:typing.Self>
   exceptions:
-  - type: DeserializationError
-    description: if something went wrong
+  - type: DeserializationError if something went wrong
 - uid: azure.synapse.artifacts.models.AzurePostgreSqlSink.enable_additional_properties_sending
   name: enable_additional_properties_sending
   signature: enable_additional_properties_sending() -> None
@@ -176,27 +197,22 @@ methods:
 
     and last_rest_key_case_insensitive_extractor)'
   signature: 'from_dict(data: Any, key_extractors: Callable[[str, Dict[str, Any],
-    Any], Any] | None = None, content_type: str | None = None) -> Self'
+    Any], Any] | None = None, content_type: str | None = None) -> ModelType'
   parameters:
   - name: data
     description: A dict using RestAPI structure
     isRequired: true
     types:
     - <xref:dict>
-  - name: key_extractors
-    description: A key extractor function.
-    defaultValue: None
-    types:
-    - <xref:function>
   - name: content_type
     description: JSON by default, set application/xml if XML.
     defaultValue: None
     types:
     - <xref:str>
+  - name: key_extractors
+    defaultValue: None
   return:
     description: An instance of this model
-    types:
-    - <xref:typing.Self>
   exceptions:
   - type: DeserializationError if something went wrong
 - uid: azure.synapse.artifacts.models.AzurePostgreSqlSink.is_xml_model
@@ -204,7 +220,7 @@ methods:
   signature: is_xml_model() -> bool
 - uid: azure.synapse.artifacts.models.AzurePostgreSqlSink.serialize
   name: serialize
-  summary: 'Return the JSON that would be sent to server from this model.
+  summary: 'Return the JSON that would be sent to azure from this model.
 
 
     This is an alias to *as_dict(full_restapi_key_transformer, keep_readonly=False)*.
