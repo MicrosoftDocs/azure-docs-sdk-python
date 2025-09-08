@@ -1,0 +1,11 @@
+---
+title: Azure Playwright Testing SDK for Python
+description: Reference for Azure Playwright Testing SDK for Python
+ms.date: 09/08/2025
+ms.topic: reference
+ms.devlang: python
+ms.service: playwrighttesting
+---
+# Azure Playwright Testing SDK for Python - legacy
+## Packages - legacy
+[!INCLUDE [packages](playwright-testing-index.md)]
