@@ -1,12 +1,16 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-playwrighttesting, playwrighttesting
-ms.date: 12/20/2024
+ms.date: 09/09/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: playwrighttesting
 ---
 # Microsoft Azure SDK for Python
+
+**Deprecation message**
+
+This package has been deprecated and will no longer be maintained after **March 8, 2026**. This package will only receive security fixes until **March 8, 2026**. To receive updates on new features and non-security bug fixes, upgrade to the replacement package, [@azure-mgmt-playwright](https://pypi.org/project/azure-mgmt-playwright/). Refer to the [migration guide](https://aka.ms/mpt/migration-guidance) for guidance on upgrading.
 
 This is the Microsoft Azure Playwrighttesting Management Client Library.
 This package has been tested with Python 3.8+.
