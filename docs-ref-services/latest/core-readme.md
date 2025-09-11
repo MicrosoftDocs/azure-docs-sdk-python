@@ -1,21 +1,21 @@
 ---
 title: Azure Core shared client library for Python
 keywords: Azure, python, SDK, API, azure-core, core
-ms.date: 07/03/2025
+ms.date: 09/11/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: core
 ---
 
-# Azure Core shared client library for Python - version 1.35.0 
+# Azure Core shared client library for Python - version 1.35.1 
 
 
 Azure core provides shared exceptions and modules for Python SDK client libraries.
 These libraries follow the [Azure SDK Design Guidelines for Python](https://azure.github.io/azure-sdk/python/guidelines/index.html) .
 
-If you are a client library developer, please reference [client library developer reference](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.35.0/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md) for more information.
+If you are a client library developer, please reference [client library developer reference](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.35.1/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md) for more information.
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.35.0/sdk/core/azure-core/)
+[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.35.1/sdk/core/azure-core/)
 | [Package (Pypi)][package]
 | [Package (Conda)](https://anaconda.org/microsoft/azure-core/)
 | [API reference documentation](https://learn.microsoft.com/python/api/overview/azure/core-readme)
@@ -236,6 +236,33 @@ assert bool(NULL) is False
 foo = Foo(
     attr=NULL
 )
+```
+
+## Logging
+
+Azure libraries follow the guidance of Python's standard [logging](https://docs.python.org/3/library/logging.html) module. By following the Python documentation on logging, you should be able to configure logging for Azure libraries effectively.
+
+Azure library loggers use a dot-based separated syntax, where the first section is always `azure`, followed by the package name. For example, the Azure Core library uses logger names that start with `azure.core`.
+
+Here's an example of how to configure logging for Azure libraries:
+
+```python
+import logging
+import sys
+
+# Enable detailed console logs across Azure libraries
+azure_logger = logging.getLogger("azure")
+azure_logger.setLevel(logging.DEBUG)
+azure_logger.addHandler(logging.StreamHandler(stream=sys.stdout))
+
+# Exclude detailed logs for network calls associated with getting Entra ID token.
+identity_logger = logging.getLogger("azure.identity")
+identity_logger.setLevel(logging.ERROR)
+
+# Make sure regular (redacted) detailed azure.core logs are not shown, as we are about to
+# turn on non-redacted logs by passing 'logging_enable=True' to the client constructor 
+logger = logging.getLogger("azure.core.pipeline.policies.http_logging_policy")
+logger.setLevel(logging.ERROR)
 ```
 
 ## Contributing
