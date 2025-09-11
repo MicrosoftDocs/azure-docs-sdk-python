@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-ai-voicelive, ai
-ms.date: 08/29/2025
+ms.date: 09/11/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: ai
