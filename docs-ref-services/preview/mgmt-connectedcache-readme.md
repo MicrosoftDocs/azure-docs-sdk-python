@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-connectedcache, connectedcache
-ms.date: 11/26/2024
+ms.date: 09/12/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: connectedcache
