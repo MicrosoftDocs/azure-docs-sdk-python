@@ -11,28 +11,26 @@ summary: 'An Azure SQL managed instance.
 
   All required parameters must be populated in order to send to server.'
 constructor:
-  syntax: 'ManagedInstance(*, location: str, tags: Dict[str, str] | None = None, identity:
+  syntax: 'ManagedInstance(*, location: str, tags: dict[str, str] | None = None, identity:
     _models.ResourceIdentity | None = None, sku: _models.Sku | None = None, managed_instance_create_mode:
     str | _models.ManagedServerCreateMode | None = None, is_general_purpose_v2: bool
     | None = None, administrator_login: str | None = None, administrator_login_password:
     str | None = None, subnet_id: str | None = None, license_type: str | _models.ManagedInstanceLicenseType
     | None = None, hybrid_secondary_usage: str | _models.HybridSecondaryUsage | None
     = None, v_cores: int | None = None, storage_size_in_gb: int | None = None, storage_iops:
-    int | None = None, storage_throughput_mbps: int | None = None, memory_size_in_gb:
-    int | None = None, collation: str | None = None, dns_zone_partner: str | None
-    = None, public_data_endpoint_enabled: bool | None = None, source_managed_instance_id:
-    str | None = None, restore_point_in_time: datetime | None = None, proxy_override:
-    str | _models.ManagedInstanceProxyOverride | None = None, timezone_id: str | None
-    = None, instance_pool_id: str | None = None, maintenance_configuration_id: str
-    | None = None, minimal_tls_version: str | None = None, requested_backup_storage_redundancy:
-    str | _models.BackupStorageRedundancy | None = None, zone_redundant: bool | None
-    = None, primary_user_assigned_identity_id: str | None = None, key_id: str | None
-    = None, administrators: _models.ManagedInstanceExternalAdministrator | None =
-    None, service_principal: _models.ServicePrincipal | None = None, pricing_model:
-    str | _models.PricingModel | None = None, authentication_metadata: str | _models.AuthMetadataLookupModes
+    int | None = None, storage_throughput_mbps: int | None = None, collation: str
+    | None = None, dns_zone_partner: str | None = None, public_data_endpoint_enabled:
+    bool | None = None, source_managed_instance_id: str | None = None, restore_point_in_time:
+    datetime | None = None, proxy_override: str | _models.ManagedInstanceProxyOverride
+    | None = None, timezone_id: str | None = None, instance_pool_id: str | None =
+    None, maintenance_configuration_id: str | None = None, minimal_tls_version: str
+    | None = None, requested_backup_storage_redundancy: str | _models.BackupStorageRedundancy
+    | None = None, zone_redundant: bool | None = None, primary_user_assigned_identity_id:
+    str | None = None, key_id: str | None = None, administrators: _models.ManagedInstanceExternalAdministrator
+    | None = None, service_principal: _models.ServicePrincipal | None = None, pricing_model:
+    str | _models.FreemiumType | None = None, authentication_metadata: str | _models.AuthMetadataLookupModes
     | None = None, database_format: str | _models.ManagedInstanceDatabaseFormat |
-    None = None, requested_logical_availability_zone: str | _models.AvailabilityZoneType
-    | None = None, **kwargs: Any)'
+    None = None, **kwargs: Any)'
   keywordOnlyParameters:
   - name: location
     description: Resource location. Required.
@@ -49,19 +47,10 @@ constructor:
     types:
     - <xref:azure.mgmt.sql.models.ResourceIdentity>
   - name: sku
-    description: 'Managed instance SKU. Allowed values for sku.name: GP_Gen5 (General
-      Purpose,
+    description: 'Managed instance SKU. Allowed values for sku.name: GP_Gen5, GP_G8IM,
+      GP_G8IH,
 
-      Standard-series); GP_G8IM (General Purpose, Premium-series); GP_G8IH (General
-      Purpose,
-
-      Premium-series memory optimized); BC_Gen5 (Business Critical, Standard-Series);
-      BC_G8IM
-
-      (Business Critical, Premium-series); BC_G8IH (Business Critical, Premium-series
-      memory
-
-      optimized).'
+      BC_Gen5, BC_G8IM, BC_G8IH.'
     defaultValue: None
     types:
     - <xref:azure.mgmt.sql.models.Sku>
@@ -133,18 +122,12 @@ constructor:
     - <xref:str>
     - <xref:azure.mgmt.sql.models.HybridSecondaryUsage>
   - name: v_cores
-    description: 'The number of vCores. Allowed values: 4, 6, 8, 10, 12, 16, 20, 24,
-      32, 40,
-
-      48, 56, 64, 80, 96, 128. Supported vCores depends on the selected hardware family
-      and service
-
-      tier.'
+    description: 'The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80.'
     defaultValue: None
     types:
     - <xref:int>
   - name: storage_size_in_gb
-    description: 'Storage size in GB. Minimum value: 32. Maximum value: 32768.
+    description: 'Storage size in GB. Minimum value: 32. Maximum value: 16384.
 
       Increments of 32 GB allowed only. Maximum value depends on the selected hardware
       family and
@@ -166,16 +149,6 @@ constructor:
     description: 'Storage throughput MBps parameter is not supported in the
 
       instance create/update operation.'
-    defaultValue: None
-    types:
-    - <xref:int>
-  - name: memory_size_in_gb
-    description: 'Memory size in GB. Minimum value: 28. Maximum value: 870. Minimum
-
-      and maximum value depend on the number of vCores and service tier. Read more
-      about resource
-
-      limits: [https://aka.ms/mi-resource-limits-api](https://aka.ms/mi-resource-limits-api).'
     defaultValue: None
     types:
     - <xref:int>
@@ -275,7 +248,7 @@ constructor:
     - <xref:str>
     - <xref:azure.mgmt.sql.models.BackupStorageRedundancy>
   - name: zone_redundant
-    description: Whether or not the zone-redundancy is enabled.
+    description: Whether or not the multi-az is enabled.
     defaultValue: None
     types:
     - <xref:bool>
@@ -292,12 +265,12 @@ constructor:
     types:
     - <xref:str>
   - name: administrators
-    description: 'The Azure Active Directory administrator can be utilized during
+    description: 'The Azure Active Directory administrator of the instance. This can
 
-      instance creation and for instance updates, except for the azureADOnlyAuthentication
-      property.
+      only be used at instance create time. If used for instance update, it will be
+      ignored or it
 
-      To update the azureADOnlyAuthentication property, individual API must be used.'
+      will result in an error. For updates individual APIs will need to be used.'
     defaultValue: None
     types:
     - <xref:azure.mgmt.sql.models.ManagedInstanceExternalAdministrator>
@@ -307,13 +280,13 @@ constructor:
     types:
     - <xref:azure.mgmt.sql.models.ServicePrincipal>
   - name: pricing_model
-    description: 'Pricing model of Managed Instance. Known values are: "Regular" and
+    description: 'Weather or not Managed Instance is freemium. Known values are:
 
-      "Freemium".'
+      "Regular" and "Freemium".'
     defaultValue: None
     types:
     - <xref:str>
-    - <xref:azure.mgmt.sql.models.PricingModel>
+    - <xref:azure.mgmt.sql.models.FreemiumType>
   - name: authentication_metadata
     description: 'The managed instance''s authentication metadata lookup mode.
 
@@ -326,20 +299,11 @@ constructor:
     description: 'Specifies the internal format of instance databases specific to
       the
 
-      SQL engine version. Known values are: "AlwaysUpToDate", "SQLServer2022", and
-      "SQLServer2025".'
+      SQL engine version. Known values are: "AlwaysUpToDate" and "SQLServer2022".'
     defaultValue: None
     types:
     - <xref:str>
     - <xref:azure.mgmt.sql.models.ManagedInstanceDatabaseFormat>
-  - name: requested_logical_availability_zone
-    description: 'Specifies the logical availability zone Managed
-
-      Instance is pinned to. Known values are: "NoPreference", "1", "2", and "3".'
-    defaultValue: None
-    types:
-    - <xref:str>
-    - <xref:azure.mgmt.sql.models.AvailabilityZoneType>
 variables:
 - description: Resource ID.
   name: id
@@ -365,19 +329,10 @@ variables:
   name: identity
   types:
   - <xref:azure.mgmt.sql.models.ResourceIdentity>
-- description: 'Managed instance SKU. Allowed values for sku.name: GP_Gen5 (General
-    Purpose,
+- description: 'Managed instance SKU. Allowed values for sku.name: GP_Gen5, GP_G8IM,
+    GP_G8IH,
 
-    Standard-series); GP_G8IM (General Purpose, Premium-series); GP_G8IH (General
-    Purpose,
-
-    Premium-series memory optimized); BC_Gen5 (Business Critical, Standard-Series);
-    BC_G8IM
-
-    (Business Critical, Premium-series); BC_G8IH (Business Critical, Premium-series
-    memory
-
-    optimized).'
+    BC_Gen5, BC_G8IM, BC_G8IH.'
   name: sku
   types:
   - <xref:azure.mgmt.sql.models.Sku>
@@ -467,15 +422,11 @@ variables:
   types:
   - <xref:str>
   - <xref:azure.mgmt.sql.models.HybridSecondaryUsageDetected>
-- description: 'The number of vCores. Allowed values: 4, 6, 8, 10, 12, 16, 20, 24,
-    32, 40, 48,
-
-    56, 64, 80, 96, 128. Supported vCores depends on the selected hardware family
-    and service tier.'
+- description: 'The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80.'
   name: v_cores
   types:
   - <xref:int>
-- description: 'Storage size in GB. Minimum value: 32. Maximum value: 32768.
+- description: 'Storage size in GB. Minimum value: 32. Maximum value: 16384.
 
     Increments of 32 GB allowed only. Maximum value depends on the selected hardware
     family and
@@ -496,16 +447,6 @@ variables:
 
     instance create/update operation.'
   name: storage_throughput_mbps
-  types:
-  - <xref:int>
-- description: 'Memory size in GB. Minimum value: 28. Maximum value: 870. Minimum
-    and
-
-    maximum value depend on the number of vCores and service tier. Read more about
-    resource limits:
-
-    [https://aka.ms/mi-resource-limits-api](https://aka.ms/mi-resource-limits-api).'
-  name: memory_size_in_gb
   types:
   - <xref:int>
 - description: Collation of the managed instance.
@@ -609,7 +550,7 @@ variables:
   types:
   - <xref:str>
   - <xref:azure.mgmt.sql.models.BackupStorageRedundancy>
-- description: Whether or not the zone-redundancy is enabled.
+- description: Whether or not the multi-az is enabled.
   name: zone_redundant
   types:
   - <xref:bool>
@@ -623,12 +564,13 @@ variables:
   name: key_id
   types:
   - <xref:str>
-- description: 'The Azure Active Directory administrator can be utilized during instance
+- description: 'The Azure Active Directory administrator of the instance. This can
+    only
 
-    creation and for instance updates, except for the azureADOnlyAuthentication property.
-    To update
+    be used at instance create time. If used for instance update, it will be ignored
+    or it will
 
-    the azureADOnlyAuthentication property, individual API must be used.'
+    result in an error. For updates individual APIs will need to be used.'
   name: administrators
   types:
   - <xref:azure.mgmt.sql.models.ManagedInstanceExternalAdministrator>
@@ -647,13 +589,13 @@ variables:
   types:
   - <xref:str>
   - <xref:azure.mgmt.sql.models.ExternalGovernanceStatus>
-- description: 'Pricing model of Managed Instance. Known values are: "Regular" and
+- description: 'Weather or not Managed Instance is freemium. Known values are: "Regular"
 
-    "Freemium".'
+    and "Freemium".'
   name: pricing_model
   types:
   - <xref:str>
-  - <xref:azure.mgmt.sql.models.PricingModel>
+  - <xref:azure.mgmt.sql.models.FreemiumType>
 - description: 'Specifies the point in time (ISO8601 format) of the Managed Instance
 
     creation.'
@@ -670,15 +612,8 @@ variables:
 - description: 'Specifies the internal format of instance databases specific to the
     SQL
 
-    engine version. Known values are: "AlwaysUpToDate", "SQLServer2022", and "SQLServer2025".'
+    engine version. Known values are: "AlwaysUpToDate" and "SQLServer2022".'
   name: database_format
   types:
   - <xref:str>
   - <xref:azure.mgmt.sql.models.ManagedInstanceDatabaseFormat>
-- description: 'Specifies the logical availability zone Managed
-
-    Instance is pinned to. Known values are: "NoPreference", "1", "2", and "3".'
-  name: requested_logical_availability_zone
-  types:
-  - <xref:str>
-  - <xref:azure.mgmt.sql.models.AvailabilityZoneType>
