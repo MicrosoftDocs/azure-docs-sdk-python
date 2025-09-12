@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-workloadorchestration, workloadorchestration
-ms.date: 08/19/2025
+ms.date: 09/12/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: workloadorchestration
