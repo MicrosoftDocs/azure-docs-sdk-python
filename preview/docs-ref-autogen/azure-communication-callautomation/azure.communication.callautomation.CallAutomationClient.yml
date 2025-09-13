@@ -47,8 +47,8 @@ methods:
     Portal.'
   signature: 'answer_call(incoming_call_context: str, callback_url: str, *, cognitive_services_endpoint:
     str | None = None, operation_context: str | None = None, media_streaming: MediaStreamingOptions
-    | None = None, transcription: TranscriptionOptions | None = None, **kwargs) ->
-    CallConnectionProperties'
+    | None = None, transcription: TranscriptionOptions | None = None, enable_loopback_audio:
+    bool | None = None, **kwargs) -> CallConnectionProperties'
   parameters:
   - name: incoming_call_context
     description: 'This can be read from body of IncomingCall event.
@@ -74,15 +74,22 @@ methods:
     types:
     - <xref:str>
   - name: media_streaming
-    description: Media Streaming Configuration.
+    description: Media Streaming Options.
     defaultValue: None
     types:
     - <xref:azure.communication.callautomation.MediaStreamingOptions>
+    - <xref:None>
   - name: transcription
     description: Configuration of live transcription.
     defaultValue: None
     types:
     - <xref:azure.communication.callautomation.TranscriptionOptions>
+    - <xref:None>
+  - name: enable_loopback_audio
+    description: Enables loopback audio functionality for the call.
+    defaultValue: None
+    types:
+    - <xref:bool>
     - <xref:None>
   return:
     description: CallConnectionProperties
@@ -97,20 +104,21 @@ methods:
   name: connect_call
   signature: 'connect_call(callback_url: str, *, server_call_id: str, cognitive_services_endpoint:
     str | None = None, operation_context: str | None = None, media_streaming: ''MediaStreamingOptions''
-    | None = None, transcription: ''TranscriptionOptions'' | None = None, **kwargs)
-    -> CallConnectionProperties'
+    | None = None, transcription: ''TranscriptionOptions'' | None = None, enable_loopback_audio:
+    bool | None = None, **kwargs) -> CallConnectionProperties'
   parameters:
   - name: callback_url
     isRequired: true
 - uid: azure.communication.callautomation.CallAutomationClient.create_call
   name: create_call
   summary: Create a call connection request to a target identity.
-  signature: 'create_call(target_participant: CommunicationIdentifier | List[CommunicationIdentifier],
+  signature: 'create_call(target_participant: CommunicationIdentifier | Sequence[CommunicationIdentifier],
     callback_url: str, *, source_caller_id_number: PhoneNumberIdentifier | None =
     None, source_display_name: str | None = None, operation_context: str | None =
     None, cognitive_services_endpoint: str | None = None, media_streaming: MediaStreamingOptions
-    | None = None, transcription: TranscriptionOptions | None = None, **kwargs) ->
-    CallConnectionProperties'
+    | None = None, transcription: TranscriptionOptions | None = None, teams_app_source:
+    MicrosoftTeamsAppIdentifier | None = None, enable_loopback_audio: bool | None
+    = None, **kwargs) -> CallConnectionProperties'
   parameters:
   - name: target_participant
     description: Call invitee's information.
@@ -154,7 +162,7 @@ methods:
     - <xref:str>
     - <xref:None>
   - name: media_streaming
-    description: Media Streaming Configuration.
+    description: Media Streaming Options.
     defaultValue: None
     types:
     - <xref:azure.communication.callautomation.MediaStreamingOptions>
@@ -164,6 +172,17 @@ methods:
     defaultValue: None
     types:
     - <xref:azure.communication.callautomation.TranscriptionOptions>
+    - <xref:None>
+  - name: teams_app_source
+    description: The Microsoft Teams App Identifier.
+    defaultValue: None
+    types:
+    - <xref:azure.communication.callautomation.MicrosoftTeamsAppIdentifier>
+  - name: enable_loopback_audio
+    description: Enables loopback audio functionality for the call.
+    defaultValue: None
+    types:
+    - <xref:bool>
     - <xref:None>
   return:
     description: CallConnectionProperties
@@ -177,12 +196,13 @@ methods:
 
     This will call all targets simultaneously, and whoever answers the call will join
     the call.'
-  signature: 'create_group_call(target_participants: List[CommunicationIdentifier],
+  signature: 'create_group_call(target_participants: Sequence[CommunicationIdentifier],
     callback_url: str, *, source_caller_id_number: PhoneNumberIdentifier | None =
     None, source_display_name: str | None = None, operation_context: str | None =
     None, cognitive_services_endpoint: str | None = None, media_streaming: MediaStreamingOptions
-    | None = None, transcription: TranscriptionOptions | None = None, **kwargs) ->
-    CallConnectionProperties'
+    | None = None, transcription: TranscriptionOptions | None = None, teams_app_source:
+    MicrosoftTeamsAppIdentifier | None = None, enable_loopback_audio: bool | None
+    = None, **kwargs) -> CallConnectionProperties'
   parameters:
   - name: target_participants
     description: A list of targets.
@@ -221,7 +241,7 @@ methods:
     types:
     - <xref:str>
   - name: media_streaming
-    description: Media Streaming Configuration.
+    description: Media Streaming Options.
     defaultValue: None
     types:
     - <xref:azure.communication.callautomation.MediaStreamingOptions>
@@ -231,6 +251,17 @@ methods:
     defaultValue: None
     types:
     - <xref:azure.communication.callautomation.TranscriptionOptions>
+    - <xref:None>
+  - name: teams_app_source
+    description: The Microsoft Teams App Identifier.
+    defaultValue: None
+    types:
+    - <xref:azure.communication.callautomation.MicrosoftTeamsAppIdentifier>
+  - name: enable_loopback_audio
+    description: Enables loopback audio functionality for the call.
+    defaultValue: None
+    types:
+    - <xref:bool>
     - <xref:None>
   return:
     description: CallConnectionProperties
@@ -257,11 +288,11 @@ methods:
 - uid: azure.communication.callautomation.CallAutomationClient.download_recording
   name: download_recording
   summary: Download a stream of the call recording.
-  signature: 'download_recording(recording_url: str, *, offset: int = None, length:
-    int = None, **kwargs) -> Iterable[bytes]'
+  signature: 'download_recording(recording_url: str, *, offset: int | None = None,
+    length: int | None = None, **kwargs) -> Iterable[bytes]'
   parameters:
   - name: recording_url
-    description: Recording's url to be downloaded
+    description: Recording's url to be downloaded. Required.
     isRequired: true
     types:
     - <xref:str>
@@ -421,9 +452,9 @@ methods:
   signature: 'start_recording(*, server_call_id: str, recording_state_callback_url:
     str | None = None, recording_content_type: str | ''RecordingContent'' | None =
     None, recording_channel_type: str | ''RecordingChannel'' | None = None, recording_format_type:
-    str | ''RecordingFormat'' | None = None, audio_channel_participant_ordering: List[''CommunicationIdentifier'']
-    | None = None, channel_affinity: List[''ChannelAffinity''] | None = None, recording_storage:
-    ''AzureCommunicationsRecordingStorage'' | ''AzureBlobContainerRecordingStorage''
+    str | ''RecordingFormat'' | None = None, audio_channel_participant_ordering: Sequence[CommunicationIdentifier]
+    | None = None, channel_affinity: Sequence[''ChannelAffinity''] | None = None,
+    recording_storage: ''AzureCommunicationsRecordingStorage'' | ''AzureBlobContainerRecordingStorage''
     | None = None, pause_on_start: bool | None = None, **kwargs) -> RecordingProperties'
 - uid: azure.communication.callautomation.CallAutomationClient.stop_recording
   name: stop_recording
