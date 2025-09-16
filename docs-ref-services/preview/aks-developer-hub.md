@@ -1,7 +1,7 @@
 ---
 title: Azure AKS Developer Hub SDK for Python
 description: Reference for Azure AKS Developer Hub SDK for Python
-ms.date: 09/15/2025
+ms.date: 09/16/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: aksdeveloperhub
