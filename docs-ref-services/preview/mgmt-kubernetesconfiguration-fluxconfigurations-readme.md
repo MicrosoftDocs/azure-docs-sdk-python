@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-kubernetesconfiguration-fluxconfigurations, kubernetesconfiguration
-ms.date: 05/22/2025
+ms.date: 09/17/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: kubernetesconfiguration
