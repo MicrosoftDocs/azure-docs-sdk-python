@@ -1,7 +1,7 @@
 ---
 title: Azure Mongodbatlas SDK for Python
 description: Reference for Azure Mongodbatlas SDK for Python
-ms.date: 09/18/2025
+ms.date: 09/19/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: mongodbatlas
