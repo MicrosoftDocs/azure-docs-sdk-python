@@ -145,7 +145,7 @@ import asyncio
 from azure.core.credentials import AzureKeyCredential
 from azure.ai.voicelive.aio import connect
 from azure.ai.voicelive.models import (
-    RequestSession, Modality, AudioFormat, ServerVad, ServerEventType
+    RequestSession, Modality, InputAudioFormat, OutputAudioFormat, ServerVad, ServerEventType
 )
 
 API_KEY = "your-api-key"
@@ -161,8 +161,8 @@ async def main():
         session = RequestSession(
             modalities=[Modality.TEXT, Modality.AUDIO],
             instructions="You are a helpful assistant.",
-            input_audio_format=AudioFormat.PCM16,
-            output_audio_format=AudioFormat.PCM16,
+            input_audio_format=InputAudioFormat.PCM16,
+            output_audio_format=OutputAudioFormat.PCM16,
             turn_detection=ServerVad(
                 threshold=0.5, 
                 prefix_padding_ms=300, 
@@ -186,7 +186,7 @@ asyncio.run(main())
 from azure.core.credentials import AzureKeyCredential
 from azure.ai.voicelive import connect
 from azure.ai.voicelive.models import (
-    RequestSession, Modality, AudioFormat, ServerVad, ServerEventType
+    RequestSession, Modality, InputAudioFormat, OutputAudioFormat, ServerVad, ServerEventType
 )
 
 API_KEY = "your-api-key"
@@ -201,8 +201,8 @@ with connect(
     session = RequestSession(
         modalities=[Modality.TEXT, Modality.AUDIO],
         instructions="You are a helpful assistant.",
-        input_audio_format=AudioFormat.PCM16,
-        output_audio_format=AudioFormat.PCM16,
+        input_audio_format=InputAudioFormat.PCM16,
+        output_audio_format=OutputAudioFormat.PCM16,
         turn_detection=ServerVad(
             threshold=0.5, 
             prefix_padding_ms=300, 
