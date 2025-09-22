@@ -1,12 +1,12 @@
 ---
 title: Azure Scheduler SDK for Python
 description: Reference for Azure Scheduler SDK for Python
-ms.date: 09/19/2025
+ms.date: 09/22/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: scheduler
-manager: mbaldwin
 keywords: Azure, python, SDK, API, Scheduler
+manager: mbaldwin
 ---
 # Azure Scheduler libraries for python
 
