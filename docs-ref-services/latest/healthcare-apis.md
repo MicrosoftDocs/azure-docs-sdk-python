@@ -1,7 +1,7 @@
 ---
 title: Azure Healthcare APIs SDK for Python
 description: Reference for Azure Healthcare APIs SDK for Python
-ms.date: 09/26/2025
+ms.date: 09/29/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: healthcareapis
