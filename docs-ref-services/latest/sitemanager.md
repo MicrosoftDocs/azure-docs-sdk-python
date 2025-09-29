@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: sitemanager
 ---
-# Azure Sitemanager SDK for Python - preview
-## Packages - preview
+# Azure Sitemanager SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](sitemanager-index.md)]
