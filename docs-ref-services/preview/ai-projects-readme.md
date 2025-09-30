@@ -1,12 +1,12 @@
 ---
 title: Azure AI Projects client library for Python
 keywords: Azure, python, SDK, API, azure-ai-projects, ai
-ms.date: 09/12/2025
+ms.date: 09/30/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: ai
 ---
-# Azure AI Projects client library for Python - version 1.1.0b4 
+# Azure AI Projects client library for Python - version 1.1.0a20250930001 
 
 
 The AI Projects client library (in preview) is part of the Azure AI Foundry SDK, and provides easy access to
@@ -99,7 +99,7 @@ project_client = AIProjectClient(
 
 ### Performing Agent operations
 
-The `.agents` property on the `AIProjectsClient` gives you access to an authenticated `AgentsClient` from the `azure-ai-agents` package. Below we show how to create an Agent and delete it. To see what you can do with the Agent you created, see the [many samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-projects_1.1.0b4/sdk/ai/azure-ai-agents/samples) and the [README.md](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-projects_1.1.0b4/sdk/ai/azure-ai-agents) file of the dependent `azure-ai-agents` package.
+The `.agents` property on the `AIProjectsClient` gives you access to an authenticated `AgentsClient` from the `azure-ai-agents` package. Below we show how to create an Agent and delete it. To see what you can do with the Agent you created, see the [many samples](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/ai/azure-ai-agents/samples) and the [README.md](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/ai/azure-ai-agents) file of the dependent `azure-ai-agents` package.
 
 The code below assumes `model_deployment_name` (a string) is defined. It's the deployment name of an AI model in your Foundry Project, as shown in the "Models + endpoints" tab, under the "Name" column.
 
@@ -114,7 +114,7 @@ agent = project_client.agents.create_agent(
 print(f"Created agent, agent ID: {agent.id}")
 
 # Do something with your Agent!
-# See samples here https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-projects_1.1.0b4/sdk/ai/azure-ai-agents/samples
+# See samples here https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/ai/azure-ai-agents/samples
 
 project_client.agents.delete_agent(agent.id)
 print("Deleted agent")
@@ -455,7 +455,7 @@ The AI Projects client library can be configured to emit OpenTelemetry traces fo
 
 * [Trace AI applications using OpenAI SDK](https://learn.microsoft.com/azure/ai-foundry/how-to/develop/trace-application)
 * Chat-completion samples with console or Azure Monitor tracing enabled. See `samples\inference\azure-openai` folder.
-* The Tracing section in the [README.md file of the azure-ai-agents package](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-projects_1.1.0b4/sdk/ai/azure-ai-agents/README.md#tracing).
+* The Tracing section in the [README.md file of the azure-ai-agents package](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/ai/azure-ai-agents/README.md#tracing).
 
 ## Troubleshooting
 
@@ -530,7 +530,7 @@ To report an issue with the client library, or request additional features, plea
 
 ## Next steps
 
-Have a look at the [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-projects_1.1.0b4/sdk/ai/azure-ai-projects/samples) folder, containing fully runnable Python code for synchronous and asynchronous clients.
+Have a look at the [Samples](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/ai/azure-ai-projects/samples) folder, containing fully runnable Python code for synchronous and asynchronous clients.
 
 ## Contributing
 
