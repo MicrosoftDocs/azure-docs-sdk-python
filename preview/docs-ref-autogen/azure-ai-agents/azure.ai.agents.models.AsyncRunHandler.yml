@@ -1,0 +1,64 @@
+### YamlMime:PythonClass
+uid: azure.ai.agents.models.AsyncRunHandler
+name: AsyncRunHandler
+fullName: azure.ai.agents.models.AsyncRunHandler
+module: azure.ai.agents.models
+summary: "Helper that drives a run to completion for the \"create and process\" pattern.\n\
+  \nExtension Points:\n   * `submit_function_call_output` \u2013 override to customize\
+  \ how function tool results are produced. \n\n   * `submit_mcp_tool_approval` \u2013\
+  \ override to implement an approval workflow (UI prompt, policy, etc.)."
+constructor:
+  syntax: AsyncRunHandler()
+methods:
+- uid: azure.ai.agents.models.AsyncRunHandler.submit_function_call_output
+  name: submit_function_call_output
+  summary: 'Produce (or override) the output for a required function tool call.
+
+
+    Override this to inject custom execution logic, caching, validation, or transformation.
+
+    Return `None` to fall back to the default execution path handled.'
+  signature: 'async submit_function_call_output(*, run: ThreadRun, tool_call: RequiredFunctionToolCall,
+    tool_call_details: RequiredFunctionToolCallDetails, **kwargs: Any) -> Any'
+  keywordOnlyParameters:
+  - name: run
+    description: Current run requiring the function output.
+    types:
+    - <xref:azure.ai.agents.models.ThreadRun>
+  - name: tool_call
+    description: The tool call metadata referencing the function tool.
+    types:
+    - <xref:azure.ai.agents.models.RequiredFunctionToolCall>
+  - name: tool_call_details
+    description: Function arguments/details object.
+    types:
+    - <xref:azure.ai.agents.models.RequiredFunctionToolCallDetails>
+  return:
+    description: Stringified result to send back to the service, or `None` to delegate
+      to auto function calling.
+    types:
+    - <xref:typing.Any>
+- uid: azure.ai.agents.models.AsyncRunHandler.submit_mcp_tool_approval
+  name: submit_mcp_tool_approval
+  summary: 'Return a `ToolApproval` for an MCP tool call or `None` to indicate rejection/cancellation.
+
+
+    Override this to implement approval policies (interactive prompt, RBAC, heuristic
+    checks, etc.).
+
+    Returning `None` triggers cancellation logic.'
+  signature: 'submit_mcp_tool_approval(*, run: ThreadRun, tool_call: RequiredMcpToolCall,
+    **kwargs: Any) -> ToolApproval'
+  keywordOnlyParameters:
+  - name: run
+    description: Current run containing the MCP approval request.
+    types:
+    - <xref:azure.ai.agents.models.ThreadRun>
+  - name: tool_call
+    description: The MCP tool call requiring approval.
+    types:
+    - <xref:azure.ai.agents.models.RequiredMcpToolCall>
+  return:
+    description: A populated `ToolApproval` instance to approve or decline.
+    types:
+    - <xref:azure.ai.agents.models.ToolApproval>

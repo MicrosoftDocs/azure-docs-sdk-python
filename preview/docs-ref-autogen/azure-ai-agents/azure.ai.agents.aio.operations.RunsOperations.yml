@@ -54,7 +54,7 @@ methods:
   keywordOnlyParameters:
   - name: agent_id
     description: The ID of the agent that should run the thread.
-    defaultValue: <object object at 0x00000280B4F6AC80>
+    defaultValue: <object object at 0x0000018BB7183AA0>
     types:
     - <xref:str>
   - name: include
@@ -249,8 +249,8 @@ methods:
     int | None = None, max_completion_tokens: int | None = None, truncation_strategy:
     TruncationObject | None = None, tool_choice: _types.AgentsToolChoiceOption | None
     = None, response_format: _types.AgentsResponseFormatOption | None = None, parallel_tool_calls:
-    bool | None = None, metadata: Dict[str, str] | None = None, polling_interval:
-    int = 1, **kwargs: Any) -> ThreadRun'
+    bool | None = None, metadata: Dict[str, str] | None = None, run_handler: AsyncRunHandler
+    | None = None, polling_interval: int = 1, **kwargs: Any) -> ThreadRun'
   parameters:
   - name: thread_id
     description: The identifier of the thread to run.
@@ -427,6 +427,13 @@ methods:
     defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
+  - name: run_handler
+    description: 'Optional handler to customize run processing and tool execution.
+
+      Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agents.models.AsyncRunHandler>
   - name: polling_interval
     description: 'The time in seconds to wait between polling the service for run
       status.
@@ -557,7 +564,7 @@ methods:
     - <xref:azure.ai.agents.models.RunAdditionalFieldList>]
   - name: agent_id
     description: The ID of the agent that should run the thread.
-    defaultValue: <object object at 0x00000280B4F6AC80>
+    defaultValue: <object object at 0x0000018BB7183AA0>
     types:
     - <xref:str>
   - name: model
@@ -746,7 +753,7 @@ methods:
 
     ''submit_tool_outputs''.'
   signature: 'async submit_tool_outputs(thread_id: str, run_id: str, *, tool_outputs:
-    List[_models.ToolOutput] | None = None, tool_approvals: List[_models.ToolApproval]
+    List[_models.StructuredToolOutput] | None = None, tool_approvals: List[_models.ToolApproval]
     | None = None, content_type: str = ''application/json'', **kwargs: Any) -> _models.ThreadRun'
   parameters:
   - name: thread_id
@@ -771,14 +778,14 @@ methods:
       value
 
       is None.'
-    defaultValue: <object object at 0x00000280B4F6AC80>
+    defaultValue: <object object at 0x0000018BB7183AA0>
     types:
-    - <xref:list>[<xref:azure.ai.agents.models.ToolOutput>]
+    - <xref:list>[<xref:azure.ai.agents.models.StructuredToolOutput>]
   - name: tool_approvals
     description: 'A list of tool approvals allowing data to be sent to tools. Default
 
       value is None.'
-    defaultValue: <object object at 0x00000280B4F6AC80>
+    defaultValue: <object object at 0x0000018BB7183AA0>
     types:
     - <xref:list>[<xref:azure.ai.agents.models.ToolApproval>]
   return:
@@ -823,14 +830,14 @@ methods:
       value
 
       is None.'
-    defaultValue: <object object at 0x00000280B4F6AC80>
+    defaultValue: <object object at 0x0000018BB7183AA0>
     types:
-    - <xref:list>[<xref:azure.ai.agents.models.ToolOutput>]
+    - <xref:list>[<xref:azure.ai.agents.models.StructuredToolOutput>]
   - name: tool_approvals
     description: 'A list of tool approvals allowing data to be sent to tools. Default
 
       value is None.'
-    defaultValue: <object object at 0x00000280B4F6AC80>
+    defaultValue: <object object at 0x0000018BB7183AA0>
     types:
     - <xref:list>[<xref:azure.ai.agents.models.ToolApproval>]
   - name: event_handler
@@ -843,8 +850,8 @@ methods:
   name: update
   summary: Modifies an existing thread run.
   signature: 'async update(thread_id: str, run_id: str, body: ~collections.abc.MutableMapping[str,
-    ~typing.Any] | ~typing.IO[bytes] = <object object>, *, metadata: ~typing.Dict[str,
-    str] | None = None, **kwargs: ~typing.Any) -> ThreadRun'
+    ~typing.Any] | ~typing.IO[bytes] = <object object>, *, metadata: dict[str, str]
+    | None = None, **kwargs: ~typing.Any) -> ThreadRun'
   parameters:
   - name: thread_id
     description: Identifier of the thread. Required.
