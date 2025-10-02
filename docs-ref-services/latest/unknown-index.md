@@ -1,3 +1,3 @@
 | Reference | Package | Source |
 |---|---|---|
-|[unknown](monitor-querymetrics-readme.md)|[azure-monitor-querymetrics](https://pypi.org/project/azure-monitor-querymetrics)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/monitor/azure-monitor-querymetrics)|
+|[unknown](ai-voicelive-readme.md)|[azure-ai-voicelive](https://pypi.org/project/azure-ai-voicelive)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/ai/azure-ai-voicelive)|

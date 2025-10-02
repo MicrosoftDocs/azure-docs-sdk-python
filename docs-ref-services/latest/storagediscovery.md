@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: storagediscovery
 ---
-# Azure Storagediscovery SDK for Python - preview
-## Packages - preview
+# Azure Storagediscovery SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](storagediscovery-index.md)]
