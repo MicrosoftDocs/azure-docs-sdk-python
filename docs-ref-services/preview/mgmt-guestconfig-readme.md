@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-guestconfig, machinelearning
-ms.date: 11/07/2022
+ms.date: 10/02/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: machinelearning
