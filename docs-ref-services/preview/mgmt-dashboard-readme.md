@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-dashboard, dashboard
-ms.date: 08/07/2025
+ms.date: 10/03/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: dashboard
