@@ -1,7 +1,7 @@
 ---
 title: Azure Web Search SDK for Python
 description: Reference for Azure Web Search SDK for Python
-ms.date: 10/02/2025
+ms.date: 10/03/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: websearch
