@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-migrationassessment, migrate
-ms.date: 03/01/2025
+ms.date: 10/04/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: migrate
