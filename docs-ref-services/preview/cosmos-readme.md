@@ -6,7 +6,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: cosmos
 ---
-# Azure Cosmos DB SQL API client library for Python - version 4.14.0a20251006004 
+# Azure Cosmos DB SQL API client library for Python - version 4.14.0a20251007006 
 
 
 ## _Disclaimer_
