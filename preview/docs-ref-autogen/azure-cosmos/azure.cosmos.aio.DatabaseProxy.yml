@@ -51,8 +51,14 @@ methods:
     Dict[str, str] | None = None, computed_properties: List[Dict[str, str]] | None
     = None, analytical_storage_ttl: int | None = None, vector_embedding_policy: Dict[str,
     Any] | None = None, change_feed_policy: Dict[str, Any] | None = None, full_text_policy:
-    Dict[str, Any] | None = None, **kwargs: Any) -> ContainerProxy'
+    Dict[str, Any] | None = None, return_properties: Literal[False] = False, **kwargs:
+    Any) -> ContainerProxy'
   parameters:
+  - name: args
+    description: args
+    isRequired: true
+    types:
+    - <xref:typing.Any>
   - name: id
     description: ID (name) of container to create.
     isRequired: true
@@ -66,34 +72,28 @@ methods:
   keywordOnlyParameters:
   - name: indexing_policy
     description: The indexing policy to apply to the container.
-    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: default_ttl
     description: 'Default time to live (TTL) for items in the container.
 
       If unspecified, items do not expire.'
-    defaultValue: None
     types:
     - <xref:int>
   - name: offer_throughput
     description: The provisioned throughput for this offer.
-    defaultValue: None
     types:
     - <xref:typing.Union>[<xref:int>, <xref:azure.cosmos.ThroughputProperties>]
   - name: unique_key_policy
     description: The unique key policy to apply to the container.
-    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: conflict_resolution_policy
     description: The conflict resolution policy to apply to the container.
-    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: initial_headers
     description: Initial headers to be sent as part of the request.
-    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: computed_properties
@@ -103,7 +103,6 @@ methods:
       computed properties visit
 
       *here: https://learn.microsoft.com/azure/cosmos-db/nosql/query/computed-properties?tabs=dotnet*'
-    defaultValue: None
     types:
     - <xref:typing.List>[<xref:typing.Dict>[<xref:str>, <xref:str>]]
   - name: response_hook
@@ -119,7 +118,6 @@ methods:
       on with no TTL. Please
 
       note that analytical storage can only be enabled on Synapse Link enabled accounts.'
-    defaultValue: None
     types:
     - <xref:int>
   - name: vector_embedding_policy
@@ -129,14 +127,12 @@ methods:
       an underlying data type, and
 
       is generated for a particular distance function.'
-    defaultValue: None
     types:
     - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   - name: change_feed_policy
     description: 'The change feed policy to apply ''retentionDuration'' to
 
       the container.'
-    defaultValue: None
     types:
     - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   - name: full_text_policy
@@ -146,13 +142,22 @@ methods:
       to individually
 
       assign a language to each full text index path.'
-    defaultValue: None
     types:
     - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+  - name: return_properties
+    description: 'Specifies whether to return either a ContainerProxy
+
+      or a Tuple of a ContainerProxy and the container properties.'
+    types:
+    - <xref:bool>
   return:
-    description: A *ContainerProxy* instance representing the new container.
+    description: 'A *ContainerProxy* instance representing the new container or a
+      tuple of the ContainerProxy
+
+      and CosmosDict with the container properties.'
     types:
     - <xref:azure.cosmos.aio.ContainerProxy>
+    - <xref:tuple>[<xref:azure.cosmos.aio.ContainerProxy>, <xref:azure.cosmos.CosmosDict>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: The container creation failed.
@@ -160,7 +165,7 @@ methods:
   - "Create a container with default settings:<!--[!code-python[Main](les\\examples_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\42\\\\azure_cosmos-4.14.0b4\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\42\\\\azure_cosmos-4.14.0a20251007006\\\
     \\samples\\\\examples_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n           container_name = \"products\"\n     \
@@ -172,12 +177,12 @@ methods:
     \ partition key:<!--[!code-python[Main](les\\examples_async.py )]-->\n\n<!-- literal_block\
     \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
     : [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\42\\\\azure_cosmos-4.14.0b4\\\\samples\\\\examples_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n           customer_container_name = \"customers\"\n           try:\n      \
-    \         customer_container = await database.create_container(\n            \
-    \       id=customer_container_name,\n                   partition_key=PartitionKey(path=\"\
+    \\py2docfx\\\\dist_temp\\\\42\\\\azure_cosmos-4.14.0a20251007006\\\\samples\\\\\
+    examples_async.py\", \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\
+    \n````python\n\n           customer_container_name = \"customers\"\n         \
+    \  try:\n               customer_container = await database.create_container(\n\
+    \                   id=customer_container_name,\n                   partition_key=PartitionKey(path=\"\
     /city\"),\n                   default_ttl=200,\n               )\n           except\
     \ exceptions.CosmosResourceExistsError:\n               customer_container = database.get_container_client(customer_container_name)\n\
     \n   ````\n"
@@ -198,8 +203,14 @@ methods:
     = None, initial_headers: Dict[str, str] | None = None, computed_properties: List[Dict[str,
     str]] | None = None, analytical_storage_ttl: int | None = None, vector_embedding_policy:
     Dict[str, Any] | None = None, change_feed_policy: Dict[str, Any] | None = None,
-    full_text_policy: Dict[str, Any] | None = None, **kwargs: Any) -> ContainerProxy'
+    full_text_policy: Dict[str, Any] | None = None, return_properties: Literal[False]
+    = False, **kwargs: Any) -> ContainerProxy'
   parameters:
+  - name: args
+    description: args
+    isRequired: true
+    types:
+    - <xref:typing.Any>
   - name: id
     description: ID (name) of container to create.
     isRequired: true
@@ -213,34 +224,28 @@ methods:
   keywordOnlyParameters:
   - name: indexing_policy
     description: The indexing policy to apply to the container.
-    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: default_ttl
     description: 'Default time to live (TTL) for items in the container.
 
       If unspecified, items do not expire.'
-    defaultValue: None
     types:
     - <xref:int>
   - name: offer_throughput
     description: The provisioned throughput for this offer.
-    defaultValue: None
     types:
     - <xref:typing.Union>[<xref:int>, <xref:azure.cosmos.ThroughputProperties>]
   - name: unique_key_policy
     description: The unique key policy to apply to the container.
-    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: conflict_resolution_policy
     description: The conflict resolution policy to apply to the container.
-    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: initial_headers
     description: Initial headers to be sent as part of the request.
-    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: computed_properties
@@ -250,7 +255,6 @@ methods:
       computed properties visit
 
       *here: https://learn.microsoft.com/azure/cosmos-db/nosql/query/computed-properties?tabs=dotnet*'
-    defaultValue: None
     types:
     - <xref:typing.List>[<xref:typing.Dict>[<xref:str>, <xref:str>]]
   - name: response_hook
@@ -266,7 +270,6 @@ methods:
       on with no TTL. Please
 
       note that analytical storage can only be enabled on Synapse Link enabled accounts.'
-    defaultValue: None
     types:
     - <xref:int>
   - name: vector_embedding_policy
@@ -276,14 +279,12 @@ methods:
       with an underlying
 
       data type, and is generated for a particular distance function.'
-    defaultValue: None
     types:
     - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   - name: change_feed_policy
     description: 'The change feed policy to apply ''retentionDuration'' to
 
       the container.'
-    defaultValue: None
     types:
     - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   - name: full_text_policy
@@ -293,13 +294,22 @@ methods:
       to individually
 
       assign a language to each full text index path.'
-    defaultValue: None
     types:
     - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
-  return:
-    description: A *ContainerProxy* instance representing the new container.
+  - name: return_properties
+    description: 'Specifies whether to return either a ContainerProxy
+
+      or a Tuple of a ContainerProxy and the container properties.'
     types:
-    - <xref:azure.cosmos.aio.ContainerProxy>
+    - <xref:bool>
+  return:
+    description: 'A *ContainerProxy* instance representing the new container or a
+      tuple of the ContainerProxy
+
+      and CosmosDict with the container properties.'
+    types:
+    - <xref:azure.cosmos.ContainerProxy>
+    - <xref:tuple>[<xref:azure.cosmos.aio.ContainerProxy>, <xref:azure.cosmos.CosmosDict>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: The container creation failed.
@@ -339,7 +349,7 @@ methods:
   - "Create a database user:<!--[!code-python[Main](les\\examples_async.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\\
-    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\42\\\\azure_cosmos-4.14.0b4\\\
+    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\42\\\\azure_cosmos-4.14.0a20251007006\\\
     \\samples\\\\examples_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n           try:\n               await database.create_user(dict(id=\"\
@@ -434,8 +444,8 @@ methods:
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    42\\\\azure_cosmos-4.14.0b4\\\\samples\\\\examples_async.py\", \"xml:space\":\
-    \ \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    42\\\\azure_cosmos-4.14.0a20251007006\\\\samples\\\\examples_async.py\", \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           database\
     \ = client.get_database_client(database_name)\n           container_client = database.get_container_client(container_name)\n\
     \n   ````\n"
@@ -511,7 +521,7 @@ methods:
   - "List all containers in the database:<!--[!code-python[Main](les\\examples_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\42\\\\azure_cosmos-4.14.0b4\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\42\\\\azure_cosmos-4.14.0a20251007006\\\
     \\samples\\\\examples_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n           database = client.get_database_client(database_name)\n\
@@ -622,7 +632,7 @@ methods:
   name: read
   summary: Read the database properties.
   signature: 'async read(*, initial_headers: Dict[str, str] | None = None, **kwargs:
-    Any) -> Dict[str, Any]'
+    Any) -> CosmosDict'
   keywordOnlyParameters:
   - name: initial_headers
     description: Initial headers to be sent as part of the request.
@@ -654,9 +664,14 @@ methods:
     None, default_ttl: int | None = None, conflict_resolution_policy: Dict[str, str]
     | None = None, initial_headers: Dict[str, str] | None = None, analytical_storage_ttl:
     int | None = None, computed_properties: List[Dict[str, str]] | None = None, full_text_policy:
-    Dict[str, Any] | None = None, vector_embedding_policy: Dict[str, Any] | None =
-    None, **kwargs: Any) -> ContainerProxy'
+    Dict[str, Any] | None = None, return_properties: Literal[False] = False, vector_embedding_policy:
+    Dict[str, Any] | None = None, **kwargs: Any) -> ContainerProxy'
   parameters:
+  - name: args
+    description: args
+    isRequired: true
+    types:
+    - <xref:typing.Any>
   - name: container
     description: 'The ID (name), dict representing the properties or
 
@@ -673,24 +688,20 @@ methods:
   keywordOnlyParameters:
   - name: indexing_policy
     description: The indexing policy to apply to the container.
-    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: default_ttl
     description: 'Default time to live (TTL) for items in the container.
 
       If unspecified, items do not expire.'
-    defaultValue: None
     types:
     - <xref:int>
   - name: conflict_resolution_policy
     description: The conflict resolution policy to apply to the container.
-    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: initial_headers
     description: Initial headers to be sent as part of the request.
-    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: analytical_storage_ttl
@@ -701,7 +712,6 @@ methods:
       on with no TTL.  Please
 
       note that analytical storage can only be enabled on Synapse Link enabled accounts.'
-    defaultValue: None
     types:
     - <xref:int>
   - name: computed_properties
@@ -711,7 +721,6 @@ methods:
       computed properties visit
 
       *here: https://learn.microsoft.com/azure/cosmos-db/nosql/query/computed-properties?tabs=dotnet*'
-    defaultValue: None
     types:
     - <xref:typing.List>[<xref:typing.Dict>[<xref:str>, <xref:str>]]
   - name: response_hook
@@ -726,16 +735,22 @@ methods:
       to individually
 
       assign a language to each full text index path.'
-    defaultValue: None
     types:
     - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
-  - name: vector_embedding_policy
-    defaultValue: None
+  - name: return_properties
+    description: 'Specifies whether to return either a ContainerProxy
+
+      or a Tuple of a ContainerProxy and the container properties.'
+    types:
+    - <xref:bool>
   return:
-    description: A *ContainerProxy* instance representing the container after replace
-      completed.
+    description: 'A *ContainerProxy* instance representing the new container or a
+      tuple of the ContainerProxy
+
+      and CosmosDict with the container properties.'
     types:
     - <xref:azure.cosmos.aio.ContainerProxy>
+    - <xref:tuple>[<xref:azure.cosmos.aio.ContainerProxy>, <xref:azure.cosmos.CosmosDict>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: 'Raised if the container couldn''t be replaced.
@@ -746,8 +761,8 @@ methods:
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    42\\\\azure_cosmos-4.14.0b4\\\\samples\\\\examples_async.py\", \"xml:space\":\
-    \ \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    42\\\\azure_cosmos-4.14.0a20251007006\\\\samples\\\\examples_async.py\", \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           #\
     \ Set the TTL on the container to 3600 seconds (one hour)\n           await database.replace_container(container,\
     \ partition_key=PartitionKey(path='/productName'), default_ttl=3600)\n\n     \
