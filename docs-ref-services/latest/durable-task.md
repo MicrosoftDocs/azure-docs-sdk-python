@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: durabletask
 ---
-# Azure Durable Task SDK for Python - preview
-## Packages - preview
+# Azure Durable Task SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](durable-task-index.md)]
