@@ -3,45 +3,49 @@ uid: azure.ai.voicelive.aio.WebsocketConnectionOptions
 name: WebsocketConnectionOptions
 fullName: azure.ai.voicelive.aio.WebsocketConnectionOptions
 module: azure.ai.voicelive.aio
-summary: "Advanced WebSocket connection options for VoiceLive API connections.\n\n\
-  These options correspond to parameters accepted by [aiohttp](aiohttp)'s\n*ws_connect*\
-  \ method and control low-level WebSocket behavior.\nAll keys are optional \u2014\
-  \ if omitted, default values will be applied."
+summary: 'Transport-agnostic WebSocket connection options for VoiceLive.
+
+
+  These control common WS behaviors (compression, message size limits,
+
+  timeouts, ping/pong handling). Unless specified, defaults are determined
+
+  by the underlying WebSocket library.'
 constructor:
   syntax: WebsocketConnectionOptions()
   keywordOnlyParameters:
   - name: compression
-    description: 'Enable per-message compression.
+    description: 'Enable per-message compression. Use `True` to enable,
 
-      - `True` enables compression.
+      `False` to disable. Advanced users may pass an `int` to select a zlib
 
-      - `False` disables compression.
-
-      If omitted, defaults to the aiohttp default.'
+      window value if supported by the transport.'
   - name: max_msg_size
-    description: 'Maximum message size in bytes.
+    description: 'Maximum message size in bytes before the client closes
 
-      Messages larger than this limit will cause the connection to close.
-
-      If omitted, defaults to 10 MiB (10 * 1024 * 1024).'
-  - name: timeout
-    description: 'Close timeout in seconds.
-
-      Maximum time to wait for the connection to close gracefully.
-
-      If omitted, defaults to aiohttp''s internal default.'
+      the connection.'
   - name: heartbeat
-    description: 'Interval in seconds for sending ping frames to keep
-
-      the connection alive. If omitted, defaults to 30 seconds.'
+    description: Interval in seconds between keep-alive pings.
   - name: autoclose
-    description: 'Automatically close the connection when a close frame
-
-      is received. Defaults to True if omitted.'
+    description: Automatically close when a close frame is received.
   - name: autoping
-    description: 'Automatically respond to ping frames with pong frames.
+    description: Automatically respond to ping frames with pong frames.
+  - name: receive_timeout
+    description: 'Max seconds to wait for a single incoming message
 
-      Defaults to True if omitted.'
+      on an established WebSocket.'
+  - name: close_timeout
+    description: Max seconds to wait for a graceful close handshake.
+  - name: handshake_timeout
+    description: 'Max seconds for connection establishment
+
+      (DNS/TCP/TLS + WS upgrade). Note: with aiohttp this is applied on the
+
+      ClientSession (not a ws_connect kwarg), so must be handled by the caller.'
+  - name: vendor_options
+    description: 'Optional implementation-specific options passed
+
+      through as-is to the underlying library (not part of the stable API).'
 methods:
 - uid: azure.ai.voicelive.aio.WebsocketConnectionOptions.clear
   name: clear
@@ -120,15 +124,24 @@ attributes:
 - uid: azure.ai.voicelive.aio.WebsocketConnectionOptions.autoping
   name: autoping
   signature: 'autoping: bool'
+- uid: azure.ai.voicelive.aio.WebsocketConnectionOptions.close_timeout
+  name: close_timeout
+  signature: 'close_timeout: float'
 - uid: azure.ai.voicelive.aio.WebsocketConnectionOptions.compression
   name: compression
-  signature: 'compression: bool'
+  signature: 'compression: bool | int'
+- uid: azure.ai.voicelive.aio.WebsocketConnectionOptions.handshake_timeout
+  name: handshake_timeout
+  signature: 'handshake_timeout: float'
 - uid: azure.ai.voicelive.aio.WebsocketConnectionOptions.heartbeat
   name: heartbeat
   signature: 'heartbeat: float'
 - uid: azure.ai.voicelive.aio.WebsocketConnectionOptions.max_msg_size
   name: max_msg_size
   signature: 'max_msg_size: int'
-- uid: azure.ai.voicelive.aio.WebsocketConnectionOptions.timeout
-  name: timeout
-  signature: 'timeout: float'
+- uid: azure.ai.voicelive.aio.WebsocketConnectionOptions.receive_timeout
+  name: receive_timeout
+  signature: 'receive_timeout: float'
+- uid: azure.ai.voicelive.aio.WebsocketConnectionOptions.vendor_options
+  name: vendor_options
+  signature: 'vendor_options: Mapping[str, Any]'
