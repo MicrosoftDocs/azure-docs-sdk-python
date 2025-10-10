@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-defendereasm, defendereasm
-ms.date: 03/15/2023
+ms.date: 10/10/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: defendereasm
