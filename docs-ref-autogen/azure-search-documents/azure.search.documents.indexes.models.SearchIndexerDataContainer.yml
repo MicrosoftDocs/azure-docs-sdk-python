@@ -15,32 +15,52 @@ constructor:
     Any)'
   keywordOnlyParameters:
   - name: name
-    description: 'The name of the table or view (for Azure SQL data source) or collection
+    description: 'The name of the table or view (for Azure SQL datasource), collection
       (for
 
-      CosmosDB data source) that will be indexed. Required.'
+      CosmosDB datasource), container (for Azure Blob and ADLS Gen 2 datasources),
+      Azure Table (for
+
+      Azure Table datasource), or lakehouse (for Onelake datasource) that will be
+      indexed. Required.'
     types:
     - <xref:str>
   - name: query
-    description: 'A query that is applied to this data container. The syntax and meaning
-      of this
+    description: 'A query that is applied to this data container. For CosmosDB datasource
+      query
 
-      parameter is datasource-specific. Not supported by Azure SQL datasources.'
+      can flatten and filter data. For Azure Blob and ADLS Gen 2 query can filter
+      by folders. For
+
+      Azure Table query can filter by row data. For Onelake query can filter by folder
+      or shortcut.
+
+      Not supported by Azure SQL datasources.'
     defaultValue: None
     types:
     - <xref:str>
 variables:
-- description: 'The name of the table or view (for Azure SQL data source) or collection
-    (for
+- description: 'The name of the table or view (for Azure SQL datasource), collection
+    (for CosmosDB
 
-    CosmosDB data source) that will be indexed. Required.'
+    datasource), container (for Azure Blob and ADLS Gen 2 datasources), Azure Table
+    (for Azure
+
+    Table datasource), or lakehouse (for Onelake datasource) that will be indexed.
+    Required.'
   name: name
   types:
   - <xref:str>
-- description: 'A query that is applied to this data container. The syntax and meaning
-    of this
+- description: 'A query that is applied to this data container. For CosmosDB datasource
+    query can
 
-    parameter is datasource-specific. Not supported by Azure SQL datasources.'
+    flatten and filter data. For Azure Blob and ADLS Gen 2 query can filter by folders.
+    For Azure
+
+    Table query can filter by row data. For Onelake query can filter by folder or
+    shortcut. Not
+
+    supported by Azure SQL datasources.'
   name: query
   types:
   - <xref:str>
@@ -57,15 +77,18 @@ methods:
     \ \n\n* last_restapi_key_transformer \n\nIf you want XML serialization, you can\
     \ pass the kwargs is_xml=True."
   signature: 'as_dict(keep_readonly: bool = True, key_transformer: ~typing.Callable[[str,
-    ~typing.Dict[str, ~typing.Any], ~typing.Any], ~typing.Any] = <function attribute_transformer>,
+    dict[str, typing.Any], ~typing.Any], ~typing.Any] = <function attribute_transformer>,
     **kwargs: ~typing.Any) -> MutableMapping[str, Any]'
   parameters:
+  - name: keep_readonly
+    description: If you want to serialize the readonly attributes
+    defaultValue: 'True'
+    types:
+    - <xref:bool>
   - name: key_transformer
     description: A key transformer function.
     types:
     - <xref:function>
-  - name: keep_readonly
-    defaultValue: 'True'
   return:
     description: A dict JSON compatible object
     types:
@@ -73,7 +96,7 @@ methods:
 - uid: azure.search.documents.indexes.models.SearchIndexerDataContainer.deserialize
   name: deserialize
   summary: Parse a str using the RestAPI syntax and return a model.
-  signature: 'deserialize(data: Any, content_type: str | None = None) -> ModelType'
+  signature: 'deserialize(data: Any, content_type: str | None = None) -> Self'
   parameters:
   - name: data
     description: A str using RestAPI structure. JSON by default.
@@ -87,8 +110,11 @@ methods:
     - <xref:str>
   return:
     description: An instance of this model
+    types:
+    - <xref:typing.Self>
   exceptions:
-  - type: DeserializationError if something went wrong
+  - type: DeserializationError
+    description: if something went wrong
 - uid: azure.search.documents.indexes.models.SearchIndexerDataContainer.enable_additional_properties_sending
   name: enable_additional_properties_sending
   signature: enable_additional_properties_sending() -> None
@@ -102,25 +128,31 @@ methods:
     extractors (rest_key_case_insensitive_extractor, attribute_key_case_insensitive_extractor
 
     and last_rest_key_case_insensitive_extractor)'
-  signature: 'from_dict(data: Any, key_extractors: Callable[[str, Dict[str, Any],
-    Any], Any] | None = None, content_type: str | None = None) -> ModelType'
+  signature: 'from_dict(data: Any, key_extractors: Callable[[str, dict[str, Any],
+    Any], Any] | None = None, content_type: str | None = None) -> Self'
   parameters:
   - name: data
     description: A dict using RestAPI structure
     isRequired: true
     types:
     - <xref:dict>
+  - name: key_extractors
+    description: A key extractor function.
+    defaultValue: None
+    types:
+    - <xref:function>
   - name: content_type
     description: JSON by default, set application/xml if XML.
     defaultValue: None
     types:
     - <xref:str>
-  - name: key_extractors
-    defaultValue: None
   return:
     description: An instance of this model
+    types:
+    - <xref:typing.Self>
   exceptions:
-  - type: DeserializationError if something went wrong
+  - type: DeserializationError
+    description: if something went wrong
 - uid: azure.search.documents.indexes.models.SearchIndexerDataContainer.is_xml_model
   name: is_xml_model
   signature: is_xml_model() -> bool

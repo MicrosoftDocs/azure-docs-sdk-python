@@ -6,10 +6,11 @@ module: azure.mgmt.dataprotection.aio
 summary: Open API 2.0 Specs for Azure Data Protection service.
 constructor:
   syntax: 'DataProtectionMgmtClient(credential: AsyncTokenCredential, subscription_id:
-    str, base_url: str = ''https://management.azure.com'', **kwargs: Any)'
+    str, base_url: str | None = None, *, cloud_setting: AzureClouds | None = None,
+    **kwargs: Any)'
   parameters:
   - name: credential
-    description: Credential needed for the client to connect to Azure. Required.
+    description: Credential used to authenticate requests to the service. Required.
     isRequired: true
     types:
     - <xref:azure.core.credentials_async.AsyncTokenCredential>
@@ -19,16 +20,23 @@ constructor:
     types:
     - <xref:str>
   - name: base_url
-    description: Service URL. Default value is "`https://management.azure.com`".
-    defaultValue: https://management.azure.com
+    description: Service host. Default value is None.
+    defaultValue: None
     types:
     - <xref:str>
   keywordOnlyParameters:
-  - name: api_version
-    description: 'Api Version. Default value is "2024-04-01". Note that overriding
-      this
+  - name: cloud_setting
+    description: 'The cloud setting for which to get the ARM endpoint. Default value
+      is
 
-      default value may result in unsupported behavior.'
+      None.'
+    defaultValue: None
+    types:
+    - <xref:azure.core.AzureClouds>
+  - name: api_version
+    description: 'The API version to use for this operation. Default value is "2025-07-01".
+
+      Note that overriding this default value may result in unsupported behavior.'
     types:
     - <xref:str>
   - name: polling_interval
@@ -38,10 +46,64 @@ constructor:
     types:
     - <xref:int>
 variables:
+- description: DataProtectionOperationsOperations operations
+  name: data_protection_operations
+  types:
+  - <xref:azure.mgmt.dataprotection.aio.operations.DataProtectionOperationsOperations>
+- description: BackupInstancesOperations operations
+  name: backup_instances
+  types:
+  - <xref:azure.mgmt.dataprotection.aio.operations.BackupInstancesOperations>
+- description: BackupVaultOperationResultsOperations operations
+  name: backup_vault_operation_results
+  types:
+  - <xref:azure.mgmt.dataprotection.aio.operations.BackupVaultOperationResultsOperations>
+- description: ResourceGuardsOperations operations
+  name: resource_guards
+  types:
+  - <xref:azure.mgmt.dataprotection.aio.operations.ResourceGuardsOperations>
 - description: BackupVaultsOperations operations
   name: backup_vaults
   types:
   - <xref:azure.mgmt.dataprotection.aio.operations.BackupVaultsOperations>
+- description: 'OperationStatusBackupVaultContextOperations
+
+    operations'
+  name: operation_status_backup_vault_context
+  types:
+  - <xref:azure.mgmt.dataprotection.aio.operations.OperationStatusBackupVaultContextOperations>
+- description: ExportJobsOperations operations
+  name: export_jobs
+  types:
+  - <xref:azure.mgmt.dataprotection.aio.operations.ExportJobsOperations>
+- description: ExportJobsOperationResultOperations operations
+  name: export_jobs_operation_result
+  types:
+  - <xref:azure.mgmt.dataprotection.aio.operations.ExportJobsOperationResultOperations>
+- description: BackupPoliciesOperations operations
+  name: backup_policies
+  types:
+  - <xref:azure.mgmt.dataprotection.aio.operations.BackupPoliciesOperations>
+- description: RestorableTimeRangesOperations operations
+  name: restorable_time_ranges
+  types:
+  - <xref:azure.mgmt.dataprotection.aio.operations.RestorableTimeRangesOperations>
+- description: RecoveryPointsOperations operations
+  name: recovery_points
+  types:
+  - <xref:azure.mgmt.dataprotection.aio.operations.RecoveryPointsOperations>
+- description: JobsOperations operations
+  name: jobs
+  types:
+  - <xref:azure.mgmt.dataprotection.aio.operations.JobsOperations>
+- description: DeletedBackupInstancesOperations operations
+  name: deleted_backup_instances
+  types:
+  - <xref:azure.mgmt.dataprotection.aio.operations.DeletedBackupInstancesOperations>
+- description: DppResourceGuardProxyOperations operations
+  name: dpp_resource_guard_proxy
+  types:
+  - <xref:azure.mgmt.dataprotection.aio.operations.DppResourceGuardProxyOperations>
 - description: OperationResultOperations operations
   name: operation_result
   types:
@@ -50,42 +112,16 @@ variables:
   name: operation_status
   types:
   - <xref:azure.mgmt.dataprotection.aio.operations.OperationStatusOperations>
-- description: 'OperationStatusBackupVaultContextOperations
-
-    operations'
-  name: operation_status_backup_vault_context
-  types:
-  - <xref:azure.mgmt.dataprotection.aio.operations.OperationStatusBackupVaultContextOperations>
 - description: 'OperationStatusResourceGroupContextOperations
 
     operations'
   name: operation_status_resource_group_context
   types:
   - <xref:azure.mgmt.dataprotection.aio.operations.OperationStatusResourceGroupContextOperations>
-- description: BackupVaultOperationResultsOperations operations
-  name: backup_vault_operation_results
-  types:
-  - <xref:azure.mgmt.dataprotection.aio.operations.BackupVaultOperationResultsOperations>
 - description: DataProtectionOperations operations
   name: data_protection
   types:
   - <xref:azure.mgmt.dataprotection.aio.operations.DataProtectionOperations>
-- description: DataProtectionOperationsOperations operations
-  name: data_protection_operations
-  types:
-  - <xref:azure.mgmt.dataprotection.aio.operations.DataProtectionOperationsOperations>
-- description: BackupPoliciesOperations operations
-  name: backup_policies
-  types:
-  - <xref:azure.mgmt.dataprotection.aio.operations.BackupPoliciesOperations>
-- description: BackupInstancesOperations operations
-  name: backup_instances
-  types:
-  - <xref:azure.mgmt.dataprotection.aio.operations.BackupInstancesOperations>
-- description: RecoveryPointsOperations operations
-  name: recovery_points
-  types:
-  - <xref:azure.mgmt.dataprotection.aio.operations.RecoveryPointsOperations>
 - description: FetchSecondaryRecoveryPointsOperations operations
   name: fetch_secondary_recovery_points
   types:
@@ -102,35 +138,48 @@ variables:
   name: backup_instances_extension_routing
   types:
   - <xref:azure.mgmt.dataprotection.aio.operations.BackupInstancesExtensionRoutingOperations>
-- description: JobsOperations operations
-  name: jobs
-  types:
-  - <xref:azure.mgmt.dataprotection.aio.operations.JobsOperations>
-- description: RestorableTimeRangesOperations operations
-  name: restorable_time_ranges
-  types:
-  - <xref:azure.mgmt.dataprotection.aio.operations.RestorableTimeRangesOperations>
-- description: ExportJobsOperations operations
-  name: export_jobs
-  types:
-  - <xref:azure.mgmt.dataprotection.aio.operations.ExportJobsOperations>
-- description: ExportJobsOperationResultOperations operations
-  name: export_jobs_operation_result
-  types:
-  - <xref:azure.mgmt.dataprotection.aio.operations.ExportJobsOperationResultOperations>
-- description: DeletedBackupInstancesOperations operations
-  name: deleted_backup_instances
-  types:
-  - <xref:azure.mgmt.dataprotection.aio.operations.DeletedBackupInstancesOperations>
-- description: ResourceGuardsOperations operations
-  name: resource_guards
-  types:
-  - <xref:azure.mgmt.dataprotection.aio.operations.ResourceGuardsOperations>
-- description: DppResourceGuardProxyOperations operations
-  name: dpp_resource_guard_proxy
-  types:
-  - <xref:azure.mgmt.dataprotection.aio.operations.DppResourceGuardProxyOperations>
 methods:
 - uid: azure.mgmt.dataprotection.aio.DataProtectionMgmtClient.close
   name: close
   signature: async close() -> None
+- uid: azure.mgmt.dataprotection.aio.DataProtectionMgmtClient.send_request
+  name: send_request
+  summary: 'Runs the network request through the client''s chained policies.
+
+
+    ```
+
+
+    >>> from azure.core.rest import HttpRequest
+
+    >>> request = HttpRequest("GET", "https://www.example.org/")
+
+    <HttpRequest [GET], url: ''https://www.example.org/''>
+
+    >>> response = await client.send_request(request)
+
+    <AsyncHttpResponse: 200 OK>
+
+    ```
+
+
+    For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> Awaitable[AsyncHttpResponse]'
+  parameters:
+  - name: request
+    description: The network request you want to make. Required.
+    isRequired: true
+    types:
+    - <xref:azure.core.rest.HttpRequest>
+  keywordOnlyParameters:
+  - name: stream
+    description: Whether the response payload will be streamed. Defaults to False.
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  return:
+    description: The response of your network call. Does not do error handling on
+      your response.
+    types:
+    - <xref:azure.core.rest.AsyncHttpResponse>
