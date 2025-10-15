@@ -1,13 +1,13 @@
 ---
 title: Azure Projects client library for Python
 keywords: Azure, python, SDK, API, azure-projects, projects
-ms.date: 10/14/2025
+ms.date: 10/15/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: projects
 ---
 
-# Azure Projects client library for Python - version 0.0.1a20251013002 
+# Azure Projects client library for Python - version 0.0.1a20251014001 
 
 
 This template package matches necessary patterns that the development team has established to create a unified SDK. The packages contained herein can be installed singly or as part of the `azure` namespace. Any other introductory text should go here.
