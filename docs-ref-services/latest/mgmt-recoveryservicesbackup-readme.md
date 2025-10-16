@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-recoveryservicesbackup, recoveryservices
-ms.date: 04/17/2025
+ms.date: 10/16/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: recoveryservices
@@ -9,7 +9,7 @@ ms.service: recoveryservices
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Recovery Services Backup Management Client Library.
-This package has been tested with Python 3.8+.
+This package has been tested with Python 3.9+.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
 ## _Disclaimer_
@@ -20,7 +20,7 @@ _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For
 
 ### Prerequisites
 
-- Python 3.8+ is required to use this package.
+- Python 3.9+ is required to use this package.
 - [Azure subscription](https://azure.microsoft.com/free/)
 
 ### Install the package
@@ -44,7 +44,7 @@ With above configuration, client can be authenticated by following code:
 
 ```python
 from azure.identity import DefaultAzureCredential
-from azure.mgmt.recoveryservicesbackup.activestamp import RecoveryServicesBackupClient
+from azure.mgmt.recoveryservicesbackup import RecoveryServicesBackupClient
 import os
 
 sub_id = os.getenv("AZURE_SUBSCRIPTION_ID")
