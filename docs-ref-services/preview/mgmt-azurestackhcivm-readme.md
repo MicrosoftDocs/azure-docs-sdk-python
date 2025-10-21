@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-azurestackhcivm, azurestackhci
-ms.date: 08/29/2025
+ms.date: 10/21/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: azurestackhci
