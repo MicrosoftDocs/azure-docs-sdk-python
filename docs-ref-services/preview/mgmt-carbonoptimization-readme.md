@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-carbonoptimization, carbonoptimization
-ms.date: 05/08/2025
+ms.date: 10/23/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: carbonoptimization
