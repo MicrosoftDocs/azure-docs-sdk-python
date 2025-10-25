@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-appcontainers, appcontainers
-ms.date: 08/19/2025
+ms.date: 10/25/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: appcontainers
