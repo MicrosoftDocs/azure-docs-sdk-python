@@ -7,7 +7,7 @@ ms.devlang: python
 ms.service: ai
 ---
 <!-- PIPY LONG DESCRIPTION BEGIN -->
-# Azure AI Agents client library for Python - version 1.2.0a20251027005 
+# Azure AI Agents client library for Python - version 1.2.0a20251028001 
 
 
 Use the AI Agents client library to:
