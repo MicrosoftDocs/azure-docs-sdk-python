@@ -1,12 +1,12 @@
 ---
 title: Azure Network SDK for Python
 description: Reference for Azure Network SDK for Python
-ms.date: 10/28/2025
+ms.date: 10/29/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: network
-manager: douge
 keywords: Azure, python, SDK, API, Network
+manager: douge
 ---
 # Azure Network libraries for python
 
