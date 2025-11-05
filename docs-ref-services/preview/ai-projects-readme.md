@@ -6,7 +6,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: ai
 ---
-# Azure AI Projects client library for Python - version 2.0.0a20251104004 
+# Azure AI Projects client library for Python - version 2.0.0a20251105001 
 
 
 The AI Projects client library (in preview) is part of the Azure AI Foundry SDK, and provides easy access to
@@ -161,7 +161,7 @@ print(f"Created conversation with initial user message (id: {conversation.id})")
 response = openai_client.responses.create(
     conversation=conversation.id,
     extra_body={"agent": {"name": agent.name, "type": "agent_reference"}},
-    input="",  # TODO: Remove 'input' once service is fixed
+    input="",
 )
 print(f"Response output: {response.output_text}")
 
@@ -174,7 +174,7 @@ print(f"Added a second user message to the conversation")
 response = openai_client.responses.create(
     conversation=conversation.id,
     extra_body={"agent": {"name": agent.name, "type": "agent_reference"}},
-    input="",  # TODO: Remove 'input' once service is fixed
+    input="",
 )
 print(f"Response output: {response.output_text}")
 
