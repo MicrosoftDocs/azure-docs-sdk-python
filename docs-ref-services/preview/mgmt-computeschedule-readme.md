@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-computeschedule, computeschedule
-ms.date: 07/29/2025
+ms.date: 11/07/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: computeschedule
