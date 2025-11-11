@@ -46,7 +46,7 @@ If it works on local but failed on cloud. Check your logs in the application ins
 
 ## Next steps
 
-Please visit [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-agentframework_1.0.0b2/sdk/agentserver/azure-ai-agentserver-agentframework/samples) folder. There are several samples for you to build your agent with azure-ai-agentserver
+Please visit [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-agentframework_1.0.0b3/sdk/agentserver/azure-ai-agentserver-agentframework/samples) folder. There are several samples for you to build your agent with azure-ai-agentserver
 
 
 ## Contributing
