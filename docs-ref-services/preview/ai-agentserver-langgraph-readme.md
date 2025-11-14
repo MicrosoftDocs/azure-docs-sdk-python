@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-ai-agentserver-langgraph, agentserver
-ms.date: 11/11/2025
+ms.date: 11/14/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: agentserver
@@ -39,7 +39,7 @@ if __name__ == "__main__":
 **Note**
 If your langgraph agent was not using langgraph's builtin [MessageState](https://langchain-ai.github.io/langgraph/concepts/low_level/?h=messagesstate#messagesstate), you should implement your own `LanggraphStateConverter` and provide to `from_langgraph`.
 
-Reference this [example](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agentserver-langgraph_1.0.0b3/sdk/agentserver/azure-ai-agentserver-langgraph/samples/custom_state/main.py) for more details.
+Reference this [example](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agentserver-langgraph_1.0.0b4/sdk/agentserver/azure-ai-agentserver-langgraph/samples/custom_state/main.py) for more details.
 
 
 ## Troubleshooting
@@ -51,7 +51,7 @@ If it works on local but failed on cloud. Check your logs in the application ins
 
 ## Next steps
 
-Please visit [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-langgraph_1.0.0b3/sdk/agentserver/azure-ai-agentserver-langgraph/samples) folder. There are several samples for you to build your agent with azure-ai-agentserver-* packages
+Please visit [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-langgraph_1.0.0b4/sdk/agentserver/azure-ai-agentserver-langgraph/samples) folder. There are several samples for you to build your agent with azure-ai-agentserver-* packages
 
 
 ## Contributing
