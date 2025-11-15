@@ -17,6 +17,7 @@ resources in your Microsoft Foundry Project. Use it to:
 * **Manage memory stores** for Agent conversations, using the `.memory_store` operations.
 * **Run Evaluations** to assess the performance of your generative AI application, using the `.evaluation_rules`,
 `.evaluation_taxonomies`, `.evaluators`, `.insights`, and `.schedules` operations.
+* **Fine-tune models** to improve accuracy, save costs, or improve latency.
 * **Run Red Team operations** to identify risks associated with your generative AI application, using the ".red_teams" operations.
 * **Enumerate AI Models** deployed to your Foundry Project using the `.deployments` operations.
 * **Enumerate connected Azure resources** in your Foundry project using the `.connections` operations.
@@ -192,6 +193,48 @@ print("Agent deleted")
 Evaluation in Azure AI Project client library provides quantitive, AI-assisted quality and safety metrics to asses performance and Evaluate LLM Models, GenAI Application and Agents. Metrics are defined as evaluators. Built-in or custom evaluators can provide comprehensive evaluation insights.
 
 The code below shows some evaluation operations. Full list of sample can be found under "evaluation" folder in the [package samples][samples]
+
+### Fine-tune
+
+The code below shows a basic fine-tuning example. Full samples can be found under the "finetuning" folder in the [package samples][samples]
+
+<!-- SNIPPET:basic_fine_tune -->
+
+```python
+# Load OpenAI client
+client = project_client.get_openai_client()
+
+# Upload training and validation data
+training_file_name = 'training_set.jsonl'
+validation_file_name = 'validation_set.jsonl'
+
+training_response = client.files.create(file=open(training_file_name, "rb"), purpose="fine-tune")
+validation_response = client.files.create(file=open(validation_file_name, "rb"), purpose="fine-tune")
+training_file_id = training_response.id
+validation_file_id = validation_response.id
+
+print("Training file ID:", training_file_id)
+print("Validation file ID:", validation_file_id)
+
+# Submit the training job
+job = client.fine_tuning.jobs.create(
+  training_file=training_file_id, 
+  validation_file=validation_file_id,
+  model="gpt-4.1-2025-04-14",  # Enter base model name.
+  suffix="my-model", # Custom suffix for naming the resulting model. Note that in Azure AI Foundry the model cannot contain dot/period characters.
+  seed=105, # seed parameter controls reproducibility of the fine-tuning job. If no seed is specified one will be generated automatically.
+  method={
+    "type": "supervised", # In this case, the job will be using Supervised Fine Tuning.
+    "supervised": {
+      "hyperparameters": {
+        "n_epochs": 2
+      }
+    }
+  }
+)
+print("Job ID:", job.id)
+```
+<!-- END SNIPPET -->
 
 ### Deployments operations
 
