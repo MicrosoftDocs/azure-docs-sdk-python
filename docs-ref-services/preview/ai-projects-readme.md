@@ -18,7 +18,7 @@ resources in your Microsoft Foundry Project. Use it to:
 * **Run Evaluations** to assess the performance of your generative AI application, using the `.evaluation_rules`,
 `.evaluation_taxonomies`, `.evaluators`, `.insights`, and `.schedules` operations.
 * **Fine-tune models** to improve accuracy, save costs, or improve latency.
-* **Run Red Team operations** to identify risks associated with your generative AI application, using the ".red_teams" operations.
+* **Run Red Team scans** to identify risks associated with your generative AI application, using the ".red_teams" operations.
 * **Enumerate AI Models** deployed to your Foundry Project using the `.deployments` operations.
 * **Enumerate connected Azure resources** in your Foundry project using the `.connections` operations.
 * **Upload documents and create Datasets** to reference them using the `.datasets` operations.
