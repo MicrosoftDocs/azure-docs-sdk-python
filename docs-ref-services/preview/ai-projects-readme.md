@@ -222,7 +222,7 @@ job = client.fine_tuning.jobs.create(
   validation_file=validation_file_id,
   model="gpt-4.1-2025-04-14",  # Enter base model name.
   suffix="my-model", # Custom suffix for naming the resulting model. Note that in Azure AI Foundry the model cannot contain dot/period characters.
-  seed=105, # seed parameter controls reproducibility of the fine-tuning job. If no seed is specified one will be generated automatically.
+  seed=105, # Seed parameter controls reproducibility of the fine-tuning job. If no seed is specified one will be generated automatically.
   method={
     "type": "supervised", # In this case, the job will be using Supervised Fine Tuning.
     "supervised": {
@@ -230,10 +230,15 @@ job = client.fine_tuning.jobs.create(
         "n_epochs": 2
       }
     }
-  }
+  },
+  extra_body={ "trainingType": "GlobalStandard" } # Change this to your preferred training type. Other options are `Standard` and `Developer`.
 )
 print("Job ID:", job.id)
 ```
+
+> [!NOTE]
+> We recommend using Global Standard tier for the training type, as it offers [cost savings](https://azure.microsoft.com/pricing/details/cognitive-services/openai-service/) and leverages global capacity for faster queuing times. However, it does copy data and weights outside the current resource region. If [data residency](https://azure.microsoft.com/explore/global-infrastructure/data-residency/) is a requirement, use a [model](../concepts/models.md#fine-tuning-models) that supports Standard tier training.
+
 <!-- END SNIPPET -->
 
 ### Deployments operations
