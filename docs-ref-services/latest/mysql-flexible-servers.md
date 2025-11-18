@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: mysqlflexibleservers
 ---
-# Azure MySQL Flexible Servers SDK for Python - preview
-## Packages - preview
+# Azure MySQL Flexible Servers SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](mysql-flexible-servers-index.md)]
