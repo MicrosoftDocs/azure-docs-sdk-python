@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-ai-agentserver-core, agentserver
-ms.date: 11/14/2025
+ms.date: 11/18/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: agentserver
@@ -106,7 +106,7 @@ To report an issue with the client library, or request additional features, plea
 
 ## Next steps
 
-Please visit [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-core_1.0.0b4/sdk/agentserver/azure-ai-agentserver-core/samples) folder. There are several cases for you to build your agent with azure-ai-agentserver
+Please visit [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-core_1.0.0b5/sdk/agentserver/azure-ai-agentserver-core/samples) folder. There are several cases for you to build your agent with azure-ai-agentserver
 
 
 ## Contributing
