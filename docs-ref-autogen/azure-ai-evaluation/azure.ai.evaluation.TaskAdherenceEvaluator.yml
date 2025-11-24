@@ -5,17 +5,19 @@ fullName: azure.ai.evaluation.TaskAdherenceEvaluator
 module: azure.ai.evaluation
 summary: "> [!NOTE]\n> This is an experimental class, and may change at any time.\
   \ Please see [https://aka.ms/azuremlexperimental](https://aka.ms/azuremlexperimental)\
-  \ for more information.\n>\n\nThe Task Adherence evaluator assesses how well an\
-  \ AI-generated response follows the assigned task based on:\n\n   * Alignment with\
-  \ instructions and definitions \n\n   * Accuracy and clarity of the response \n\n\
-  \   * Proper use of provided tool definitions \n\nScoring is based on five levels:\n\
-  1. Fully Inadherent - Response completely ignores instructions.\n2. Barely Adherent\
-  \ - Partial alignment with critical gaps.\n3. Moderately Adherent - Meets core requirements\
-  \ but lacks precision.\n4. Mostly Adherent - Clear and accurate with minor issues.\n\
-  5. Fully Adherent - Flawless adherence to instructions.\n\nThe evaluation includes\
-  \ a step-by-step reasoning process, a brief explanation, and a final integer score."
+  \ for more information.\n>\n\nThe Task Adherence evaluator assesses whether an AI\
+  \ assistant's actions fully align with the user's intent\nand fully achieve the\
+  \ intended goal across three dimensions:\n\n   * Goal adherence: Did the assistant\
+  \ achieve the user's objective within scope and constraints? \n\n   * Rule adherence:\
+  \ Did the assistant respect safety, privacy, authorization, and presentation contracts?\
+  \ \n\n   * Procedural adherence: Did the assistant follow required workflows, tool\
+  \ use, sequencing, and verification? \n\nThe evaluator returns a boolean flag indicating\
+  \ whether there was any material failure in any dimension.\nA material failure is\
+  \ an issue that makes the output unusable, creates verifiable risk, violates an\
+  \ explicit\nconstraint, or is a critical issue as defined in the evaluation dimensions.\n\
+  \nThe evaluation includes step-by-step reasoning and a flagged boolean result."
 constructor:
-  syntax: TaskAdherenceEvaluator(model_config, *, threshold=3, credential=None, **kwargs)
+  syntax: TaskAdherenceEvaluator(model_config, *, threshold=0, credential=None, **kwargs)
   parameters:
   - name: model_config
     description: Configuration for the Azure OpenAI model.
@@ -25,7 +27,7 @@ constructor:
       <xref:azure.ai.evaluation.OpenAIModelConfiguration>]
   keywordOnlyParameters:
   - name: threshold
-    defaultValue: '3'
+    defaultValue: '0'
   - name: credential
     defaultValue: None
 examples:
@@ -34,7 +36,7 @@ examples:
   evaluation_samples_evaluate_fdp.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
   classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"\
   C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\
-  \\dist_temp\\\\15\\\\azure_ai_evaluation-1.11.2\\\\samples\\\\evaluation_samples_evaluate_fdp.py\"\
+  \\dist_temp\\\\15\\\\azure_ai_evaluation-1.13.7\\\\samples\\\\evaluation_samples_evaluate_fdp.py\"\
   , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
   : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
   \   from azure.ai.evaluation import TaskAdherenceEvaluator\n\n   model_config =\
@@ -43,23 +45,22 @@ examples:
   : os.environ.get(\"AZURE_OPENAI_DEPLOYMENT\"),\n   }\n\n   task_adherence_evaluator\
   \ = TaskAdherenceEvaluator(model_config=model_config)\n\n   query = [\n       {\"\
   role\": \"system\", \"content\": \"You are a helpful customer service agent.\"},\n\
-  \       {\"role\": \"user\", \"content\": [{\"type\": \"text\", \"text\": \"What\
-  \ is the status of my order #123?\"}]},\n   ]\n\n   response = [\n       {\n   \
-  \        \"role\": \"assistant\",\n           \"content\": [\n               {\n\
-  \                   \"type\": \"tool_call\",\n                   \"tool_call\":\
-  \ {\n                       \"id\": \"tool_001\",\n                       \"type\"\
-  : \"function\",\n                       \"function\": {\"name\": \"get_order\",\
-  \ \"arguments\": {\"order_id\": \"123\"}},\n                   },\n            \
-  \   }\n           ],\n       },\n       {\n           \"role\": \"tool\",\n    \
-  \       \"tool_call_id\": \"tool_001\",\n           \"content\": [\n           \
-  \    {\"type\": \"tool_result\", \"tool_result\": '{ \"order\": { \"id\": \"123\"\
-  , \"status\": \"shipped\" } }'}\n           ],\n       },\n       {\"role\": \"\
-  assistant\", \"content\": [{\"type\": \"text\", \"text\": \"Your order #123 has\
-  \ been shipped.\"}]},\n   ]\n\n   tool_definitions = [\n       {\n           \"\
-  name\": \"get_order\",\n           \"description\": \"Get order details.\",\n  \
-  \         \"parameters\": {\"type\": \"object\", \"properties\": {\"order_id\":\
-  \ {\"type\": \"string\"}}},\n       }\n   ]\n\n   task_adherence_evaluator(query=query,\
-  \ response=response, tool_definitions=tool_definitions)\n\n   ````\n"
+  \       {\n           \"role\": \"user\",\n           \"content\": [{\"type\": \"\
+  text\", \"text\": \"What is the status of my order #123?\"}],\n       },\n   ]\n\
+  \n   response = [\n       {\n           \"role\": \"assistant\",\n           \"\
+  content\": [\n               {\n                   \"type\": \"tool_call\",\n  \
+  \                 \"tool_call\": {\n                       \"id\": \"tool_001\"\
+  ,\n                       \"type\": \"function\",\n                       \"function\"\
+  : {\n                           \"name\": \"get_order\",\n                     \
+  \      \"arguments\": {\"order_id\": \"123\"},\n                       },\n    \
+  \               },\n               }\n           ],\n       },\n       {\n     \
+  \      \"role\": \"tool\",\n           \"tool_call_id\": \"tool_001\",\n       \
+  \    \"content\": [\n               {\n                   \"type\": \"tool_result\"\
+  ,\n                   \"tool_result\": '{ \"order\": { \"id\": \"123\", \"status\"\
+  : \"shipped\" } }',\n               }\n           ],\n       },\n       {\n    \
+  \       \"role\": \"assistant\",\n           \"content\": [{\"type\": \"text\",\
+  \ \"text\": \"Your order #123 has been shipped.\"}],\n       },\n   ]\n\n   task_adherence_evaluator(query=query,\
+  \ response=response)\n\n   ````\n"
 attributes:
 - uid: azure.ai.evaluation.TaskAdherenceEvaluator.id
   name: id

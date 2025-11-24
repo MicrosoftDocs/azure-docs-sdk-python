@@ -6,10 +6,11 @@ module: azure.mgmt.netapp
 summary: Microsoft NetApp Files Azure Resource Provider specification.
 constructor:
   syntax: 'NetAppManagementClient(credential: TokenCredential, subscription_id: str,
-    base_url: str | None = None, **kwargs: Any)'
+    base_url: str | None = None, *, cloud_setting: AzureClouds | None = None, **kwargs:
+    Any)'
   parameters:
   - name: credential
-    description: Credential needed for the client to connect to Azure. Required.
+    description: Credential used to authenticate requests to the service. Required.
     isRequired: true
     types:
     - <xref:azure.core.credentials.TokenCredential>
@@ -19,16 +20,23 @@ constructor:
     types:
     - <xref:str>
   - name: base_url
-    description: Service URL. Default value is None.
+    description: Service host. Default value is None.
     defaultValue: None
     types:
     - <xref:str>
   keywordOnlyParameters:
-  - name: api_version
-    description: 'Api Version. Default value is "2025-06-01". Note that overriding
-      this
+  - name: cloud_setting
+    description: 'The cloud setting for which to get the ARM endpoint. Default value
+      is
 
-      default value may result in unsupported behavior.'
+      None.'
+    defaultValue: None
+    types:
+    - <xref:azure.core.AzureClouds>
+  - name: api_version
+    description: 'The API version to use for this operation. Default value is "2025-09-01".
+
+      Note that overriding this default value may result in unsupported behavior.'
     types:
     - <xref:str>
   - name: polling_interval
@@ -42,30 +50,20 @@ variables:
   name: operations
   types:
   - <xref:azure.mgmt.netapp.operations.Operations>
-- description: NetAppResourceOperations operations
-  name: net_app_resource
+- description: 'NetAppResourceQuotaLimitsAccountOperations
+
+    operations'
+  name: net_app_resource_quota_limits_account
   types:
-  - <xref:azure.mgmt.netapp.operations.NetAppResourceOperations>
-- description: NetAppResourceUsagesOperations operations
-  name: net_app_resource_usages
+  - <xref:azure.mgmt.netapp.operations.NetAppResourceQuotaLimitsAccountOperations>
+- description: VolumeGroupsOperations operations
+  name: volume_groups
   types:
-  - <xref:azure.mgmt.netapp.operations.NetAppResourceUsagesOperations>
-- description: NetAppResourceQuotaLimitsOperations operations
-  name: net_app_resource_quota_limits
+  - <xref:azure.mgmt.netapp.operations.VolumeGroupsOperations>
+- description: BackupsOperations operations
+  name: backups
   types:
-  - <xref:azure.mgmt.netapp.operations.NetAppResourceQuotaLimitsOperations>
-- description: NetAppResourceRegionInfosOperations operations
-  name: net_app_resource_region_infos
-  types:
-  - <xref:azure.mgmt.netapp.operations.NetAppResourceRegionInfosOperations>
-- description: AccountsOperations operations
-  name: accounts
-  types:
-  - <xref:azure.mgmt.netapp.operations.AccountsOperations>
-- description: PoolsOperations operations
-  name: pools
-  types:
-  - <xref:azure.mgmt.netapp.operations.PoolsOperations>
+  - <xref:azure.mgmt.netapp.operations.BackupsOperations>
 - description: VolumesOperations operations
   name: volumes
   types:
@@ -86,22 +84,30 @@ variables:
   name: volume_quota_rules
   types:
   - <xref:azure.mgmt.netapp.operations.VolumeQuotaRulesOperations>
-- description: VolumeGroupsOperations operations
-  name: volume_groups
-  types:
-  - <xref:azure.mgmt.netapp.operations.VolumeGroupsOperations>
-- description: SubvolumesOperations operations
-  name: subvolumes
-  types:
-  - <xref:azure.mgmt.netapp.operations.SubvolumesOperations>
-- description: BackupsOperations operations
-  name: backups
-  types:
-  - <xref:azure.mgmt.netapp.operations.BackupsOperations>
 - description: BackupVaultsOperations operations
   name: backup_vaults
   types:
   - <xref:azure.mgmt.netapp.operations.BackupVaultsOperations>
+- description: NetAppResourceQuotaLimitsOperations operations
+  name: net_app_resource_quota_limits
+  types:
+  - <xref:azure.mgmt.netapp.operations.NetAppResourceQuotaLimitsOperations>
+- description: NetAppResourceRegionInfosOperations operations
+  name: net_app_resource_region_infos
+  types:
+  - <xref:azure.mgmt.netapp.operations.NetAppResourceRegionInfosOperations>
+- description: AccountsOperations operations
+  name: accounts
+  types:
+  - <xref:azure.mgmt.netapp.operations.AccountsOperations>
+- description: BackupsUnderAccountOperations operations
+  name: backups_under_account
+  types:
+  - <xref:azure.mgmt.netapp.operations.BackupsUnderAccountOperations>
+- description: PoolsOperations operations
+  name: pools
+  types:
+  - <xref:azure.mgmt.netapp.operations.PoolsOperations>
 - description: BackupsUnderBackupVaultOperations operations
   name: backups_under_backup_vault
   types:
@@ -110,11 +116,60 @@ variables:
   name: backups_under_volume
   types:
   - <xref:azure.mgmt.netapp.operations.BackupsUnderVolumeOperations>
-- description: BackupsUnderAccountOperations operations
-  name: backups_under_account
+- description: SubvolumesOperations operations
+  name: subvolumes
   types:
-  - <xref:azure.mgmt.netapp.operations.BackupsUnderAccountOperations>
+  - <xref:azure.mgmt.netapp.operations.SubvolumesOperations>
+- description: NetAppResourceOperations operations
+  name: net_app_resource
+  types:
+  - <xref:azure.mgmt.netapp.operations.NetAppResourceOperations>
+- description: NetAppResourceUsagesOperations operations
+  name: net_app_resource_usages
+  types:
+  - <xref:azure.mgmt.netapp.operations.NetAppResourceUsagesOperations>
 methods:
 - uid: azure.mgmt.netapp.NetAppManagementClient.close
   name: close
   signature: close() -> None
+- uid: azure.mgmt.netapp.NetAppManagementClient.send_request
+  name: send_request
+  summary: 'Runs the network request through the client''s chained policies.
+
+
+    ```
+
+
+    >>> from azure.core.rest import HttpRequest
+
+    >>> request = HttpRequest("GET", "https://www.example.org/")
+
+    <HttpRequest [GET], url: ''https://www.example.org/''>
+
+    >>> response = client.send_request(request)
+
+    <HttpResponse: 200 OK>
+
+    ```
+
+
+    For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> HttpResponse'
+  parameters:
+  - name: request
+    description: The network request you want to make. Required.
+    isRequired: true
+    types:
+    - <xref:azure.core.rest.HttpRequest>
+  keywordOnlyParameters:
+  - name: stream
+    description: Whether the response payload will be streamed. Defaults to False.
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  return:
+    description: The response of your network call. Does not do error handling on
+      your response.
+    types:
+    - <xref:azure.core.rest.HttpResponse>

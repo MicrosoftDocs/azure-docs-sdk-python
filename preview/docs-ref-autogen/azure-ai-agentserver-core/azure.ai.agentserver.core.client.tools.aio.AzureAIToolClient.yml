@@ -1,0 +1,107 @@
+### YamlMime:PythonClass
+uid: azure.ai.agentserver.core.client.tools.aio.AzureAIToolClient
+name: AzureAIToolClient
+fullName: azure.ai.agentserver.core.client.tools.aio.AzureAIToolClient
+module: azure.ai.agentserver.core.client.tools.aio
+summary: 'Asynchronous client for aggregating tools from Azure AI MCP and Tools APIs.
+
+
+  This client provides access to tools from both MCP (Model Context Protocol) servers
+
+  and Azure AI Tools API endpoints, enabling unified tool discovery and invocation.
+
+
+  Initialize the asynchronous Azure AI Tool Client.'
+constructor:
+  syntax: 'AzureAIToolClient(endpoint: str, credential: AsyncTokenCredential, **kwargs:
+    Any)'
+  parameters:
+  - name: endpoint
+    description: 'The fully qualified endpoint for the Azure AI Agents service.
+
+      Example: "[https:/](https:/)/<resource-name>.api.azureml.ms"'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: credential
+    description: 'Credential for authenticating requests to the service.
+
+      Use credentials from azure-identity like DefaultAzureCredential.'
+    isRequired: true
+    types:
+    - <xref:azure.core.credentials.TokenCredential>
+  - name: endpoint
+    description: The service endpoint URL.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: credential
+    description: Credentials for authenticating requests.
+    isRequired: true
+    types:
+    - <xref:azure.core.credentials.TokenCredential>
+  keywordOnlyParameters:
+  - name: agent_name
+    description: Name of the agent to use for tool operations. Default is "$default".
+    types:
+    - <xref:str>
+  - name: tools
+    description: List of tool configurations defining which tools to include.
+    types:
+    - <xref:typing.List>[<xref:typing.Mapping>[<xref:str>, <xref:typing.Any>]]
+  - name: user
+    description: User information for tool invocations (object_id, tenant_id).
+    types:
+    - <xref:typing.Mapping>[<xref:str>, <xref:typing.Any>]
+  - name: api_version
+    description: 'API version to use when communicating with the service.
+
+      Default is the latest supported version.'
+    types:
+    - <xref:str>
+  - name: transport
+    description: Custom transport implementation. Default is RequestsTransport.
+    types:
+    - <xref:azure.core.pipeline.transport.HttpTransport>
+  - name: kwargs
+    description: Additional keyword arguments for client configuration.
+methods:
+- uid: azure.ai.agentserver.core.client.tools.aio.AzureAIToolClient.close
+  name: close
+  summary: Close the underlying HTTP pipeline.
+  signature: async close() -> None
+- uid: azure.ai.agentserver.core.client.tools.aio.AzureAIToolClient.invoke_tool
+  name: invoke_tool
+  summary: Invoke a tool by instance, name, or descriptor.
+  signature: 'async invoke_tool(tool: str | FoundryTool, *args: Any, **kwargs: Any)
+    -> Any'
+  parameters:
+  - name: tool
+    description: 'Tool to invoke, specified as an AzureAITool instance,
+
+      tool name string, or FoundryTool.'
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:AzureAITool>, <xref:str>, <xref:Tool_Client.models.FoundryTool>]
+  - name: args
+    description: Positional arguments to pass to the tool.
+    isRequired: true
+    types:
+    - <xref:typing.Any>
+  return:
+    description: The result of invoking the tool.
+    types:
+    - <xref:typing.Any>
+- uid: azure.ai.agentserver.core.client.tools.aio.AzureAIToolClient.list_tools
+  name: list_tools
+  summary: "List all available tools from configured sources.\n\nRetrieves tools from\
+    \ both MCP servers and Azure AI Tools API endpoints,\nreturning them as AzureAITool\
+    \ instances ready for invocation.\n:return: List of available tools from all configured\
+    \ sources.\n:rtype: List[~AzureAITool]\n:raises ~Tool_Client.exceptions.OAuthConsentRequiredError:\n\
+    \n   Raised when the service requires user OAuth consent."
+  signature: async list_tools() -> List[FoundryTool]
+  exceptions:
+  - type: Tool_Client.exceptions.MCPToolApprovalRequiredError
+    description: Raised when tool access requires human approval.
+  - type: azure.core.exceptions.HttpResponseError
+    description: Raised for HTTP communication failures.
