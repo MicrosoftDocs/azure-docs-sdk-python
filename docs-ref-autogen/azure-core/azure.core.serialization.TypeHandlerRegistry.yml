@@ -1,0 +1,126 @@
+### YamlMime:PythonClass
+uid: azure.core.serialization.TypeHandlerRegistry
+name: TypeHandlerRegistry
+fullName: azure.core.serialization.TypeHandlerRegistry
+module: azure.core.serialization
+summary: A registry for custom serializers and deserializers for specific types or
+  conditions.
+constructor:
+  syntax: TypeHandlerRegistry()
+methods:
+- uid: azure.core.serialization.TypeHandlerRegistry.get_deserializer
+  name: get_deserializer
+  summary: 'Gets the appropriate deserializer for a class.
+
+
+    It first checks the type dictionary for a direct type match.
+
+    If no match is found, it iterates through the predicate list to find a match.
+
+
+    Results of the lookup are cached for performance based on the class.'
+  signature: 'get_deserializer(cls: Type) -> Callable[[Dict[str, Any]], Any] | None'
+  parameters:
+  - name: cls
+    description: The class to deserialize.
+    isRequired: true
+    types:
+    - <xref:type>
+  return:
+    description: 'A deserializer function bound to the specified class that takes
+      a dictionary and returns
+
+      an instance of that class, or None if no deserializer is found.'
+    types:
+    - <xref:typing.Optional>[<xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]], <xref:typing.Any>]]
+- uid: azure.core.serialization.TypeHandlerRegistry.get_serializer
+  name: get_serializer
+  summary: 'Gets the appropriate serializer for an object.
+
+
+    It first checks the type dictionary for a direct type match.
+
+    If no match is found, it iterates through the predicate list to find a match.
+
+
+    Results of the lookup are cached for performance based on the object''s type.'
+  signature: 'get_serializer(obj: Any) -> Callable[[Any], Dict[str, Any]] | None'
+  parameters:
+  - name: obj
+    description: The object to serialize.
+    isRequired: true
+    types:
+    - <xref:any>
+  return:
+    description: The serializer function if found, otherwise None.
+    types:
+    - <xref:typing.Optional>[<xref:typing.Callable>[[<xref:typing.Any>], <xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]]]
+- uid: azure.core.serialization.TypeHandlerRegistry.register_deserializer
+  name: register_deserializer
+  summary: "Decorator to register a deserializer.\n\nThe handler function is expected\
+    \ to take two arguments: the target type and the data dictionary,\nand return\
+    \ an instance of the target type.\n\nExamples:\n\n<!-- literal_block {\"ids\"\
+    : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {}, \"linenos\": false} -->\n\n````python\n\n   @registry.register_deserializer(CustomModel)\n\
+    \   def deserialize_single_type(cls: Type[CustomModel], data: dict) -> CustomModel:\n\
+    \       return cls(**data)\n\n   @registry.register_deserializer(lambda t: issubclass(t,\
+    \ BaseModel))\n   def deserialize_with_condition(cls: Type[BaseModel], data: dict)\
+    \ -> BaseModel:\n       return cls(**data)\n\n   # Called manually for a specific\
+    \ type\n   def custom_deserializer(cls: Type[CustomModel], data: Dict[str, Any])\
+    \ -> CustomModel:\n       return cls(custom=data[\"custom\"])\n\n   registry.register_deserializer(CustomModel)(custom_deserializer)\n\
+    \   ````"
+  signature: 'register_deserializer(condition: Type | Callable[[Any], bool]) -> Callable[[Callable[[Type,
+    Dict[str, Any]], Any]], Callable[[Type, Dict[str, Any]], Any]]'
+  parameters:
+  - name: condition
+    description: A type or a callable predicate function that takes an object and
+      returns a bool.
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:typing.Type>, <xref:typing.Callable>[[<xref:typing.Any>],
+      <xref:bool>]]
+  return:
+    description: A decorator that registers the handler function.
+    types:
+    - <xref:typing.Callable>[[<xref:typing.Callable>[[<xref:typing.Type>, <xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]], <xref:typing.Any>]], <xref:typing.Callable>[[<xref:typing.Type>,
+      <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]], <xref:typing.Any>]]
+  exceptions:
+  - type: TypeError
+    description: If the condition is neither a type nor a callable.
+- uid: azure.core.serialization.TypeHandlerRegistry.register_serializer
+  name: register_serializer
+  summary: "Decorator to register a serializer.\n\nThe handler function is expected\
+    \ to take a single argument, the object to serialize,\nand return a dictionary\
+    \ representation of that object.\n\nExamples:\n\n<!-- literal_block {\"ids\":\
+    \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {}, \"linenos\": false} -->\n\n````python\n\n   @registry.register_serializer(CustomModel)\n\
+    \   def serialize_single_type(value: CustomModel) -> dict:\n       return value.to_dict()\n\
+    \n   @registry.register_serializer(lambda x: isinstance(x, BaseModel))\n   def\
+    \ serialize_with_condition(value: BaseModel) -> dict:\n       return value.to_dict()\n\
+    \n   # Called manually for a specific type\n   def custom_serializer(value: CustomModel)\
+    \ -> Dict[str, Any]:\n       return {\"custom\": value.custom}\n\n   registry.register_serializer(CustomModel)(custom_serializer)\n\
+    \   ````"
+  signature: 'register_serializer(condition: Type | Callable[[Any], bool]) -> Callable[[Callable[[Any],
+    Dict[str, Any]]], Callable[[Any], Dict[str, Any]]]'
+  parameters:
+  - name: condition
+    description: A type or a callable predicate function that takes an object and
+      returns a bool.
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:typing.Type>, <xref:typing.Callable>[[<xref:typing.Any>],
+      <xref:bool>]]
+  return:
+    description: A decorator that registers the handler function.
+    types:
+    - <xref:typing.Callable>[[<xref:typing.Callable>[[<xref:typing.Any>], <xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]]], <xref:typing.Callable>[[<xref:typing.Any>], <xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]]]
+  exceptions:
+  - type: TypeError
+    description: If the condition is neither a type nor a callable.
