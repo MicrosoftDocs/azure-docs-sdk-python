@@ -11,8 +11,10 @@ summary: "A client-side logical representation of an Azure Cosmos DB account.\n\
   \ instances as\n   credentials or network connectivity validations.\n\nInstantiate\
   \ a new CosmosClient."
 constructor:
-  syntax: 'CosmosClient(url: str, credential: str | Dict[str, str] | AsyncTokenCredential,
-    *, consistency_level: str | None = None, **kwargs: Any)'
+  syntax: 'CosmosClient(url: str, credential: str | dict[str, str] | AsyncTokenCredential,
+    *, consistency_level: str | None = None, availability_strategy_config: dict[str,
+    Any] | None = None, availability_strategy_max_concurrency: int | None = None,
+    **kwargs: Any)'
   parameters:
   - name: url
     description: The URL of the Cosmos DB account.
@@ -23,8 +25,7 @@ constructor:
     description: Can be the account key, or a dictionary of resource tokens.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:typing.Dict>[<xref:str>, <xref:str>],
-      <xref:azure.core.credentials_async.AsyncTokenCredential>]
+    - <xref:typing.Union>[<xref:str>, <xref:dict>[<xref:str>, <xref:str>], <xref:azure.core.credentials_async.AsyncTokenCredential>]
   keywordOnlyParameters:
   - name: consistency_level
     description: 'Consistency level to use for the session. Default value is None
@@ -154,11 +155,22 @@ constructor:
     description: Allows user agent suffix to be specified when creating client
     types:
     - <xref:str>
+  - name: availability_strategy_config
+    description: The threshold-based availability strategy config to use for this
+      request.
+    defaultValue: None
+    types:
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
+  - name: availability_strategy_max_concurrency
+    description: The max concurrency for parallel requests.
+    defaultValue: None
+    types:
+    - <xref:int>
 examples:
 - "Create a new instance of the Cosmos DB client:<!--[!code-python[Main](les\\examples_async.py\
   \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
   : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\x64\\\
-  \\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\43\\\\azure_cosmos-4.14.0b4\\\
+  \\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\48\\\\azure_cosmos-4.15.0b1\\\
   \\samples\\\\examples_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
   \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
   : false} -->\n\n````python\n\n       url = os.environ[\"ACCOUNT_URI\"]\n       key\
@@ -173,39 +185,56 @@ methods:
   name: create_database
   summary: Create a new database with the given ID (name).
   signature: 'async create_database(id: str, *, offer_throughput: int | ThroughputProperties
-    | None = None, initial_headers: Dict[str, str] | None = None, throughput_bucket:
-    int | None = None, **kwargs: Any) -> DatabaseProxy'
+    | None = None, initial_headers: dict[str, str] | None = None, response_hook: Callable[[Mapping[str,
+    Any]], None] | None = None, throughput_bucket: int | None = None, return_properties:
+    Literal[False] = False, **kwargs: Any) -> DatabaseProxy'
   parameters:
+  - name: args
+    description: args
+    isRequired: true
+    types:
+    - <xref:typing.Any>
   - name: id
-    description: ID (name) of the database to create.
+    description: ID (name) of the database to read or create.
     isRequired: true
     types:
     - <xref:str>
   keywordOnlyParameters:
   - name: offer_throughput
-    description: The provisioned throughput for this offer.
-    defaultValue: None
+    description: 'The provisioned throughput
+
+      for this database.'
     types:
     - <xref:typing.Union>[<xref:int>, <xref:azure.cosmos.ThroughputProperties>]
   - name: initial_headers
     description: Initial headers to be sent as part of the request.
-    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: response_hook
-    description: A callable invoked with the response metadata.
+    description: 'A callable invoked with
+
+      the response metadata.'
     types:
-    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
+    - <xref:typing.Callable>[[<xref:dict>[<xref:str>, <xref:str>], <xref:dict>[<xref:str>,
       <xref:typing.Any>]], <xref:None>]
   - name: throughput_bucket
     description: The desired throughput bucket for the client
-    defaultValue: None
     types:
     - <xref:int>
+  - name: return_properties
+    description: 'Specifies whether to return either a DatabaseProxy
+
+      or a Tuple containing a DatabaseProxy and the associated database properties.'
+    types:
+    - <xref:bool>
   return:
-    description: A DatabaseProxy instance representing the new database.
+    description: 'A DatabaseProxy instance representing the database or a tuple of
+      DatabaseProxy
+
+      and CosmosDict with the database properties.'
     types:
     - <xref:azure.cosmos.aio.DatabaseProxy>
+    - <xref:tuple> [<xref:azure.cosmos.aio.DatabaseProxy>, <xref:azure.cosmos.CosmosDict>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosResourceExistsError
     description: Database with the given ID already exists.
@@ -213,7 +242,7 @@ methods:
   - "Create a database in the Cosmos DB account:<!--[!code-python[Main](les\\examples_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\43\\\\azure_cosmos-4.14.0b4\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\48\\\\azure_cosmos-4.15.0b1\\\
     \\samples\\\\examples_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n           database_name = \"testDatabase\"\n  \
@@ -227,9 +256,16 @@ methods:
     \ not check or update existing database settings or\n   offer throughput if they\
     \ differ from what is passed in."
   signature: 'async create_database_if_not_exists(id: str, *, offer_throughput: int
-    | ThroughputProperties | None = None, initial_headers: Dict[str, str] | None =
-    None, throughput_bucket: int | None = None, **kwargs: Any) -> DatabaseProxy'
+    | ThroughputProperties | None = None, initial_headers: dict[str, str] | None =
+    None, response_hook: Callable[[Mapping[str, Any]], None] | None = None, throughput_bucket:
+    int | None = None, return_properties: Literal[False] = False, **kwargs: Any) ->
+    DatabaseProxy'
   parameters:
+  - name: args
+    description: args
+    isRequired: true
+    types:
+    - <xref:typing.Any>
   - name: id
     description: ID (name) of the database to read or create.
     isRequired: true
@@ -237,37 +273,48 @@ methods:
     - <xref:str>
   keywordOnlyParameters:
   - name: offer_throughput
-    description: The provisioned throughput for this offer.
-    defaultValue: None
+    description: 'The provisioned throughput
+
+      for this database.'
     types:
     - <xref:typing.Union>[<xref:int>, <xref:azure.cosmos.ThroughputProperties>]
   - name: initial_headers
     description: Initial headers to be sent as part of the request.
-    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: response_hook
-    description: A callable invoked with the response metadata.
+    description: 'A callable invoked with
+
+      the response metadata.'
     types:
-    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
+    - <xref:typing.Callable>[[<xref:dict>[<xref:str>, <xref:str>], <xref:dict>[<xref:str>,
       <xref:typing.Any>]], <xref:None>]
   - name: throughput_bucket
     description: The desired throughput bucket for the client
-    defaultValue: None
     types:
     - <xref:int>
-  return:
-    description: A DatabaseProxy instance representing the database.
+  - name: return_properties
+    description: 'Specifies whether to return either a DatabaseProxy
+
+      or a Tuple containing a DatabaseProxy and the associated database properties.'
     types:
-    - <xref:azure.cosmos.DatabaseProxy>
+    - <xref:bool>
+  return:
+    description: 'A DatabaseProxy instance representing the database or a tuple of
+      DatabaseProxy
+
+      and CosmosDict with the database properties.'
+    types:
+    - <xref:azure.cosmos.aio.DatabaseProxy>
+    - <xref:tuple> [<xref:azure.cosmos.aio.DatabaseProxy>, <xref:azure.cosmos.CosmosDict>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: The database read or creation failed.
 - uid: azure.cosmos.aio.CosmosClient.delete_database
   name: delete_database
   summary: Delete the database with the given ID (name).
-  signature: 'async delete_database(database: str | DatabaseProxy | Dict[str, Any],
-    *, initial_headers: Dict[str, str] | None = None, response_hook: Callable[[Mapping[str,
+  signature: 'async delete_database(database: str | DatabaseProxy | dict[str, Any],
+    *, initial_headers: dict[str, str] | None = None, response_hook: Callable[[Mapping[str,
     Any]], None] | None = None, throughput_bucket: int | None = None, **kwargs: Any)
     -> None'
   parameters:
@@ -277,7 +324,7 @@ methods:
       instance of the database to delete.'
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:azure.cosmos.DatabaseProxy>, <xref:typing.Dict>[<xref:str>,
+    - <xref:typing.Union>[<xref:str>, <xref:azure.cosmos.DatabaseProxy>, <xref:dict>[<xref:str>,
       <xref:typing.Any>]]
   keywordOnlyParameters:
   - name: initial_headers
@@ -310,7 +357,7 @@ methods:
     This can be retrieved from the Azure portal.For full list of optional
 
     keyword arguments, see the CosmosClient constructor.'
-  signature: 'from_connection_string(conn_str: str, *, credential: str | Dict[str,
+  signature: 'from_connection_string(conn_str: str, *, credential: str | dict[str,
     str] | None = None, consistency_level: str | None = None, **kwargs: Any) -> CosmosClient'
   parameters:
   - name: conn_str
@@ -324,7 +371,7 @@ methods:
       connection string.
     defaultValue: None
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:typing.Dict>[<xref:str>, <xref:str>]]
+    - <xref:typing.Union>[<xref:str>, <xref:dict>[<xref:str>, <xref:str>]]
   - name: consistency_level
     description: 'Consistency level to use for the session. Default value is None
       (account-level).
@@ -340,7 +387,7 @@ methods:
 - uid: azure.cosmos.aio.CosmosClient.get_database_client
   name: get_database_client
   summary: Retrieve an existing database with the ID (name) *id*.
-  signature: 'get_database_client(database: str | DatabaseProxy | Dict[str, Any])
+  signature: 'get_database_client(database: str | DatabaseProxy | dict[str, Any])
     -> DatabaseProxy'
   parameters:
   - name: database
@@ -349,7 +396,7 @@ methods:
       instance of the database to get.'
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:azure.cosmos.DatabaseProxy>, <xref:typing.Dict>[<xref:str>,
+    - <xref:typing.Union>[<xref:str>, <xref:azure.cosmos.DatabaseProxy>, <xref:dict>[<xref:str>,
       <xref:typing.Any>]]
   return:
     description: A *DatabaseProxy* instance representing the retrieved database.
@@ -359,8 +406,8 @@ methods:
   name: list_databases
   summary: List the databases in a Cosmos DB SQL database account.
   signature: 'list_databases(*, max_item_count: int | None = None, initial_headers:
-    Dict[str, str] | None = None, response_hook: Callable[[Mapping[str, Any]], None]
-    | None = None, throughput_bucket: int | None = None, **kwargs: Any) -> AsyncItemPaged[Dict[str,
+    dict[str, str] | None = None, response_hook: Callable[[Mapping[str, Any]], None]
+    | None = None, throughput_bucket: int | None = None, **kwargs: Any) -> AsyncItemPaged[dict[str,
     Any]]'
   keywordOnlyParameters:
   - name: max_item_count
@@ -391,20 +438,20 @@ methods:
   return:
     description: An AsyncItemPaged of database properties (dicts).
     types:
-    - <xref:AsyncItemPaged>[<xref:typing.Dict>[<xref:str>, <xref:str>]]
+    - <xref:AsyncItemPaged>[<xref:dict>[<xref:str>, <xref:str>]]
 - uid: azure.cosmos.aio.CosmosClient.query_databases
   name: query_databases
   summary: Query the databases in a Cosmos DB SQL database account.
-  signature: 'query_databases(query: str, *, parameters: List[Dict[str, Any]] | None
-    = None, max_item_count: int | None = None, initial_headers: Dict[str, str] | None
+  signature: 'query_databases(query: str, *, parameters: list[dict[str, Any]] | None
+    = None, max_item_count: int | None = None, initial_headers: dict[str, str] | None
     = None, response_hook: Callable[[Mapping[str, Any]], None] | None = None, throughput_bucket:
-    int | None = None, **kwargs: Any) -> AsyncItemPaged[Dict[str, Any]]'
+    int | None = None, **kwargs: Any) -> AsyncItemPaged[dict[str, Any]]'
   parameters:
   - name: query
     description: The Azure Cosmos DB SQL query to execute.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:typing.Union>[<xref:str>, <xref:dict>[<xref:str>, <xref:typing.Any>]]
   keywordOnlyParameters:
   - name: parameters
     description: 'Optional array of parameters to the query.
@@ -412,7 +459,7 @@ methods:
       Each parameter is a dict() with ''name'' and ''value'' keys.'
     defaultValue: None
     types:
-    - <xref:typing.List>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:list>[<xref:dict>[<xref:str>, <xref:typing.Any>]]
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
     defaultValue: None
@@ -441,4 +488,4 @@ methods:
   return:
     description: An AsyncItemPaged of database properties (dicts).
     types:
-    - <xref:AsyncItemPaged>[<xref:typing.Dict>[<xref:str>, <xref:str>]]
+    - <xref:AsyncItemPaged>[<xref:dict>[<xref:str>, <xref:str>]]

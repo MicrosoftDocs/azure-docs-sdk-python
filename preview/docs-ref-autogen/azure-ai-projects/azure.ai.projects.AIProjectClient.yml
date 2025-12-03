@@ -8,16 +8,18 @@ constructor:
   syntax: 'AIProjectClient(endpoint: str, credential: TokenCredential, **kwargs: Any)'
   parameters:
   - name: endpoint
-    description: 'Project endpoint. In the form
+    description: 'Foundry Project endpoint in the form
 
-      "[https://your-ai-services-account-name.services.ai.azure.com/api/projects/_project](https://your-ai-services-account-name.services.ai.azure.com/api/projects/_project)"
+      `https://{ai-services-account-name}.services.ai.azure.com/api/projects/{project-name}`.
+      If
 
-      if your Foundry Hub has only one Project, or to use the default Project in your
-      Hub. Or in the
+      you only have one Project in your Foundry Hub, or to target the default Project
+      in your Hub,
 
-      form "[https://your-ai-services-account-name.services.ai.azure.com/api/projects/your-project-name](https://your-ai-services-account-name.services.ai.azure.com/api/projects/your-project-name)"
+      use the form
 
-      if you want to explicitly specify the Foundry Project name. Required.'
+      `https://{ai-services-account-name}.services.ai.azure.com/api/projects/_project`.
+      Required.'
     isRequired: true
     types:
     - <xref:str>
@@ -30,29 +32,31 @@ constructor:
   - name: api_version
     description: 'The API version to use for this operation. Default value is
 
-      "2025-05-15-preview". Note that overriding this default value may result in
+      "2025-11-15-preview". Note that overriding this default value may result in
       unsupported
 
       behavior.'
     types:
     - <xref:str>
+  - name: polling_interval
+    description: 'Default waiting time between two polls for LRO operations if no
+
+      Retry-After header is present.'
+    types:
+    - <xref:int>
 variables:
-- description: The AgentsClient associated with this AIProjectClient.
+- description: AgentsOperations operations
   name: agents
   types:
-  - <xref:azure.ai.agents.AgentsClient>
+  - <xref:azure.ai.projects.operations.AgentsOperations>
+- description: MemoryStoresOperations operations
+  name: memory_stores
+  types:
+  - <xref:azure.ai.projects.operations.MemoryStoresOperations>
 - description: ConnectionsOperations operations
   name: connections
   types:
   - <xref:azure.ai.projects.operations.ConnectionsOperations>
-- description: TelemetryOperations operations
-  name: telemetry
-  types:
-  - <xref:azure.ai.projects.operations.TelemetryOperations>
-- description: EvaluationsOperations operations
-  name: evaluations
-  types:
-  - <xref:azure.ai.projects.operations.EvaluationsOperations>
 - description: DatasetsOperations operations
   name: datasets
   types:
@@ -69,71 +73,52 @@ variables:
   name: red_teams
   types:
   - <xref:azure.ai.projects.operations.RedTeamsOperations>
+- description: EvaluationRulesOperations operations
+  name: evaluation_rules
+  types:
+  - <xref:azure.ai.projects.operations.EvaluationRulesOperations>
+- description: EvaluationTaxonomiesOperations operations
+  name: evaluation_taxonomies
+  types:
+  - <xref:azure.ai.projects.operations.EvaluationTaxonomiesOperations>
+- description: EvaluatorsOperations operations
+  name: evaluators
+  types:
+  - <xref:azure.ai.projects.operations.EvaluatorsOperations>
+- description: InsightsOperations operations
+  name: insights
+  types:
+  - <xref:azure.ai.projects.operations.InsightsOperations>
+- description: SchedulesOperations operations
+  name: schedules
+  types:
+  - <xref:azure.ai.projects.operations.SchedulesOperations>
 methods:
 - uid: azure.ai.projects.AIProjectClient.close
   name: close
   signature: close() -> None
 - uid: azure.ai.projects.AIProjectClient.get_openai_client
   name: get_openai_client
-  summary: 'Get an authenticated AzureOpenAI client (from the *openai* package) to
-    use with
-
-    AI models deployed to your AI Foundry Project or connected Azure OpenAI services.
-
-
-    > [!NOTE]
-
-    > The package openai must be installed prior to calling this method.
-
-    >'
-  signature: 'get_openai_client(*, api_version: str | None = None, connection_name:
-    str | None = None, **kwargs) -> OpenAI'
-  keywordOnlyParameters:
-  - name: api_version
-    description: 'The Azure OpenAI api-version to use when creating the client. Optional.
-
-      See "Data plane - Inference" row in the table at
-
-      [https://learn.microsoft.com/azure/ai-foundry/openai/reference#api-specs](https://learn.microsoft.com/azure/ai-foundry/openai/reference#api-specs).
-      If this keyword
-
-      is not specified, you must set the environment variable *OPENAI_API_VERSION*
-      instead.'
-    defaultValue: None
-    types:
-    - <xref:typing.Optional>[<xref:str>]
-  - name: connection_name
-    description: 'Optional. If specified, the connection named here must be of type
-      Azure OpenAI.
-
-      The returned OpenAI client will use the inference URL specified by the connected
-      Azure OpenAI
-
-      service, and can be used with AI models deployed to that service. If not specified,
-      the returned
-
-      OpenAI client will use the inference URL of the parent AI Services resource,
-      and can be used
-
-      with AI models deployed directly to your AI Foundry project.'
-    defaultValue: None
-    types:
-    - <xref:typing.Optional>[<xref:str>]
+  summary: "Get an authenticated OpenAI client from the *openai* package.\n\nKeyword\
+    \ arguments are passed to the OpenAI client constructor.\n\nThe OpenAI client\
+    \ constructor is called with:\n\n* `base_url` set to the endpoint provided to\
+    \ the AIProjectClient constructor, with \"/openai\" appended. \n\n* `api-version`\
+    \ set to \"2025-05-15-preview\" by default, unless overridden by the `api_version`\
+    \ keyword argument. \n\n* `api_key` set to a get_bearer_token_provider() callable\
+    \ that uses the TokenCredential provided to the AIProjectClient constructor, with\
+    \ scope \"[https://ai.azure.com/.default](https://ai.azure.com/.default)\". \n\
+    \n> [!NOTE]\n> The packages openai and azure.identity must be installed prior\
+    \ to calling this method.\n>"
+  signature: 'get_openai_client(**kwargs: Any) -> OpenAI'
   return:
-    description: An authenticated AzureOpenAI client
+    description: An authenticated OpenAI client
     types:
-    - <xref:openai.AzureOpenAI>
+    - <xref:openai.OpenAI>
   exceptions:
-  - type: azure.core.exceptions.ResourceNotFoundError
-    description: 'if an Azure OpenAI connection
-
-      does not exist.'
   - type: azure.core.exceptions.ModuleNotFoundError
-    description: 'if the *openai* package
+    description: 'if the `openai` package
 
       is not installed.'
-  - type: ValueError
-    description: if the connection name is an empty string.
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.ai.projects.AIProjectClient.send_request
   name: send_request
@@ -176,13 +161,3 @@ methods:
       your response.
     types:
     - <xref:azure.core.rest.HttpResponse>
-attributes:
-- uid: azure.ai.projects.AIProjectClient.agents
-  name: agents
-  summary: 'Get the AgentsClient associated with this AIProjectClient.
-
-    The package azure.ai.agents must be installed to use this property.'
-  return:
-    description: The AgentsClient associated with this AIProjectClient.
-    types:
-    - <xref:azure.ai.agents.AgentsClient>
