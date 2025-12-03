@@ -3,7 +3,7 @@ uid: azure.communication.email.aio.EmailClient
 name: EmailClient
 fullName: azure.communication.email.aio.EmailClient
 module: azure.communication.email.aio
-summary: 'A client to interact with the AzureCommunicationService Email gateway asynchronously.
+summary: 'A client to interact with the AzureCommunicationService Email gateway.
 
 
   This client provides operations to send an email and monitor its status.'
@@ -19,13 +19,11 @@ constructor:
   - name: credential
     description: The credential we use to authenticate against the service.
     isRequired: true
-    types:
-    - <xref:typing.Union>[<xref:AsyncTokenCredential>, <xref:AzureKeyCredential>]
   keywordOnlyParameters:
   - name: api_version
     description: 'Azure Communication Email API version.
 
-      Default value is "2023-03-31".
+      Default value is "2025-09-01".
 
       Note that overriding this default value may result in unsupported behavior.'
     types:
@@ -37,25 +35,62 @@ methods:
 
 
     Queues an email message to be sent to one or more recipients.'
-  signature: 'async begin_send(message: MutableMapping[str, Any] | IO, **kwargs: Any)
-    -> AsyncLROPoller[MutableMapping[str, Any]]'
+  signature: 'async begin_send(message: MutableMapping[str, Any] | IO[bytes], *, operation_id:
+    str | None = None, **kwargs: Any) -> AsyncLROPoller[MutableMapping[str, Any]]'
   parameters:
   - name: message
-    description: Message payload for sending an email. Required.
+    description: 'Message payload for sending an email. Is either a JSON type or a
+      IO[bytes]
+
+      type. Required.'
     isRequired: true
     types:
     - <xref:JSON>
+    - <xref:typing.IO>[<xref:bytes>]
   keywordOnlyParameters:
-  - name: continuation_token
-    description: A continuation token to restart a poller from a saved state.
+  - name: operation_id
+    description: 'This is the ID provided by the customer to identify the long running
+
+      operation. If an ID is not provided by the customer, the service will generate
+      one. Default
+
+      value is None.'
+    defaultValue: None
     types:
     - <xref:str>
   return:
-    description: An instance of LROPoller that returns JSON object
+    description: An instance of AsyncLROPoller that returns JSON object
     types:
-    - <xref:azure.core.polling.LROPoller>[<xref:JSON>]
+    - <xref:azure.core.polling.AsyncLROPoller>[<xref:JSON>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+    \   # JSON input template you can fill out and use as your body input.\n   message\
+    \ = {\n       \"content\": {\n           \"subject\": \"str\",\n           \"\
+    html\": \"str\",\n           \"plainText\": \"str\"\n       },\n       \"recipients\"\
+    : {\n           \"to\": [\n               {\n                   \"address\": \"\
+    str\",\n                   \"displayName\": \"str\"\n               }\n      \
+    \     ],\n           \"bcc\": [\n               {\n                   \"address\"\
+    : \"str\",\n                   \"displayName\": \"str\"\n               }\n  \
+    \         ],\n           \"cc\": [\n               {\n                   \"address\"\
+    : \"str\",\n                   \"displayName\": \"str\"\n               }\n  \
+    \         ]\n       },\n       \"senderAddress\": \"str\",\n       \"attachments\"\
+    : [\n           {\n               \"contentInBase64\": \"str\",\n            \
+    \   \"contentType\": \"str\",\n               \"name\": \"str\",\n           \
+    \    \"contentId\": \"str\"\n           }\n       ],\n       \"headers\": {\n\
+    \           \"str\": \"str\"\n       },\n       \"replyTo\": [\n           {\n\
+    \               \"address\": \"str\",\n               \"displayName\": \"str\"\
+    \n           }\n       ],\n       \"userEngagementTrackingDisabled\": bool\n \
+    \  }\n\n   # response body for status code(s): 202\n   response == {\n       \"\
+    id\": \"str\",\n       \"status\": \"str\",\n       \"error\": {\n           \"\
+    additionalInfo\": [\n               {\n                   \"info\": {},\n    \
+    \               \"type\": \"str\"\n               }\n           ],\n         \
+    \  \"code\": \"str\",\n           \"details\": [\n               ...\n       \
+    \    ],\n           \"message\": \"str\",\n           \"target\": \"str\"\n  \
+    \     }\n   }\n   ````\n"
 - uid: azure.communication.email.aio.EmailClient.close
   name: close
   signature: async close() -> None
@@ -72,4 +107,45 @@ methods:
   return:
     description: Instance of EmailClient.
     types:
-    - <xref:azure.communication.EmailClient>
+    - <xref:azure.communication.email.EmailClient>
+- uid: azure.communication.email.aio.EmailClient.send_request
+  name: send_request
+  summary: 'Runs the network request through the client''s chained policies.
+
+
+    ```
+
+
+    >>> from azure.core.rest import HttpRequest
+
+    >>> request = HttpRequest("GET", "https://www.example.org/")
+
+    <HttpRequest [GET], url: ''https://www.example.org/''>
+
+    >>> response = await client.send_request(request)
+
+    <AsyncHttpResponse: 200 OK>
+
+    ```
+
+
+    For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> Awaitable[AsyncHttpResponse]'
+  parameters:
+  - name: request
+    description: The network request you want to make. Required.
+    isRequired: true
+    types:
+    - <xref:azure.core.rest.HttpRequest>
+  keywordOnlyParameters:
+  - name: stream
+    description: Whether the response payload will be streamed. Defaults to False.
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  return:
+    description: The response of your network call. Does not do error handling on
+      your response.
+    types:
+    - <xref:azure.core.rest.AsyncHttpResponse>

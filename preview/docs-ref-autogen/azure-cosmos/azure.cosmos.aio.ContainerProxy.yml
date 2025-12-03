@@ -22,7 +22,7 @@ summary: 'An interface to interact with a specific DB Container.
   documents, each of which is represented as an Item.'
 constructor:
   syntax: 'ContainerProxy(client_connection: CosmosClientConnection, database_link:
-    str, id: str, properties: Dict[str, Any] | None = None)'
+    str, id: str, properties: dict[str, Any] | None = None)'
   parameters:
   - name: client_connection
     isRequired: true
@@ -50,12 +50,13 @@ methods:
     To update or replace an existing item, use the
 
     <xref:azure.cosmos.aio.ContainerProxy.upsert_item> method.'
-  signature: 'async create_item(body: Dict[str, Any], *, pre_trigger_include: str
-    | None = None, post_trigger_include: str | None = None, indexing_directive: int
-    | None = None, enable_automatic_id_generation: bool = False, session_token: str
-    | None = None, initial_headers: Dict[str, str] | None = None, priority: Literal[''High'',
-    ''Low''] | None = None, no_response: bool | None = None, retry_write: bool | None
-    = None, throughput_bucket: int | None = None, **kwargs: Any) -> CosmosDict'
+  signature: 'async create_item(body: dict[str, typing.Any], *, pre_trigger_include:
+    str | None = None, post_trigger_include: str | None = None, indexing_directive:
+    int | None = None, enable_automatic_id_generation: bool = False, session_token:
+    str | None = None, initial_headers: dict[str, str] | None = None, priority: ~typing.Literal[''High'',
+    ''Low''] | None = None, no_response: bool | None = None, retry_write: int | None
+    = None, throughput_bucket: int | None = None, availability_strategy_config: dict[str,
+    typing.Any] | None = <object object>, **kwargs: ~typing.Any) -> CosmosDict'
   parameters:
   - name: body
     description: A dict-like object representing the item to create.
@@ -107,11 +108,11 @@ methods:
 
       This excluded_location will override existing excluded_locations in client level.'
     types:
-    - <xref:list>[<xref:str>]
+    - <xref:typing.Sequence>[<xref:str>]
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
+    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:str>], <xref:dict>[<xref:str>,
       <xref:typing.Any>]], <xref:None>]
   - name: priority
     description: 'Priority based execution allows users to set a priority for each
@@ -135,21 +136,29 @@ methods:
     types:
     - <xref:bool>
   - name: retry_write
-    description: 'Indicates whether the SDK should automatically retry this write
-      operation, even if
+    description: 'Indicates how many times the SDK should automatically retry this
+      write operation, even if
 
       the operation is not guaranteed to be idempotent. This should only be enabled
       if the application can
 
-      tolerate such risks or has logic to safely detect and handle duplicate operations.'
+      tolerate such risks or has logic to safely detect and handle duplicate operations.
+      Default is None (no retries).'
     defaultValue: None
     types:
-    - <xref:bool>
+    - <xref:int>
   - name: throughput_bucket
     description: The desired throughput bucket for the client
     defaultValue: None
     types:
     - <xref:int>
+  - name: availability_strategy_config
+    description: 'The threshold-based availability strategy to use for this request.
+
+      If not provided, the client''s default strategy will be used.'
+    defaultValue: <object object at 0x0000019A48FF83F0>
+    types:
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
   return:
     description: A CosmosDict representing the new item. The dict will be empty if
       *no_response* is specified.
@@ -172,11 +181,12 @@ methods:
     used by
 
     this background task.'
-  signature: 'async delete_all_items_by_partition_key(partition_key: str | int | float
-    | bool | Sequence[str | int | float | bool | None] | None | Type[NonePartitionKeyValue]
-    | Type[NullPartitionKeyValue], *, pre_trigger_include: str | None = None, post_trigger_include:
-    str | None = None, session_token: str | None = None, throughput_bucket: int |
-    None = None, **kwargs: Any) -> None'
+  signature: 'async delete_all_items_by_partition_key(partition_key: None | bool |
+    float | int | str | Type[NonePartitionKeyValue] | Type[NullPartitionKeyValue]
+    | _Empty | _Undefined | Sequence[None | bool | float | int | str | Type[NonePartitionKeyValue]
+    | Type[NullPartitionKeyValue] | _Empty | _Undefined], *, pre_trigger_include:
+    str | None = None, post_trigger_include: str | None = None, session_token: str
+    | None = None, throughput_bucket: int | None = None, **kwargs: Any) -> None'
   parameters:
   - name: partition_key
     description: 'Partition key for the items to be deleted. If the partition key
@@ -186,10 +196,7 @@ methods:
       partition keys, see [here](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cosmos/azure-cosmos/docs/PartitionKeys.md).'
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.Type>[<xref:azure.cosmos.partition_key.NonePartitionKeyValue>],
-      <xref:typing.Type>[<xref:azure.cosmos.partition_key.NullPartitionKeyValue>],
-      <xref:None>, <xref:typing.Sequence>[<xref:typing.Union>[<xref:str>, <xref:int>,
-      <xref:float>, <xref:bool>, <xref:None>]]]
+    - <xref:azure.cosmos.partition_key.PartitionKeyType>
   keywordOnlyParameters:
   - name: pre_trigger_include
     description: trigger id to be used as pre operation trigger.
@@ -216,7 +223,7 @@ methods:
 
       This excluded_location will override existing excluded_locations in client level.'
     types:
-    - <xref:list>[<xref:str>]
+    - <xref:typing.Sequence>[<xref:str>]
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
@@ -236,14 +243,15 @@ methods:
 
     If the conflict does not already exist in the container, an exception is raised.'
   signature: 'async delete_conflict(conflict: str | Mapping[str, Any], partition_key:
-    str | int | float | bool | Sequence[str | int | float | bool | None] | None |
-    Type[NonePartitionKeyValue] | Type[NullPartitionKeyValue], **kwargs: Any) -> None'
+    None | bool | float | int | str | Type[NonePartitionKeyValue] | Type[NullPartitionKeyValue]
+    | _Empty | _Undefined | Sequence[None | bool | float | int | str | Type[NonePartitionKeyValue]
+    | Type[NullPartitionKeyValue] | _Empty | _Undefined], **kwargs: Any) -> None'
   parameters:
   - name: conflict
     description: The ID (name) or dict representing the conflict to retrieve.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:typing.Union>[<xref:str>, <xref:dict>[<xref:str>, <xref:typing.Any>]]
   - name: partition_key
     description: 'Partition key for the conflict to delete. If the partition key is
       set to None, it will
@@ -254,16 +262,12 @@ methods:
       [here](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cosmos/azure-cosmos/docs/PartitionKeys.md).'
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.Type>[<xref:azure.cosmos.partition_key.NonePartitionKeyValue>],
-      <xref:typing.Type>[<xref:azure.cosmos.partition_key.NullPartitionKeyValue>],
-      <xref:None>, <xref:typing.Sequence>[<xref:typing.Union>[<xref:str>, <xref:int>,
-      <xref:float>, <xref:bool>, <xref:None>]]]
+    - <xref:azure.cosmos.partition_key.PartitionKeyType>
   keywordOnlyParameters:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:None>],
-      <xref:None>]
+    - <xref:typing.Callable>[[<xref:dict>[<xref:str>, <xref:str>], <xref:None>], <xref:None>]
   return:
     types:
     - <xref:None>
@@ -278,19 +282,25 @@ methods:
 
 
     If the item does not already exist in the container, an exception is raised.'
-  signature: 'async delete_item(item: str | Mapping[str, Any], partition_key: str
-    | int | float | bool | Sequence[str | int | float | bool | None] | None | Type[NonePartitionKeyValue]
-    | Type[NullPartitionKeyValue], *, pre_trigger_include: str | None = None, post_trigger_include:
-    str | None = None, session_token: str | None = None, initial_headers: Dict[str,
-    str] | None = None, etag: str | None = None, match_condition: MatchConditions
-    | None = None, priority: Literal[''High'', ''Low''] | None = None, retry_write:
-    bool | None = None, throughput_bucket: int | None = None, **kwargs: Any) -> None'
+  signature: 'async delete_item(item: str | ~typing.Mapping[str, ~typing.Any], partition_key:
+    None | bool | float | int | str | ~typing.Type[~azure.cosmos.partition_key.NonePartitionKeyValue]
+    | ~typing.Type[~azure.cosmos.partition_key.NullPartitionKeyValue] | ~azure.cosmos.partition_key._Empty
+    | ~azure.cosmos.partition_key._Undefined | ~typing.Sequence[None | bool | float
+    | int | str | ~typing.Type[~azure.cosmos.partition_key.NonePartitionKeyValue]
+    | ~typing.Type[~azure.cosmos.partition_key.NullPartitionKeyValue] | ~azure.cosmos.partition_key._Empty
+    | ~azure.cosmos.partition_key._Undefined], *, pre_trigger_include: str | None
+    = None, post_trigger_include: str | None = None, session_token: str | None = None,
+    initial_headers: dict[str, str] | None = None, etag: str | None = None, match_condition:
+    ~azure.core._match_conditions.MatchConditions | None = None, priority: ~typing.Literal[''High'',
+    ''Low''] | None = None, retry_write: int | None = None, throughput_bucket: int
+    | None = None, availability_strategy_config: dict[str, typing.Any] | None = <object
+    object>, **kwargs: ~typing.Any) -> None'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to be deleted.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:typing.Union>[<xref:str>, <xref:dict>[<xref:str>, <xref:typing.Any>]]
   - name: partition_key
     description: 'Specifies the partition key value for the item. If the partition
       key is set to None,
@@ -301,10 +311,7 @@ methods:
       see [here](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cosmos/azure-cosmos/docs/PartitionKeys.md).'
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.Type>[<xref:azure.cosmos.partition_key.NonePartitionKeyValue>],
-      <xref:typing.Type>[<xref:azure.cosmos.partition_key.NullPartitionKeyValue>],
-      <xref:None>, <xref:typing.Sequence>[<xref:typing.Union>[<xref:str>, <xref:int>,
-      <xref:float>, <xref:bool>, <xref:None>]]]
+    - <xref:azure.cosmos.partition_key.PartitionKeyType>
   keywordOnlyParameters:
   - name: pre_trigger_include
     description: trigger id to be used as pre operation trigger.
@@ -361,18 +368,19 @@ methods:
 
       This excluded_location will override existing excluded_locations in client level.'
     types:
-    - <xref:list>[<xref:str>]
+    - <xref:typing.Sequence>[<xref:str>]
   - name: retry_write
-    description: 'Indicates whether the SDK should automatically retry this write
-      operation, even if
+    description: 'Indicates how many times the SDK should automatically retry this
+      write operation, even if
 
       the operation is not guaranteed to be idempotent. This should only be enabled
       if the application can
 
-      tolerate such risks or has logic to safely detect and handle duplicate operations.'
+      tolerate such risks or has logic to safely detect and handle duplicate operations.
+      Default is None (no retries).'
     defaultValue: None
     types:
-    - <xref:bool>
+    - <xref:int>
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
@@ -383,6 +391,13 @@ methods:
     defaultValue: None
     types:
     - <xref:int>
+  - name: availability_strategy_config
+    description: 'The threshold-based availability strategy to use for this request.
+
+      If not provided, the client''s default strategy will be used.'
+    defaultValue: <object object at 0x0000019A48FF83F0>
+    types:
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
   return:
     types:
     - <xref:None>
@@ -394,19 +409,24 @@ methods:
 - uid: azure.cosmos.aio.ContainerProxy.execute_item_batch
   name: execute_item_batch
   summary: Executes the transactional batch for the specified partition key.
-  signature: 'async execute_item_batch(batch_operations: Sequence[Tuple[str, Tuple[Any,
-    ...]] | Tuple[str, Tuple[Any, ...], Dict[str, Any]]], partition_key: str | int
-    | float | bool | Sequence[str | int | float | bool | None] | None | Type[NonePartitionKeyValue]
-    | Type[NullPartitionKeyValue], *, pre_trigger_include: str | None = None, post_trigger_include:
-    str | None = None, session_token: str | None = None, priority: Literal[''High'',
-    ''Low''] | None = None, throughput_bucket: int | None = None, **kwargs: Any) ->
-    CosmosList'
+  signature: 'async execute_item_batch(batch_operations: ~typing.Sequence[~typing.Tuple[str,
+    ~typing.Tuple[~typing.Any, ...]] | ~typing.Tuple[str, ~typing.Tuple[~typing.Any,
+    ...], dict[str, typing.Any]]], partition_key: None | bool | float | int | str
+    | ~typing.Type[~azure.cosmos.partition_key.NonePartitionKeyValue] | ~typing.Type[~azure.cosmos.partition_key.NullPartitionKeyValue]
+    | ~azure.cosmos.partition_key._Empty | ~azure.cosmos.partition_key._Undefined
+    | ~typing.Sequence[None | bool | float | int | str | ~typing.Type[~azure.cosmos.partition_key.NonePartitionKeyValue]
+    | ~typing.Type[~azure.cosmos.partition_key.NullPartitionKeyValue] | ~azure.cosmos.partition_key._Empty
+    | ~azure.cosmos.partition_key._Undefined], *, pre_trigger_include: str | None
+    = None, post_trigger_include: str | None = None, session_token: str | None = None,
+    priority: ~typing.Literal[''High'', ''Low''] | None = None, retry_write: int |
+    None = None, throughput_bucket: int | None = None, availability_strategy_config:
+    dict[str, typing.Any] | None = <object object>, **kwargs: ~typing.Any) -> CosmosList'
   parameters:
   - name: batch_operations
     description: The batch of operations to be executed.
     isRequired: true
     types:
-    - <xref:typing.List>[<xref:typing.Tuple>[<xref:typing.Any>]]
+    - <xref:list>[<xref:typing.Tuple>[<xref:typing.Any>]]
   - name: partition_key
     description: 'The partition key value of the batch operations. If the partition
       key is set to None, it
@@ -417,10 +437,7 @@ methods:
       keys, see [here](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cosmos/azure-cosmos/docs/PartitionKeys.md).'
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.Type>[<xref:azure.cosmos.partition_key.NonePartitionKeyValue>],
-      <xref:typing.Type>[<xref:azure.cosmos.partition_key.NullPartitionKeyValue>],
-      <xref:None>, <xref:typing.Sequence>[<xref:typing.Union>[<xref:str>, <xref:int>,
-      <xref:float>, <xref:bool>, <xref:None>]]]
+    - <xref:azure.cosmos.partition_key.PartitionKeyType>
   keywordOnlyParameters:
   - name: pre_trigger_include
     description: trigger id to be used as pre operation trigger.
@@ -458,21 +475,40 @@ methods:
 
       This excluded_location will override existing excluded_locations in client level.'
     types:
-    - <xref:list>[<xref:str>]
+    - <xref:typing.Sequence>[<xref:str>]
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
     - <xref:typing.Callable>
+  - name: retry_write
+    description: 'Indicates how many times the SDK should automatically retry this
+      write operation, even if
+
+      the operation is not guaranteed to be idempotent. This should only be enabled
+      if the application can
+
+      tolerate such risks or has logic to safely detect and handle duplicate operations.
+      Default is None (no retries).'
+    defaultValue: None
+    types:
+    - <xref:int>
   - name: throughput_bucket
     description: The desired throughput bucket for the client
     defaultValue: None
     types:
     - <xref:int>
+  - name: availability_strategy_config
+    description: 'The threshold-based availability strategy to use for this request.
+
+      If not provided, the client''s default strategy will be used.'
+    defaultValue: <object object at 0x0000019A48FF83F0>
+    types:
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
   return:
     description: A CosmosList representing the items after the batch operations went
       through.
     types:
-    - <xref:azure.cosmos.CosmosList>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:azure.cosmos.CosmosList>[<xref:dict>[<xref:str>, <xref:typing.Any>]]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: The batch failed to execute.
@@ -493,9 +529,10 @@ methods:
     > are present. It therefore should only be treated as an opaque value.
 
     >'
-  signature: 'async feed_range_from_partition_key(partition_key: str | int | float
-    | bool | Sequence[str | int | float | bool | None] | None | Type[NonePartitionKeyValue]
-    | Type[NullPartitionKeyValue]) -> Dict[str, Any]'
+  signature: 'async feed_range_from_partition_key(partition_key: None | bool | float
+    | int | str | Type[NonePartitionKeyValue] | Type[NullPartitionKeyValue] | _Empty
+    | _Undefined | Sequence[None | bool | float | int | str | Type[NonePartitionKeyValue]
+    | Type[NullPartitionKeyValue] | _Empty | _Undefined]) -> dict[str, Any]'
   parameters:
   - name: partition_key
     description: 'Partition key value used to derive the feed range. If set to `None`
@@ -511,20 +548,20 @@ methods:
   return:
     description: A feed range corresponding to the supplied partition key value.
     types:
-    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
 - uid: azure.cosmos.aio.ContainerProxy.get_conflict
   name: get_conflict
   summary: Get the conflict identified by *conflict*.
   signature: 'async get_conflict(conflict: str | Mapping[str, Any], partition_key:
-    str | int | float | bool | Sequence[str | int | float | bool | None] | None |
-    Type[NonePartitionKeyValue] | Type[NullPartitionKeyValue], **kwargs: Any) -> Dict[str,
-    Any]'
+    None | bool | float | int | str | Type[NonePartitionKeyValue] | Type[NullPartitionKeyValue]
+    | _Empty | _Undefined | Sequence[None | bool | float | int | str | Type[NonePartitionKeyValue]
+    | Type[NullPartitionKeyValue] | _Empty | _Undefined], **kwargs: Any) -> CosmosDict'
   parameters:
   - name: conflict
     description: The ID (name) or dict representing the conflict to retrieve.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:typing.Union>[<xref:str>, <xref:dict>[<xref:str>, <xref:typing.Any>]]
   - name: partition_key
     description: 'Partition key for the conflict to retrieve. If the partition key
       is set to None,
@@ -535,20 +572,17 @@ methods:
       [here](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cosmos/azure-cosmos/docs/PartitionKeys.md).'
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.Type>[<xref:azure.cosmos.partition_key.NonePartitionKeyValue>],
-      <xref:typing.Type>[<xref:azure.cosmos.partition_key.NullPartitionKeyValue>],
-      <xref:None>, <xref:typing.Sequence>[<xref:typing.Union>[<xref:str>, <xref:int>,
-      <xref:float>, <xref:bool>, <xref:None>]]]
+    - <xref:azure.cosmos.partition_key.PartitionKeyType>
   keywordOnlyParameters:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
+    - <xref:typing.Callable>[[<xref:dict>[<xref:str>, <xref:str>], <xref:dict>[<xref:str>,
       <xref:typing.Any>]], <xref:None>]
   return:
-    description: A dict representing the retrieved conflict.
+    description: A CosmosDict representing the retrieved conflict.
     types:
-    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:azure.cosmos.CosmosDict>[<xref:str>, <xref:typing.Any>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: The given conflict couldn't be retrieved.
@@ -575,17 +609,17 @@ methods:
 
     :param feed_ranges_to_session_tokens: List of feed range and session token tuples.
 
-    :type feed_ranges_to_session_tokens: List[Tuple[Dict[str, Any], str]]
+    :type feed_ranges_to_session_tokens: list[Tuple[dict[str, Any], str]]
 
     :param target_feed_range: feed range to get most up to date session token.
 
-    :type target_feed_range: Dict[str, Any]
+    :type target_feed_range: dict[str, Any]
 
     :returns: a session token
 
     :rtype: str'
-  signature: 'async get_latest_session_token(feed_ranges_to_session_tokens: List[Tuple[Dict[str,
-    Any], str]], target_feed_range: Dict[str, Any]) -> str'
+  signature: 'async get_latest_session_token(feed_ranges_to_session_tokens: list[Tuple[dict[str,
+    Any], str]], target_feed_range: dict[str, Any]) -> str'
   parameters:
   - name: feed_ranges_to_session_tokens
     isRequired: true
@@ -598,13 +632,13 @@ methods:
 
     If no ThroughputProperties already exists for the container, an exception is raised.'
   signature: 'async get_throughput(*, response_hook: Callable[[Mapping[str, Any],
-    List[Dict[str, Any]]], None] | None = None, **kwargs: Any) -> ThroughputProperties'
+    list[dict[str, Any]]], None] | None = None, **kwargs: Any) -> ThroughputProperties'
   keywordOnlyParameters:
   - name: response_hook
     description: A callable invoked with the response metadata.
     defaultValue: None
     types:
-    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:typing.List>[<xref:typing.Dict>[<xref:str>,
+    - <xref:typing.Callable>[[<xref:dict>[<xref:str>, <xref:str>], <xref:list>[<xref:dict>[<xref:str>,
       <xref:typing.Any>]]], <xref:None>]
   return:
     description: ThroughputProperties for the container.
@@ -621,11 +655,11 @@ methods:
 
     :param parent_feed_range: left feed range
 
-    :type parent_feed_range: Dict[str, Any]
+    :type parent_feed_range: dict[str, Any]
 
     :param child_feed_range: right feed range
 
-    :type child_feed_range: Dict[str, Any]
+    :type child_feed_range: dict[str, Any]
 
     :returns: a boolean indicating if child feed range is a subset of parent feed
     range
@@ -643,8 +677,8 @@ methods:
     > are present. It therefore should only be treated as an opaque value.
 
     >'
-  signature: 'async is_feed_range_subset(parent_feed_range: Dict[str, Any], child_feed_range:
-    Dict[str, Any]) -> bool'
+  signature: 'async is_feed_range_subset(parent_feed_range: dict[str, Any], child_feed_range:
+    dict[str, Any]) -> bool'
   parameters:
   - name: parent_feed_range
     isRequired: true
@@ -654,8 +688,8 @@ methods:
   name: list_conflicts
   summary: List all the conflicts in the container.
   signature: 'list_conflicts(*, max_item_count: int | None = None, response_hook:
-    Callable[[Mapping[str, Any], AsyncItemPaged[Dict[str, Any]]], None] | None = None,
-    **kwargs: Any) -> AsyncItemPaged[Dict[str, Any]]'
+    Callable[[Mapping[str, Any], AsyncItemPaged[dict[str, Any]]], None] | None = None,
+    **kwargs: Any) -> AsyncItemPaged[dict[str, Any]]'
   keywordOnlyParameters:
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
@@ -666,31 +700,37 @@ methods:
     description: A callable invoked with the response metadata.
     defaultValue: None
     types:
-    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:AsyncItemPaged>[<xref:typing.Dict>[<xref:str>,
+    - <xref:typing.Callable>[[<xref:dict>[<xref:str>, <xref:str>], <xref:AsyncItemPaged>[<xref:dict>[<xref:str>,
       <xref:typing.Any>]]], <xref:None>]
   return:
     description: An AsyncItemPaged of conflicts (dicts).
     types:
-    - <xref:AsyncItemPaged>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:AsyncItemPaged>[<xref:dict>[<xref:str>, <xref:typing.Any>]]
 - uid: azure.cosmos.aio.ContainerProxy.patch_item
   name: patch_item
   summary: "Patches the specified item with the provided operations if it\n   exists\
     \ in the container.\n\nIf the item does not already exist in the container, an\
     \ exception is raised."
-  signature: 'async patch_item(item: str | Dict[str, Any], partition_key: str | int
-    | float | bool | Sequence[str | int | float | bool | None] | None | Type[NonePartitionKeyValue]
-    | Type[NullPartitionKeyValue], patch_operations: List[Dict[str, Any]], *, filter_predicate:
-    str | None = None, pre_trigger_include: str | None = None, post_trigger_include:
-    str | None = None, session_token: str | None = None, etag: str | None = None,
-    match_condition: MatchConditions | None = None, priority: Literal[''High'', ''Low'']
-    | None = None, no_response: bool | None = None, retry_write: bool | None = None,
-    throughput_bucket: int | None = None, **kwargs: Any) -> CosmosDict'
+  signature: 'async patch_item(item: str | dict[str, typing.Any], partition_key: None
+    | bool | float | int | str | ~typing.Type[~azure.cosmos.partition_key.NonePartitionKeyValue]
+    | ~typing.Type[~azure.cosmos.partition_key.NullPartitionKeyValue] | ~azure.cosmos.partition_key._Empty
+    | ~azure.cosmos.partition_key._Undefined | ~typing.Sequence[None | bool | float
+    | int | str | ~typing.Type[~azure.cosmos.partition_key.NonePartitionKeyValue]
+    | ~typing.Type[~azure.cosmos.partition_key.NullPartitionKeyValue] | ~azure.cosmos.partition_key._Empty
+    | ~azure.cosmos.partition_key._Undefined], patch_operations: list[dict[str, typing.Any]],
+    *, filter_predicate: str | None = None, pre_trigger_include: str | None = None,
+    post_trigger_include: str | None = None, session_token: str | None = None, etag:
+    str | None = None, match_condition: ~azure.core._match_conditions.MatchConditions
+    | None = None, priority: ~typing.Literal[''High'', ''Low''] | None = None, no_response:
+    bool | None = None, retry_write: int | None = None, throughput_bucket: int | None
+    = None, availability_strategy_config: dict[str, typing.Any] | None = <object object>,
+    **kwargs: ~typing.Any) -> CosmosDict'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to be patched.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:typing.Union>[<xref:str>, <xref:dict>[<xref:str>, <xref:typing.Any>]]
   - name: partition_key
     description: 'The partition key of the object to patch. If the partition key is
       set to None,
@@ -701,15 +741,12 @@ methods:
       see [here](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cosmos/azure-cosmos/docs/PartitionKeys.md).'
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.Type>[<xref:azure.cosmos.partition_key.NonePartitionKeyValue>],
-      <xref:typing.Type>[<xref:azure.cosmos.partition_key.NullPartitionKeyValue>],
-      <xref:None>, <xref:typing.Sequence>[<xref:typing.Union>[<xref:str>, <xref:int>,
-      <xref:float>, <xref:bool>, <xref:None>]]]
+    - <xref:azure.cosmos.partition_key.PartitionKeyType>
   - name: patch_operations
     description: The list of patch operations to apply to the item.
     isRequired: true
     types:
-    - <xref:typing.List>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:list>[<xref:dict>[<xref:str>, <xref:typing.Any>]]
   keywordOnlyParameters:
   - name: filter_predicate
     description: conditional filter to apply to Patch operations.
@@ -748,7 +785,7 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
+    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:str>], <xref:dict>[<xref:str>,
       <xref:typing.Any>]], <xref:None>]
   - name: priority
     description: 'Priority based execution allows users to set a priority for each
@@ -772,16 +809,17 @@ methods:
     types:
     - <xref:bool>
   - name: retry_write
-    description: 'Indicates whether the SDK should automatically retry this write
-      operation, even if
+    description: 'Indicates how many times the SDK should automatically retry this
+      write operation, even if
 
       the operation is not guaranteed to be idempotent. This should only be enabled
       if the application can
 
-      tolerate such risks or has logic to safely detect and handle duplicate operations.'
+      tolerate such risks or has logic to safely detect and handle duplicate operations.
+      Default is None (no retries).'
     defaultValue: None
     types:
-    - <xref:bool>
+    - <xref:int>
   - name: throughput_bucket
     description: The desired throughput bucket for the client
     defaultValue: None
@@ -797,7 +835,14 @@ methods:
 
       This excluded_location will override existing excluded_locations in client level.'
     types:
-    - <xref:list>[<xref:str>]
+    - <xref:typing.Sequence>[<xref:str>]
+  - name: availability_strategy_config
+    description: 'The threshold-based availability strategy to use for this request.
+
+      If not provided, the client''s default strategy will be used.'
+    defaultValue: <object object at 0x0000019A48FF83F0>
+    types:
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
   return:
     description: 'A CosmosDict representing the item after the patch operations went
       through. The dict will be empty if
@@ -813,12 +858,13 @@ methods:
 - uid: azure.cosmos.aio.ContainerProxy.query_conflicts
   name: query_conflicts
   summary: Return all conflicts matching a given *query*.
-  signature: 'query_conflicts(query: str, *, parameters: List[Dict[str, object]] |
-    None = None, partition_key: str | int | float | bool | Sequence[str | int | float
-    | bool | None] | None | Type[NonePartitionKeyValue] | Type[NullPartitionKeyValue]
-    = None, max_item_count: int | None = None, response_hook: Callable[[Mapping[str,
-    Any], AsyncItemPaged[Dict[str, Any]]], None] | None = None, **kwargs: Any) ->
-    AsyncItemPaged[Dict[str, Any]]'
+  signature: 'query_conflicts(query: str, *, parameters: list[dict[str, object]] |
+    None = None, partition_key: None | bool | float | int | str | Type[NonePartitionKeyValue]
+    | Type[NullPartitionKeyValue] | _Empty | _Undefined | Sequence[None | bool | float
+    | int | str | Type[NonePartitionKeyValue] | Type[NullPartitionKeyValue] | _Empty
+    | _Undefined] = None, max_item_count: int | None = None, response_hook: Callable[[Mapping[str,
+    Any], AsyncItemPaged[dict[str, Any]]], None] | None = None, **kwargs: Any) ->
+    AsyncItemPaged[dict[str, Any]]'
   parameters:
   - name: query
     description: The Azure Cosmos DB SQL query to execute.
@@ -831,7 +877,7 @@ methods:
       provided.
     defaultValue: None
     types:
-    - <xref:typing.List>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:list>[<xref:dict>[<xref:str>, <xref:typing.Any>]]
   - name: partition_key
     description: 'Specifies the partition key value for the item. If the partition
       key is set to None,
@@ -840,10 +886,7 @@ methods:
       keys, see [here](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cosmos/azure-cosmos/docs/PartitionKeys.md).'
     defaultValue: None
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.Type>[<xref:azure.cosmos.partition_key.NonePartitionKeyValue>],
-      <xref:typing.Type>[<xref:azure.cosmos.partition_key.NullPartitionKeyValue>],
-      <xref:None>, <xref:typing.Sequence>[<xref:typing.Union>[<xref:str>, <xref:int>,
-      <xref:float>, <xref:bool>, <xref:None>]]]
+    - <xref:azure.cosmos.partition_key.PartitionKeyType>
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
     defaultValue: None
@@ -853,12 +896,12 @@ methods:
     description: A callable invoked with the response metadata.
     defaultValue: None
     types:
-    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:AsyncItemPaged>[<xref:typing.Dict>[<xref:str>,
+    - <xref:typing.Callable>[[<xref:dict>[<xref:str>, <xref:str>], <xref:AsyncItemPaged>[<xref:dict>[<xref:str>,
       <xref:typing.Any>]]], <xref:None>]
   return:
     description: An AsyncItemPaged of conflicts (dicts).
     types:
-    - <xref:AsyncItemPaged>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:AsyncItemPaged>[<xref:dict>[<xref:str>, <xref:typing.Any>]]
 - uid: azure.cosmos.aio.ContainerProxy.query_items
   name: query_items
   summary: 'Return all results matching the given *query*.
@@ -872,13 +915,14 @@ methods:
 
     the WHERE clause.'
   signature: 'query_items(query: str, *, continuation_token_limit: int | None = None,
-    enable_scan_in_query: bool | None = None, initial_headers: Dict[str, str] | None
+    enable_scan_in_query: bool | None = None, initial_headers: dict[str, str] | None
     = None, max_integrated_cache_staleness_in_ms: int | None = None, max_item_count:
-    int | None = None, parameters: List[Dict[str, object]] | None = None, partition_key:
-    PartitionKeyType | None = None, populate_index_metrics: bool | None = None, populate_query_metrics:
+    int | None = None, parameters: list[dict[str, object]] | None = None, partition_key:
+    PartitionKeyType, populate_index_metrics: bool | None = None, populate_query_metrics:
     bool | None = None, priority: Literal[''High'', ''Low''] | None = None, response_hook:
-    Callable[[Mapping[str, str], Dict[str, Any]], None] | None = None, session_token:
-    str | None = None, throughput_bucket: int | None = None, **kwargs: Any)'
+    Callable[[Mapping[str, str], dict[str, Any]], None] | None = None, session_token:
+    str | None = None, throughput_bucket: int | None = None, availability_strategy_config:
+    dict[str, Any] | None = _Unset, **kwargs: Any) -> AsyncItemPaged[dict[str, Any]]'
   parameters:
   - name: args
     description: args
@@ -919,15 +963,15 @@ methods:
 
       This excluded_location will override existing excluded_locations in client level.'
     types:
-    - <xref:list>[<xref:str>]
+    - <xref:typing.Sequence>[<xref:str>]
   - name: feed_range
     description: The feed range that is used to define the scope.
     types:
-    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
   - name: initial_headers
     description: Initial headers to be sent as part of the request.
     types:
-    - <xref:typing.Dict>[<xref:str>, <xref:str>]
+    - <xref:dict>[<xref:str>, <xref:str>]
   - name: max_integrated_cache_staleness_in_ms
     description: 'The max cache staleness for the integrated cache in
 
@@ -948,7 +992,7 @@ methods:
 
       Ignored if no query is provided.'
     types:
-    - '[<xref:typing.List>[<xref:typing.Dict>[<xref:str>, <xref:object>]]]'
+    - '[<xref:list>[<xref:dict>[<xref:str>, <xref:object>]]]'
   - name: partition_key
     description: 'Partition key at which the query request is targeted. If the partition
       key is set to
@@ -956,10 +1000,7 @@ methods:
       None, it will perform a cross partition query. To learn more about using partition
       keys, see [here](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cosmos/azure-cosmos/docs/PartitionKeys.md).'
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.Type>[<xref:azure.cosmos.partition_key.NonePartitionKeyValue>],
-      <xref:typing.Type>[<xref:azure.cosmos.partition_key.NullPartitionKeyValue>],
-      <xref:None>, <xref:typing.Sequence>[<xref:typing.Union>[<xref:str>, <xref:int>,
-      <xref:float>, <xref:bool>, <xref:None>]]]
+    - <xref:azure.cosmos.partition_key.PartitionKeyType>
   - name: populate_index_metrics
     description: 'Used to obtain the index metrics to understand how the query engine
       used
@@ -984,14 +1025,10 @@ methods:
       enabled at the account level.'
     types:
     - <xref:typing.Literal>["High", "Low"]
-  - name: query
-    description: The Azure Cosmos DB SQL query to execute.
-    types:
-    - <xref:str>
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
+    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:str>], <xref:dict>[<xref:str>,
       <xref:typing.Any>]], <xref:None>]
   - name: session_token
     description: Token for use with Session consistency.
@@ -1001,16 +1038,22 @@ methods:
     description: The desired throughput bucket for the client.
     types:
     - <xref:int>
+  - name: availability_strategy_config
+    description: 'The threshold-based availability strategy to use for this request.
+
+      If not provided, the client''s default strategy will be used.'
+    types:
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
   return:
     description: An Iterable of items (dicts).
     types:
-    - <xref:ItemPaged>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:AsyncItemPaged>[<xref:dict>[<xref:str>, <xref:typing.Any>]]
   examples:
   - "Get all products that have not been discontinued:<!--[!code-python[Main](les\\\
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    43\\\\azure_cosmos-4.14.0b4\\\\samples\\\\examples_async.py\", \"xml:space\":\
+    48\\\\azure_cosmos-4.15.0b1\\\\samples\\\\examples_async.py\", \"xml:space\":\
     \ \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           async\
     \ for queried_item in container.query_items(\n                   query='SELECT\
@@ -1020,7 +1063,7 @@ methods:
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    43\\\\azure_cosmos-4.14.0b4\\\\samples\\\\examples_async.py\", \"xml:space\":\
+    48\\\\azure_cosmos-4.15.0b1\\\\samples\\\\examples_async.py\", \"xml:space\":\
     \ \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           discontinued_items\
     \ = container.query_items(\n               query='SELECT * FROM products p WHERE\
@@ -1036,8 +1079,8 @@ methods:
     datetime | Literal[''Now'', ''Beginning''] | None = None, partition_key: PartitionKeyType,
     priority: Literal[''High'', ''Low''] | None = None, mode: Literal[''LatestVersion'',
     ''AllVersionsAndDeletes''] | None = None, response_hook: Callable[[Mapping[str,
-    str], Dict[str, Any]], None] | None = None, **kwargs: Any) -> AsyncItemPaged[Dict[str,
-    Any]]'
+    str], dict[str, Any]], None] | None = None, availability_strategy_config: dict[str,
+    Any] | None = _Unset, **kwargs: Any) -> AsyncItemPaged[dict[str, Any]]'
   keywordOnlyParameters:
   - name: continuation
     description: The continuation token retrieved from previous response. It contains
@@ -1047,14 +1090,13 @@ methods:
   - name: feed_range
     description: The feed range that is used to define the scope.
     types:
-    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
   - name: partition_key
     description: 'The partition key that is used to define the scope
 
       (logical partition or a subset of a container)'
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.Sequence>[<xref:typing.Union>[<xref:str>,
-      <xref:int>, <xref:float>, <xref:bool>, <xref:None>]]]
+    - <xref:azure.cosmos.partition_key.PartitionKeyType>
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
     types:
@@ -1105,23 +1147,29 @@ methods:
 
       This excluded_location will override existing excluded_locations in client level.'
     types:
-    - <xref:list>[<xref:str>]
+    - <xref:typing.Sequence>[<xref:str>]
+  - name: availability_strategy_config
+    description: 'The threshold-based availability strategy to use for this request.
+
+      If not provided, the client''s default strategy will be used.'
+    types:
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
+    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:str>], <xref:dict>[<xref:str>,
       <xref:typing.Any>]], <xref:None>]
   return:
     description: An AsyncItemPaged of items (dicts).
     types:
-    - <xref:AsyncItemPaged>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:AsyncItemPaged>[<xref:dict>[<xref:str>, <xref:typing.Any>]]
 - uid: azure.cosmos.aio.ContainerProxy.read
   name: read
   summary: Read the container properties.
   signature: 'async read(*, populate_partition_key_range_statistics: bool | None =
     None, populate_quota_info: bool | None = None, priority: Literal[''High'', ''Low'']
-    | None = None, initial_headers: Dict[str, str] | None = None, **kwargs: Any) ->
-    Dict[str, Any]'
+    | None = None, initial_headers: dict[str, str] | None = None, **kwargs: Any) ->
+    CosmosDict'
   keywordOnlyParameters:
   - name: populate_partition_key_range_statistics
     description: 'Enable returning partition key
@@ -1144,7 +1192,7 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
+    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:str>], <xref:dict>[<xref:str>,
       <xref:typing.Any>]], <xref:None>]
   - name: priority
     description: 'Priority based execution allows users to set a priority for each
@@ -1160,7 +1208,7 @@ methods:
   return:
     description: Dict representing the retrieved container.
     types:
-    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: 'Raised if the container couldn''t be retrieved.
@@ -1170,9 +1218,11 @@ methods:
   name: read_all_items
   summary: List all the items in the container.
   signature: 'read_all_items(*, max_item_count: int | None = None, session_token:
-    str | None = None, initial_headers: Dict[str, str] | None = None, max_integrated_cache_staleness_in_ms:
-    int | None = None, priority: Literal[''High'', ''Low''] | None = None, throughput_bucket:
-    int | None = None, **kwargs: Any) -> AsyncItemPaged[Dict[str, Any]]'
+    str | None = None, initial_headers: dict[str, str] | None = None, max_integrated_cache_staleness_in_ms:
+    int | None = None, priority: ~typing.Literal[''High'', ''Low''] | None = None,
+    throughput_bucket: int | None = None, availability_strategy_config: dict[str,
+    typing.Any] | None = <object object>, **kwargs: ~typing.Any) -> AsyncItemPaged[dict[str,
+    Any]]'
   keywordOnlyParameters:
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
@@ -1192,7 +1242,7 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
+    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:str>], <xref:dict>[<xref:str>,
       <xref:typing.Any>]], <xref:None>]
   - name: max_integrated_cache_staleness_in_ms
     description: 'The max cache staleness for the integrated cache in
@@ -1230,11 +1280,18 @@ methods:
 
       This excluded_location will override existing excluded_locations in client level.'
     types:
-    - <xref:list>[<xref:str>]
+    - <xref:typing.Sequence>[<xref:str>]
+  - name: availability_strategy_config
+    description: 'The threshold-based availability strategy to use for this request.
+
+      If not provided, the client''s default strategy will be used.'
+    defaultValue: <object object at 0x0000019A48FF83F0>
+    types:
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
   return:
     description: An AsyncItemPaged of items (dicts).
     types:
-    - <xref:AsyncItemPaged>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:AsyncItemPaged>[<xref:dict>[<xref:str>, <xref:typing.Any>]]
 - uid: azure.cosmos.aio.ContainerProxy.read_feed_ranges
   name: read_feed_ranges
   summary: 'Obtains a list of feed ranges that can be used to parallelize feed operations.
@@ -1250,7 +1307,7 @@ methods:
     > are present. It therefore should only be treated as an opaque value.
 
     >'
-  signature: 'read_feed_ranges(*, force_refresh: bool = False, **kwargs: Any) -> AsyncIterable[Dict[str,
+  signature: 'read_feed_ranges(*, force_refresh: bool = False, **kwargs: Any) -> AsyncIterable[dict[str,
     Any]]'
   keywordOnlyParameters:
   - name: force_refresh
@@ -1262,22 +1319,27 @@ methods:
   return:
     description: AsyncIterable representing the feed ranges in base64 encoded string
     types:
-    - <xref:typing.AsyncIterable>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:typing.AsyncIterable>[<xref:dict>[<xref:str>, <xref:typing.Any>]]
 - uid: azure.cosmos.aio.ContainerProxy.read_item
   name: read_item
   summary: Get the item identified by *item*.
-  signature: 'async read_item(item: str | Mapping[str, Any], partition_key: str |
-    int | float | bool | Sequence[str | int | float | bool | None] | None | Type[NonePartitionKeyValue]
-    | Type[NullPartitionKeyValue], *, post_trigger_include: str | None = None, session_token:
-    str | None = None, initial_headers: Dict[str, str] | None = None, max_integrated_cache_staleness_in_ms:
-    int | None = None, priority: Literal[''High'', ''Low''] | None = None, throughput_bucket:
-    int | None = None, **kwargs: Any) -> CosmosDict'
+  signature: 'async read_item(item: str | ~typing.Mapping[str, ~typing.Any], partition_key:
+    None | bool | float | int | str | ~typing.Type[~azure.cosmos.partition_key.NonePartitionKeyValue]
+    | ~typing.Type[~azure.cosmos.partition_key.NullPartitionKeyValue] | ~azure.cosmos.partition_key._Empty
+    | ~azure.cosmos.partition_key._Undefined | ~typing.Sequence[None | bool | float
+    | int | str | ~typing.Type[~azure.cosmos.partition_key.NonePartitionKeyValue]
+    | ~typing.Type[~azure.cosmos.partition_key.NullPartitionKeyValue] | ~azure.cosmos.partition_key._Empty
+    | ~azure.cosmos.partition_key._Undefined], *, post_trigger_include: str | None
+    = None, session_token: str | None = None, initial_headers: dict[str, str] | None
+    = None, max_integrated_cache_staleness_in_ms: int | None = None, priority: ~typing.Literal[''High'',
+    ''Low''] | None = None, throughput_bucket: int | None = None, availability_strategy_config:
+    dict[str, typing.Any] | None = <object object>, **kwargs: ~typing.Any) -> CosmosDict'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to retrieve.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:typing.Union>[<xref:str>, <xref:dict>[<xref:str>, <xref:typing.Any>]]
   - name: partition_key
     description: 'Partition key for the item to retrieve. If the partition key is
       set to None, it will try
@@ -1286,10 +1348,7 @@ methods:
       keys, see [here](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cosmos/azure-cosmos/docs/PartitionKeys.md).'
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.Type>[<xref:azure.cosmos.partition_key.NonePartitionKeyValue>],
-      <xref:typing.Type>[<xref:azure.cosmos.partition_key.NullPartitionKeyValue>],
-      <xref:None>, <xref:typing.Sequence>[<xref:typing.Union>[<xref:str>, <xref:int>,
-      <xref:float>, <xref:bool>, <xref:None>]]]
+    - <xref:azure.cosmos.partition_key.PartitionKeyType>
   keywordOnlyParameters:
   - name: post_trigger_include
     description: trigger id to be used as post operation trigger.
@@ -1309,7 +1368,7 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
+    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:str>], <xref:dict>[<xref:str>,
       <xref:typing.Any>]], <xref:None>]
   - name: max_integrated_cache_staleness_in_ms
     description: 'The max cache staleness for the integrated cache in
@@ -1347,7 +1406,14 @@ methods:
 
       This excluded_location will override existing excluded_locations in client level.'
     types:
-    - <xref:list>[<xref:str>]
+    - <xref:typing.Sequence>[<xref:str>]
+  - name: availability_strategy_config
+    description: 'The threshold-based availability strategy to use for this request.
+
+      If not provided, the client''s default strategy will be used.'
+    defaultValue: <object object at 0x0000019A48FF83F0>
+    types:
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
   return:
     description: A CosmosDict representing the retrieved item.
     types:
@@ -1360,7 +1426,7 @@ methods:
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    43\\\\azure_cosmos-4.14.0b4\\\\samples\\\\examples_async.py\", \"xml:space\":\
+    48\\\\azure_cosmos-4.15.0b1\\\\samples\\\\examples_async.py\", \"xml:space\":\
     \ \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           item\
     \ = await container.read_item(\"item2\", partition_key=\"Widget\")\n         \
@@ -1374,13 +1440,18 @@ methods:
     This method is a batched point-read operation. It is more efficient than
 
     issuing multiple individual point reads.'
-  signature: 'async read_items(items: Sequence[Tuple[str, str | int | float | bool
-    | Sequence[str | int | float | bool | None] | None | Type[NonePartitionKeyValue]
-    | Type[NullPartitionKeyValue]]], *, max_concurrency: int = 10, consistency_level:
-    str | None = None, session_token: str | None = None, initial_headers: Dict[str,
-    str] | None = None, excluded_locations: List[str] | None = None, priority: Literal[''High'',
-    ''Low''] | None = None, throughput_bucket: int | None = None, **kwargs: Any) ->
-    CosmosList'
+  signature: 'async read_items(items: ~typing.Sequence[~typing.Tuple[str, None | bool
+    | float | int | str | ~typing.Type[~azure.cosmos.partition_key.NonePartitionKeyValue]
+    | ~typing.Type[~azure.cosmos.partition_key.NullPartitionKeyValue] | ~azure.cosmos.partition_key._Empty
+    | ~azure.cosmos.partition_key._Undefined | ~typing.Sequence[None | bool | float
+    | int | str | ~typing.Type[~azure.cosmos.partition_key.NonePartitionKeyValue]
+    | ~typing.Type[~azure.cosmos.partition_key.NullPartitionKeyValue] | ~azure.cosmos.partition_key._Empty
+    | ~azure.cosmos.partition_key._Undefined]]], *, max_concurrency: int | None =
+    None, consistency_level: str | None = None, session_token: str | None = None,
+    initial_headers: dict[str, str] | None = None, excluded_locations: list[str] |
+    None = None, priority: ~typing.Literal[''High'', ''Low''] | None = None, throughput_bucket:
+    int | None = None, availability_strategy_config: dict[str, typing.Any] | None
+    = <object object>, **kwargs: ~typing.Any) -> CosmosList'
   parameters:
   - name: items
     description: A list of tuples, where each tuple contains an item's ID and partition
@@ -1390,10 +1461,13 @@ methods:
     - <xref:typing.Sequence>[<xref:typing.Tuple>[<xref:str>, <xref:PartitionKeyType>]]
   keywordOnlyParameters:
   - name: max_concurrency
-    description: 'The maximum number of concurrent operations for the read_items
+    description: 'Specifies the maximum number of concurrent operations for the
 
-      request. Defaults to 10.'
-    defaultValue: '10'
+      *read_items* request. If not provided or set to None, the internal default value
+      will be
+
+      used when passed to *asyncio.Semaphore*.'
+    defaultValue: None
     types:
     - <xref:int>
   - name: consistency_level
@@ -1415,7 +1489,7 @@ methods:
     description: Excluded locations to be skipped from preferred locations.
     defaultValue: None
     types:
-    - <xref:list>[<xref:str>]
+    - <xref:typing.Sequence>[<xref:str>]
   - name: priority
     description: 'Priority based execution allows users to set a priority for each
 
@@ -1432,9 +1506,18 @@ methods:
     defaultValue: None
     types:
     - <xref:int>
+  - name: availability_strategy_config
+    description: 'The threshold-based availability strategy to use for this request.
+
+      If not provided, the client''s default strategy will be used.'
+    defaultValue: <object object at 0x0000019A48FF83F0>
+    types:
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
   return:
-    description: A CosmosList containing the retrieved items. Items that were not
+    description: 'A CosmosList containing the retrieved items. Items that were not
       found are omitted from the list.
+
+      The returned items have no guaranteed ordering.'
     types:
     - <xref:azure.cosmos.CosmosList>
   exceptions:
@@ -1446,24 +1529,25 @@ methods:
 
 
     If the item does not already exist in the container, an exception is raised.'
-  signature: 'async replace_item(item: str | Mapping[str, Any], body: Dict[str, Any],
-    *, pre_trigger_include: str | None = None, post_trigger_include: str | None =
-    None, session_token: str | None = None, initial_headers: Dict[str, str] | None
-    = None, etag: str | None = None, match_condition: MatchConditions | None = None,
-    priority: Literal[''High'', ''Low''] | None = None, no_response: bool | None =
-    None, retry_write: bool | None = None, throughput_bucket: int | None = None, **kwargs:
-    Any) -> CosmosDict'
+  signature: 'async replace_item(item: str | ~typing.Mapping[str, ~typing.Any], body:
+    dict[str, typing.Any], *, pre_trigger_include: str | None = None, post_trigger_include:
+    str | None = None, session_token: str | None = None, initial_headers: dict[str,
+    str] | None = None, etag: str | None = None, match_condition: ~azure.core._match_conditions.MatchConditions
+    | None = None, priority: ~typing.Literal[''High'', ''Low''] | None = None, no_response:
+    bool | None = None, retry_write: int | None = None, throughput_bucket: int | None
+    = None, availability_strategy_config: dict[str, typing.Any] | None = <object object>,
+    **kwargs: ~typing.Any) -> CosmosDict'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to be replaced.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:typing.Union>[<xref:str>, <xref:dict>[<xref:str>, <xref:typing.Any>]]
   - name: body
     description: A dict representing the item to replace.
     isRequired: true
     types:
-    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
   keywordOnlyParameters:
   - name: pre_trigger_include
     description: trigger id to be used as pre operation trigger.
@@ -1502,7 +1586,7 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
+    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:str>], <xref:dict>[<xref:str>,
       <xref:typing.Any>]], <xref:None>]
   - name: priority
     description: 'Priority based execution allows users to set a priority for each
@@ -1526,16 +1610,17 @@ methods:
     types:
     - <xref:bool>
   - name: retry_write
-    description: 'Indicates whether the SDK should automatically retry this write
-      operation, even if
+    description: 'Indicates how many times the SDK should automatically retry this
+      write operation, even if
 
       the operation is not guaranteed to be idempotent. This should only be enabled
       if the application can
 
-      tolerate such risks or has logic to safely detect and handle duplicate operations.'
+      tolerate such risks or has logic to safely detect and handle duplicate operations.
+      Default is None (no retries).'
     defaultValue: None
     types:
-    - <xref:bool>
+    - <xref:int>
   - name: throughput_bucket
     description: The desired throughput bucket for the client
     defaultValue: None
@@ -1551,7 +1636,14 @@ methods:
 
       This excluded_location will override existing excluded_locations in client level.'
     types:
-    - <xref:list>[<xref:str>]
+    - <xref:typing.Sequence>[<xref:str>]
+  - name: availability_strategy_config
+    description: 'The threshold-based availability strategy to use for this request.
+
+      If not provided, the client''s default strategy will be used.'
+    defaultValue: <object object at 0x0000019A48FF83F0>
+    types:
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
   return:
     description: 'A CosmosDict representing the item after replace went through. The
       dict will be empty if *no_response*
@@ -1570,8 +1662,9 @@ methods:
 
 
     If no ThroughputProperties already exist for the container, an exception is raised.'
-  signature: 'async replace_throughput(throughput: int | ThroughputProperties, **kwargs:
-    Any) -> ThroughputProperties'
+  signature: 'async replace_throughput(throughput: int | ThroughputProperties, *,
+    response_hook: Callable[[Mapping[str, Any], CosmosDict], None] | None = None,
+    **kwargs: Any) -> ThroughputProperties'
   parameters:
   - name: throughput
     description: The throughput to be set.
@@ -1581,9 +1674,10 @@ methods:
   keywordOnlyParameters:
   - name: response_hook
     description: A callable invoked with the response metadata.
+    defaultValue: None
     types:
-    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
-      <xref:typing.Any>]], <xref:None>]
+    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:typing.Any>],
+      <xref:azure.cosmos.CosmosDict>], <xref:None>]
   return:
     description: ThroughputProperties for the container, updated with new throughput.
     types:
@@ -1593,6 +1687,61 @@ methods:
     description: 'No throughput properties exist for the container
 
       or the throughput properties could not be updated.'
+- uid: azure.cosmos.aio.ContainerProxy.semantic_rerank
+  name: semantic_rerank
+  summary: '**provisional** Rerank a list of documents using semantic reranking.
+
+
+    This method uses a semantic reranker to score and reorder the provided documents
+
+    based on their relevance to the given reranking context.'
+  signature: 'async semantic_rerank(*, context: str, documents: list[str], options:
+    dict[str, Any] | None = None) -> CosmosDict'
+  keywordOnlyParameters:
+  - name: context
+    description: The reranking context or query string to use for reranking the documents.
+    types:
+    - <xref:str>
+  - name: documents
+    description: A list of documents (as strings) to be reranked.
+    types:
+    - <xref:list>[<xref:str>]
+  - name: options
+    description: 'Optional dictionary of additional request options to customize the
+      semantic reranking process.
+
+
+      Supported options:
+
+      * **return_documents** (bool): Whether to return the document text in the response.
+      If False, only scores and indices are returned. Default is True.
+
+      * **top_k** (int): Maximum number of documents to return in the reranked results.
+      If not specified, all documents are returned.
+
+      * **batch_size** (int): Number of documents to process in each batch. Used for
+      optimizing performance with large document sets.
+
+      * **sort** (bool): Whether to sort the results by relevance score in descending
+      order. Default is True.
+
+      * **document_type** (str): Type of documents being reranked. Supported values
+      are "string" and "json".
+
+      * **target_paths** (str): If document_type is "json", the list of JSON paths
+      to extract text from for reranking. Comma-separated string.'
+    defaultValue: None
+    types:
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
+  return:
+    description: A CosmosDict containing the reranking results. The structure typically
+      includes results list with reranked documents and their relevance scores. Each
+      result contains index, relevance_score, and optionally document.
+    types:
+    - <xref:azure.cosmos.CosmosDict>[<xref:str>, <xref:typing.Any>]
+  exceptions:
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: If the semantic reranking operation fails.
 - uid: azure.cosmos.aio.ContainerProxy.upsert_item
   name: upsert_item
   summary: 'Insert or update the specified item.
@@ -1601,18 +1750,20 @@ methods:
     If the item already exists in the container, it is replaced. If the item
 
     does not already exist, it is inserted.'
-  signature: 'async upsert_item(body: Dict[str, Any], *, pre_trigger_include: str
-    | None = None, post_trigger_include: str | None = None, session_token: str | None
-    = None, initial_headers: Dict[str, str] | None = None, etag: str | None = None,
-    match_condition: MatchConditions | None = None, priority: Literal[''High'', ''Low'']
-    | None = None, no_response: bool | None = None, retry_write: bool | None = None,
-    throughput_bucket: int | None = None, **kwargs: Any) -> CosmosDict'
+  signature: 'async upsert_item(body: dict[str, typing.Any], *, pre_trigger_include:
+    str | None = None, post_trigger_include: str | None = None, session_token: str
+    | None = None, initial_headers: dict[str, str] | None = None, etag: str | None
+    = None, match_condition: ~azure.core._match_conditions.MatchConditions | None
+    = None, priority: ~typing.Literal[''High'', ''Low''] | None = None, no_response:
+    bool | None = None, retry_write: int | None = None, throughput_bucket: int | None
+    = None, availability_strategy_config: dict[str, typing.Any] | None = <object object>,
+    **kwargs: ~typing.Any) -> CosmosDict'
   parameters:
   - name: body
     description: A dict-like object representing the item to update or insert.
     isRequired: true
     types:
-    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
   keywordOnlyParameters:
   - name: pre_trigger_include
     description: trigger id to be used as pre operation trigger.
@@ -1651,7 +1802,7 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
+    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:str>], <xref:dict>[<xref:str>,
       <xref:typing.Any>]], <xref:None>]
   - name: priority
     description: 'Priority based execution allows users to set a priority for each
@@ -1675,16 +1826,17 @@ methods:
     types:
     - <xref:bool>
   - name: retry_write
-    description: 'Indicates whether the SDK should automatically retry this write
-      operation, even if
+    description: 'Indicates how many times the SDK should automatically retry this
+      write operation, even if
 
       the operation is not guaranteed to be idempotent. This should only be enabled
       if the application can
 
-      tolerate such risks or has logic to safely detect and handle duplicate operations.'
+      tolerate such risks or has logic to safely detect and handle duplicate operations.
+      Default is None (no retries).'
     defaultValue: None
     types:
-    - <xref:bool>
+    - <xref:int>
   - name: throughput_bucket
     description: The desired throughput bucket for the client
     defaultValue: None
@@ -1700,12 +1852,17 @@ methods:
 
       This excluded_location will override existing excluded_locations in client level.'
     types:
-    - <xref:list>[<xref:str>]
-  return:
-    description: 'A CosmosDict representing the upserted item. The dict will be empty
-      if
+    - <xref:typing.Sequence>[<xref:str>]
+  - name: availability_strategy_config
+    description: 'The threshold-based availability strategy to use for this request.
 
-      *no_response* is specified.'
+      If not provided, the client''s default strategy will be used.'
+    defaultValue: <object object at 0x0000019A48FF83F0>
+    types:
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
+  return:
+    description: A CosmosDict representing the upserted item. The dict will be empty
+      if *no_response* is specified.
     types:
     - <xref:azure.cosmos.CosmosDict>[<xref:str>, <xref:typing.Any>]
   exceptions:
