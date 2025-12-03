@@ -1,0 +1,236 @@
+### YamlMime:PythonClass
+uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter
+name: LangGraphAdapter
+fullName: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter
+module: azure.ai.agentserver.langgraph.langgraph
+summary: 'Adapter for LangGraph Agent.
+
+
+  Initialize the LangGraphAdapter with a CompiledStateGraph or a function that returns
+  one.'
+constructor:
+  syntax: 'LangGraphAdapter(graph: CompiledStateGraph | GraphFactory, credentials:
+    AsyncTokenCredential | None = None, state_converter: LanggraphStateConverter |
+    None = None, **kwargs: Any)'
+  parameters:
+  - name: graph
+    description: 'The LangGraph StateGraph to adapt, or a callable that takes ToolClient
+
+      and returns CompiledStateGraph (sync or async).'
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:CompiledStateGraph>, <xref:azure.ai.agentserver.langgraph.langgraph.GraphFactory>]
+  - name: credentials
+    description: Azure credentials for authentication.
+    defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:AsyncTokenCredential>]
+  - name: state_converter
+    description: custom state converter. Required if graph state is not MessagesState.
+    defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:LanggraphStateConverter>]
+methods:
+- uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.agent_liveness
+  name: agent_liveness
+  signature: async agent_liveness(request) -> Response | dict
+  parameters:
+  - name: request
+    isRequired: true
+- uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.agent_readiness
+  name: agent_readiness
+  signature: async agent_readiness(request) -> Response | dict
+  parameters:
+  - name: request
+    isRequired: true
+- uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.agent_run
+  name: agent_run
+  signature: 'async agent_run(context: AgentRunContext)'
+  parameters:
+  - name: context
+    isRequired: true
+- uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.agent_run_astream
+  name: agent_run_astream
+  summary: Run the agent with streaming response.
+  signature: 'async agent_run_astream(input_data: dict, context: AgentRunContext,
+    graph: CompiledStateGraph, tool_client: ToolClient | None = None)'
+  parameters:
+  - name: input_data
+    description: The input data to run the agent with.
+    isRequired: true
+    types:
+    - <xref:dict>
+  - name: context
+    description: The context for the agent run.
+    isRequired: true
+    types:
+    - <xref:AgentRunContext>
+  - name: graph
+    description: The compiled graph instance to use for this request.
+    isRequired: true
+    types:
+    - <xref:CompiledStateGraph>
+  - name: tool_client
+    description: Optional ToolClient to close after streaming completes.
+    defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:ToolClient>]
+  return:
+    description: An async generator yielding the response stream events.
+    types:
+    - <xref:typing.AsyncGenerator>[<xref:dict>]
+- uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.agent_run_non_stream
+  name: agent_run_non_stream
+  summary: Run the agent with non-streaming response.
+  signature: 'async agent_run_non_stream(input_data: dict, context: AgentRunContext,
+    graph: CompiledStateGraph)'
+  parameters:
+  - name: input_data
+    description: The input data to run the agent with.
+    isRequired: true
+    types:
+    - <xref:dict>
+  - name: context
+    description: The context for the agent run.
+    isRequired: true
+    types:
+    - <xref:AgentRunContext>
+  - name: graph
+    description: The compiled graph instance to use for this request.
+    isRequired: true
+    types:
+    - <xref:CompiledStateGraph>
+  return:
+    description: The response of the agent run.
+    types:
+    - <xref:dict>
+- uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.create_runnable_config
+  name: create_runnable_config
+  summary: Create a RunnableConfig from the converted request data.
+  signature: 'create_runnable_config(context: AgentRunContext) -> RunnableConfig'
+  parameters:
+  - name: context
+    description: The context for the agent run.
+    isRequired: true
+    types:
+    - <xref:AgentRunContext>
+  return:
+    description: The RunnableConfig for the agent run.
+    types:
+    - <xref:RunnableConfig>
+- uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.format_otlp_endpoint
+  name: format_otlp_endpoint
+  signature: 'format_otlp_endpoint(endpoint: str) -> str'
+  parameters:
+  - name: endpoint
+    isRequired: true
+- uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.get_agent_identifier
+  name: get_agent_identifier
+  signature: get_agent_identifier() -> str
+- uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.get_tool_client
+  name: get_tool_client
+  signature: 'get_tool_client(tools: list[azure.ai.agentserver.core.client.tools._model_base.ToolDefinition]
+    | None, user_info: UserInfo | None) -> AzureAIToolClient'
+  parameters:
+  - name: tools
+    isRequired: true
+  - name: user_info
+    isRequired: true
+- uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.get_trace_attributes
+  name: get_trace_attributes
+  signature: get_trace_attributes()
+- uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.init_tracing
+  name: init_tracing
+  signature: init_tracing()
+- uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.init_tracing_internal
+  name: init_tracing_internal
+  signature: init_tracing_internal(exporter_endpoint=None, app_insights_conn_str=None)
+  parameters:
+  - name: exporter_endpoint
+    defaultValue: None
+  - name: app_insights_conn_str
+    defaultValue: None
+- uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.respond_with_oauth_consent
+  name: respond_with_oauth_consent
+  summary: Generate a response indicating that OAuth consent is required.
+  signature: async respond_with_oauth_consent(context, error) -> Response
+  parameters:
+  - name: context
+    description: The agent run context.
+    isRequired: true
+    types:
+    - <xref:AgentRunContext>
+  - name: error
+    description: The OAuthConsentRequiredError instance.
+    isRequired: true
+    types:
+    - <xref:OAuthConsentRequiredError>
+  return:
+    description: A Response indicating the need for OAuth consent.
+    types:
+    - <xref:project_models.Response>
+- uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.respond_with_oauth_consent_astream
+  name: respond_with_oauth_consent_astream
+  summary: Generate a response stream indicating that OAuth consent is required.
+  signature: async respond_with_oauth_consent_astream(context, error) -> AsyncGenerator[ResponseStreamEvent,
+    None]
+  parameters:
+  - name: context
+    description: The agent run context.
+    isRequired: true
+    types:
+    - <xref:AgentRunContext>
+  - name: error
+    description: The OAuthConsentRequiredError instance.
+    isRequired: true
+    types:
+    - <xref:OAuthConsentRequiredError>
+  return:
+    description: An async generator yielding ResponseStreamEvent instances.
+    types:
+    - <xref:typing.AsyncGenerator>[<xref:ResponseStreamEvent>, <xref:None>]
+- uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.run
+  name: run
+  summary: "Start a Starlette server on localhost:<port> exposing:\n   POST  /runs\n\
+    \   POST  /responses\n   GET   /liveness\n   GET   /readiness"
+  signature: 'run(port: int = 8088) -> None'
+  parameters:
+  - name: port
+    description: Port to listen on.
+    defaultValue: '8088'
+    types:
+    - <xref:int>
+- uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.run_async
+  name: run_async
+  summary: Awaitable server starter for use **inside** an existing event loop.
+  signature: 'async run_async(port: int = 8088) -> None'
+  parameters:
+  - name: port
+    description: Port to listen on.
+    defaultValue: '8088'
+    types:
+    - <xref:int>
+- uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.setup_application_insights_exporter
+  name: setup_application_insights_exporter
+  signature: setup_application_insights_exporter(connection_string, provider)
+  parameters:
+  - name: connection_string
+    isRequired: true
+  - name: provider
+    isRequired: true
+- uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.setup_otlp_exporter
+  name: setup_otlp_exporter
+  signature: setup_otlp_exporter(endpoint, provider)
+  parameters:
+  - name: endpoint
+    isRequired: true
+  - name: provider
+    isRequired: true
+attributes:
+- uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.graph
+  name: graph
+  summary: Get the resolved graph. This property provides backward compatibility.
+  return:
+    description: The resolved CompiledStateGraph if available, None otherwise.
+    types:
+    - <xref:typing.Optional>[<xref:CompiledStateGraph>]

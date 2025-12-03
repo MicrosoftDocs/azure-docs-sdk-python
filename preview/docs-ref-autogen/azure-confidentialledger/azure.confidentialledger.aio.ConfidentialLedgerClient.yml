@@ -52,15 +52,16 @@ methods:
 
 
     A collection id may optionally be specified.'
-  signature: 'async begin_create_ledger_entry(entry: MutableMapping[str, Any] | IO,
-    *, collection_id: str | None = None, **kwargs: Any) -> AsyncLROPoller[MutableMapping[str,
-    Any]]'
+  signature: 'async begin_create_ledger_entry(entry: LedgerEntry | MutableMapping[str,
+    Any] | IO[bytes], *, collection_id: str | None = None, **kwargs: Any) -> AsyncLROPoller[TransactionStatus]'
   parameters:
   - name: entry
-    description: Ledger entry.
+    description: Ledger entry. Required.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:JSON>, <xref:typing.IO>]
+    - <xref:azure.confidentialledger.models.LedgerEntry>
+    - <xref:JSON>
+    - <xref:typing.IO>[<xref:bytes>]
   keywordOnlyParameters:
   - name: collection_id
     description: The collection id. Default value is None.
@@ -68,9 +69,10 @@ methods:
     types:
     - <xref:str>
   return:
-    description: An instance of LROPoller that returns a JSON object
+    description: AsyncLROPoller[TransactionStatus]. The TransactionStatus is compatible
+      with MutableMapping
     types:
-    - <xref:azure.core.polling.LROPoller>[<xref:JSON>]
+    - <xref:azure.core.polling.AsyncLROPoller>[<xref:azure.confidentialledger.models.TransactionStatus>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.begin_get_ledger_entry
@@ -82,9 +84,18 @@ methods:
     A collection id may optionally be specified to indicate the collection from which
     to fetch
 
-    the value.'
+    the value.
+
+
+    To return older ledger entries, the relevant sections of the ledger must be
+
+    read from disk and validated. To prevent blocking within the enclave, the
+
+    response will indicate whether the entry is ready and part of the response, or
+
+    if the loading is still ongoing.'
   signature: 'async begin_get_ledger_entry(transaction_id: str, *, collection_id:
-    str | None = None, **kwargs: Any) -> AsyncLROPoller[MutableMapping[str, Any]]'
+    str | None = None, **kwargs: Any) -> AsyncLROPoller[LedgerQueryResult]'
   parameters:
   - name: transaction_id
     description: Identifies a write transaction. Required.
@@ -98,10 +109,10 @@ methods:
     types:
     - <xref:str>
   return:
-    description: An instance of LROPoller that returns a JSON object for the ledger
-      entry.
+    description: An instance of AsyncLROPoller that returns a LedgerQueryResult for
+      the ledger entry.
     types:
-    - <xref:azure.core.polling.LROPoller>[<xref:JSON>]
+    - <xref:azure.core.polling.AsyncLROPoller>[<xref:azure.confidentialledger.models.LedgerQueryResult>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.begin_get_receipt
@@ -110,8 +121,7 @@ methods:
     particular
 
     transaction id.'
-  signature: 'async begin_get_receipt(transaction_id: str, **kwargs: Any) -> AsyncLROPoller[MutableMapping[str,
-    Any]]'
+  signature: 'async begin_get_receipt(transaction_id: str, **kwargs: Any) -> AsyncLROPoller[TransactionReceipt]'
   parameters:
   - name: transaction_id
     description: Identifies a write transaction. Required.
@@ -119,9 +129,10 @@ methods:
     types:
     - <xref:str>
   return:
-    description: An instance of LROPoller that returns a JSON object for the receipt.
+    description: An instance of AsyncLROPoller that returns a TransactionReceipt for
+      the receipt.
     types:
-    - <xref:azure.core.polling.LROPoller>[<xref:JSON>]
+    - <xref:azure.core.polling.AsyncLROPoller>[<xref:azure.confidentialledger.models.TransactionReceipt>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.begin_wait_for_commit
@@ -132,8 +143,7 @@ methods:
     Committed, a state that indicates the transaction is durably stored in the Confidential
 
     Ledger.'
-  signature: async begin_wait_for_commit(transaction_id, **kwargs) -> AsyncLROPoller[MutableMapping[str,
-    Any]]
+  signature: 'async begin_wait_for_commit(transaction_id: str, **kwargs: Any) -> AsyncLROPoller[TransactionStatus]'
   parameters:
   - name: transaction_id
     description: Identifies a write transaction. Required.
@@ -141,10 +151,10 @@ methods:
     types:
     - <xref:str>
   return:
-    description: An instance of LROPoller returning a JSON object describing the transaction
-      status.
+    description: An instance of AsyncLROPoller returning a TransactionStatus object
+      describing the transaction status.
     types:
-    - <xref:azure.core.polling.LROPoller>[<xref:JSON>]
+    - <xref:azure.core.polling.AsyncLROPoller>[<xref:azure.confidentialledger.models.TransactionStatus>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.close
@@ -155,20 +165,20 @@ methods:
   summary: 'Writes a ledger entry.
 
 
-    The result is the expected JSON response with an additional field
-
-    ''transactionId'' which represents the transaction identifier for this write operation.
-
-
     A collection id may optionally be specified.'
-  signature: 'async create_ledger_entry(entry: MutableMapping[str, Any] | IO, *, collection_id:
-    str | None = None, **kwargs: Any) -> MutableMapping[str, Any]'
+  signature: 'async create_ledger_entry(entry: LedgerEntry | MutableMapping[str, Any]
+    | IO[bytes], *, collection_id: str | None = None, **kwargs: Any) -> LedgerWriteResult'
   parameters:
   - name: entry
-    description: Ledger entry.
+    description: 'Ledger entry. Is one of the following types: LedgerEntry, JSON,
+      IO[bytes]
+
+      Required.'
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:JSON>, <xref:typing.IO>]
+    - <xref:azure.confidentialledger.models.LedgerEntry>
+    - <xref:JSON>
+    - <xref:typing.IO>[<xref:bytes>]
   keywordOnlyParameters:
   - name: collection_id
     description: The collection id. Default value is None.
@@ -176,9 +186,9 @@ methods:
     types:
     - <xref:str>
   return:
-    description: JSON object
+    description: LedgerWriteResult. The LedgerWriteResult is compatible with MutableMapping
     types:
-    - <xref:JSON>
+    - <xref:azure.confidentialledger.models.LedgerWriteResult>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
@@ -198,7 +208,8 @@ methods:
 
     A JSON merge patch is applied for existing users.'
   signature: 'async create_or_update_ledger_user(user_id: str, user_multiple_roles:
-    MutableMapping[str, Any] | IO[bytes], **kwargs: Any) -> MutableMapping[str, Any]'
+    LedgerUserMultipleRoles | MutableMapping[str, Any] | IO[bytes], **kwargs: Any)
+    -> LedgerUserMultipleRoles'
   parameters:
   - name: user_id
     description: The user id, either an AAD object ID or certificate fingerprint.
@@ -209,34 +220,27 @@ methods:
   - name: user_multiple_roles
     description: 'Details about a Confidential Ledger user with multiple roles. Is
 
-      either a JSON type or a IO[bytes] type. Required.'
+      one of the following types: LedgerUserMultipleRoles, JSON, IO[bytes] Required.'
     isRequired: true
     types:
+    - <xref:azure.confidentialledger.models.LedgerUserMultipleRoles>
     - <xref:JSON>
     - <xref:typing.IO>[<xref:bytes>]
   return:
-    description: JSON object
+    description: LedgerUserMultipleRoles. The LedgerUserMultipleRoles is compatible
+      with MutableMapping
     types:
-    - <xref:JSON>
+    - <xref:azure.confidentialledger.models.LedgerUserMultipleRoles>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  examples:
-  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # JSON input template you can fill out and use as your body input.\n   user_multiple_roles\
-    \ = {\n       \"assignedRoles\": [\n           \"str\"\n       ],\n       \"userId\"\
-    : \"str\"\n   }\n\n   # response body for status code(s): 200\n   response ==\
-    \ {\n       \"assignedRoles\": [\n           \"str\"\n       ],\n       \"userId\"\
-    : \"str\"\n   }\n   ````\n"
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.create_or_update_user
   name: create_or_update_user
   summary: 'Adds a user or updates a user''s fields.
 
 
     A JSON merge patch is applied for existing users.'
-  signature: 'async create_or_update_user(user_id: str, user_details: MutableMapping[str,
-    Any] | IO[bytes], **kwargs: Any) -> MutableMapping[str, Any]'
+  signature: 'async create_or_update_user(user_id: str, user_details: LedgerUser |
+    MutableMapping[str, Any] | IO[bytes], **kwargs: Any) -> LedgerUser'
   parameters:
   - name: user_id
     description: The user id, either an AAD object ID or certificate fingerprint.
@@ -245,44 +249,38 @@ methods:
     types:
     - <xref:str>
   - name: user_details
-    description: 'Details about a Confidential Ledger user. Is either a JSON type
-      or a
+    description: 'Details about a Confidential Ledger user. Is one of the following
+      types:
 
-      IO[bytes] type. Required.'
+      LedgerUser, JSON, IO[bytes] Required.'
     isRequired: true
     types:
+    - <xref:azure.confidentialledger.models.LedgerUser>
     - <xref:JSON>
     - <xref:typing.IO>[<xref:bytes>]
   return:
-    description: JSON object
+    description: LedgerUser. The LedgerUser is compatible with MutableMapping
     types:
-    - <xref:JSON>
+    - <xref:azure.confidentialledger.models.LedgerUser>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  examples:
-  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # JSON input template you can fill out and use as your body input.\n   user_details\
-    \ = {\n       \"assignedRole\": \"str\",\n       \"userId\": \"str\"\n   }\n\n\
-    \   # response body for status code(s): 200\n   response == {\n       \"assignedRole\"\
-    : \"str\",\n       \"userId\": \"str\"\n   }\n   ````\n"
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.create_user_defined_endpoint
   name: create_user_defined_endpoint
   summary: 'Creates a user defined endpoint.
 
 
     Creates the user defined endpoint in the ACL instance.'
-  signature: 'async create_user_defined_endpoint(bundle: MutableMapping[str, Any]
-    | IO[bytes], **kwargs: Any) -> None'
+  signature: 'async create_user_defined_endpoint(bundle: Bundle | MutableMapping[str,
+    Any] | IO[bytes], **kwargs: Any) -> None'
   parameters:
   - name: bundle
-    description: 'bundle parameter description. Is either a JSON type or a IO[bytes]
-      type.
+    description: 'Specify a user defined endpoint. Is one of the following types:
+      Bundle, JSON,
 
-      Required.'
+      IO[bytes] Required.'
     isRequired: true
     types:
+    - <xref:azure.confidentialledger.models.Bundle>
     - <xref:JSON>
     - <xref:typing.IO>[<xref:bytes>]
   return:
@@ -291,45 +289,6 @@ methods:
     - <xref:None>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  examples:
-  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # JSON input template you can fill out and use as your body input.\n   bundle\
-    \ = {\n       \"metadata\": {\n           \"endpoints\": {\n               \"\
-    str\": {\n                   \"delete\": {\n                       \"authn_policies\"\
-    : [\n                           {}\n                       ],\n              \
-    \         \"forwarding_required\": \"str\",\n                       \"interpreter_reuse\"\
-    : {\n                           \"key\": \"str\"\n                       },\n\
-    \                       \"js_function\": \"str\",\n                       \"js_module\"\
-    : \"str\",\n                       \"mode\": \"str\",\n                      \
-    \ \"openapi\": {},\n                       \"openapi_hidden\": bool,\n       \
-    \                \"redirection_strategy\": \"str\"\n                   },\n  \
-    \                 \"get\": {\n                       \"authn_policies\": [\n \
-    \                          {}\n                       ],\n                   \
-    \    \"forwarding_required\": \"str\",\n                       \"interpreter_reuse\"\
-    : {\n                           \"key\": \"str\"\n                       },\n\
-    \                       \"js_function\": \"str\",\n                       \"js_module\"\
-    : \"str\",\n                       \"mode\": \"str\",\n                      \
-    \ \"openapi\": {},\n                       \"openapi_hidden\": bool,\n       \
-    \                \"redirection_strategy\": \"str\"\n                   },\n  \
-    \                 \"patch\": {\n                       \"authn_policies\": [\n\
-    \                           {}\n                       ],\n                  \
-    \     \"forwarding_required\": \"str\",\n                       \"interpreter_reuse\"\
-    : {\n                           \"key\": \"str\"\n                       },\n\
-    \                       \"js_function\": \"str\",\n                       \"js_module\"\
-    : \"str\",\n                       \"mode\": \"str\",\n                      \
-    \ \"openapi\": {},\n                       \"openapi_hidden\": bool,\n       \
-    \                \"redirection_strategy\": \"str\"\n                   },\n  \
-    \                 \"put\": {\n                       \"authn_policies\": [\n \
-    \                          {}\n                       ],\n                   \
-    \    \"forwarding_required\": \"str\",\n                       \"interpreter_reuse\"\
-    : {\n                           \"key\": \"str\"\n                       },\n\
-    \                       \"js_function\": \"str\",\n                       \"js_module\"\
-    : \"str\",\n                       \"mode\": \"str\",\n                      \
-    \ \"openapi\": {},\n                       \"openapi_hidden\": bool,\n       \
-    \                \"redirection_strategy\": \"str\"\n                   }\n   \
-    \            }\n           }\n       },\n       \"modules\": {}\n   }\n   ````\n"
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.create_user_defined_function
   name: create_user_defined_function
   summary: 'Creates a user defined function.
@@ -337,7 +296,8 @@ methods:
 
     Creates the user defined function in the Confidential Ledger.'
   signature: 'async create_user_defined_function(function_id: str, user_defined_function:
-    MutableMapping[str, Any] | IO[bytes], **kwargs: Any) -> MutableMapping[str, Any]'
+    UserDefinedFunction | MutableMapping[str, Any] | IO[bytes], **kwargs: Any) ->
+    UserDefinedFunction'
   parameters:
   - name: function_id
     description: Identifies a user defined function. Required.
@@ -345,41 +305,36 @@ methods:
     types:
     - <xref:str>
   - name: user_defined_function
-    description: 'Specify a user defined function of a Confidential Ledger. Is
+    description: 'Specify a user defined function of a Confidential Ledger. Is one
 
-      either a JSON type or a IO[bytes] type. Required.'
+      of the following types: UserDefinedFunction, JSON, IO[bytes] Required.'
     isRequired: true
     types:
+    - <xref:azure.confidentialledger.models.UserDefinedFunction>
     - <xref:JSON>
     - <xref:typing.IO>[<xref:bytes>]
   return:
-    description: JSON object
+    description: UserDefinedFunction. The UserDefinedFunction is compatible with MutableMapping
     types:
-    - <xref:JSON>
+    - <xref:azure.confidentialledger.models.UserDefinedFunction>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  examples:
-  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # JSON input template you can fill out and use as your body input.\n   user_defined_function\
-    \ = {\n       \"code\": \"str\",\n       \"id\": \"str\"\n   }\n\n   # response\
-    \ body for status code(s): 200, 201\n   response == {\n       \"code\": \"str\"\
-    ,\n       \"id\": \"str\"\n   }\n   ````\n"
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.create_user_defined_role
   name: create_user_defined_role
   summary: 'Creates new roles and their actions.
 
 
     User defined roles allow users to define and manage app specific AuthZ policy.'
-  signature: 'async create_user_defined_role(roles: List[MutableMapping[str, Any]]
+  signature: 'async create_user_defined_role(body: Roles | MutableMapping[str, Any]
     | IO[bytes], **kwargs: Any) -> None'
   parameters:
-  - name: roles
-    description: user defined role. Is either a [JSON] type or a IO[bytes] type. Required.
+  - name: body
+    description: 'Request body. Is one of the following types: Roles, JSON, IO[bytes]
+      Required.'
     isRequired: true
     types:
-    - <xref:list>[<xref:JSON>]
+    - <xref:azure.confidentialledger.models.Roles>
+    - <xref:JSON>
     - <xref:typing.IO>[<xref:bytes>]
   return:
     description: None
@@ -452,8 +407,9 @@ methods:
   summary: 'Deletes user defined roles.
 
 
-    A user defined role allows the users to create and manage their own role actions
-    using the API.'
+    A user defined role allows the users to create and manage their own role
+
+    actions using the API.'
   signature: 'async delete_user_defined_role(*, role_name: str, **kwargs: Any) ->
     None'
   keywordOnlyParameters:
@@ -474,8 +430,8 @@ methods:
 
     Executes the user defined function in the Confidential Ledger.'
   signature: 'async execute_user_defined_function(function_id: str, user_defined_function_execution_properties:
-    MutableMapping[str, Any] | IO[bytes] | None = None, **kwargs: Any) -> MutableMapping[str,
-    Any]'
+    UserDefinedFunctionExecutionProperties | MutableMapping[str, Any] | IO[bytes]
+    | None = None, **kwargs: Any) -> UserDefinedFunctionExecutionResponse'
   parameters:
   - name: function_id
     description: Identifies a user defined function. Required.
@@ -485,50 +441,39 @@ methods:
   - name: user_defined_function_execution_properties
     description: 'Specify user defined function execution
 
-      properties. Is either a JSON type or a IO[bytes] type. Default value is None.'
+      properties. Is one of the following types: UserDefinedFunctionExecutionProperties,
+      JSON,
+
+      IO[bytes] Default value is None.'
     defaultValue: None
     types:
+    - <xref:azure.confidentialledger.models.UserDefinedFunctionExecutionProperties>
     - <xref:JSON>
     - <xref:typing.IO>[<xref:bytes>]
   return:
-    description: JSON object
+    description: 'UserDefinedFunctionExecutionResponse. The UserDefinedFunctionExecutionResponse
+      is
+
+      compatible with MutableMapping'
     types:
-    - <xref:JSON>
+    - <xref:azure.confidentialledger.models.UserDefinedFunctionExecutionResponse>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  examples:
-  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # JSON input template you can fill out and use as your body input.\n   user_defined_function_execution_properties\
-    \ = {\n       \"arguments\": [\n           \"str\"\n       ],\n       \"exportedFunctionName\"\
-    : \"str\",\n       \"runtimeOptions\": {\n           \"log_exception_details\"\
-    : bool,\n           \"max_cached_interpreters\": 0,\n           \"max_execution_time_ms\"\
-    : 0,\n           \"max_heap_bytes\": 0,\n           \"max_stack_bytes\": 0,\n\
-    \           \"return_exception_details\": bool\n       }\n   }\n\n   # response\
-    \ body for status code(s): 200\n   response == {\n       \"status\": \"str\",\n\
-    \       \"error\": {\n           \"message\": \"str\"\n       },\n       \"result\"\
-    : {\n           \"returnValue\": \"str\"\n       }\n   }\n   ````\n"
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.get_constitution
   name: get_constitution
   summary: 'Gets the constitution used for governance.
 
 
-    The constitution is a script that assesses and applies proposals from consortium
-    members.'
-  signature: 'async get_constitution(**kwargs: Any) -> MutableMapping[str, Any]'
+    The constitution is a script that assesses and applies proposals from
+
+    consortium members.'
+  signature: 'async get_constitution(**kwargs: Any) -> Constitution'
   return:
-    description: JSON object
+    description: Constitution. The Constitution is compatible with MutableMapping
     types:
-    - <xref:JSON>
+    - <xref:azure.confidentialledger.models.Constitution>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  examples:
-  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # response body for status code(s): 200\n   response == {\n       \"digest\"\
-    : \"str\",\n       \"script\": \"str\"\n   }\n   ````\n"
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.get_current_ledger_entry
   name: get_current_ledger_entry
   summary: 'Gets the current value available in the ledger.
@@ -536,7 +481,7 @@ methods:
 
     A collection id may optionally be specified.'
   signature: 'async get_current_ledger_entry(*, collection_id: str | None = None,
-    **kwargs: Any) -> MutableMapping[str, Any]'
+    **kwargs: Any) -> LedgerEntry'
   keywordOnlyParameters:
   - name: collection_id
     description: The collection id. Default value is None.
@@ -544,77 +489,48 @@ methods:
     types:
     - <xref:str>
   return:
-    description: JSON object
+    description: LedgerEntry. The LedgerEntry is compatible with MutableMapping
     types:
-    - <xref:JSON>
+    - <xref:azure.confidentialledger.models.LedgerEntry>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  examples:
-  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # response body for status code(s): 200\n   response == {\n       \"contents\"\
-    : \"str\",\n       \"collectionId\": \"str\",\n       \"postHooks\": [\n     \
-    \      {\n               \"functionId\": \"str\",\n               \"properties\"\
-    : {\n                   \"arguments\": [\n                       \"str\"\n   \
-    \                ],\n                   \"exportedFunctionName\": \"str\",\n \
-    \                  \"runtimeOptions\": {\n                       \"log_exception_details\"\
-    : bool,\n                       \"max_cached_interpreters\": 0,\n            \
-    \           \"max_execution_time_ms\": 0,\n                       \"max_heap_bytes\"\
-    : 0,\n                       \"max_stack_bytes\": 0,\n                       \"\
-    return_exception_details\": bool\n                   }\n               }\n   \
-    \        }\n       ],\n       \"preHooks\": [\n           {\n               \"\
-    functionId\": \"str\",\n               \"properties\": {\n                   \"\
-    arguments\": [\n                       \"str\"\n                   ],\n      \
-    \             \"exportedFunctionName\": \"str\",\n                   \"runtimeOptions\"\
-    : {\n                       \"log_exception_details\": bool,\n               \
-    \        \"max_cached_interpreters\": 0,\n                       \"max_execution_time_ms\"\
-    : 0,\n                       \"max_heap_bytes\": 0,\n                       \"\
-    max_stack_bytes\": 0,\n                       \"return_exception_details\": bool\n\
-    \                   }\n               }\n           }\n       ],\n       \"transactionId\"\
-    : \"str\"\n   }\n   ````\n"
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.get_enclave_quotes
   name: get_enclave_quotes
   summary: 'Gets quotes for all nodes of the Confidential Ledger.
 
 
     A quote is an SGX enclave measurement that can be used to verify the validity
-    of a node and its
 
-    enclave.'
-  signature: 'async get_enclave_quotes(**kwargs: Any) -> MutableMapping[str, Any]'
+    of a node and its enclave.'
+  signature: 'async get_enclave_quotes(**kwargs: Any) -> ConfidentialLedgerEnclaves'
   return:
-    description: JSON object
+    description: 'ConfidentialLedgerEnclaves. The ConfidentialLedgerEnclaves is compatible
+      with
+
+      MutableMapping'
     types:
-    - <xref:JSON>
+    - <xref:azure.confidentialledger.models.ConfidentialLedgerEnclaves>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  examples:
-  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # response body for status code(s): 200\n   response == {\n       \"currentNodeId\"\
-    : \"str\",\n       \"enclaveQuotes\": {\n           \"str\": {\n             \
-    \  \"nodeId\": \"str\",\n               \"quoteVersion\": \"str\",\n         \
-    \      \"raw\": \"str\",\n               \"mrenclave\": \"str\"\n           }\n\
-    \       }\n   }\n   ````\n"
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.get_ledger_entry
   name: get_ledger_entry
   summary: 'Gets the ledger entry at the specified transaction id. A collection id
-    may optionally be
+    may
 
-    specified to indicate the collection from which to fetch the value.
+    optionally be specified to indicate the collection from which to fetch the
+
+    value.
 
 
-    To return older ledger entries, the relevant sections of the ledger must be read
-    from disk and
+    To return older ledger entries, the relevant sections of the ledger must be
 
-    validated. To prevent blocking within the enclave, the response will indicate
-    whether the entry
+    read from disk and validated. To prevent blocking within the enclave, the
 
-    is ready and part of the response, or if the loading is still ongoing.'
+    response will indicate whether the entry is ready and part of the response, or
+
+    if the loading is still ongoing.'
   signature: 'async get_ledger_entry(transaction_id: str, *, collection_id: str |
-    None = None, **kwargs: Any) -> MutableMapping[str, Any]'
+    None = None, **kwargs: Any) -> LedgerQueryResult'
   parameters:
   - name: transaction_id
     description: Identifies a write transaction. Required.
@@ -628,46 +544,18 @@ methods:
     types:
     - <xref:str>
   return:
-    description: JSON object
+    description: LedgerQueryResult. The LedgerQueryResult is compatible with MutableMapping
     types:
-    - <xref:JSON>
+    - <xref:azure.confidentialledger.models.LedgerQueryResult>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  examples:
-  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # response body for status code(s): 200\n   response == {\n       \"state\"\
-    : \"str\",\n       \"entry\": {\n           \"contents\": \"str\",\n         \
-    \  \"collectionId\": \"str\",\n           \"postHooks\": [\n               {\n\
-    \                   \"functionId\": \"str\",\n                   \"properties\"\
-    : {\n                       \"arguments\": [\n                           \"str\"\
-    \n                       ],\n                       \"exportedFunctionName\":\
-    \ \"str\",\n                       \"runtimeOptions\": {\n                   \
-    \        \"log_exception_details\": bool,\n                           \"max_cached_interpreters\"\
-    : 0,\n                           \"max_execution_time_ms\": 0,\n             \
-    \              \"max_heap_bytes\": 0,\n                           \"max_stack_bytes\"\
-    : 0,\n                           \"return_exception_details\": bool\n        \
-    \               }\n                   }\n               }\n           ],\n   \
-    \        \"preHooks\": [\n               {\n                   \"functionId\"\
-    : \"str\",\n                   \"properties\": {\n                       \"arguments\"\
-    : [\n                           \"str\"\n                       ],\n         \
-    \              \"exportedFunctionName\": \"str\",\n                       \"runtimeOptions\"\
-    : {\n                           \"log_exception_details\": bool,\n           \
-    \                \"max_cached_interpreters\": 0,\n                           \"\
-    max_execution_time_ms\": 0,\n                           \"max_heap_bytes\": 0,\n\
-    \                           \"max_stack_bytes\": 0,\n                        \
-    \   \"return_exception_details\": bool\n                       }\n           \
-    \        }\n               }\n           ],\n           \"transactionId\": \"\
-    str\"\n       }\n   }\n   ````\n"
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.get_ledger_user
   name: get_ledger_user
   summary: 'Gets a user with multiple roles.
 
 
     Gets a user with multiple roles.'
-  signature: 'async get_ledger_user(user_id: str, **kwargs: Any) -> MutableMapping[str,
-    Any]'
+  signature: 'async get_ledger_user(user_id: str, **kwargs: Any) -> LedgerUserMultipleRoles'
   parameters:
   - name: user_id
     description: The user id, either an AAD object ID or certificate fingerprint.
@@ -676,17 +564,12 @@ methods:
     types:
     - <xref:str>
   return:
-    description: JSON object
+    description: LedgerUserMultipleRoles. The LedgerUserMultipleRoles is compatible
+      with MutableMapping
     types:
-    - <xref:JSON>
+    - <xref:azure.confidentialledger.models.LedgerUserMultipleRoles>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  examples:
-  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # response body for status code(s): 200\n   response == {\n       \"assignedRoles\"\
-    : [\n           \"str\"\n       ],\n       \"userId\": \"str\"\n   }\n   ````\n"
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.get_receipt
   name: get_receipt
   summary: 'Gets a receipt certifying ledger contents at a particular transaction
@@ -694,8 +577,7 @@ methods:
 
 
     Gets a receipt certifying ledger contents at a particular transaction id.'
-  signature: 'async get_receipt(transaction_id: str, **kwargs: Any) -> MutableMapping[str,
-    Any]'
+  signature: 'async get_receipt(transaction_id: str, **kwargs: Any) -> TransactionReceipt'
   parameters:
   - name: transaction_id
     description: Identifies a write transaction. Required.
@@ -703,52 +585,24 @@ methods:
     types:
     - <xref:str>
   return:
-    description: JSON object
+    description: TransactionReceipt. The TransactionReceipt is compatible with MutableMapping
     types:
-    - <xref:JSON>
+    - <xref:azure.confidentialledger.models.TransactionReceipt>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  examples:
-  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # response body for status code(s): 200\n   response == {\n       \"state\"\
-    : \"str\",\n       \"transactionId\": \"str\",\n       \"applicationClaims\":\
-    \ [\n           {\n               \"kind\": \"str\",\n               \"digest\"\
-    : {\n                   \"protocol\": \"str\",\n                   \"value\":\
-    \ \"str\"\n               },\n               \"ledgerEntry\": {\n            \
-    \       \"protocol\": \"str\",\n                   \"collectionId\": \"str\",\n\
-    \                   \"contents\": \"str\",\n                   \"secretKey\":\
-    \ \"str\"\n               }\n           }\n       ],\n       \"receipt\": {\n\
-    \           \"nodeId\": \"str\",\n           \"proof\": [\n               {\n\
-    \                   \"left\": \"str\",\n                   \"right\": \"str\"\n\
-    \               }\n           ],\n           \"signature\": \"str\",\n       \
-    \    \"cert\": \"str\",\n           \"leaf\": \"str\",\n           \"leafComponents\"\
-    : {\n               \"claimsDigest\": \"str\",\n               \"commitEvidence\"\
-    : \"str\",\n               \"writeSetDigest\": \"str\"\n           },\n      \
-    \     \"root\": \"str\",\n           \"serviceEndorsements\": [\n            \
-    \   \"str\"\n           ]\n       }\n   }\n   ````\n"
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.get_runtime_options
   name: get_runtime_options
   summary: 'Runtime options for user defined endpoints.
 
 
     It returns the runtime options.'
-  signature: 'async get_runtime_options(**kwargs: Any) -> MutableMapping[str, Any]'
+  signature: 'async get_runtime_options(**kwargs: Any) -> JsRuntimeOptions'
   return:
-    description: JSON object
+    description: JsRuntimeOptions. The JsRuntimeOptions is compatible with MutableMapping
     types:
-    - <xref:JSON>
+    - <xref:azure.confidentialledger.models.JsRuntimeOptions>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  examples:
-  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # response body for status code(s): 200\n   response == {\n       \"log_exception_details\"\
-    : bool,\n       \"max_cached_interpreters\": 0,\n       \"max_execution_time_ms\"\
-    : 0,\n       \"max_heap_bytes\": 0,\n       \"max_stack_bytes\": 0,\n       \"\
-    return_exception_details\": bool\n   }\n   ````\n"
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.get_transaction_status
   name: get_transaction_status
   summary: 'Gets the status of an entry identified by a transaction id.
@@ -756,7 +610,7 @@ methods:
 
     Gets the status of an entry identified by a transaction id.'
   signature: 'async get_transaction_status(transaction_id: str, **kwargs: Any) ->
-    MutableMapping[str, Any]'
+    TransactionStatus'
   parameters:
   - name: transaction_id
     description: Identifies a write transaction. Required.
@@ -764,24 +618,18 @@ methods:
     types:
     - <xref:str>
   return:
-    description: JSON object
+    description: TransactionStatus. The TransactionStatus is compatible with MutableMapping
     types:
-    - <xref:JSON>
+    - <xref:azure.confidentialledger.models.TransactionStatus>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  examples:
-  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # response body for status code(s): 200\n   response == {\n       \"state\"\
-    : \"str\",\n       \"transactionId\": \"str\"\n   }\n   ````\n"
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.get_user
   name: get_user
   summary: 'Gets a user.
 
 
     Gets a user.'
-  signature: 'async get_user(user_id: str, **kwargs: Any) -> MutableMapping[str, Any]'
+  signature: 'async get_user(user_id: str, **kwargs: Any) -> LedgerUser'
   parameters:
   - name: user_id
     description: The user id, either an AAD object ID or certificate fingerprint.
@@ -790,70 +638,24 @@ methods:
     types:
     - <xref:str>
   return:
-    description: JSON object
+    description: LedgerUser. The LedgerUser is compatible with MutableMapping
     types:
-    - <xref:JSON>
+    - <xref:azure.confidentialledger.models.LedgerUser>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  examples:
-  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # response body for status code(s): 200\n   response == {\n       \"assignedRole\"\
-    : \"str\",\n       \"userId\": \"str\"\n   }\n   ````\n"
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.get_user_defined_endpoint
   name: get_user_defined_endpoint
   summary: 'Gets a user defined endpoint.
 
 
     Returns the user defined endpoint in the ACL instance.'
-  signature: 'async get_user_defined_endpoint(**kwargs: Any) -> MutableMapping[str,
-    Any]'
+  signature: 'async get_user_defined_endpoint(**kwargs: Any) -> Bundle'
   return:
-    description: JSON object
+    description: Bundle. The Bundle is compatible with MutableMapping
     types:
-    - <xref:JSON>
+    - <xref:azure.confidentialledger.models.Bundle>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  examples:
-  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # response body for status code(s): 200\n   response == {\n       \"metadata\"\
-    : {\n           \"endpoints\": {\n               \"str\": {\n                \
-    \   \"delete\": {\n                       \"authn_policies\": [\n            \
-    \               {}\n                       ],\n                       \"forwarding_required\"\
-    : \"str\",\n                       \"interpreter_reuse\": {\n                \
-    \           \"key\": \"str\"\n                       },\n                    \
-    \   \"js_function\": \"str\",\n                       \"js_module\": \"str\",\n\
-    \                       \"mode\": \"str\",\n                       \"openapi\"\
-    : {},\n                       \"openapi_hidden\": bool,\n                    \
-    \   \"redirection_strategy\": \"str\"\n                   },\n               \
-    \    \"get\": {\n                       \"authn_policies\": [\n              \
-    \             {}\n                       ],\n                       \"forwarding_required\"\
-    : \"str\",\n                       \"interpreter_reuse\": {\n                \
-    \           \"key\": \"str\"\n                       },\n                    \
-    \   \"js_function\": \"str\",\n                       \"js_module\": \"str\",\n\
-    \                       \"mode\": \"str\",\n                       \"openapi\"\
-    : {},\n                       \"openapi_hidden\": bool,\n                    \
-    \   \"redirection_strategy\": \"str\"\n                   },\n               \
-    \    \"patch\": {\n                       \"authn_policies\": [\n            \
-    \               {}\n                       ],\n                       \"forwarding_required\"\
-    : \"str\",\n                       \"interpreter_reuse\": {\n                \
-    \           \"key\": \"str\"\n                       },\n                    \
-    \   \"js_function\": \"str\",\n                       \"js_module\": \"str\",\n\
-    \                       \"mode\": \"str\",\n                       \"openapi\"\
-    : {},\n                       \"openapi_hidden\": bool,\n                    \
-    \   \"redirection_strategy\": \"str\"\n                   },\n               \
-    \    \"put\": {\n                       \"authn_policies\": [\n              \
-    \             {}\n                       ],\n                       \"forwarding_required\"\
-    : \"str\",\n                       \"interpreter_reuse\": {\n                \
-    \           \"key\": \"str\"\n                       },\n                    \
-    \   \"js_function\": \"str\",\n                       \"js_module\": \"str\",\n\
-    \                       \"mode\": \"str\",\n                       \"openapi\"\
-    : {},\n                       \"openapi_hidden\": bool,\n                    \
-    \   \"redirection_strategy\": \"str\"\n                   }\n               }\n\
-    \           }\n       },\n       \"modules\": {}\n   }\n   ````\n"
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.get_user_defined_endpoints_module
   name: get_user_defined_endpoints_module
   summary: 'Module for user defined endpoints.
@@ -861,24 +663,18 @@ methods:
 
     It gets the module for the user defined endpoint.'
   signature: 'async get_user_defined_endpoints_module(*, module_name: str, **kwargs:
-    Any) -> MutableMapping[str, Any]'
+    Any) -> ModuleDef'
   keywordOnlyParameters:
   - name: module_name
     description: module name of the user defined endpoint. Required.
     types:
     - <xref:str>
   return:
-    description: JSON object
+    description: ModuleDef. The ModuleDef is compatible with MutableMapping
     types:
-    - <xref:JSON>
+    - <xref:azure.confidentialledger.models.ModuleDef>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  examples:
-  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # response body for status code(s): 200\n   response == {\n       \"module\"\
-    : \"str\",\n       \"name\": \"str\"\n   }\n   ````\n"
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.get_user_defined_function
   name: get_user_defined_function
   summary: 'Gets a user defined function.
@@ -886,7 +682,7 @@ methods:
 
     Returns the user defined function in the Confidential Ledger.'
   signature: 'async get_user_defined_function(function_id: str, **kwargs: Any) ->
-    MutableMapping[str, Any]'
+    UserDefinedFunction'
   parameters:
   - name: function_id
     description: Identifies a user defined function. Required.
@@ -894,95 +690,66 @@ methods:
     types:
     - <xref:str>
   return:
-    description: JSON object
+    description: UserDefinedFunction. The UserDefinedFunction is compatible with MutableMapping
     types:
-    - <xref:JSON>
+    - <xref:azure.confidentialledger.models.UserDefinedFunction>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  examples:
-  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # response body for status code(s): 200\n   response == {\n       \"code\"\
-    : \"str\",\n       \"id\": \"str\"\n   }\n   ````\n"
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.get_user_defined_role
   name: get_user_defined_role
   summary: 'Gets role actions for user defined roles.
 
 
     user defined roles allow users to define and manage app specific AuthZ policy.'
-  signature: 'async get_user_defined_role(*, role_name: str, **kwargs: Any) -> List[MutableMapping[str,
-    Any]]'
+  signature: 'async get_user_defined_role(*, role_name: str, **kwargs: Any) -> Roles'
   keywordOnlyParameters:
   - name: role_name
     description: user defined role name. Required.
     types:
     - <xref:str>
   return:
-    description: list of JSON object
+    description: Roles. The Roles is compatible with MutableMapping
     types:
-    - <xref:list>[<xref:JSON>]
+    - <xref:azure.confidentialledger.models.Roles>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  examples:
-  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # response body for status code(s): 200\n   response == [\n       {\n    \
-    \       \"roleActions\": [\n               \"str\"\n           ],\n          \
-    \ \"roleName\": \"str\"\n       }\n   ]\n   ````\n"
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.list_collections
   name: list_collections
   summary: 'Retrieves a list of collection ids present in the Confidential Ledger.
 
 
     Collection ids are user-created collections of ledger entries.'
-  signature: 'list_collections(**kwargs: Any) -> AsyncIterable[MutableMapping[str,
-    Any]]'
+  signature: 'list_collections(**kwargs: Any) -> AsyncItemPaged[Collection]'
   return:
-    description: An iterator like instance of JSON object
+    description: An iterator like instance of Collection
     types:
-    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:JSON>]
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.confidentialledger.models.Collection>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  examples:
-  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # response body for status code(s): 200\n   response == {\n       \"collectionId\"\
-    : \"str\"\n   }\n   ````\n"
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.list_consortium_members
   name: list_consortium_members
   summary: 'Lists the consortium members.
 
 
     Consortium members can manage the Confidential Ledger.'
-  signature: 'list_consortium_members(**kwargs: Any) -> AsyncIterable[MutableMapping[str,
-    Any]]'
+  signature: 'list_consortium_members(**kwargs: Any) -> AsyncItemPaged[ConsortiumMember]'
   return:
-    description: An iterator like instance of JSON object
+    description: An iterator like instance of ConsortiumMember
     types:
-    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:JSON>]
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.confidentialledger.models.ConsortiumMember>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  examples:
-  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # response body for status code(s): 200\n   response == {\n       \"certificate\"\
-    : \"str\",\n       \"id\": \"str\"\n   }\n   ````\n"
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.list_ledger_entries
   name: list_ledger_entries
   summary: 'Gets ledger entries from a collection corresponding to a range.
 
 
     A collection id may optionally be specified. Only entries in the specified (or
-    default)
 
-    collection will be returned.'
+    default) collection will be returned.'
   signature: 'list_ledger_entries(*, collection_id: str | None = None, from_transaction_id:
     str | None = None, to_transaction_id: str | None = None, tag: str | None = None,
-    **kwargs: Any) -> AsyncIterable[MutableMapping[str, Any]]'
+    **kwargs: Any) -> AsyncItemPaged[LedgerEntry]'
   keywordOnlyParameters:
   - name: collection_id
     description: The collection id. Default value is None.
@@ -1007,55 +774,24 @@ methods:
     types:
     - <xref:str>
   return:
-    description: An iterator like instance of JSON object
+    description: An iterator like instance of LedgerEntry
     types:
-    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:JSON>]
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.confidentialledger.models.LedgerEntry>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  examples:
-  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # response body for status code(s): 200\n   response == {\n       \"contents\"\
-    : \"str\",\n       \"collectionId\": \"str\",\n       \"postHooks\": [\n     \
-    \      {\n               \"functionId\": \"str\",\n               \"properties\"\
-    : {\n                   \"arguments\": [\n                       \"str\"\n   \
-    \                ],\n                   \"exportedFunctionName\": \"str\",\n \
-    \                  \"runtimeOptions\": {\n                       \"log_exception_details\"\
-    : bool,\n                       \"max_cached_interpreters\": 0,\n            \
-    \           \"max_execution_time_ms\": 0,\n                       \"max_heap_bytes\"\
-    : 0,\n                       \"max_stack_bytes\": 0,\n                       \"\
-    return_exception_details\": bool\n                   }\n               }\n   \
-    \        }\n       ],\n       \"preHooks\": [\n           {\n               \"\
-    functionId\": \"str\",\n               \"properties\": {\n                   \"\
-    arguments\": [\n                       \"str\"\n                   ],\n      \
-    \             \"exportedFunctionName\": \"str\",\n                   \"runtimeOptions\"\
-    : {\n                       \"log_exception_details\": bool,\n               \
-    \        \"max_cached_interpreters\": 0,\n                       \"max_execution_time_ms\"\
-    : 0,\n                       \"max_heap_bytes\": 0,\n                       \"\
-    max_stack_bytes\": 0,\n                       \"return_exception_details\": bool\n\
-    \                   }\n               }\n           }\n       ],\n       \"transactionId\"\
-    : \"str\"\n   }\n   ````\n"
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.list_ledger_users
   name: list_ledger_users
   summary: 'Gets details on a list of users.
 
 
     All users'' object IDs and multiple roles will be returned.'
-  signature: 'list_ledger_users(**kwargs: Any) -> AsyncIterable[MutableMapping[str,
-    Any]]'
+  signature: 'list_ledger_users(**kwargs: Any) -> AsyncItemPaged[LedgerUserMultipleRoles]'
   return:
-    description: An iterator like instance of JSON object
+    description: An iterator like instance of LedgerUserMultipleRoles
     types:
-    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:JSON>]
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.confidentialledger.models.LedgerUserMultipleRoles>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  examples:
-  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # response body for status code(s): 200\n   response == {\n       \"assignedRoles\"\
-    : [\n           \"str\"\n       ],\n       \"userId\": \"str\"\n   }\n   ````\n"
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.list_user_defined_functions
   name: list_user_defined_functions
   summary: 'Retrieves a list of user defined functions present in the Confidential
@@ -1063,39 +799,26 @@ methods:
 
 
     User defined functions stored in the Confidential Ledger.'
-  signature: 'list_user_defined_functions(**kwargs: Any) -> AsyncIterable[MutableMapping[str,
-    Any]]'
+  signature: 'list_user_defined_functions(**kwargs: Any) -> AsyncItemPaged[UserDefinedFunction]'
   return:
-    description: An iterator like instance of JSON object
+    description: An iterator like instance of UserDefinedFunction
     types:
-    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:JSON>]
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.confidentialledger.models.UserDefinedFunction>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  examples:
-  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # response body for status code(s): 200\n   response == {\n       \"code\"\
-    : \"str\",\n       \"id\": \"str\"\n   }\n   ````\n"
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.list_users
   name: list_users
   summary: 'Gets details on a list of users.
 
 
     All users'' object IDs and single role per user will be returned.'
-  signature: 'list_users(**kwargs: Any) -> AsyncIterable[MutableMapping[str, Any]]'
+  signature: 'list_users(**kwargs: Any) -> AsyncItemPaged[LedgerUser]'
   return:
-    description: An iterator like instance of JSON object
+    description: An iterator like instance of LedgerUser
     types:
-    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:JSON>]
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.confidentialledger.models.LedgerUser>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  examples:
-  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # response body for status code(s): 200\n   response == {\n       \"assignedRole\"\
-    : \"str\",\n       \"userId\": \"str\"\n   }\n   ````\n"
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.send_request
   name: send_request
   summary: 'Runs the network request through the client''s chained policies.
@@ -1143,52 +866,43 @@ methods:
 
 
     Updates the runtime options.'
-  signature: 'async update_runtime_options(js_runtime_options: MutableMapping[str,
-    Any] | IO[bytes], **kwargs: Any) -> MutableMapping[str, Any]'
+  signature: 'async update_runtime_options(js_runtime_options: JsRuntimeOptions |
+    MutableMapping[str, Any] | IO[bytes], **kwargs: Any) -> JsRuntimeOptions'
   parameters:
   - name: js_runtime_options
-    description: 'JS runtime options. Is either a JSON type or a IO[bytes] type.
+    description: 'JS Runtime options. Is one of the following types: JsRuntimeOptions,
 
-      Required.'
+      JSON, IO[bytes] Required.'
     isRequired: true
     types:
+    - <xref:azure.confidentialledger.models.JsRuntimeOptions>
     - <xref:JSON>
     - <xref:typing.IO>[<xref:bytes>]
   return:
-    description: JSON object
+    description: JsRuntimeOptions. The JsRuntimeOptions is compatible with MutableMapping
     types:
-    - <xref:JSON>
+    - <xref:azure.confidentialledger.models.JsRuntimeOptions>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  examples:
-  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # JSON input template you can fill out and use as your body input.\n   js_runtime_options\
-    \ = {\n       \"log_exception_details\": bool,\n       \"max_cached_interpreters\"\
-    : 0,\n       \"max_execution_time_ms\": 0,\n       \"max_heap_bytes\": 0,\n  \
-    \     \"max_stack_bytes\": 0,\n       \"return_exception_details\": bool\n   }\n\
-    \n   # response body for status code(s): 200\n   response == {\n       \"log_exception_details\"\
-    : bool,\n       \"max_cached_interpreters\": 0,\n       \"max_execution_time_ms\"\
-    : 0,\n       \"max_heap_bytes\": 0,\n       \"max_stack_bytes\": 0,\n       \"\
-    return_exception_details\": bool\n   }\n   ````\n"
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.update_user_defined_role
   name: update_user_defined_role
   summary: 'Patch replaces the allowed action on existing roles,if the desire is to
-    remove an existing
+    remove
 
-    action, the role must be deleted and recreated.
+    an existing action, the role must be deleted and recreated.
 
 
     User defined roles allow users to define and manage app specific AuthZ policy.'
-  signature: 'async update_user_defined_role(roles: List[MutableMapping[str, Any]]
+  signature: 'async update_user_defined_role(body: Roles | MutableMapping[str, Any]
     | IO[bytes], **kwargs: Any) -> None'
   parameters:
-  - name: roles
-    description: user defined role. Is either a [JSON] type or a IO[bytes] type. Required.
+  - name: body
+    description: 'Request body. Is one of the following types: Roles, JSON, IO[bytes]
+      Required.'
     isRequired: true
     types:
-    - <xref:list>[<xref:JSON>]
+    - <xref:azure.confidentialledger.models.Roles>
+    - <xref:JSON>
     - <xref:typing.IO>[<xref:bytes>]
   return:
     description: None
