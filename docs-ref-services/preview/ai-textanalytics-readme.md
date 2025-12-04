@@ -1,7 +1,7 @@
 ---
 title: Azure Text Analytics client library for Python
 keywords: Azure, python, SDK, API, azure-ai-textanalytics, cognitivelanguage
-ms.date: 11/11/2025
+ms.date: 12/04/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: cognitivelanguage
@@ -90,7 +90,7 @@ This table shows the relationship between SDK versions and supported API version
 
 | SDK version  | Supported API version of service  |
 | ------------ | --------------------------------- |
-| 6.0.0b2 - Latest preview release | 2022-05-01, 2023-04-01, 2024-11-01, 2025-11-15-preview (default) |
+| 6.0.0b2 - Latest preview release | 2022-05-01, 2023-04-01, 2024-11-01, 2025-11-01, 2025-11-15-preview (default) |
 | 6.0.0b1  | 2022-05-01, 2023-04-01, 2024-11-01, 2025-05-15-preview (default) |
 | 5.3.X - Latest stable release | 3.0, 3.1, 2022-05-01, 2023-04-01 (default) |
 | 5.2.X  | 3.0, 3.1, 2022-05-01 (default) |
