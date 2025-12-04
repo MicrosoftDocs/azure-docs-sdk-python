@@ -6,7 +6,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: storage
 ---
-# Azure DataLake service client library for Python - version 12.23.0a20251203003 
+# Azure DataLake service client library for Python - version 12.23.0a20251203004 
 
 Overview
 
