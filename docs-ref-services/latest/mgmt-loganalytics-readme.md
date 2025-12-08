@@ -4,7 +4,8 @@ keywords: Azure, python, SDK, API, azure-mgmt-loganalytics, loganalytics
 ms.date: 11/17/2021
 ms.topic: reference
 ms.devlang: python
-ms.service: log-analytics
+ms.service: azure-monitor
+ms.subservice: logs
 ---
 # Microsoft Azure SDK for Python
 
