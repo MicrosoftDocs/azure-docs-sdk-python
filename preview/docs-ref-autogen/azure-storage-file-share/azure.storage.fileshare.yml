@@ -110,7 +110,7 @@ functions:
   - "Generate a sas token.<!--[!code-python[Main](les\\file_samples_authentication.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\295\\\\azure_storage_file_share-12.23.0b1\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\297\\\\azure_storage_file_share-12.24.0b1\\\
     \\samples\\\\file_samples_authentication.py\", \"xml:space\": \"preserve\", \"\
     force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
     : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.storage.fileshare\
@@ -129,10 +129,11 @@ functions:
 
     ShareClient, ShareDirectoryClient, or ShareFileClient.'
   signature: 'generate_file_sas(account_name: str, share_name: str, file_path: List[str],
-    account_key: str, permission: FileSasPermissions | str | None = None, expiry:
-    datetime | str | None = None, start: datetime | str | None = None, policy_id:
-    str | None = None, ip: str | None = None, *, sts_hook: Callable[[str], None] |
-    None = None, **kwargs: Any) -> str'
+    account_key: str | None = None, permission: FileSasPermissions | str | None =
+    None, expiry: datetime | str | None = None, start: datetime | str | None = None,
+    policy_id: str | None = None, ip: str | None = None, *, user_delegation_key: UserDelegationKey
+    | None = None, user_delegation_oid: str | None = None, sts_hook: Callable[[str],
+    None] | None = None, **kwargs: Any) -> str'
   parameters:
   - name: account_name
     description: The storage account name used to generate the shared access signature.
@@ -153,9 +154,9 @@ functions:
   - name: account_key
     description: The account key, also called shared key or access key, to generate
       the shared access signature.
-    isRequired: true
+    defaultValue: None
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
   - name: permission
     description: 'The permissions associated with the shared access signature. The
 
@@ -261,6 +262,30 @@ functions:
       value is https.
     types:
     - <xref:str>
+  - name: user_delegation_key
+    description: 'Instead of an account shared key, the user could pass in a user
+      delegation key.
+
+      A user delegation key can be obtained from the service by authenticating with
+      an AAD identity;
+
+      this can be accomplished by calling <xref:azure.storage.fileshare.ShareServiceClient.get_user_delegation_key>.
+
+      When present, the SAS is signed with the user delegation key instead.'
+    defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:azure.storage.fileshare.UserDelegationKey>]
+  - name: user_delegation_oid
+    description: 'Specifies the Entra ID of the user that is authorized to use the
+      resulting SAS URL.
+
+      The resulting SAS URL must be used in conjunction with an Entra ID token that
+      has been
+
+      issued to the user specified in this value.'
+    defaultValue: None
+    types:
+    - <xref:str>
   - name: sts_hook
     description: 'For debugging purposes only. If provided, the hook is called with
       the string to sign
@@ -282,10 +307,11 @@ functions:
 
     ShareClient, ShareDirectoryClient, or ShareFileClient.'
   signature: 'generate_share_sas(account_name: str, share_name: str, account_key:
-    str, permission: ShareSasPermissions | str | None = None, expiry: datetime | str
-    | None = None, start: datetime | str | None = None, policy_id: str | None = None,
-    ip: str | None = None, *, sts_hook: Callable[[str], None] | None = None, **kwargs:
-    Any) -> str'
+    str | None = None, permission: ShareSasPermissions | str | None = None, expiry:
+    datetime | str | None = None, start: datetime | str | None = None, policy_id:
+    str | None = None, ip: str | None = None, *, user_delegation_key: UserDelegationKey
+    | None = None, user_delegation_oid: str | None = None, sts_hook: Callable[[str],
+    None] | None = None, **kwargs: Any) -> str'
   parameters:
   - name: account_name
     description: The storage account name used to generate the shared access signature.
@@ -300,9 +326,9 @@ functions:
   - name: account_key
     description: The account key, also called shared key or access key, to generate
       the shared access signature.
-    isRequired: true
+    defaultValue: None
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
   - name: permission
     description: 'The permissions associated with the shared access signature. The
 
@@ -410,6 +436,30 @@ functions:
       value is https.
     types:
     - <xref:str>
+  - name: user_delegation_key
+    description: 'Instead of an account shared key, the user could pass in a user
+      delegation key.
+
+      A user delegation key can be obtained from the service by authenticating with
+      an AAD identity;
+
+      this can be accomplished by calling <xref:azure.storage.fileshare.ShareServiceClient.get_user_delegation_key>.
+
+      When present, the SAS is signed with the user delegation key instead.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.fileshare.UserDelegationKey>
+  - name: user_delegation_oid
+    description: 'Specifies the Entra ID of the user that is authorized to use the
+      resulting SAS URL.
+
+      The resulting SAS URL must be used in conjunction with an Entra ID token that
+      has been
+
+      issued to the user specified in this value.'
+    defaultValue: None
+    types:
+    - <xref:str>
   - name: sts_hook
     description: 'For debugging purposes only. If provided, the hook is called with
       the string to sign
@@ -436,6 +486,7 @@ classes:
 - azure.storage.fileshare.LocationMode
 - azure.storage.fileshare.Metrics
 - azure.storage.fileshare.NTFSAttributes
+- azure.storage.fileshare.NfsEncryptionInTransit
 - azure.storage.fileshare.ResourceTypes
 - azure.storage.fileshare.RetentionPolicy
 - azure.storage.fileshare.Services
@@ -443,12 +494,15 @@ classes:
 - azure.storage.fileshare.ShareDirectoryClient
 - azure.storage.fileshare.ShareFileClient
 - azure.storage.fileshare.ShareLeaseClient
+- azure.storage.fileshare.ShareNfsSettings
 - azure.storage.fileshare.ShareProperties
 - azure.storage.fileshare.ShareProtocolSettings
 - azure.storage.fileshare.ShareSasPermissions
 - azure.storage.fileshare.ShareServiceClient
 - azure.storage.fileshare.ShareSmbSettings
+- azure.storage.fileshare.SmbEncryptionInTransit
 - azure.storage.fileshare.SmbMultichannel
+- azure.storage.fileshare.UserDelegationKey
 packages:
 - azure.storage.fileshare.aio
 enums:
