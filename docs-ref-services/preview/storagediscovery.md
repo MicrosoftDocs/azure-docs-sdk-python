@@ -1,7 +1,7 @@
 ---
 title: Azure Storagediscovery SDK for Python
 description: Reference for Azure Storagediscovery SDK for Python
-ms.date: 12/08/2025
+ms.date: 12/09/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: storagediscovery
