@@ -1,7 +1,7 @@
 ---
 title: Azure Defender EASM SDK for Python
 description: Reference for Azure Defender EASM SDK for Python
-ms.date: 12/10/2025
+ms.date: 12/11/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: defendereasm
