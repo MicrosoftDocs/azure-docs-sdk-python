@@ -1,7 +1,7 @@
 ---
 title: Azure Health Bot SDK for Python
 description: Reference for Azure Health Bot SDK for Python
-ms.date: 12/11/2025
+ms.date: 12/12/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: azure-ai-health-bot
