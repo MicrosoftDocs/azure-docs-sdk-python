@@ -6,7 +6,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: ai
 ---
-# Azure AI Projects client library for Python - version 2.0.0a20251211003 
+# Azure AI Projects client library for Python - version 2.0.0a20251212003 
 
 
 The AI Projects client library (in preview) is part of the Microsoft Foundry SDK, and provides easy access to
@@ -581,6 +581,9 @@ Enable multi-agent collaboration where agents can communicate and delegate tasks
 tool = A2ATool(
     project_connection_id=os.environ["A2A_PROJECT_CONNECTION_ID"],
 )
+# If the connection is missing target, we need to set the A2A endpoint URL.
+if os.environ.get("A2A_ENDPOINT"):
+    tool.base_url = os.environ["A2A_ENDPOINT"]
 ```
 
 <!-- END SNIPPET -->
