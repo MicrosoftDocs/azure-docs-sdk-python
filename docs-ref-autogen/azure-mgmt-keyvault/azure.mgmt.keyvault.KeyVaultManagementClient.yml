@@ -13,20 +13,17 @@ constructor:
     **kwargs: Any)'
   parameters:
   - name: credential
-    description: Credential needed for the client to connect to Azure. Required.
+    description: Credential used to authenticate requests to the service. Required.
     isRequired: true
     types:
     - <xref:azure.core.credentials.TokenCredential>
   - name: subscription_id
-    description: 'Subscription credentials which uniquely identify Microsoft Azure
-
-      subscription. The subscription ID forms part of the URI for every service call.
-      Required.'
+    description: The ID of the target subscription. The value must be an UUID. Required.
     isRequired: true
     types:
     - <xref:str>
   - name: base_url
-    description: Service URL. Default value is None.
+    description: Service host. Default value is None.
     defaultValue: None
     types:
     - <xref:str>
@@ -40,10 +37,9 @@ constructor:
     types:
     - <xref:azure.core.AzureClouds>
   - name: api_version
-    description: 'Api Version. Default value is "2025-05-01". Note that overriding
-      this
+    description: 'The API version to use for this operation. Default value is "2025-05-01".
 
-      default value may result in unsupported behavior.'
+      Note that overriding this default value may result in unsupported behavior.'
     types:
     - <xref:str>
   - name: polling_interval
@@ -53,14 +49,10 @@ constructor:
     types:
     - <xref:int>
 variables:
-- description: KeysOperations operations
-  name: keys
+- description: Operations operations
+  name: operations
   types:
-  - <xref:azure.mgmt.keyvault.operations.KeysOperations>
-- description: ManagedHsmKeysOperations operations
-  name: managed_hsm_keys
-  types:
-  - <xref:azure.mgmt.keyvault.operations.ManagedHsmKeysOperations>
+  - <xref:azure.mgmt.keyvault.operations.Operations>
 - description: VaultsOperations operations
   name: vaults
   types:
@@ -69,18 +61,26 @@ variables:
   name: private_endpoint_connections
   types:
   - <xref:azure.mgmt.keyvault.operations.PrivateEndpointConnectionsOperations>
-- description: PrivateLinkResourcesOperations operations
-  name: private_link_resources
-  types:
-  - <xref:azure.mgmt.keyvault.operations.PrivateLinkResourcesOperations>
 - description: ManagedHsmsOperations operations
   name: managed_hsms
   types:
   - <xref:azure.mgmt.keyvault.operations.ManagedHsmsOperations>
-- description: MHSMPrivateEndpointConnectionsOperations operations
-  name: mhsm_private_endpoint_connections
+- description: SecretsOperations operations
+  name: secrets
   types:
-  - <xref:azure.mgmt.keyvault.operations.MHSMPrivateEndpointConnectionsOperations>
+  - <xref:azure.mgmt.keyvault.operations.SecretsOperations>
+- description: KeysOperations operations
+  name: keys
+  types:
+  - <xref:azure.mgmt.keyvault.operations.KeysOperations>
+- description: ManagedHsmKeysOperations operations
+  name: managed_hsm_keys
+  types:
+  - <xref:azure.mgmt.keyvault.operations.ManagedHsmKeysOperations>
+- description: PrivateLinkResourcesOperations operations
+  name: private_link_resources
+  types:
+  - <xref:azure.mgmt.keyvault.operations.PrivateLinkResourcesOperations>
 - description: MHSMPrivateLinkResourcesOperations operations
   name: mhsm_private_link_resources
   types:
@@ -89,15 +89,52 @@ variables:
   name: mhsm_regions
   types:
   - <xref:azure.mgmt.keyvault.operations.MHSMRegionsOperations>
-- description: Operations operations
-  name: operations
+- description: MHSMPrivateEndpointConnectionsOperations operations
+  name: mhsm_private_endpoint_connections
   types:
-  - <xref:azure.mgmt.keyvault.operations.Operations>
-- description: SecretsOperations operations
-  name: secrets
-  types:
-  - <xref:azure.mgmt.keyvault.operations.SecretsOperations>
+  - <xref:azure.mgmt.keyvault.operations.MHSMPrivateEndpointConnectionsOperations>
 methods:
 - uid: azure.mgmt.keyvault.KeyVaultManagementClient.close
   name: close
   signature: close() -> None
+- uid: azure.mgmt.keyvault.KeyVaultManagementClient.send_request
+  name: send_request
+  summary: 'Runs the network request through the client''s chained policies.
+
+
+    ```
+
+
+    >>> from azure.core.rest import HttpRequest
+
+    >>> request = HttpRequest("GET", "https://www.example.org/")
+
+    <HttpRequest [GET], url: ''https://www.example.org/''>
+
+    >>> response = client.send_request(request)
+
+    <HttpResponse: 200 OK>
+
+    ```
+
+
+    For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> HttpResponse'
+  parameters:
+  - name: request
+    description: The network request you want to make. Required.
+    isRequired: true
+    types:
+    - <xref:azure.core.rest.HttpRequest>
+  keywordOnlyParameters:
+  - name: stream
+    description: Whether the response payload will be streamed. Defaults to False.
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  return:
+    description: The response of your network call. Does not do error handling on
+      your response.
+    types:
+    - <xref:azure.core.rest.HttpResponse>
