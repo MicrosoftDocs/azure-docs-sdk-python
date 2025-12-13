@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-iotfirmwaredefense, iotfirmwaredefense
-ms.date: 07/02/2025
+ms.date: 12/13/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: iotfirmwaredefense
