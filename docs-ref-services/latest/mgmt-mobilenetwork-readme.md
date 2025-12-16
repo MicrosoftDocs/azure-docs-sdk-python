@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-mobilenetwork, mobilenetwork
-ms.date: 06/17/2024
+ms.date: 12/16/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: mobilenetwork
@@ -14,7 +14,7 @@ For a more complete view of Azure libraries, see the [azure sdk python release](
 
 ## _Disclaimer_
 
-_Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
+This package has been deprecated and will no longer be maintained after 09-30-2025. This package will only receive security fixes until 09-30-2025.
 
 ## Getting started
 
