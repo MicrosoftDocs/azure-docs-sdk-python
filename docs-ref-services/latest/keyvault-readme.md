@@ -5,7 +5,6 @@ ms.date: 03/29/2022
 ms.topic: reference
 ms.devlang: python
 ms.service: key-vault
-ms.technology: azure
 ---
 # Azure Key Vault client libraries for Python
 
@@ -53,5 +52,5 @@ additional questions or comments.
 
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fsdk%2Fkeyvault%2Fazure-keyvault%2FFREADME.png)
+
 

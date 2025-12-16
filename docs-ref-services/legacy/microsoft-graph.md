@@ -6,7 +6,6 @@ ms.date: 05/10/2019
 ms.topic: reference
 ms.devlang: python
 ms.service: active-directory
-ms.technology: azure
 manager: jfriend
 ---
 # Azure Active Directory Graph libraries for Python

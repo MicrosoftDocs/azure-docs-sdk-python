@@ -6,7 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: storage
 ms.subservice: queues
-ms.technology: azure
 ---
 # Azure Storage Queues client library for Python - version 12.1.4 
 

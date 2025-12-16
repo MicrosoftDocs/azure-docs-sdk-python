@@ -5,7 +5,6 @@ ms.date: 06/05/2021
 ms.topic: reference
 ms.devlang: python
 ms.service: azure-monitor
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 
@@ -22,5 +21,5 @@ If you are looking to install the Azure client libraries, see the
 `azure <https://pypi.python.org/pypi/azure>`__ bundle package.
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fsdk%2Ftextanalytics%2Fazure-ai-nspkg%2FREADME.png)
+
 

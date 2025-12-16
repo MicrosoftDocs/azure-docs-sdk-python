@@ -5,7 +5,6 @@ ms.date: 12/01/2020
 ms.topic: reference
 ms.devlang: python
 ms.service: digital-twins
-ms.technology: azure
 ---
 # Azure Azure Digital Twins Core client library for Python - version 1.1.0 
 

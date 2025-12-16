@@ -1,0 +1,159 @@
+### YamlMime:PythonClass
+uid: azure.ai.transcription.TranscriptionClient
+name: TranscriptionClient
+fullName: azure.ai.transcription.TranscriptionClient
+module: azure.ai.transcription
+summary: TranscriptionClient.
+constructor:
+  syntax: 'TranscriptionClient(endpoint: str, credential: AzureKeyCredential | TokenCredential,
+    **kwargs: Any)'
+  parameters:
+  - name: endpoint
+    description: 'Supported Cognitive Services endpoints (protocol and hostname, for
+      example:
+
+      [https://westus.api.cognitive.microsoft.com](https://westus.api.cognitive.microsoft.com).
+
+      Required.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: credential
+    description: 'Credential used to authenticate requests to the service. Is either
+      a key
+
+      credential type or a token credential type. Required.'
+    isRequired: true
+    types:
+    - <xref:azure.core.credentials.AzureKeyCredential>
+    - <xref:azure.core.credentials.TokenCredential>
+  keywordOnlyParameters:
+  - name: api_version
+    description: 'The API version to use for this operation. Default value is "2025-10-15".
+
+      Note that overriding this default value may result in unsupported behavior.'
+    types:
+    - <xref:str>
+methods:
+- uid: azure.ai.transcription.TranscriptionClient.close
+  name: close
+  signature: close() -> None
+- uid: azure.ai.transcription.TranscriptionClient.send_request
+  name: send_request
+  summary: 'Runs the network request through the client''s chained policies.
+
+
+    ```
+
+
+    >>> from azure.core.rest import HttpRequest
+
+    >>> request = HttpRequest("GET", "https://www.example.org/")
+
+    <HttpRequest [GET], url: ''https://www.example.org/''>
+
+    >>> response = client.send_request(request)
+
+    <HttpResponse: 200 OK>
+
+    ```
+
+
+    For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> HttpResponse'
+  parameters:
+  - name: request
+    description: The network request you want to make. Required.
+    isRequired: true
+    types:
+    - <xref:azure.core.rest.HttpRequest>
+  keywordOnlyParameters:
+  - name: stream
+    description: Whether the response payload will be streamed. Defaults to False.
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  return:
+    description: The response of your network call. Does not do error handling on
+      your response.
+    types:
+    - <xref:azure.core.rest.HttpResponse>
+- uid: azure.ai.transcription.TranscriptionClient.transcribe
+  name: transcribe
+  summary: Transcribes the provided audio stream.
+  signature: 'transcribe(body: TranscriptionContent | MutableMapping[str, Any], **kwargs:
+    Any) -> TranscriptionResult'
+  parameters:
+  - name: body
+    description: 'The body of the multipart request. Is either a TranscriptionContent
+      type or a JSON
+
+      type. Required.'
+    isRequired: true
+    types:
+    - <xref:azure.ai.transcription.models.TranscriptionContent>
+    - <xref:JSON>
+  return:
+    description: TranscriptionResult. The TranscriptionResult is compatible with MutableMapping
+    types:
+    - <xref:azure.ai.transcription.models.TranscriptionResult>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.transcription.TranscriptionClient.transcribe_from_url
+  name: transcribe_from_url
+  summary: 'Transcribes audio from a URL.
+
+
+    Use this method when the audio is hosted at a URL that the service can access.
+
+    For transcribing local audio files or byte streams, use <xref:azure.ai.transcription.TranscriptionClient.transcribe>
+    instead.'
+  signature: 'transcribe_from_url(audio_url: str, *, options: TranscriptionOptions
+    | None = None, **kwargs: Any) -> TranscriptionResult'
+  parameters:
+  - name: audio_url
+    description: 'The URL of the audio file to transcribe. The audio must be shorter
+      than 2
+
+      hours in duration and smaller than 250 MB in size. Required.'
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: options
+    description: 'Optional transcription configuration. If provided, the audio_url
+      parameter
+
+      will override the audio_url field in the options object.'
+    defaultValue: None
+    types:
+    - <xref:azure.ai.transcription.models.TranscriptionOptions>
+  return:
+    description: TranscriptionResult with the transcription text and phrases.
+    types:
+    - <xref:azure.ai.transcription.models.TranscriptionResult>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "Transcribe audio from a URL.<!--[!code-python[Main](les\\sample_transcribe_from_url.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\26\\\\azure_ai_transcription-1.0.0b1\\\
+    \\samples\\\\sample_transcribe_from_url.py\", \"xml:space\": \"preserve\", \"\
+    force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
+    \ import AzureKeyCredential\n   from azure.ai.transcription import TranscriptionClient\n\
+    \   from azure.ai.transcription.models import TranscriptionOptions\n\n   # Get\
+    \ configuration from environment variables\n   endpoint = os.environ[\"AZURE_SPEECH_ENDPOINT\"\
+    ]\n   api_key = os.environ[\"AZURE_SPEECH_API_KEY\"]\n\n   # Create the transcription\
+    \ client\n   client = TranscriptionClient(endpoint=endpoint, credential=AzureKeyCredential(api_key))\n\
+    \n   # URL to your audio file (must be publicly accessible)\n   audio_url = \"\
+    https://example.com/path/to/audio.wav\"\n   # Configure transcription options\n\
+    \   options = TranscriptionOptions(locales=[\"en-US\"])\n\n   # Transcribe the\
+    \ audio from URL\n   # The service will access and transcribe the audio directly\
+    \ from the URL\n   result = client.transcribe_from_url(audio_url, options=options)\n\
+    \n   # Print the transcription result\n   print(f\"Transcription: {result.combined_phrases[0].text}\"\
+    )\n\n   # Print duration information\n   if result.duration_milliseconds:\n  \
+    \     print(f\"Audio duration: {result.duration_milliseconds / 1000:.2f} seconds\"\
+    )\n\n   ````\n"

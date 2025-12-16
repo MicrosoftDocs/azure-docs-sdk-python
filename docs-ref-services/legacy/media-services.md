@@ -1,13 +1,12 @@
 ---
-title: Azure Media Services libraries for python
-description: Reference for Azure Media Services libraries for python
-keywords: Azure, python, SDK, API, Media Services
-ms.date: 07/10/2017
+title: Azure Media Services SDK for Python
+description: Reference for Azure Media Services SDK for Python
+ms.date: 12/15/2025
 ms.topic: reference
 ms.devlang: python
-ms.service: media-services
-ms.technology: azure
+ms.service: mediaservices
 manager: douge
+keywords: Azure, python, SDK, API, Media Services
 ---
 # Azure Media Services libraries for python
 
@@ -21,4 +20,3 @@ pip install azure-mgmt-media
 ```
 > [!div class="nextstepaction"]
 > [Explore the Management APIs](/python/api/overview/azure/mediaservices/management)
-

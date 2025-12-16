@@ -5,7 +5,6 @@ ms.date: 03/31/2022
 ms.topic: reference
 ms.devlang: python
 ms.service: app-service
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 
@@ -36,5 +35,5 @@ If you encounter any bugs or have suggestions, please file an issue in the
 section of the project. 
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-web%2FREADME.png)
+
 

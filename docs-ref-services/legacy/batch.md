@@ -6,7 +6,6 @@ ms.date: 07/31/2017
 ms.topic: reference
 ms.devlang: python
 ms.service: batch
-ms.technology: azure
 manager: douge
 ---
 # Azure Batch libraries for python

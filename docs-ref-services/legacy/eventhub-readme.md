@@ -5,7 +5,6 @@ ms.date: 09/08/2020
 ms.topic: reference
 ms.devlang: python
 ms.service: event-hubs
-ms.technology: azure
 ---
 # Azure Event Hubs client library for Python - version 5.2.0 
 
@@ -440,5 +439,5 @@ PR appropriately (e.g., label, comment). Simply follow the instructions provided
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python/sdk/eventhub/azure-eventhub/README.png)
+
 

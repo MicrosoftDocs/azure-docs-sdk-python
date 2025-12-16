@@ -3,8 +3,6 @@ uid: azure.keyvault.certificates.aio.CertificateClient
 name: CertificateClient
 fullName: azure.keyvault.certificates.aio.CertificateClient
 module: azure.keyvault.certificates.aio
-inheritances:
-- azure.keyvault.certificates._shared.async_client_base.AsyncKeyVaultClientBase
 summary: A high-level asynchronous interface for managing a vault's certificates.
 constructor:
   syntax: 'CertificateClient(vault_url: str, credential: AsyncTokenCredential, **kwargs:
@@ -112,7 +110,8 @@ methods:
 
     <xref:azure.core.exceptions.HttpResponseError>.'
   signature: 'async create_certificate(certificate_name: str, policy: CertificatePolicy,
-    **kwargs: Any) -> KeyVaultCertificate | CertificateOperation'
+    *, enabled: bool | None = None, tags: Dict[str, str] | None = None, preserve_order:
+    bool | None = None, **kwargs: Any) -> KeyVaultCertificate | CertificateOperation'
   parameters:
   - name: certificate_name
     description: The name of the certificate.
@@ -130,12 +129,19 @@ methods:
   keywordOnlyParameters:
   - name: enabled
     description: Whether the certificate is enabled for use.
+    defaultValue: None
     types:
     - <xref:bool>
   - name: tags
     description: Application specific metadata in the form of key-value pairs.
+    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
+  - name: preserve_order
+    description: Whether to preserve the order of the certificate chain.
+    defaultValue: None
+    types:
+    - <xref:bool>
   return:
     description: 'A coroutine for the creation of the certificate. Awaiting the coroutine
       returns the created
@@ -154,8 +160,10 @@ methods:
   name: create_issuer
   summary: Sets the specified certificate issuer. Requires certificates/setissuers
     permission.
-  signature: 'async create_issuer(issuer_name: str, provider: str, **kwargs: Any)
-    -> CertificateIssuer'
+  signature: 'async create_issuer(issuer_name: str, provider: str, *, enabled: bool
+    | None = None, account_id: str | None = None, password: str | None = None, organization_id:
+    str | None = None, admin_contacts: List[AdministratorContact] | None = None, **kwargs:
+    Any) -> CertificateIssuer'
   parameters:
   - name: issuer_name
     description: The name of the issuer.
@@ -170,24 +178,29 @@ methods:
   keywordOnlyParameters:
   - name: enabled
     description: Whether the issuer is enabled for use.
+    defaultValue: None
     types:
     - <xref:bool>
   - name: account_id
     description: The user name/account name/account id.
+    defaultValue: None
     types:
     - <xref:str>
   - name: password
     description: The password/secret/account key.
+    defaultValue: None
     types:
     - <xref:str>
   - name: organization_id
     description: Id of the organization
+    defaultValue: None
     types:
     - <xref:str>
   - name: admin_contacts
     description: 'Contact details of the organization administrators of the
 
       certificate issuer.'
+    defaultValue: None
     types:
     - <xref:list>[<xref:azure.keyvault.certificates.AdministratorContact>]
   return:
@@ -444,7 +457,9 @@ methods:
 
     <xref:azure.keyvault.certificates.CertificateContentType.pem>.'
   signature: 'async import_certificate(certificate_name: str, certificate_bytes: bytes,
-    **kwargs: Any) -> KeyVaultCertificate'
+    *, enabled: bool | None = None, tags: Dict[str, str] | None = None, password:
+    str | None = None, policy: CertificatePolicy | None = None, preserve_order: bool
+    | None = None, **kwargs: Any) -> KeyVaultCertificate'
   parameters:
   - name: certificate_name
     description: The name of the certificate.
@@ -461,16 +476,19 @@ methods:
   keywordOnlyParameters:
   - name: enabled
     description: Whether the certificate is enabled for use.
+    defaultValue: None
     types:
     - <xref:bool>
   - name: tags
     description: Application specific metadata in the form of key-value pairs.
+    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: password
     description: 'If the private key in the passed in certificate is encrypted, it
 
       is the password used for encryption.'
+    defaultValue: None
     types:
     - <xref:str>
   - name: policy
@@ -480,8 +498,14 @@ methods:
       with <xref:azure.keyvault.certificates.CertificatePolicy.content_type> set to
 
       <xref:azure.keyvault.certificates.CertificateContentType.pem>.'
+    defaultValue: None
     types:
     - <xref:azure.keyvault.certificates.CertificatePolicy>
+  - name: preserve_order
+    description: Whether to preserve the order of the certificate chain.
+    defaultValue: None
+    types:
+    - <xref:bool>
   return:
     description: The imported KeyVaultCertificate
     types:
@@ -508,6 +532,7 @@ methods:
 
       Only available for API versions v7.0 and up. If not provided, Key Vault treats
       this as False.'
+    defaultValue: None
     types:
     - <xref:bool>
     - <xref:None>
@@ -552,6 +577,7 @@ methods:
 
       Only available for API versions v7.0 and up. If not provided, Key Vault treats
       this as False.'
+    defaultValue: None
     types:
     - <xref:bool>
     - <xref:None>
@@ -586,12 +612,13 @@ methods:
     key pair currently available in the service. Make sure when creating the certificate
     to merge using
 
-    <xref:azure.keyvault.certificates.aio.begin_create_certificate> that you set its
-    issuer to ''Unknown''. This way Key Vault knows that the
+    <xref:azure.keyvault.certificates.aio.CertificateClient.create_certificate> that
+    you set its issuer to ''Unknown''. This way Key Vault knows that the
 
     certificate will not be signed by an issuer known to it.'
   signature: 'async merge_certificate(certificate_name: str, x509_certificates: List[bytes],
-    **kwargs: Any) -> KeyVaultCertificate'
+    *, enabled: bool | None = None, tags: Dict[str, str] | None = None, **kwargs:
+    Any) -> KeyVaultCertificate'
   parameters:
   - name: certificate_name
     description: The name of the certificate
@@ -606,10 +633,12 @@ methods:
   keywordOnlyParameters:
   - name: enabled
     description: Whether the certificate is enabled for use.
+    defaultValue: None
     types:
     - <xref:bool>
   - name: tags
     description: Application specific metadata in the form of key-value pairs.
+    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   return:
@@ -728,6 +757,7 @@ methods:
   keywordOnlyParameters:
   - name: stream
     description: Whether the response payload will be streamed. Defaults to False.
+    defaultValue: 'False'
     types:
     - <xref:bool>
   return:
@@ -782,7 +812,8 @@ methods:
   name: update_certificate_properties
   summary: Change a certificate's properties. Requires certificates/update permission.
   signature: 'async update_certificate_properties(certificate_name: str, version:
-    str | None = None, **kwargs: Any) -> KeyVaultCertificate'
+    str | None = None, *, enabled: bool | None = None, tags: Dict[str, str] | None
+    = None, **kwargs: Any) -> KeyVaultCertificate'
   parameters:
   - name: certificate_name
     description: The name of the certificate in the given key vault.
@@ -791,16 +822,18 @@ methods:
     - <xref:str>
   - name: version
     description: The version of the certificate.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   keywordOnlyParameters:
   - name: enabled
     description: Whether the certificate is enabled for use.
+    defaultValue: None
     types:
     - <xref:bool>
   - name: tags
     description: Application specific metadata in the form of key-value pairs.
+    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   return:
@@ -813,7 +846,10 @@ methods:
   name: update_issuer
   summary: Updates the specified certificate issuer. Requires certificates/setissuers
     permission.
-  signature: 'async update_issuer(issuer_name: str, **kwargs: Any) -> CertificateIssuer'
+  signature: 'async update_issuer(issuer_name: str, *, enabled: bool | None = None,
+    provider: str | None = None, account_id: str | None = None, password: str | None
+    = None, organization_id: str | None = None, admin_contacts: List[AdministratorContact]
+    | None = None, **kwargs: Any) -> CertificateIssuer'
   parameters:
   - name: issuer_name
     description: The name of the issuer.
@@ -823,28 +859,34 @@ methods:
   keywordOnlyParameters:
   - name: enabled
     description: Whether the issuer is enabled for use.
+    defaultValue: None
     types:
     - <xref:bool>
   - name: provider
     description: The issuer provider
+    defaultValue: None
     types:
     - <xref:str>
   - name: account_id
     description: The user name/account name/account id.
+    defaultValue: None
     types:
     - <xref:str>
   - name: password
     description: The password/secret/account key.
+    defaultValue: None
     types:
     - <xref:str>
   - name: organization_id
     description: Id of the organization
+    defaultValue: None
     types:
     - <xref:str>
   - name: admin_contacts
     description: 'Contact details of the organization administrators of
 
       the certificate issuer'
+    defaultValue: None
     types:
     - <xref:list>[<xref:azure.keyvault.certificates.AdministratorContact>]
   return:

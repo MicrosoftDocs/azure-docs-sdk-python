@@ -3,8 +3,6 @@ uid: azure.eventhub.EventHubProducerClient
 name: EventHubProducerClient
 fullName: azure.eventhub.EventHubProducerClient
 module: azure.eventhub
-inheritances:
-- azure.eventhub._client_base.ClientBase
 summary: 'The EventHubProducerClient class defines a high level interface for
 
   sending events to the Azure Event Hubs service.'
@@ -45,6 +43,7 @@ constructor:
       batch,
 
       then publish. Default is False.'
+    defaultValue: 'False'
     types:
     - <xref:bool>
   - name: buffer_concurrency
@@ -74,6 +73,7 @@ constructor:
 
       It is required when *buffered_mode* is True while optional if *buffered_mode*
       is False.'
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:typing.Callable>[[<xref:SendEventTypes>, <xref:typing.Optional>[<xref:str>]],
       <xref:None>]]
@@ -112,6 +112,7 @@ constructor:
 
       - If events fail to send after enqueuing successfully, the *on_error* callback
       will be called.'
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:typing.Callable>[[<xref:SendEventTypes>, <xref:typing.Optional>[<xref:str>],
       <xref:Exception>], <xref:None>]]
@@ -122,6 +123,7 @@ constructor:
       will be triggered.
 
       The default value is 1500 in buffered mode.'
+    defaultValue: None
     types:
     - <xref:int>
   - name: max_wait_time
@@ -131,6 +133,7 @@ constructor:
       before publishing.
 
       The default value is 1 in buffered mode.'
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:float>]
   - name: logging_enable
@@ -222,6 +225,8 @@ constructor:
 
       other paths needed for the host environment. Default is None.
 
+      Unless specified otherwise, default transport type is TransportType.AmqpOverWebsockets.
+
       The format would be like "sb://<custom_endpoint_hostname>:<custom_endpoint_port>".
 
       If port is not specified in the *custom_endpoint_address*, by default port 443
@@ -237,6 +242,14 @@ constructor:
       Default is None in which case *certifi.where()* will be used.'
     types:
     - <xref:typing.Optional>[<xref:str>]
+  - name: ssl_context
+    description: 'The SSLContext object to use in the underlying Pure Python AMQP
+      transport. If specified,
+
+      connection_verify will be ignored.'
+    types:
+    - <xref:ssl.SSLContext>
+    - <xref:None>
   - name: uamqp_transport
     description: 'Whether to use the *uamqp* library as the underlying transport.
       The default value is
@@ -264,17 +277,17 @@ examples:
 - "Create a new instance of the EventHubProducerClient.<!--[!code-python[Main](les\\\
   sync_samples\\sample_code_eventhub.py )]-->\n\n<!-- literal_block {\"ids\": [],\
   \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-  : \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
-  \\py2docfx\\\\dist_temp\\\\36\\\\azure-eventhub-5.13.0b1\\\\samples\\\\sync_samples\\\
-  \\sample_code_eventhub.py\", \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-  : \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\
-  \n````python\n\n   import os\n   from azure.eventhub import EventHubProducerClient,\
-  \ EventHubSharedKeyCredential\n\n   fully_qualified_namespace = os.environ['EVENT_HUB_HOSTNAME']\n\
-  \   eventhub_name = os.environ['EVENT_HUB_NAME']\n   shared_access_policy = os.environ['EVENT_HUB_SAS_POLICY']\n\
-  \   shared_access_key = os.environ['EVENT_HUB_SAS_KEY']\n\n   credential = EventHubSharedKeyCredential(shared_access_policy,\
+  : \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\
+  \\dist_temp\\\\55\\\\azure_eventhub-5.15.0b2\\\\samples\\\\sync_samples\\\\sample_code_eventhub.py\"\
+  , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
+  \   from azure.eventhub import EventHubProducerClient, EventHubSharedKeyCredential\n\
+  \n   fully_qualified_namespace = os.environ[\"EVENT_HUB_HOSTNAME\"]\n   eventhub_name\
+  \ = os.environ[\"EVENT_HUB_NAME\"]\n   shared_access_policy = os.environ[\"EVENT_HUB_SAS_POLICY\"\
+  ]\n   shared_access_key = os.environ[\"EVENT_HUB_SAS_KEY\"]\n\n   credential = EventHubSharedKeyCredential(shared_access_policy,\
   \ shared_access_key)\n   producer = EventHubProducerClient(\n       fully_qualified_namespace=fully_qualified_namespace,\n\
   \       eventhub_name=eventhub_name,  # EventHub name should be specified if it\
-  \ doesn't show up in connection string.\n       credential=credential\n   )\n\n\
+  \ doesn't show up in connection string.\n       credential=credential,\n   )\n\n\
   \   ````\n"
 methods:
 - uid: azure.eventhub.EventHubProducerClient.close
@@ -295,6 +308,7 @@ methods:
     description: 'Buffered mode only. Timeout to close the producer.
 
       Default is None which means no timeout.'
+    defaultValue: None
     types:
     - <xref:float>
     - <xref:None>
@@ -310,19 +324,20 @@ methods:
   examples:
   - "Close down the client.<!--[!code-python[Main](les\\sync_samples\\sample_code_eventhub.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    36\\\\azure-eventhub-5.13.0b1\\\\samples\\\\sync_samples\\\\sample_code_eventhub.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   import os\n   from azure.eventhub import EventHubProducerClient, EventData\n\
-    \n   event_hub_connection_str = os.environ['EVENT_HUB_CONN_STR']\n   eventhub_name\
-    \ = os.environ['EVENT_HUB_NAME']\n\n   producer = EventHubProducerClient.from_connection_string(\n\
-    \       conn_str=event_hub_connection_str,\n       eventhub_name=eventhub_name\
-    \  # EventHub name should be specified if it doesn't show up in connection string.\n\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\55\\\\azure_eventhub-5.15.0b2\\\
+    \\samples\\\\sync_samples\\\\sample_code_eventhub.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n   from azure.eventhub\
+    \ import EventHubProducerClient, EventData\n   from azure.identity import DefaultAzureCredential\n\
+    \n   eventhub_fully_qualified_namespace = os.environ[\"EVENT_HUB_HOSTNAME\"]\n\
+    \   eventhub_name = os.environ[\"EVENT_HUB_NAME\"]\n\n   producer = EventHubProducerClient(\n\
+    \       fully_qualified_namespace=eventhub_fully_qualified_namespace,\n      \
+    \ eventhub_name=eventhub_name,  # EventHub name should be specified if it doesn't\
+    \ show up in connection string.\n       credential=DefaultAzureCredential(),\n\
     \   )\n   try:\n       event_data_batch = producer.create_batch()\n\n       while\
-    \ True:\n           try:\n               event_data_batch.add(EventData('Message\
-    \ inside EventBatchData'))\n           except ValueError:\n               # EventDataBatch\
+    \ True:\n           try:\n               event_data_batch.add(EventData(\"Message\
+    \ inside EventBatchData\"))\n           except ValueError:\n               # EventDataBatch\
     \ object reaches max_size.\n               # New EventDataBatch object can be\
     \ created here to send more data\n               break\n\n       producer.send_batch(event_data_batch)\n\
     \   finally:\n       # Close down the producer handler.\n       producer.close()\n\
@@ -339,11 +354,11 @@ methods:
     | None = None, max_size_in_bytes: int | None = None, **kwargs: Any) -> EventDataBatch'
   keywordOnlyParameters:
   - name: partition_id
-    isRequired: true
+    defaultValue: None
   - name: partition_key
-    isRequired: true
+    defaultValue: None
   - name: max_size_in_bytes
-    isRequired: true
+    defaultValue: None
   return:
     types:
     - <xref:azure.eventhub.EventDataBatch>
@@ -351,16 +366,15 @@ methods:
   - "Create EventDataBatch object within limited size<!--[!code-python[Main](les\\\
     sync_samples\\sample_code_eventhub.py )]-->\n\n<!-- literal_block {\"ids\": [],\
     \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\36\\\\azure-eventhub-5.13.0b1\\\\samples\\\\sync_samples\\\
-    \\sample_code_eventhub.py\", \"xml:space\": \"preserve\", \"force\": false, \"\
-    language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
-    : false} -->\n\n````python\n\n       event_data_batch = producer.create_batch()\n\
-    \       while True:\n           try:\n               event_data_batch.add(EventData('Message\
-    \ inside EventBatchData'))\n           except ValueError:\n               # The\
-    \ EventDataBatch object reaches its max_size.\n               # You can send the\
-    \ full EventDataBatch object and create a new one here.\n               break\n\
-    \n   ````\n"
+    : \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\
+    \\dist_temp\\\\55\\\\azure_eventhub-5.15.0b2\\\\samples\\\\sync_samples\\\\sample_code_eventhub.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n       event_data_batch = producer.create_batch()\n       while True:\n    \
+    \       try:\n               event_data_batch.add(EventData(\"Message inside EventBatchData\"\
+    ))\n           except ValueError:\n               # The EventDataBatch object\
+    \ reaches its max_size.\n               # You can send the full EventDataBatch\
+    \ object and create a new one here.\n               break\n\n   ````\n"
 - uid: azure.eventhub.EventHubProducerClient.flush
   name: flush
   summary: 'Buffered mode only.
@@ -372,6 +386,7 @@ methods:
   - name: timeout
     description: Timeout to flush the buffered events, default is None which means
       no timeout.
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:float>]
   return:
@@ -396,6 +411,7 @@ methods:
   keywordOnlyParameters:
   - name: eventhub_name
     description: The path of the specific Event Hub to connect the client to.
+    defaultValue: None
     types:
     - <xref:str>
   - name: buffered_mode
@@ -403,6 +419,7 @@ methods:
       batch,
 
       then publish. Default is False.'
+    defaultValue: 'False'
     types:
     - <xref:bool>
   - name: buffer_concurrency
@@ -413,6 +430,7 @@ methods:
       with the default number of workers will be created per
 
       [https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor](https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor)'
+    defaultValue: None
     types:
     - <xref:ThreadPoolExecutor>
     - <xref:int>
@@ -431,6 +449,7 @@ methods:
       The callback function should be defined like: *on_success(events, partition_id)*.
 
       Required when *buffered_mode* is True while optional if *buffered_mode* is False.'
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:typing.Callable>[[<xref:SendEventTypes>, <xref:typing.Optional>[<xref:str>]],
       <xref:None>]]
@@ -472,6 +491,7 @@ methods:
 
       - If events fail to send after enqueuing successfully, the *on_error* callback
       will be called.'
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:typing.Callable>[[<xref:SendEventTypes>, <xref:typing.Optional>[<xref:str>],
       <xref:Exception>], <xref:None>]]
@@ -482,6 +502,7 @@ methods:
       will be triggered.
 
       The default value is 1500 in buffered mode.'
+    defaultValue: None
     types:
     - <xref:int>
   - name: max_wait_time
@@ -491,10 +512,12 @@ methods:
       before publishing.
 
       The default value is 1 in buffered mode.'
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:float>]
   - name: logging_enable
     description: Whether to output network trace logs to the logger. Default is *False*.
+    defaultValue: 'False'
     types:
     - <xref:bool>
   - name: http_proxy
@@ -503,6 +526,7 @@ methods:
       keys: *''proxy_hostname''* (str value) and *''proxy_port''* (int value).
 
       Additionally the following keys may also be present: *''username'', ''password''*.'
+    defaultValue: None
     types:
     - <xref:typing.Dict>
   - name: auth_timeout
@@ -516,6 +540,7 @@ methods:
     - <xref:float>
   - name: user_agent
     description: If specified, this will be added in front of the user agent string.
+    defaultValue: None
     types:
     - <xref:str>
   - name: retry_total
@@ -563,6 +588,7 @@ methods:
       will not shutdown due to
 
       inactivity unless initiated by the service.'
+    defaultValue: None
     types:
     - <xref:float>
   - name: transport_type
@@ -594,10 +620,13 @@ methods:
 
       other paths needed for the host environment. Default is None.
 
+      Unless specified otherwise, default transport type is TransportType.AmqpOverWebsockets.
+
       The format would be like "sb://<custom_endpoint_hostname>:<custom_endpoint_port>".
 
       If port is not specified in the *custom_endpoint_address*, by default port 443
       will be used.'
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:str>]
   - name: connection_verify
@@ -607,13 +636,24 @@ methods:
       authenticate the identity of the connection endpoint.
 
       Default is None in which case *certifi.where()* will be used.'
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:str>]
+  - name: ssl_context
+    description: 'The SSLContext object to use in the underlying Pure Python AMQP
+      transport. If specified,
+
+      connection_verify will be ignored.'
+    defaultValue: None
+    types:
+    - <xref:ssl.SSLContext>
+    - <xref:None>
   - name: uamqp_transport
     description: 'Whether to use the *uamqp* library as the underlying transport.
       The default value is
 
       False and the Pure Python AMQP library will be used as the underlying transport.'
+    defaultValue: 'False'
     types:
     - <xref:bool>
   return:
@@ -624,15 +664,15 @@ methods:
   - "Create a new instance of the EventHubProducerClient from connection string.<!--[!code-python[Main](les\\\
     sync_samples\\sample_code_eventhub.py )]-->\n\n<!-- literal_block {\"ids\": [],\
     \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\36\\\\azure-eventhub-5.13.0b1\\\\samples\\\\sync_samples\\\
-    \\sample_code_eventhub.py\", \"xml:space\": \"preserve\", \"force\": false, \"\
-    language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
-    : false} -->\n\n````python\n\n   import os\n   from azure.eventhub import EventHubProducerClient\n\
-    \   event_hub_connection_str = os.environ['EVENT_HUB_CONN_STR']\n   eventhub_name\
-    \ = os.environ['EVENT_HUB_NAME']\n   producer = EventHubProducerClient.from_connection_string(\n\
-    \       conn_str=event_hub_connection_str,\n       eventhub_name=eventhub_name\
-    \  # EventHub name should be specified if it doesn't show up in connection string.\n\
+    : \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\
+    \\dist_temp\\\\55\\\\azure_eventhub-5.15.0b2\\\\samples\\\\sync_samples\\\\sample_code_eventhub.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   import os\n   from azure.identity import DefaultAzureCredential\n\n   eventhub_fully_qualified_namespace\
+    \ = os.environ[\"EVENT_HUB_HOSTNAME\"]\n   eventhub_name = os.environ[\"EVENT_HUB_NAME\"\
+    ]\n   producer = EventHubProducerClient(\n       fully_qualified_namespace=eventhub_fully_qualified_namespace,\n\
+    \       eventhub_name=eventhub_name,  # EventHub name should be specified if it\
+    \ doesn't show up in connection string.\n       credential=DefaultAzureCredential(),\n\
     \   )\n\n   ````\n"
 - uid: azure.eventhub.EventHubProducerClient.get_buffered_event_count
   name: get_buffered_event_count
@@ -744,6 +784,7 @@ methods:
       In non-buffered mode, the default wait time specified when the producer
 
       was created will be used. In buffered mode, the default wait time is None.'
+    defaultValue: None
     types:
     - <xref:float>
   - name: partition_id
@@ -756,6 +797,7 @@ methods:
       is an *EventDataBatch* because
 
       *EventDataBatch* itself has partition_id.'
+    defaultValue: None
     types:
     - <xref:str>
   - name: partition_key
@@ -782,6 +824,7 @@ methods:
 
       partition_key to only be string type, they might fail to parse the non-string
       value.**'
+    defaultValue: None
     types:
     - <xref:str>
   return:
@@ -805,15 +848,15 @@ methods:
   examples:
   - "Sends event data<!--[!code-python[Main](les\\sync_samples\\sample_code_eventhub.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    36\\\\azure-eventhub-5.13.0b1\\\\samples\\\\sync_samples\\\\sample_code_eventhub.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n       with producer:\n           event_data_batch = producer.create_batch()\n\
-    \n           while True:\n               try:\n                   event_data_batch.add(EventData('Message\
-    \ inside EventBatchData'))\n               except ValueError:\n              \
-    \     # EventDataBatch object reaches max_size.\n                   # New EventDataBatch\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\55\\\\azure_eventhub-5.15.0b2\\\
+    \\samples\\\\sync_samples\\\\sample_code_eventhub.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n       with producer:\n       \
+    \    event_data_batch = producer.create_batch()\n\n           while True:\n  \
+    \             try:\n                   event_data_batch.add(EventData(\"Message\
+    \ inside EventBatchData\"))\n               except ValueError:\n             \
+    \      # EventDataBatch object reaches max_size.\n                   # New EventDataBatch\
     \ object can be created here to send more data\n                   break\n\n \
     \          producer.send_batch(event_data_batch)\n\n   ````\n"
 - uid: azure.eventhub.EventHubProducerClient.send_event
@@ -854,6 +897,7 @@ methods:
       that the event will be
 
       scheduled to send immediately.'
+    defaultValue: None
     types:
     - <xref:float>
   - name: partition_id
@@ -866,6 +910,7 @@ methods:
       is an *EventDataBatch* because
 
       *EventDataBatch* itself has partition_id.'
+    defaultValue: None
     types:
     - <xref:str>
   - name: partition_key
@@ -892,6 +937,7 @@ methods:
 
       partition_key to only be string type, they might fail to parse the non-string
       value.**'
+    defaultValue: None
     types:
     - <xref:str>
   return:

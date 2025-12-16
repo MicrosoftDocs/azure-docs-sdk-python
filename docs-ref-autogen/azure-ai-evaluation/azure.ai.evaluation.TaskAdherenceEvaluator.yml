@@ -1,0 +1,69 @@
+### YamlMime:PythonClass
+uid: azure.ai.evaluation.TaskAdherenceEvaluator
+name: TaskAdherenceEvaluator
+fullName: azure.ai.evaluation.TaskAdherenceEvaluator
+module: azure.ai.evaluation
+summary: "> [!NOTE]\n> This is an experimental class, and may change at any time.\
+  \ Please see [https://aka.ms/azuremlexperimental](https://aka.ms/azuremlexperimental)\
+  \ for more information.\n>\n\nThe Task Adherence evaluator assesses whether an AI\
+  \ assistant's actions fully align with the user's intent\nand fully achieve the\
+  \ intended goal across three dimensions:\n\n   * Goal adherence: Did the assistant\
+  \ achieve the user's objective within scope and constraints? \n\n   * Rule adherence:\
+  \ Did the assistant respect safety, privacy, authorization, and presentation contracts?\
+  \ \n\n   * Procedural adherence: Did the assistant follow required workflows, tool\
+  \ use, sequencing, and verification? \n\nThe evaluator returns a boolean flag indicating\
+  \ whether there was any material failure in any dimension.\nA material failure is\
+  \ an issue that makes the output unusable, creates verifiable risk, violates an\
+  \ explicit\nconstraint, or is a critical issue as defined in the evaluation dimensions.\n\
+  \nThe evaluation includes step-by-step reasoning and a flagged boolean result."
+constructor:
+  syntax: TaskAdherenceEvaluator(model_config, *, threshold=0, credential=None, **kwargs)
+  parameters:
+  - name: model_config
+    description: Configuration for the Azure OpenAI model.
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:azure.ai.evaluation.AzureOpenAIModelConfiguration>,
+      <xref:azure.ai.evaluation.OpenAIModelConfiguration>]
+  keywordOnlyParameters:
+  - name: threshold
+    defaultValue: '0'
+  - name: credential
+    defaultValue: None
+examples:
+- "Initialize and call TaskAdherenceEvaluator using Azure AI Project URL in the following\
+  \ format\n[https:/](https:/)/{resource_name}.services.ai.azure.com/api/projects/{project_name}<!--[!code-python[Main](les\\\
+  evaluation_samples_evaluate_fdp.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
+  classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"\
+  C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\
+  \\dist_temp\\\\15\\\\azure_ai_evaluation-1.13.7\\\\samples\\\\evaluation_samples_evaluate_fdp.py\"\
+  , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
+  \   from azure.ai.evaluation import TaskAdherenceEvaluator\n\n   model_config =\
+  \ {\n       \"azure_endpoint\": os.environ.get(\"AZURE_OPENAI_ENDPOINT\"),  # https://<account_name>.services.ai.azure.com\n\
+  \       \"api_key\": os.environ.get(\"AZURE_OPENAI_KEY\"),\n       \"azure_deployment\"\
+  : os.environ.get(\"AZURE_OPENAI_DEPLOYMENT\"),\n   }\n\n   task_adherence_evaluator\
+  \ = TaskAdherenceEvaluator(model_config=model_config)\n\n   query = [\n       {\"\
+  role\": \"system\", \"content\": \"You are a helpful customer service agent.\"},\n\
+  \       {\n           \"role\": \"user\",\n           \"content\": [{\"type\": \"\
+  text\", \"text\": \"What is the status of my order #123?\"}],\n       },\n   ]\n\
+  \n   response = [\n       {\n           \"role\": \"assistant\",\n           \"\
+  content\": [\n               {\n                   \"type\": \"tool_call\",\n  \
+  \                 \"tool_call\": {\n                       \"id\": \"tool_001\"\
+  ,\n                       \"type\": \"function\",\n                       \"function\"\
+  : {\n                           \"name\": \"get_order\",\n                     \
+  \      \"arguments\": {\"order_id\": \"123\"},\n                       },\n    \
+  \               },\n               }\n           ],\n       },\n       {\n     \
+  \      \"role\": \"tool\",\n           \"tool_call_id\": \"tool_001\",\n       \
+  \    \"content\": [\n               {\n                   \"type\": \"tool_result\"\
+  ,\n                   \"tool_result\": '{ \"order\": { \"id\": \"123\", \"status\"\
+  : \"shipped\" } }',\n               }\n           ],\n       },\n       {\n    \
+  \       \"role\": \"assistant\",\n           \"content\": [{\"type\": \"text\",\
+  \ \"text\": \"Your order #123 has been shipped.\"}],\n       },\n   ]\n\n   task_adherence_evaluator(query=query,\
+  \ response=response)\n\n   ````\n"
+attributes:
+- uid: azure.ai.evaluation.TaskAdherenceEvaluator.id
+  name: id
+  summary: Evaluator identifier, experimental and to be used only with evaluation
+    in cloud.
+  signature: id = 'azureai://built-in/evaluators/task_adherence'

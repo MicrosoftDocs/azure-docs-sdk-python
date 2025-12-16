@@ -3,8 +3,6 @@ uid: azure.mgmt.appcontainers.models.ManagedEnvironment
 name: ManagedEnvironment
 fullName: azure.mgmt.appcontainers.models.ManagedEnvironment
 module: azure.mgmt.appcontainers.models
-inheritances:
-- azure.mgmt.appcontainers.models._models_py3.TrackedResource
 summary: 'An environment for hosting container apps.
 
 
@@ -19,15 +17,20 @@ constructor:
     | None = None, vnet_configuration: _models.VnetConfiguration | None = None, app_logs_configuration:
     _models.AppLogsConfiguration | None = None, app_insights_configuration: _models.AppInsightsConfiguration
     | None = None, open_telemetry_configuration: _models.OpenTelemetryConfiguration
-    | None = None, zone_redundant: bool | None = None, custom_domain_configuration:
-    _models.CustomDomainConfiguration | None = None, workload_profiles: List[_models.WorkloadProfile]
-    | None = None, keda_configuration: _models.KedaConfiguration | None = None, dapr_configuration:
+    | None = None, zone_redundant: bool | None = None, availability_zones: List[str]
+    | None = None, custom_domain_configuration: _models.CustomDomainConfiguration
+    | None = None, workload_profiles: List[_models.WorkloadProfile] | None = None,
+    keda_configuration: _models.KedaConfiguration | None = None, dapr_configuration:
     _models.DaprConfiguration | None = None, infrastructure_resource_group: str |
     None = None, peer_authentication: _models.ManagedEnvironmentPropertiesPeerAuthentication
-    | None = None, **kwargs: Any)'
+    | None = None, peer_traffic_configuration: _models.ManagedEnvironmentPropertiesPeerTrafficConfiguration
+    | None = None, ingress_configuration: _models.IngressConfiguration | None = None,
+    public_network_access: str | _models.PublicNetworkAccess | None = None, disk_encryption_configuration:
+    _models.DiskEncryptionConfiguration | None = None, **kwargs: Any)'
   keywordOnlyParameters:
   - name: tags
     description: Resource tags.
+    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: location
@@ -36,6 +39,7 @@ constructor:
     - <xref:str>
   - name: kind
     description: Kind of the Environment.
+    defaultValue: None
     types:
     - <xref:str>
   - name: identity
@@ -43,58 +47,73 @@ constructor:
       other Azure
 
       services without maintaining any secrets or credentials in code.'
+    defaultValue: None
     types:
     - <xref:azure.mgmt.appcontainers.models.ManagedServiceIdentity>
   - name: dapr_ai_instrumentation_key
     description: 'Azure Monitor instrumentation key used by Dapr to export
 
       Service to Service communication telemetry.'
+    defaultValue: None
     types:
     - <xref:str>
   - name: dapr_ai_connection_string
     description: 'Application Insights connection string used by Dapr to
 
       export Service to Service communication telemetry.'
+    defaultValue: None
     types:
     - <xref:str>
   - name: vnet_configuration
     description: Vnet configuration for the environment.
+    defaultValue: None
     types:
     - <xref:azure.mgmt.appcontainers.models.VnetConfiguration>
   - name: app_logs_configuration
     description: 'Cluster configuration which enables the log daemon to export
 
-      app logs to a destination. Currently only "log-analytics" is
-
-      supported.'
+      app logs to configured destination.'
+    defaultValue: None
     types:
     - <xref:azure.mgmt.appcontainers.models.AppLogsConfiguration>
   - name: app_insights_configuration
     description: Environment level Application Insights configuration.
+    defaultValue: None
     types:
     - <xref:azure.mgmt.appcontainers.models.AppInsightsConfiguration>
   - name: open_telemetry_configuration
     description: Environment Open Telemetry configuration.
+    defaultValue: None
     types:
     - <xref:azure.mgmt.appcontainers.models.OpenTelemetryConfiguration>
   - name: zone_redundant
     description: Whether or not this Managed Environment is zone-redundant.
+    defaultValue: None
     types:
     - <xref:bool>
+  - name: availability_zones
+    description: The list of availability zones to use for managed environment.
+    defaultValue: None
+    types:
+    - <xref:list>[<xref:str>]
   - name: custom_domain_configuration
     description: Custom domain configuration for the environment.
+    defaultValue: None
     types:
     - <xref:azure.mgmt.appcontainers.models.CustomDomainConfiguration>
   - name: workload_profiles
     description: Workload profiles configured for the Managed Environment.
+    defaultValue: None
     types:
     - <xref:list>[<xref:azure.mgmt.appcontainers.models.WorkloadProfile>]
   - name: keda_configuration
     description: The configuration of Keda component.
+    defaultValue: None
     types:
     - <xref:azure.mgmt.appcontainers.models.KedaConfiguration>
   - name: dapr_configuration
     description: The configuration of Dapr component.
+    defaultValue: None
     types:
     - <xref:azure.mgmt.appcontainers.models.DaprConfiguration>
   - name: infrastructure_resource_group
@@ -104,17 +123,43 @@ constructor:
       provided, this
 
       resource group will be created in the same subscription as the subnet.'
+    defaultValue: None
     types:
     - <xref:str>
   - name: peer_authentication
     description: Peer authentication settings for the Managed Environment.
+    defaultValue: None
     types:
     - <xref:azure.mgmt.appcontainers.models.ManagedEnvironmentPropertiesPeerAuthentication>
-variables:
-- description: 'Fully qualified resource ID for the resource. Ex -
+  - name: peer_traffic_configuration
+    description: Peer traffic settings for the Managed Environment.
+    defaultValue: None
+    types:
+    - <xref:azure.mgmt.appcontainers.models.ManagedEnvironmentPropertiesPeerTrafficConfiguration>
+  - name: ingress_configuration
+    description: Ingress configuration for the Managed Environment.
+    defaultValue: None
+    types:
+    - <xref:azure.mgmt.appcontainers.models.IngressConfiguration>
+  - name: public_network_access
+    description: 'Property to allow or block all public traffic. Allowed Values:
 
-    /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.  #
-    pylint: disable=line-too-long'
+      ''Enabled'', ''Disabled''. Known values are: "Enabled" and "Disabled".'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.appcontainers.models.PublicNetworkAccess>
+  - name: disk_encryption_configuration
+    description: 'Disk encryption configuration for the Managed
+
+      Environment.'
+    defaultValue: None
+    types:
+    - <xref:azure.mgmt.appcontainers.models.DiskEncryptionConfiguration>
+variables:
+- description: 'Fully qualified resource ID for the resource. E.g.
+
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".'
   name: id
   types:
   - <xref:str>
@@ -187,15 +232,17 @@ variables:
   name: default_domain
   types:
   - <xref:str>
+- description: Private Link Default Domain Name for the environment.
+  name: private_link_default_domain
+  types:
+  - <xref:str>
 - description: Static IP of the Environment.
   name: static_ip
   types:
   - <xref:str>
-- description: 'Cluster configuration which enables the log daemon to export
+- description: 'Cluster configuration which enables the log daemon to export app
 
-    app logs to a destination. Currently only "log-analytics" is
-
-    supported.'
+    logs to configured destination.'
   name: app_logs_configuration
   types:
   - <xref:azure.mgmt.appcontainers.models.AppLogsConfiguration>
@@ -211,6 +258,10 @@ variables:
   name: zone_redundant
   types:
   - <xref:bool>
+- description: The list of availability zones to use for managed environment.
+  name: availability_zones
+  types:
+  - <xref:list>[<xref:str>]
 - description: Custom domain configuration for the environment.
   name: custom_domain_configuration
   types:
@@ -244,3 +295,26 @@ variables:
   name: peer_authentication
   types:
   - <xref:azure.mgmt.appcontainers.models.ManagedEnvironmentPropertiesPeerAuthentication>
+- description: Peer traffic settings for the Managed Environment.
+  name: peer_traffic_configuration
+  types:
+  - <xref:azure.mgmt.appcontainers.models.ManagedEnvironmentPropertiesPeerTrafficConfiguration>
+- description: Ingress configuration for the Managed Environment.
+  name: ingress_configuration
+  types:
+  - <xref:azure.mgmt.appcontainers.models.IngressConfiguration>
+- description: Private endpoint connections to the resource.
+  name: private_endpoint_connections
+  types:
+  - <xref:list>[<xref:azure.mgmt.appcontainers.models.PrivateEndpointConnection>]
+- description: 'Property to allow or block all public traffic. Allowed Values:
+
+    ''Enabled'', ''Disabled''. Known values are: "Enabled" and "Disabled".'
+  name: public_network_access
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.appcontainers.models.PublicNetworkAccess>
+- description: Disk encryption configuration for the Managed Environment.
+  name: disk_encryption_configuration
+  types:
+  - <xref:azure.mgmt.appcontainers.models.DiskEncryptionConfiguration>

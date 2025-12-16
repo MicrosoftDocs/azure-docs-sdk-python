@@ -3,9 +3,6 @@ uid: azure.storage.fileshare.aio.ShareFileClient
 name: ShareFileClient
 fullName: azure.storage.fileshare.aio.ShareFileClient
 module: azure.storage.fileshare.aio
-inheritances:
-- azure.storage.fileshare._shared.base_client_async.AsyncStorageAccountHostsMixin
-- azure.storage.fileshare._file_client.ShareFileClient
 summary: A client to interact with a specific file, although that file may not yet
   exist.
 constructor:
@@ -52,8 +49,8 @@ constructor:
 
       an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      an account shared access key, or an instance of a TokenCredentials class from
-      azure.identity.
+      an account shared access key, or an instance of a AsyncTokenCredentials class
+      from azure.identity.
 
       If the resource URI already contains a SAS token, this will be ignored in favor
       of an explicit credential
@@ -75,12 +72,13 @@ constructor:
     - <xref:None>
   keywordOnlyParameters:
   - name: token_intent
-    description: "Required when using *TokenCredential* for authentication and ignored\
-      \ for other forms of authentication.\nSpecifies the intent for all requests\
-      \ when using *TokenCredential* authentication. Possible values are:\n\nbackup\
-      \ - Specifies requests are intended for backup/admin type operations, meaning\
+    description: "Required when using *AsyncTokenCredential* for authentication and\
+      \ ignored for other forms of authentication.\nSpecifies the intent for all requests\
+      \ when using *AsyncTokenCredential* authentication. Possible values are:\n\n\
+      backup - Specifies requests are intended for backup/admin type operations, meaning\
       \ that all file/directory\n   ACLs are bypassed and full permissions are granted.\
       \ User must also have required RBAC permission."
+    defaultValue: None
     types:
     - <xref:typing.Literal>['backup']
   - name: allow_trailing_dot
@@ -113,7 +111,7 @@ constructor:
   - name: audience
     description: 'The audience to use when requesting tokens for Azure Active Directory
 
-      authentication. Only has an effect when credential is of type TokenCredential.
+      authentication. Only has an effect when credential is of type AsyncTokenCredential.
       The value could be
 
       [https://storage.azure.com/](https://storage.azure.com/) (default) or [https:/](https:/)/<account>.blob.core.windows.net.'
@@ -181,7 +179,7 @@ methods:
       returns 400 (Invalid request) if the proposed lease ID is not
 
       in the correct format.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   keywordOnlyParameters:
@@ -206,7 +204,8 @@ methods:
   summary: 'Clears the specified range and releases the space used in storage for
 
     that range.'
-  signature: 'async clear_range(offset: int, length: int, **kwargs) -> Dict[str, Any]'
+  signature: 'async clear_range(offset: int, length: int, **kwargs: Any) -> Dict[str,
+    Any]'
   parameters:
   - name: offset
     description: 'Start of byte range to use for clearing a section of the file.
@@ -255,7 +254,11 @@ methods:
   summary: 'This method is to close the sockets opened by the client.
 
     It need not be used when using with a context manager.'
-  signature: async close()
+  signature: async close() -> None
+  return:
+    description: None
+    types:
+    - <xref:None>
 - uid: azure.storage.fileshare.aio.ShareFileClient.close_all_handles
   name: close_all_handles
   summary: 'Close any open file handles.
@@ -321,9 +324,9 @@ methods:
 
 
     Note that it only initializes the file with no content.'
-  signature: 'async create_file(size: int, file_attributes: str | NTFSAttributes =
-    ''none'', file_creation_time: str | datetime | None = ''now'', file_last_write_time:
-    str | datetime | None = ''now'', file_permission: str | None = None, permission_key:
+  signature: 'async create_file(size: int, file_attributes: str | NTFSAttributes |
+    None = None, file_creation_time: str | datetime | None = None, file_last_write_time:
+    str | datetime | None = None, file_permission: str | None = None, permission_key:
     str | None = None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: size
@@ -342,26 +345,25 @@ methods:
       Here is an example for when the var type is str: ''Temporary|Archive''.
 
       file_attributes value is not case sensitive.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:azure.storage.fileshare.NTFSAttributes>
+    - <xref:None>
   - name: file_creation_time
-    description: 'Creation time for the file
-
-      Default value: Now.'
-    isRequired: true
+    description: Creation time for the file
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:datetime.datetime>
+    - <xref:None>
   - name: file_last_write_time
-    description: 'Last write time for the file
-
-      Default value: Now.'
-    isRequired: true
+    description: Last write time for the file
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:datetime.datetime>
+    - <xref:None>
   - name: file_permission
     description: 'If specified the permission (security
 
@@ -374,7 +376,7 @@ methods:
       input, it must have owner, group and dacl. Note: Only one of the
 
       x-ms-file-permission or x-ms-file-permission-key should be specified.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   - name: permission_key
@@ -383,7 +385,7 @@ methods:
       directory/file. Note: Only one of the x-ms-file-permission or
 
       x-ms-file-permission-key should be specified.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   keywordOnlyParameters:
@@ -423,6 +425,18 @@ methods:
     types:
     - <xref:azure.storage.fileshare.aio.ShareLeaseClient>
     - <xref:str>
+  - name: owner
+    description: NFS only. The owner of the file.
+    types:
+    - <xref:str>
+  - name: group
+    description: NFS only. The owning group of the file.
+    types:
+    - <xref:str>
+  - name: file_mode
+    description: NFS only. The file mode of the file.
+    types:
+    - <xref:str>
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -442,13 +456,127 @@ methods:
   examples:
   - "Create a file.<!--[!code-python[Main](les\\file_samples_client_async.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\230\\\\azure_storage_file_share-12.18.0\\\
+    : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\\
+    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\265\\\\azure_storage_file_share-12.23.1\\\
     \\samples\\\\file_samples_client_async.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   # Create and allocate bytes for the\
     \ file (no content added yet)\n   await my_allocated_file.create_file(size=100)\n\
     \n   ````\n"
+- uid: azure.storage.fileshare.aio.ShareFileClient.create_hardlink
+  name: create_hardlink
+  summary: NFS only. Creates a hard link to the file specified by path.
+  signature: 'async create_hardlink(target: str, *, lease: ShareLeaseClient | str
+    | None = None, timeout: int | None = None, **kwargs: Any) -> Dict[str, Any]'
+  parameters:
+  - name: target
+    description: 'Specifies the path of the target file to which the link will be
+      created, up to 2 KiB in length.
+
+      It should be the full path of the target starting from the root. The target
+      file must be in the
+
+      same share and the same storage account.'
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.fileshare.ShareLeaseClient>
+    - <xref:str>
+    - <xref:None>
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
+    defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:int>]
+  return:
+    description: File-updated property dict (ETag and last modified).
+    types:
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
+- uid: azure.storage.fileshare.aio.ShareFileClient.create_symlink
+  name: create_symlink
+  summary: NFS only. Creates a symbolic link to the specified file.
+  signature: 'async create_symlink(target: str, *, metadata: Dict[str, str] | None
+    = None, file_creation_time: str | datetime | None = None, file_last_write_time:
+    str | datetime | None = None, owner: str | None = None, group: str | None = None,
+    lease: ShareLeaseClient | str | None = None, timeout: int | None = None, **kwargs:
+    Any) -> Dict[str, Any]'
+  parameters:
+  - name: target
+    description: Specifies the file path the symbolic link will point to. The file
+      path can be either relative or absolute.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: metadata
+    description: Name-value pairs associated with the file as metadata.
+    defaultValue: None
+    types:
+    - <xref:dict>[<xref:str>, <xref:str>]
+  - name: file_creation_time
+    description: Creation time for the file.
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:datetime.datetime>
+  - name: file_last_write_time
+    description: Last write time for the file.
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:datetime.datetime>
+  - name: owner
+    description: The owner of the file.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: group
+    description: The owning group of the file.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.fileshare.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
+    defaultValue: None
+    types:
+    - <xref:int>
+  return:
+    description: File-updated property dict (ETag and last modified).
+    types:
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
 - uid: azure.storage.fileshare.aio.ShareFileClient.delete_file
   name: delete_file
   summary: 'Marks the specified file for deletion. The file is
@@ -485,8 +613,8 @@ methods:
   examples:
   - "Delete a file.<!--[!code-python[Main](les\\file_samples_client_async.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\230\\\\azure_storage_file_share-12.18.0\\\
+    : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\\
+    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\265\\\\azure_storage_file_share-12.23.1\\\
     \\samples\\\\file_samples_client_async.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   await my_file.delete_file()\n\n   ````\n"
@@ -507,19 +635,24 @@ methods:
     description: 'Start of byte range to use for downloading a section of the file.
 
       Must be set if length is provided.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int>
   - name: length
     description: 'Number of bytes to read from the stream. This is optional, but
 
       should be supplied for optimal performance.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int>
   keywordOnlyParameters:
   - name: max_concurrency
-    description: Maximum number of parallel connections to use.
+    description: 'Maximum number of parallel connections to use when transferring
+      the file in chunks.
+
+      This option does not affect the underlying connection pool, and may
+
+      require a separate configuration of the connection pool.'
     types:
     - <xref:int>
   - name: validate_content
@@ -580,8 +713,8 @@ methods:
   examples:
   - "Download a file.<!--[!code-python[Main](les\\file_samples_client_async.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\230\\\\azure_storage_file_share-12.18.0\\\
+    : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\\
+    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\265\\\\azure_storage_file_share-12.23.1\\\
     \\samples\\\\file_samples_client_async.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   with open(DEST_FILE, \"wb\") as data:\n\
@@ -613,8 +746,8 @@ methods:
   summary: Create ShareFileClient from a Connection String.
   signature: 'from_connection_string(conn_str: str, share_name: str, file_path: str,
     snapshot: str | Dict[str, Any] | None = None, credential: str | Dict[str, str]
-    | AzureNamedKeyCredential | AzureSasCredential | TokenCredential | None = None,
-    **kwargs: Any) -> Self'
+    | AzureNamedKeyCredential | AzureSasCredential | AsyncTokenCredential | None =
+    None, **kwargs: Any) -> Self'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Storage account.
@@ -647,8 +780,8 @@ methods:
 
       an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      an account shared access key, or an instance of a TokenCredentials class from
-      azure.identity.
+      an account shared access key, or an instance of a AsyncTokenCredentials class
+      from azure.identity.
 
       If the resource URI already contains a SAS token, this will be ignored in favor
       of an explicit credential
@@ -664,7 +797,7 @@ methods:
     types:
     - <xref:azure.core.credentials.AzureNamedKeyCredential>
     - <xref:azure.core.credentials.AzureSasCredential>
-    - <xref:azure.core.credentials.TokenCredential>
+    - <xref:azure.core.credentials_async.AsyncTokenCredential>
     - <xref:str>
     - <xref:dict>[<xref:str>, <xref:str>]
     - <xref:None>
@@ -672,7 +805,7 @@ methods:
   - name: audience
     description: 'The audience to use when requesting tokens for Azure Active Directory
 
-      authentication. Only has an effect when credential is of type TokenCredential.
+      authentication. Only has an effect when credential is of type AsyncTokenCredential.
       The value could be
 
       [https://storage.azure.com/](https://storage.azure.com/) (default) or [https:/](https:/)/<account>.file.core.windows.net.'
@@ -684,22 +817,23 @@ methods:
     - <xref:azure.storage.fileshare.ShareFileClient>
   examples:
   - "Creates the file client with connection string.<!--[!code-python[Main](les\\\
-    file_samples_hello_world.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
-    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
-    hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\230\\\\azure_storage_file_share-12.18.0\\\\samples\\\
-    \\file_samples_hello_world.py\", \"xml:space\": \"preserve\", \"force\": false,\
-    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
-    : false} -->\n\n````python\n\n   from azure.storage.fileshare import ShareFileClient\n\
-    \   file = ShareFileClient.from_connection_string(\n       self.connection_string,\n\
-    \       share_name=\"helloworld2\",\n       file_path=\"myfile\")\n\n   ````\n"
+    file_samples_hello_world_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
+    classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\":\
+    \ \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\
+    \\dist_temp\\\\265\\\\azure_storage_file_share-12.23.1\\\\samples\\\\file_samples_hello_world_async.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n       from azure.storage.fileshare.aio import ShareFileClient\n       file\
+    \ = ShareFileClient.from_connection_string(\n           self.connection_string,\n\
+    \           share_name='helloworld2async',\n           file_path=\"myfile\")\n\
+    \n   ````\n"
 - uid: azure.storage.fileshare.aio.ShareFileClient.from_file_url
   name: from_file_url
   summary: A client to interact with a specific file, although that file may not yet
     exist.
   signature: 'from_file_url(file_url: str, snapshot: str | Dict[str, Any] | None =
     None, credential: str | Dict[str, str] | AzureNamedKeyCredential | AzureSasCredential
-    | TokenCredential | None = None, **kwargs: Any) -> Self'
+    | AsyncTokenCredential | None = None, **kwargs: Any) -> Self'
   parameters:
   - name: file_url
     description: The full URI to the file.
@@ -722,8 +856,8 @@ methods:
 
       an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      an account shared access key, or an instance of a TokenCredentials class from
-      azure.identity.
+      an account shared access key, or an instance of a AsyncTokenCredentials class
+      from azure.identity.
 
       If the resource URI already contains a SAS token, this will be ignored in favor
       of an explicit credential
@@ -739,7 +873,7 @@ methods:
     types:
     - <xref:azure.core.credentials.AzureNamedKeyCredential>
     - <xref:azure.core.credentials.AzureSasCredential>
-    - <xref:azure.core.credentials.TokenCredential>
+    - <xref:azure.core.credentials_async.AsyncTokenCredential>
     - <xref:str>
     - <xref:dict>[<xref:str>, <xref:str>]
     - <xref:None>
@@ -747,7 +881,7 @@ methods:
   - name: audience
     description: 'The audience to use when requesting tokens for Azure Active Directory
 
-      authentication. Only has an effect when credential is of type TokenCredential.
+      authentication. Only has an effect when credential is of type AsyncTokenCredential.
       The value could be
 
       [https://storage.azure.com/](https://storage.azure.com/) (default) or [https:/](https:/)/<account>.file.core.windows.net.'
@@ -801,12 +935,12 @@ methods:
   parameters:
   - name: offset
     description: Specifies the start offset of bytes over which to get ranges.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int>
   - name: length
     description: Number of bytes to use over which to get ranges.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int>
   keywordOnlyParameters:
@@ -851,12 +985,12 @@ methods:
   parameters:
   - name: offset
     description: Specifies the start offset of bytes over which to get ranges.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int>
   - name: length
     description: Number of bytes to use over which to get ranges.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int>
   - name: previous_sharesnapshot
@@ -881,6 +1015,7 @@ methods:
       file will be returned.
 
       If set to False, the operation will result in a 409 (Conflict) response.'
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:bool>]
   - name: lease
@@ -911,6 +1046,29 @@ methods:
     types:
     - <xref:tuple>[<xref:list>[<xref:dict>[<xref:str>, <xref:int>]], <xref:list>[<xref:dict>[<xref:str>,
       <xref:int>]]]
+- uid: azure.storage.fileshare.aio.ShareFileClient.get_symlink
+  name: get_symlink
+  summary: NFS only. Gets the symbolic link for the file client.
+  signature: 'async get_symlink(*, timeout: int | None = None, **kwargs: Any) -> Dict[str,
+    Any]'
+  keywordOnlyParameters:
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timeouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
+    defaultValue: None
+    types:
+    - <xref:int>
+  return:
+    description: File-updated property dict (ETag and last modified).
+    types:
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
 - uid: azure.storage.fileshare.aio.ShareFileClient.list_handles
   name: list_handles
   summary: Lists handles for file.
@@ -1116,7 +1274,7 @@ methods:
   parameters:
   - name: metadata
     description: Name-value pairs associated with the file as metadata.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   keywordOnlyParameters:
@@ -1151,9 +1309,9 @@ methods:
   name: set_http_headers
   summary: Sets HTTP headers on the file.
   signature: 'async set_http_headers(content_settings: ContentSettings, file_attributes:
-    str | NTFSAttributes = ''preserve'', file_creation_time: str | datetime | None
-    = ''preserve'', file_last_write_time: str | datetime | None = ''preserve'', file_permission:
-    str | None = None, permission_key: str | None = None, **kwargs: Any) -> Dict[str,
+    str | NTFSAttributes | None = None, file_creation_time: str | datetime | None
+    = None, file_last_write_time: str | datetime | None = None, file_permission: str
+    | None = None, permission_key: str | None = None, **kwargs: Any) -> Dict[str,
     Any]'
   parameters:
   - name: content_settings
@@ -1170,26 +1328,25 @@ methods:
       If not set, indicates preservation of existing values.
 
       Here is an example for when the var type is str: ''Temporary|Archive'''
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:azure.storage.fileshare.NTFSAttributes>
+    - <xref:None>
   - name: file_creation_time
-    description: 'Creation time for the file
-
-      Default value: Preserve.'
-    isRequired: true
+    description: Creation time for the file
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:datetime.datetime>
+    - <xref:None>
   - name: file_last_write_time
-    description: 'Last write time for the file
-
-      Default value: Preserve.'
-    isRequired: true
+    description: Last write time for the file
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:datetime.datetime>
+    - <xref:None>
   - name: file_permission
     description: 'If specified the permission (security
 
@@ -1202,7 +1359,7 @@ methods:
       input, it must have owner, group and dacl. Note: Only one of the
 
       x-ms-file-permission or x-ms-file-permission-key should be specified.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   - name: permission_key
@@ -1211,7 +1368,7 @@ methods:
       directory/file. Note: Only one of the x-ms-file-permission or
 
       x-ms-file-permission-key should be specified.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   keywordOnlyParameters:
@@ -1240,6 +1397,18 @@ methods:
     types:
     - <xref:azure.storage.fileshare.aio.ShareLeaseClient>
     - <xref:str>
+  - name: owner
+    description: NFS only. The owner of the file.
+    types:
+    - <xref:str>
+  - name: group
+    description: NFS only. The owning group of the file.
+    types:
+    - <xref:str>
+  - name: file_mode
+    description: NFS only. The file mode of the file.
+    types:
+    - <xref:str>
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -1266,7 +1435,8 @@ methods:
     The status of this copy operation can be found using the *get_properties*
 
     method.'
-  signature: 'async start_copy_from_url(source_url: str, **kwargs: Any) -> Any'
+  signature: 'async start_copy_from_url(source_url: str, **kwargs: Any) -> Dict[str,
+    Any]'
   parameters:
   - name: source_url
     description: Specifies the URL of the source file.
@@ -1314,6 +1484,11 @@ methods:
       *New in version 12.1.0:* This parameter was introduced in API version ''2019-07-07''.'
     types:
     - <xref:str>
+  - name: file_permission_format
+    description: Specifies the format in which the permission is returned. If not
+      specified, SDDL will be the default.
+    types:
+    - <xref:typing.Literal>['sddl', 'binary']
   - name: file_attributes
     description: 'This value can be set to "source" to copy file attributes from the
       source file to the target file,
@@ -1326,6 +1501,7 @@ methods:
 
       *New in version 12.1.0:* This parameter was introduced in API version ''2019-07-07''.'
     types:
+    - <xref:str>
     - <xref:azure.storage.fileshare.NTFSAttributes>
   - name: file_creation_time
     description: 'This value can be set to "source" to copy the creation time from
@@ -1403,6 +1579,45 @@ methods:
     types:
     - <xref:azure.storage.fileshare.aio.ShareLeaseClient>
     - <xref:str>
+  - name: owner
+    description: NFS only. The owner of the file.
+    types:
+    - <xref:str>
+  - name: group
+    description: NFS only. The owning group of the file.
+    types:
+    - <xref:str>
+  - name: file_mode
+    description: NFS only. The file mode of the file.
+    types:
+    - <xref:str>
+  - name: file_mode_copy_mode
+    description: 'NFS only. Applicable only when the copy source is a File. Determines
+      the copy behavior
+
+      of the mode bits of the file. Possible values are:
+
+
+      source - The mode on the destination file is copied from the source file.
+
+      override - The mode on the destination file is determined via the file_mode
+      keyword.'
+    types:
+    - <xref:typing.Literal>['source', 'override']
+  - name: owner_copy_mode
+    description: 'NFS only. Applicable only when the copy source is a File. Determines
+      the copy behavior
+
+      of the owner and group of the file. Possible values are:
+
+
+      source - The owner and group on the destination file is copied from the source
+      file.
+
+      override - The owner and group on the destination file is determined via the
+      owner and group keywords.'
+    types:
+    - <xref:typing.Literal>['source', 'override']
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -1422,20 +1637,20 @@ methods:
   examples:
   - "Copy a file from a URL<!--[!code-python[Main](les\\file_samples_client_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    230\\\\azure_storage_file_share-12.18.0\\\\samples\\\\file_samples_client_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   await destination_file.start_copy_from_url(source_url=source_url)\n\n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\265\\\\azure_storage_file_share-12.23.1\\\
+    \\samples\\\\file_samples_client_async.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   await destination_file.start_copy_from_url(source_url=source_url)\n\
+    \n   ````\n"
 - uid: azure.storage.fileshare.aio.ShareFileClient.upload_file
   name: upload_file
   summary: Uploads a new file.
   signature: 'async upload_file(data: bytes | str | Iterable | AsyncIterable | IO,
-    length: int | None = None, file_attributes: str | NTFSAttributes = ''none'', file_creation_time:
-    str | datetime | None = ''now'', file_last_write_time: str | datetime | None =
-    ''now'', file_permission: str | None = None, permission_key: str | None = None,
-    **kwargs) -> Dict[str, Any]'
+    length: int | None = None, file_attributes: str | NTFSAttributes | None = None,
+    file_creation_time: str | datetime | None = None, file_last_write_time: str |
+    datetime | None = None, file_permission: str | None = None, permission_key: str
+    | None = None, **kwargs) -> Dict[str, Any]'
   parameters:
   - name: data
     description: Content of the file.
@@ -1445,7 +1660,7 @@ methods:
       <xref:typing.AsyncIterable>[<xref:typing.AnyStr>], <xref:typing.IO>[<xref:typing.AnyStr>]]
   - name: length
     description: Length of the file in bytes. Specify its maximum size, up to 1 TiB.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int>
   - name: file_attributes
@@ -1457,26 +1672,25 @@ methods:
       Here is an example for when the var type is str: ''Temporary|Archive''.
 
       file_attributes value is not case sensitive.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:azure.storage.fileshare.NTFSAttributes>
+    - <xref:None>
   - name: file_creation_time
-    description: 'Creation time for the file
-
-      Default value: Now.'
-    isRequired: true
+    description: Creation time for the file
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:datetime.datetime>
+    - <xref:None>
   - name: file_last_write_time
-    description: 'Last write time for the file
-
-      Default value: Now.'
-    isRequired: true
+    description: Last write time for the file
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:datetime.datetime>
+    - <xref:None>
   - name: file_permission
     description: 'If specified the permission (security
 
@@ -1489,7 +1703,7 @@ methods:
       input, it must have owner, group and dacl. Note: Only one of the
 
       x-ms-file-permission or x-ms-file-permission-key should be specified.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   - name: permission_key
@@ -1498,7 +1712,7 @@ methods:
       directory/file. Note: Only one of the x-ms-file-permission or
 
       x-ms-file-permission-key should be specified.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   keywordOnlyParameters:
@@ -1538,7 +1752,12 @@ methods:
     types:
     - <xref:bool>
   - name: max_concurrency
-    description: Maximum number of parallel connections to use.
+    description: 'Maximum number of parallel connections to use when transferring
+      the file in chunks.
+
+      This option does not affect the underlying connection pool, and may
+
+      require a separate configuration of the connection pool.'
     types:
     - <xref:int>
   - name: encoding
@@ -1585,8 +1804,8 @@ methods:
   examples:
   - "Upload a file.<!--[!code-python[Main](les\\file_samples_client_async.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\230\\\\azure_storage_file_share-12.18.0\\\
+    : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\\
+    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\265\\\\azure_storage_file_share-12.23.1\\\
     \\samples\\\\file_samples_client_async.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   with open(SOURCE_FILE, \"rb\") as source:\n\
@@ -1594,8 +1813,8 @@ methods:
 - uid: azure.storage.fileshare.aio.ShareFileClient.upload_range
   name: upload_range
   summary: Upload a range of bytes to a file.
-  signature: 'async upload_range(data: bytes, offset: int, length: int, **kwargs)
-    -> Dict[str, Any]'
+  signature: 'async upload_range(data: bytes, offset: int, length: int, **kwargs:
+    Any) -> Dict[str, Any]'
   parameters:
   - name: data
     description: The data to upload.
@@ -1821,18 +2040,21 @@ attributes:
 
     By default this will be "primary". Options include "primary" and "secondary".'
   return:
+    description: The current location mode.
     types:
     - <xref:str>
 - uid: azure.storage.fileshare.aio.ShareFileClient.primary_endpoint
   name: primary_endpoint
   summary: The full primary endpoint URL.
   return:
+    description: The full primary endpoint URL.
     types:
     - <xref:str>
 - uid: azure.storage.fileshare.aio.ShareFileClient.primary_hostname
   name: primary_hostname
   summary: The hostname of the primary endpoint.
   return:
+    description: The hostname of the primary endpoint.
     types:
     - <xref:str>
 - uid: azure.storage.fileshare.aio.ShareFileClient.secondary_endpoint
@@ -1845,10 +2067,12 @@ attributes:
 
     *secondary_hostname* keyword argument on instantiation.'
   return:
+    description: The full secondary endpoint URL.
     types:
     - <xref:str>
   exceptions:
   - type: ValueError
+    description: If no secondary endpoint is configured.
 - uid: azure.storage.fileshare.aio.ShareFileClient.secondary_hostname
   name: secondary_hostname
   summary: 'The hostname of the secondary endpoint.
@@ -1859,6 +2083,7 @@ attributes:
 
     *secondary_hostname* keyword argument on instantiation.'
   return:
+    description: The hostname of the secondary endpoint, or None if not configured.
     types:
     - <xref:typing.Optional>[<xref:str>]
 - uid: azure.storage.fileshare.aio.ShareFileClient.url
@@ -1868,8 +2093,8 @@ attributes:
 
     This could be either the primary endpoint,
 
-    or the secondary endpoint depending on the current <xref:azure.storage.fileshare.aio.ShareFileClient.location_mode>.
-
-    :returns: The full endpoint URL to this entity, including SAS token if used.
-
-    :rtype: str'
+    or the secondary endpoint depending on the current <xref:azure.storage.fileshare.aio.ShareFileClient.location_mode>.'
+  return:
+    description: The full endpoint URL to this entity, including SAS token if used.
+    types:
+    - <xref:str>

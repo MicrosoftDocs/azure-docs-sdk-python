@@ -7,8 +7,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: mediaservices
 manager: douge
-ms.prod: azure
-ms.technology: azure
 ---
 # Azure Media Services libraries for python
 

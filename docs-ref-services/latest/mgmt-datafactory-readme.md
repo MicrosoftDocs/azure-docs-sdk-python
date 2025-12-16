@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-datafactory, datafactory
-ms.date: 08/20/2024
+ms.date: 04/21/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: datafactory

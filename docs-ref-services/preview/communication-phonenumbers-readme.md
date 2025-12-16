@@ -1,12 +1,12 @@
 ---
 title: Azure Communication Phone Numbers Package client library for Python
 keywords: Azure, python, SDK, API, azure-communication-phonenumbers, communication
-ms.date: 03/15/2024
+ms.date: 07/31/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: communication
 ---
-# Azure Communication Phone Numbers Package client library for Python - version 1.2.0b2 
+# Azure Communication Phone Numbers Package client library for Python - version 1.4.0b2 
 
 
 Azure Communication Phone Numbers client package is used to administer Phone Numbers.
@@ -16,11 +16,11 @@ Azure Communication Phone Numbers client package is used to administer Phone Num
 _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
 
 # Getting started
-### Prerequisites
+## Prerequisites
 - Python 3.7 or later is required to use this package.
 - You must have an [Azure subscription](https://azure.microsoft.com/free/)
-- A deployed Communication Services resource. You can use the [Azure Portal](/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp) or the [Azure PowerShell](/powershell/module/az.communication/new-azcommunicationservice) to set it up.
-### Install the package
+- A deployed Communication Services resource. You can use the [Azure Portal](https://learn.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp) or the [Azure PowerShell](https://learn.microsoft.com/powershell/module/az.communication/new-azcommunicationservice) to set it up.
+## Install the package
 Install the Azure Communication Phone Numbers client library for Python with [pip](https://pypi.org/project/pip/):
 
 ```bash
@@ -31,7 +31,7 @@ pip install azure-communication-phonenumbers
 
 This SDK provides functionality to easily manage `direct offer` and `direct routing` numbers.
 
-The `direct offer` numbers come in two types: Geographic and Toll-Free. Geographic phone plans are phone plans associated with a location, whose phone numbers' area codes are associated with the area code of a geographic location. Toll-Free phone plans are phone plans not associated location. For example, in the US, toll-free numbers can come with area codes such as 800 or 888.
+The `direct offer` numbers come in three types: Geographic, Toll-Free and Mobile. Geographic and Mobile phone plans are phone plans associated with a location, whose phone numbers' area codes are associated with the area code of a geographic location. Toll-Free phone plans are phone plans not associated location. For example, in the US, toll-free numbers can come with area codes such as 800 or 888.
 They are managed using the `PhoneNumbersClient`
 
 The `direct routing` feature enables connecting your existing telephony infrastructure to ACS.
@@ -86,13 +86,23 @@ sip_routing_client = SipRoutingClient.from_connection_string(connection_str)
 
 #### Phone number types overview
 
-Phone numbers come in two types; Geographic and Toll-Free. Geographic phone numbers are phone numbers associated with a location, whose area codes are associated with the area code of a geographic location. Toll-Free phone numbers are phone numbers with no associated location. For example, in the US, toll-free numbers can come with area codes such as 800 or 888.
+Phone numbers come in three types; Geographic, Toll-Free and Mobile. Toll-Free numbers are not associated with a location. For example, in the US, toll-free numbers can come with area codes such as 800 or 888. Geographic and Mobile phone numbers are phone numbers associated with a location.
+
+Phone number types with the same country are grouped into a phone plan group with that phone number type. For example all Toll-Free phone numbers within the same country are grouped into a phone plan group.
 
 #### Searching and Purchasing and Releasing numbers
 
 Phone numbers can be searched through the search creation API by providing an area code, quantity of phone numbers, application type, phone number type, and capabilities. The provided quantity of phone numbers will be reserved for ten minutes and can be purchased within this time. If the search is not purchased, the phone numbers will become available to others after ten minutes. If the search is purchased, then the phone numbers are acquired for the Azure resources.
 
 Phone numbers can also be released using the release API.
+
+#### Browsing and reserving phone numbers
+
+The Browse and Reservations APIs provide an alternate way to acquire phone numbers via a shopping-cart-like experience. This is achieved by splitting the search operation, which finds and reserves numbers using a single LRO, into two separate synchronous steps, Browse and Reservation. 
+
+The browse operation retrieves a random sample of phone numbers that are available for purchase for a given country, with optional filtering criteria to narrow down results. The returned phone numbers are not reserved for any customer.
+
+Reservations represent a collection of phone numbers that are locked by a specific customer and are awaiting purchase. They have an expiration time of 15 minutes after the last modification or 2 hours from creation time. A reservation can include numbers from different countries, in contrast with the Search operation. Customers can create, retrieve, modify (by adding and removing numbers), delete, and purchase reservations. Purchasing a reservation is an LRO.
 
 ### SIP routing client
 
@@ -123,6 +133,33 @@ Gets the information from the specified phone number
 result = phone_numbers_client.get_purchased_phone_number("<phone number>")
 print(result.country_code)
 print(result.phone_number)
+```
+
+#### Browsing and Reserving Available Phone Numbers
+
+Use the Browse and Reservations API to reserve a phone number
+
+```python
+import uuid
+
+browse_result = await phone_numbers_client.browse_available_phone_numbers(
+    country_code="US",
+    phone_number_type="tollFree"
+)
+number_to_reserve = browse_result.phone_numbers[0]
+
+# The reservation ID needs to be a valid UUID.
+reservation_id = str(uuid.uuid4())
+reservation = await phone_numbers_client.create_or_update_reservation(
+    reservation_id=reservation_id,
+    numbers_to_add=[number_to_reserve]
+)
+
+numbers_with_error = [n for n in reservation.phone_numbers.values() if n.status == "error"]
+if any(numbers_with_error):
+    print("Errors occurred during reservation")
+else:
+    print("Reservation operation completed without errors.")
 ```
 
 ### Long Running Operations
@@ -191,6 +228,32 @@ poller = phone_numbers_client.begin_update_phone_number_capabilities(
 )
 ```
 
+#### Purchase Reservation
+
+Given an existing and active reservation, purchase the phone numbers in that reservation.
+
+```python
+reservation_id = "<reservation id>"
+poller = phone_numbers_client.begin_purchase_reservation(
+    reservation_id,
+    polling = True
+)
+```
+
+After the LRO finishes processing, the status of each individual number can be validated by retrieving the reservation.
+
+```python
+reservation_id = "<reservation id>"
+reservation = phone_numbers_client.get_reservation(reservation_id)
+
+numbers_with_error = [
+    n for n in reservation.phone_numbers.values() if n.status == "error"]
+if any(numbers_with_error):
+    print("Errors occurred during purchase")
+else:
+    print("Reservation purchase completed without errors.")
+```
+
 ### SipRoutingClient
 
 #### Retrieve SIP trunks and routes
@@ -249,7 +312,7 @@ The Phone Numbers Administration client will raise exceptions defined in [Azure 
 # Next steps
 ## More sample code
 
-Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-phonenumbers_1.2.0b2/sdk/communication/azure-communication-phonenumbers/samples) directory for detailed examples of how to use this library.
+Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-phonenumbers_1.4.0b2/sdk/communication/azure-communication-phonenumbers/samples) directory for detailed examples of how to use this library.
 
 ## Provide Feedback
 
@@ -266,5 +329,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 <!-- LINKS -->
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-phonenumbers_1.2.0b2/sdk/core/azure-core/README.md
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-phonenumbers_1.4.0b2/sdk/core/azure-core/README.md
 

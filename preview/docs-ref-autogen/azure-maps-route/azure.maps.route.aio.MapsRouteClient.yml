@@ -3,45 +3,19 @@ uid: azure.maps.route.aio.MapsRouteClient
 name: MapsRouteClient
 fullName: azure.maps.route.aio.MapsRouteClient
 module: azure.maps.route.aio
-inheritances:
-- azure.maps.route.aio._base_client_async.AsyncMapsRouteClientBase
-summary: "Azure Maps Route REST APIs.\n:param credential:\n\n   Credential needed\
-  \ for the client to connect to Azure."
 constructor:
-  syntax: 'MapsRouteClient(credential: AzureKeyCredential | AsyncTokenCredential,
+  syntax: 'MapsRouteClient(credential: AzureKeyCredential | AzureSasCredential | AsyncTokenCredential,
     **kwargs: Any)'
   parameters:
   - name: credential
     isRequired: true
-  keywordOnlyParameters:
-  - name: base_url
-    description: 'Supported Maps Services or Language resource base_url
-
-      (protocol and hostname, for example: ''[https://us.atlas.microsoft.com](https://us.atlas.microsoft.com)'').'
-    types:
-    - <xref:str>
-  - name: client_id
-    description: 'Specifies which account is intended for usage with the Azure AD
-      security model.
-
-      It represents a unique ID for the Azure Maps account.'
-    types:
-    - <xref:str>
-  - name: api_version
-    description: 'The API version of the service to use for requests. It defaults
-      to the latest service version.
-
-      Setting to an older version may result in reduced feature compatibility.'
-    types:
-    - <xref:str>
 methods:
 - uid: azure.maps.route.aio.MapsRouteClient.begin_get_route_directions_batch
   name: begin_get_route_directions_batch
   summary: 'Sends batches of route direction queries.
 
     The method returns a poller for retrieving the result later.'
-  signature: 'async begin_get_route_directions_batch(batch_id: str, **kwargs: Any)
-    -> AsyncLROPoller[RouteDirectionsBatchResult]'
+  signature: 'async begin_get_route_directions_batch(**kwargs: Any) -> AsyncLROPoller[RouteDirectionsBatchResult]'
   keywordOnlyParameters:
   - name: queries
     description: 'The list of route directions queries/requests to
@@ -82,14 +56,47 @@ methods:
     - <xref:azure.core.polling.AsyncLROPoller>[<xref:azure.maps.route.models.RouteDirectionsBatchResult>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+- uid: azure.maps.route.aio.MapsRouteClient.begin_get_route_matrix
+  name: begin_get_route_matrix
+  summary: "**Applies to**: see pricing [tiers](https://aka.ms/AzureMapsPricingTier).\n\
+    \nIf the Matrix Route request was accepted successfully, the Location header in\
+    \ the response\ncontains the URL to download the results of the request. This\
+    \ status URI looks like the\nfollowing:\n\n<!-- literal_block {\"ids\": [], \"\
+    classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"default\", \"highlight_args\"\
+    : {}, \"linenos\": false} -->\n\n````default\n\n   GET\n   https://atlas.microsoft.com/route/matrix/{matrixId}?api-version=1.0?subscription-key={subscription-key}\n\
+    \   ````\n\n1. Client issues a GET request on the download URL obtained in Step\
+    \ 3 to download the results \n\n# Download Sync Results\n\nWhen you make a POST\
+    \ request for Route Matrix Sync API, the service returns 200 response code\nfor\
+    \ successful request and a response array. The response body will contain the\
+    \ data and there\nwill be no possibility to retrieve the results later.\n\n# Download\
+    \ Async Results\n\nWhen a request issues a `202 Accepted` response, the request\
+    \ is being processed using our\nasync pipeline. You will be given a URL to check\
+    \ the progress of your  async request in the\nlocation header of the response.\
+    \ This status URI looks like the following:\n\n<!-- literal_block {\"ids\": [],\
+    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"default\", \"highlight_args\"\
+    : {}, \"linenos\": false} -->\n\n````default\n\n   GET\n     https://atlas.microsoft.com/route/matrix/{matrixId}?api-version=1.0?subscription-key={subscription-key}\n\
+    \   ````\n\nThe URL provided by the location header will return the following\
+    \ responses when a `GET`\nrequest is issued.\n\n   HTTP `202 Accepted` - Matrix\
+    \ request was accepted but is still being processed. Please try\n   again in some\
+    \ time.\n\n   HTTP `200 OK` - Matrix request successfully processed. The response\
+    \ body contains all of\n   the results.\n\nparam matrix_id:\n   Matrix id received\
+    \ after the Matrix Route request was accepted successfully.\n   Required.\n\n\
+    type matrix_id:\n   str\n\nreturn:\n   An instance of AsyncLROPoller that returns\
+    \ RouteMatrixResult\n\nrtype:\n   ~azure.core.polling.AsyncLROPoller[~azure.maps.route.models.RouteMatrixResult]\n\
+    \nraises ~azure.core.exceptions.HttpResponseError:"
+  signature: 'async begin_get_route_matrix(matrix_id: str, **kwargs: Any) -> AsyncLROPoller[RouteMatrixResult]'
+  parameters:
+  - name: matrix_id
+    isRequired: true
 - uid: azure.maps.route.aio.MapsRouteClient.begin_get_route_matrix_batch
   name: begin_get_route_matrix_batch
   summary: "Calculates a matrix of route summaries for a set of routes defined by\
     \ origin and destination locations.\nThe method returns a poller for retrieving\
     \ the result later.\n\nThe maximum size of a matrix for this method is 700\n \
     \  (the number of origins multiplied by the number of destinations)"
-  signature: 'async begin_get_route_matrix_batch(query: RouteMatrixQuery, **kwargs:
-    Any) -> AsyncLROPoller[RouteMatrixResult]'
+  signature: 'async begin_get_route_matrix_batch(**kwargs: Any) -> AsyncLROPoller[RouteMatrixResult]'
   keywordOnlyParameters:
   - name: query
     description: 'The matrix of origin and destination coordinates to compute the
@@ -140,8 +147,10 @@ methods:
   - name: filter_section_type
     description: 'Specifies which of the section types is reported in the route
 
-      response. `<br>`:code:>>`<<<br>`For example if sectionType = pedestrian the
-      sections which
+      response.
+
+
+      For example if sectionType = pedestrian the sections which
 
       are suited for pedestrians only are returned. Multiple types can be used. The
       default
@@ -221,8 +230,8 @@ methods:
     description: 'Level of turns for thrilling route. This parameter can only be used
       in
 
-      conjunction with >>``<<routeType``=thrilling. Known values are: "low", "normal",
-      and "high".
+      conjunction with `routeType=thrilling`. Known values are: "low", "normal", and
+      "high".
 
       Default value is None.'
     types:
@@ -232,8 +241,8 @@ methods:
     description: 'Degree of hilliness for thrilling route. This parameter can only
       be
 
-      used in conjunction with >>``<<routeType``=thrilling. Known values are: "low",
-      "normal", and
+      used in conjunction with `routeType=thrilling`. Known values are: "low", "normal",
+      and
 
       "high". Default value is None.'
     types:
@@ -351,6 +360,369 @@ methods:
     - <xref:azure.core.polling.AsyncLROPoller>[<xref:azure.maps.route.models.RouteMatrixResult>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+- uid: azure.maps.route.aio.MapsRouteClient.begin_request_route_directions_batch
+  name: begin_request_route_directions_batch
+  summary: "**Route Directions Batch API**\n\n**Applies to**: see pricing [tiers](https://aka.ms/AzureMapsPricingTier).\n\
+    \nThe Route Directions Batch API sends batches of queries to [Route Directions\
+    \ API](https://docs.microsoft.com/rest/api/maps/route/getroutedirections) using\
+    \ just a single API\ncall. You can call Route Directions Batch API to run either\
+    \ asynchronously (async) or\nsynchronously (sync). The async API allows caller\
+    \ to batch up to **700** queries and sync API\nup to **100** queries.\n\n# Submit\
+    \ Asynchronous Batch Request\n\nThe Asynchronous API is appropriate for processing\
+    \ big volumes of relatively complex route\nrequests\n\n* It allows the retrieval\
+    \ of results in a separate call (multiple downloads are possible). \n\n* The asynchronous\
+    \ API is optimized for reliability and is not expected to run into a timeout.\
+    \ \n\n* The number of batch items is limited to **700** for this API. \n\nWhen\
+    \ you make a request by using async request, by default the service returns a\
+    \ 202 response\ncode along a redirect URL in the Location field of the response\
+    \ header. This URL should be\nchecked periodically until the response data or\
+    \ error information is available.\nThe asynchronous responses are stored for **14**\
+    \ days. The redirect URL returns a 404 response\nif used after the expiration\
+    \ period.\n\nPlease note that asynchronous batch request is a long-running request.\
+    \ Here's a typical\nsequence of operations:\n\n1. Client sends a Route Directions\
+    \ Batch `POST` request to Azure Maps \n\n2. The server will respond with one of\
+    \ the following: \n\n      HTTP `202 Accepted` - Batch request has been accepted.\n\
+    \n      HTTP `Error` - There was an error processing your Batch request. This\
+    \ could either be a\n      `400 Bad Request` or any other `Error` status code.\n\
+    \n3. If the batch request was accepted successfully, the `Location` header in\
+    \ the response contains the URL to download the results of the batch request.\
+    \ This status URI looks like following: \n\n   `GET https://atlas.microsoft.com/route/directions/batch/{batch-id}?api-version=1.0`\n\
+    \   Note:- Please remember to add AUTH information (subscription-key/azure_auth\
+    \ - See <xref:security>) to the *status URI* before running it.\n\n#. Client issues\
+    \ a `GET` request on the *download URL* obtained in Step 3 to download the\nbatch\
+    \ results.\n\n# POST Body for Batch Request\n\nTo send the *route directions*\
+    \ queries you will use a `POST` request where the request body\nwill contain the\
+    \ `batchItems` array in `json` format and the `Content-Type` header will\nbe set\
+    \ to `application/json`. Here's a sample request body containing 3 *route directions*\n\
+    queries:\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false,\
+    \ \"language\": \"json\", \"highlight_args\": {}, \"linenos\": false} -->\n\n\
+    ````json\n\n   {\n       \"batchItems\": [\n           { \"query\":\n   \"?query=47.620659,-122.348934:47.610101,-122.342015&travelMode=bicycle&routeType=eco&traffic=false\"\
+    \n   },\n           { \"query\":\n   \"?query=40.759856,-73.985108:40.771136,-73.973506&travelMode=pedestrian&routeType=shortest\"\
+    \ },\n           { \"query\": \"?query=48.923159,-122.557362:32.621279,-116.840362\"\
+    \ }\n       ]\n   }\n   ````\n\nA *route directions* query in a batch is just\
+    \ a partial URL *without* the protocol, base URL,\npath, api-version and subscription-key.\
+    \ It can accept any of the supported *route directions*\n[URI parameters](https://docs.microsoft.com/rest/api/maps/route/getroutedirections#uri-parameters).\
+    \ The\nstring values in the *route directions* query must be properly escaped\
+    \ (e.g. \" character should\nbe escaped with ) and it should also be properly\
+    \ URL-encoded.\n\nThe async API allows caller to batch up to **700** queries and\
+    \ sync API up to **100** queries,\nand the batch should contain at least **1**\
+    \ query.\n\n# Download Asynchronous Batch Results\n\nTo download the async batch\
+    \ results you will issue a `GET` request to the batch download\nendpoint. This\
+    \ *download URL* can be obtained from the `Location` header of a successful\n\
+    `POST` batch request and looks like the following:\n\n<!-- literal_block {\"ids\"\
+    : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"default\", \"highlight_args\"\
+    : {}, \"linenos\": false} -->\n\n````default\n\n\n   ````\n\n[https://atlas.microsoft.com/route/directions/batch](https://atlas.microsoft.com/route/directions/batch)/{batch-id}?api-version=1.0&subscription-key={subscription-key}\n\
+    \nHere's the typical sequence of operations for downloading the batch results:\n\
+    \n1. Client sends a `GET` request using the *download URL*. \n\n2. The server\
+    \ will respond with one of the following: \n\n      HTTP `202 Accepted` - Batch\
+    \ request was accepted but is still being processed. Please\n      try again in\
+    \ some time.\n\n      HTTP `200 OK` - Batch request successfully processed. The\
+    \ response body contains all\n      the batch results.\n\n# Batch Response Model\n\
+    \nThe returned data content is similar for async and sync requests. When downloading\
+    \ the results\nof an async batch request, if the batch has finished processing,\
+    \ the response body contains the\nbatch response. This batch response contains\
+    \ a `summary` component that indicates the\n`totalRequests` that were part of\
+    \ the original batch request and `successfulRequests`i.e. queries which were executed\
+    \ successfully. The batch response also includes a\n`batchItems` array which contains\
+    \ a response for each and every query in the batch request.\nThe `batchItems`\
+    \ will contain the results in the exact same order the original queries were\n\
+    sent in the batch request. Each item in `batchItems` contains `statusCode` and\
+    \ `response`\nfields. Each `response` in `batchItems` is of one of the following\
+    \ types:\n\n* *``RouteDirections`* <[https://docs.microsoft.com/rest/api/maps/route/getroutedirections#routedirections](https://docs.microsoft.com/rest/api/maps/route/getroutedirections#routedirections)>`_\
+    \ - If the query completed successfully. \n\n* `Error` - If the query failed.\
+    \ The response will contain a `code` and a `message` in this case. \n\nHere's\
+    \ a sample Batch Response with 1 *successful* and 1 *failed* result:\n\n<!-- literal_block\
+    \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
+    : [], \"xml:space\": \"preserve\", \"force\": false, \"language\": \"json\", \"\
+    highlight_args\": {}, \"linenos\": false} -->\n\n````json\n\n   {\n       \"summary\"\
+    : {\n           \"successfulRequests\": 1,\n           \"totalRequests\": 2\n\
+    \       },\n       \"batchItems\": [\n           {\n               \"statusCode\"\
+    : 200,\n               \"response\": {\n                   \"routes\": [\n   \
+    \                    {\n                           \"summary\": {\n          \
+    \                     \"lengthInMeters\": 1758,\n                            \
+    \   \"travelTimeInSeconds\": 387,\n                               \"trafficDelayInSeconds\"\
+    : 0,\n                               \"departureTime\": \"2018-07-17T00:49:56+00:00\"\
+    ,\n                               \"arrivalTime\": \"2018-07-17T00:56:22+00:00\"\
+    \n                           },\n                           \"legs\": [\n    \
+    \                           {\n                                   \"summary\"\
+    : {\n                                       \"lengthInMeters\": 1758,\n      \
+    \                                 \"travelTimeInSeconds\": 387,\n            \
+    \                           \"trafficDelayInSeconds\": 0,\n                  \
+    \                     \"departureTime\": \"2018-07-17T00:49:56+00:00\",\n    \
+    \                                   \"arrivalTime\": \"2018-07-17T00:56:22+00:00\"\
+    \n                                   },\n                                   \"\
+    points\": [\n                                       {\n                      \
+    \                     \"latitude\": 47.62094,\n                              \
+    \             \"longitude\": -122.34892\n                                    \
+    \   },\n                                       {\n                           \
+    \                \"latitude\": 47.62094,\n                                   \
+    \        \"longitude\": -122.3485\n                                       },\n\
+    \                                       {\n                                  \
+    \         \"latitude\": 47.62095,\n                                          \
+    \ \"longitude\": -122.3476\n                                       }\n       \
+    \                            ]\n                               }\n           \
+    \                ],\n                           \"sections\": [\n            \
+    \                   {\n                                   \"startPointIndex\"\
+    : 0,\n                                   \"endPointIndex\": 40,\n            \
+    \                       \"sectionType\": \"TRAVEL_MODE\",\n                  \
+    \                 \"travelMode\": \"bicycle\"\n                              \
+    \ }\n                           ]\n                       }\n                \
+    \   ]\n               }\n           },\n           {\n               \"statusCode\"\
+    : 400,\n               \"response\":\n               {\n                   \"\
+    error\":\n                   {\n                       \"code\": \"400 BadRequest\"\
+    ,\n                       \"message\":\n                    \"Bad request: one\
+    \ or more parameters were incorrectly specified or are mutually exclusive.\"\n\
+    \                   }\n               }\n           }\n       ]\n   }\n   ````\n\
+    \nparam route_directions_batch_queries:\n   The list of route directions queries/requests\
+    \ to\n   process. The list can contain a max of 700 queries for async and 100\
+    \ queries for sync version\n   and must contain at least 1 query. Is either a\
+    \ BatchRequest type or a IO[bytes] type. Required.\n\ntype route_directions_batch_queries:\n\
+    \   ~azure.maps.route.models.BatchRequest or IO[bytes]\n\nparam format:\n   Desired\
+    \ format of the response. Only `json` format is supported. \"json\"\n   Default\
+    \ value is \"json\".\n\ntype format:\n   str or ~azure.maps.route.models.JsonFormat\n\
+    \nreturn:\n   An instance of AsyncLROPoller that returns RouteDirectionsBatchResult\n\
+    \nrtype:\n   ~azure.core.polling.AsyncLROPoller[~azure.maps.route.models.RouteDirectionsBatchResult]\n\
+    \nraises ~azure.core.exceptions.HttpResponseError:"
+  signature: 'async begin_request_route_directions_batch(route_directions_batch_queries:
+    BatchRequest | IO[bytes], format: str | JsonFormat = ''json'', **kwargs: Any)
+    -> AsyncLROPoller[RouteDirectionsBatchResult]'
+  parameters:
+  - name: route_directions_batch_queries
+    isRequired: true
+  - name: format
+    defaultValue: json
+- uid: azure.maps.route.aio.MapsRouteClient.begin_request_route_matrix
+  name: begin_request_route_matrix
+  summary: "**Applies to**: see pricing [tiers](https://aka.ms/AzureMapsPricingTier).\n\
+    \nThe Matrix Routing service allows calculation of a matrix of route summaries\
+    \ for a set of\nroutes defined by origin and destination locations by using an\
+    \ asynchronous (async) or\nsynchronous (sync) POST request. For every given origin,\
+    \ the service calculates the cost of\nrouting from that origin to every given\
+    \ destination. The set of origins and the set of\ndestinations can be thought\
+    \ of as the column and row headers of a table and each cell in the\ntable contains\
+    \ the costs of routing from the origin to the destination for that cell. As an\n\
+    example, let's say a food delivery company has 20 drivers and they need to find\
+    \ the closest\ndriver to pick up the delivery from the restaurant. To solve this\
+    \ use case, they can call\nMatrix Route API.\n\nFor each route, the travel times\
+    \ and distances are returned. You can use the computed costs to\ndetermine which\
+    \ detailed routes to calculate using the Route Directions API.\n\nThe maximum\
+    \ size of a matrix for async request is **700** and for sync request it's **100**\n\
+    (the number of origins multiplied by the number of destinations).\n\n# Submit\
+    \ Synchronous Route Matrix Request\n\nIf your scenario requires synchronous requests\
+    \ and the maximum size of the matrix is less than\nor equal to 100, you might\
+    \ want to make synchronous request. The maximum size of a matrix for\nthis API\
+    \ is **100** (the number of origins multiplied by the number of destinations).\
+    \ With that\nconstraint in mind, examples of possible matrix dimensions are: 10x10,\
+    \ 6x8, 9x8 (it does not\nneed to be square).\n\n<!-- literal_block {\"ids\": [],\
+    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"default\", \"highlight_args\"\
+    : {}, \"linenos\": false} -->\n\n````default\n\n   POST https://atlas.microsoft.com/route/matrix/sync/json?api-version=1.0&subscription-key={subscription-key}\n\
+    \   ````\n\n# Submit Asynchronous Route Matrix Request\n\nThe Asynchronous API\
+    \ is appropriate for processing big volumes of relatively complex routing\nrequests.\
+    \ When you make a request by using async request, by default the service returns\
+    \ a 202\nresponse code along a redirect URL in the Location field of the response\
+    \ header. This URL\nshould be checked periodically until the response data or\
+    \ error information is available. If\n`waitForResults` parameter in the request\
+    \ is set to true, user will get a 200 response if the\nrequest is finished under\
+    \ 120 seconds.\n\nThe maximum size of a matrix for this API is **700** (the number\
+    \ of origins multiplied by the\nnumber of destinations). With that constraint\
+    \ in mind, examples of possible matrix dimensions\nare: 50x10, 10x10, 28x25. 10x70\
+    \ (it does not need to be square).\n\nThe asynchronous responses are stored for\
+    \ **14** days. The redirect URL returns a 404 response\nif used after the expiration\
+    \ period.\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [],\
+    \ \"dupnames\": [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\":\
+    \ false, \"language\": \"default\", \"highlight_args\": {}, \"linenos\": false}\
+    \ -->\n\n````default\n\n   POST https://atlas.microsoft.com/route/matrix/json?api-version=1.0&subscription-key={subscription-key}\n\
+    \   ````\n\nHere's a typical sequence of asynchronous operations:\n\n1. Client\
+    \ sends a Route Matrix POST request to Azure Maps \n\n2. The server will respond\
+    \ with one of the following: \n\n      HTTP `202 Accepted` -  Route Matrix request\
+    \ has been accepted.\n\n      HTTP `Error` - There was an error processing your\
+    \ Route Matrix request. This could\n      either be a 400 Bad Request or any other\
+    \ Error status code.\n\n3. If the Matrix Route request was accepted successfully,\
+    \ the Location header in the response contains the URL to download the results\
+    \ of the request. This status URI looks like the following: \n\n   <!-- literal_block\
+    \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
+    : [], \"xml:space\": \"preserve\", \"force\": false, \"language\": \"default\"\
+    , \"highlight_args\": {}, \"linenos\": false} -->\n\n   ````default\n\n      GET\n\
+    \      https://atlas.microsoft.com/route/matrix/{matrixId}?api-version=1.0?subscription-key={subscription-key}\n\
+    \      ````\n\n4. Client issues a GET request on the download URL obtained in\
+    \ Step 3 to download the results \n\n# Download Sync Results\n\nWhen you make\
+    \ a POST request for Route Matrix Sync API, the service returns 200 response code\n\
+    for successful request and a response array. The response body will contain the\
+    \ data and there\nwill be no possibility to retrieve the results later.\n\n# Download\
+    \ Async Results\n\nWhen a request issues a `202 Accepted` response, the request\
+    \ is being processed using our\nasync pipeline. You will be given a URL to check\
+    \ the progress of your  async request in the\nlocation header of the response.\
+    \ This status URI looks like the following:\n\n<!-- literal_block {\"ids\": [],\
+    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"default\", \"highlight_args\"\
+    : {}, \"linenos\": false} -->\n\n````default\n\n   GET\n     https://atlas.microsoft.com/route/matrix/{matrixId}?api-version=1.0?subscription-key={subscription-key}\n\
+    \   ````\n\nThe URL provided by the location header will return the following\
+    \ responses when a `GET`\nrequest is issued.\n\n   HTTP `202 Accepted` - Matrix\
+    \ request was accepted but is still being processed. Please try\n   again in some\
+    \ time.\n\n   HTTP `200 OK` - Matrix request successfully processed. The response\
+    \ body contains all of\n   the results.\n\nparam route_matrix_query:\n   The matrix\
+    \ of origin and destination coordinates to compute the\n   route distance, travel\
+    \ time and other summary for each cell of the matrix based on the input\n   parameters.\
+    \ The minimum and the maximum cell count supported are 1 and **700** for async\
+    \ and\n   **100** for sync respectively. For example, it can be 35 origins and\
+    \ 20 destinations or 25\n   origins and 25 destinations for async API. Is either\
+    \ a RouteMatrixQuery type or a IO[bytes]\n   type. Required.\n\ntype route_matrix_query:\n\
+    \   ~azure.maps.route.models.RouteMatrixQuery or IO[bytes]\n\nparam format:\n\
+    \   Desired format of the response. Only `json` format is supported. \"json\"\n\
+    \   Default value is \"json\".\n\ntype format:\n   str or ~azure.maps.route.models.JsonFormat\n\
+    \nkeyword wait_for_results:\n   Boolean to indicate whether to execute the request\
+    \ synchronously. If\n   set to true, user will get a 200 response if the request\
+    \ is finished under 120 seconds.\n   Otherwise, user will get a 202 response right\
+    \ away. Please refer to the API description for\n   more details on 202 response.\
+    \ **Supported only for async request**. Default value is None.\n\nparamtype wait_for_results:\n\
+    \   bool\n\nkeyword compute_travel_time:\n   Specifies whether to return additional\
+    \ travel times using\n   different types of traffic information (none, historic,\
+    \ live) as well as the default\n   best-estimate travel time. Known values are:\
+    \ \"none\" and \"all\". Default value is None.\n\nparamtype compute_travel_time:\n\
+    \   str or ~azure.maps.route.models.ComputeTravelTime\n\nkeyword filter_section_type:\n\
+    \   Specifies which of the section types is reported in the route\n   response.\
+    \ For example if sectionType = pedestrian the sections which\n   are suited for\
+    \ pedestrians only are returned. Multiple types can be used. The default\n   sectionType\
+    \ refers to the travelMode input. By default travelMode is set to car. Known values\n\
+    \   are: \"carTrain\", \"country\", \"ferry\", \"motorway\", \"pedestrian\", \"\
+    tollRoad\", \"tollVignette\",\n   \"traffic\", \"travelMode\", \"tunnel\", \"\
+    carpool\", and \"urban\". Default value is None.\n\nparamtype filter_section_type:\n\
+    \   str or ~azure.maps.route.models.SectionType\n\nkeyword arrive_at:\n   The\
+    \ date and time of arrival at the destination point. It must be specified\n  \
+    \ as a dateTime. When a time zone offset is not specified it will be assumed to\
+    \ be that of the\n   destination point. The arriveAt value must be in the future.\
+    \ The arriveAt parameter cannot be\n   used in conjunction with departAt, minDeviationDistance\
+    \ or minDeviationTime. Default value is\n   None.\n\nparamtype arrive_at:\n  \
+    \ ~datetime.datetime\n\nkeyword depart_at:\n   The date and time of departure\
+    \ from the origin point. Departure times apart\n   from now must be specified\
+    \ as a dateTime. When a time zone offset is not specified, it will be\n   assumed\
+    \ to be that of the origin point. The departAt value must be in the future in\
+    \ the\n   date-time format (1996-12-19T16:39:57-08:00). Default value is None.\n\
+    \nparamtype depart_at:\n   ~datetime.datetime\n\nkeyword vehicle_axle_weight:\n\
+    \   Weight per axle of the vehicle in kg. A value of 0 means that\n   weight restrictions\
+    \ per axle are not considered. Default value is 0.\n\nparamtype vehicle_axle_weight:\n\
+    \   int\n\nkeyword vehicle_length:\n   Length of the vehicle in meters. A value\
+    \ of 0 means that length\n   restrictions are not considered. Default value is\
+    \ 0.\n\nparamtype vehicle_length:\n   float\n\nkeyword vehicle_height:\n   Height\
+    \ of the vehicle in meters. A value of 0 means that height\n   restrictions are\
+    \ not considered. Default value is 0.\n\nparamtype vehicle_height:\n   float\n\
+    \nkeyword vehicle_width:\n   Width of the vehicle in meters. A value of 0 means\
+    \ that width\n   restrictions are not considered. Default value is 0.\n\nparamtype\
+    \ vehicle_width:\n   float\n\nkeyword vehicle_max_speed:\n   Maximum speed of\
+    \ the vehicle in km/hour. The max speed in the\n   vehicle profile is used to\
+    \ check whether a vehicle is allowed on motorways.\n\n   * A value of 0 means\
+    \ that an appropriate value for the vehicle will be determined and applied during\
+    \ route planning. \n\n   * A non-zero value may be overridden during route planning.\
+    \ For example, the current traffic flow is 60 km/hour. If the vehicle  maximum\
+    \ speed is set to 50 km/hour, the routing engine will consider 60 km/hour as this\
+    \ is the current situation.  If the maximum speed of the vehicle is provided as\
+    \ 80 km/hour but the current traffic flow is 60 km/hour, then routing engine will\
+    \ again use 60 km/hour. Default value is 0. \n\nparamtype vehicle_max_speed:\n\
+    \   int\n\nkeyword vehicle_weight:\n   Weight of the vehicle in kilograms. Default\
+    \ value is 0.\n\nparamtype vehicle_weight:\n   int\n\nkeyword windingness:\n \
+    \  Level of turns for thrilling route. This parameter can only be used in\n  \
+    \ conjunction with `routeType`=thrilling. Known values are: \"low\", \"normal\"\
+    , and \"high\".\n   Default value is None.\n\nparamtype windingness:\n   str or\
+    \ ~azure.maps.route.models.WindingnessLevel\n\nkeyword incline_level:\n   Degree\
+    \ of hilliness for thrilling route. This parameter can only be\n   used in conjunction\
+    \ with `routeType`=thrilling. Known values are: \"low\", \"normal\", and\n   \"\
+    high\". Default value is None.\n\nparamtype incline_level:\n   str or ~azure.maps.route.models.InclineLevel\n\
+    \nkeyword travel_mode:\n   The mode of travel for the requested route. If not\
+    \ defined, default is\n   'car'. Note that the requested travelMode may not be\
+    \ available for the entire route. Where the\n   requested travelMode is not available\
+    \ for a particular section, the travelMode element of the\n   response for that\
+    \ section will be \"other\". Note that travel modes bus, motorcycle, taxi and\
+    \ van\n   are BETA functionality. Full restriction data is not available in all\
+    \ areas. In\n   **calculateReachableRange** requests, the values bicycle and pedestrian\
+    \ must not be used. Known\n   values are: \"car\", \"truck\", \"taxi\", \"bus\"\
+    , \"van\", \"motorcycle\", \"bicycle\", and \"pedestrian\".\n   Default value\
+    \ is None.\n\nparamtype travel_mode:\n   str or ~azure.maps.route.models.TravelMode\n\
+    \nkeyword avoid:\n   Specifies something that the route calculation should try\
+    \ to avoid when\n   determining the route. Can be specified multiple times in\
+    \ one request, for example,\n   '&avoid=motorways&avoid=tollRoads&avoid=ferries'.\
+    \ In calculateReachableRange requests, the\n   value alreadyUsedRoads must not\
+    \ be used. Default value is None.\n\nparamtype avoid:\n   list[str or ~azure.maps.route.models.RouteAvoidType]\n\
+    \nkeyword use_traffic_data:\n   Possible values:\n\n   * true - Do consider all\
+    \ available traffic information during routing \n\n   * false - Ignore current\
+    \ traffic data during routing. Note that although the current traffic data is\
+    \ ignored during routing, the effect of historic traffic on effective road speeds\
+    \ is still incorporated. Default value is None. \n\nparamtype use_traffic_data:\n\
+    \   bool\n\nkeyword route_type:\n   The type of route requested. Known values\
+    \ are: \"fastest\", \"shortest\",\n   \"eco\", and \"thrilling\". Default value\
+    \ is None.\n\nparamtype route_type:\n   str or ~azure.maps.route.models.RouteType\n\
+    \nkeyword vehicle_load_type:\n   Types of cargo that may be classified as hazardous\
+    \ materials and\n   restricted from some roads. Available vehicleLoadType values\
+    \ are US Hazmat classes 1 through 9,\n   plus generic classifications for use\
+    \ in other countries. Values beginning with USHazmat are for\n   US routing while\
+    \ otherHazmat should be used for all other countries. vehicleLoadType can be\n\
+    \   specified multiple times. This parameter is currently only considered for\
+    \ travelMode=truck.\n   Known values are: \"USHazmatClass1\", \"USHazmatClass2\"\
+    , \"USHazmatClass3\", \"USHazmatClass4\",\n   \"USHazmatClass5\", \"USHazmatClass6\"\
+    , \"USHazmatClass7\", \"USHazmatClass8\", \"USHazmatClass9\",\n   \"otherHazmatExplosive\"\
+    , \"otherHazmatGeneral\", and \"otherHazmatHarmfulToWater\". Default value is\n\
+    \   None.\n\nparamtype vehicle_load_type:\n   str or ~azure.maps.route.models.VehicleLoadType\n\
+    \nreturn:\n   An instance of AsyncLROPoller that returns RouteMatrixResult\n\n\
+    rtype:\n   ~azure.core.polling.AsyncLROPoller[~azure.maps.route.models.RouteMatrixResult]\n\
+    \nraises ~azure.core.exceptions.HttpResponseError:"
+  signature: 'async begin_request_route_matrix(route_matrix_query: RouteMatrixQuery
+    | IO[bytes], format: str | JsonFormat = ''json'', *, wait_for_results: bool |
+    None = None, compute_travel_time: str | ComputeTravelTime | None = None, filter_section_type:
+    str | SectionType | None = None, arrive_at: datetime | None = None, depart_at:
+    datetime | None = None, vehicle_axle_weight: int = 0, vehicle_length: float =
+    0, vehicle_height: float = 0, vehicle_width: float = 0, vehicle_max_speed: int
+    = 0, vehicle_weight: int = 0, windingness: str | WindingnessLevel | None = None,
+    incline_level: str | InclineLevel | None = None, travel_mode: str | TravelMode
+    | None = None, avoid: List[str | RouteAvoidType] | None = None, use_traffic_data:
+    bool | None = None, route_type: str | RouteType | None = None, vehicle_load_type:
+    str | VehicleLoadType | None = None, **kwargs: Any) -> AsyncLROPoller[RouteMatrixResult]'
+  parameters:
+  - name: route_matrix_query
+    isRequired: true
+  - name: format
+    defaultValue: json
+  keywordOnlyParameters:
+  - name: wait_for_results
+    defaultValue: None
+  - name: compute_travel_time
+    defaultValue: None
+  - name: filter_section_type
+    defaultValue: None
+  - name: arrive_at
+    defaultValue: None
+  - name: depart_at
+    defaultValue: None
+  - name: vehicle_axle_weight
+    defaultValue: '0'
+  - name: vehicle_length
+    defaultValue: '0'
+  - name: vehicle_height
+    defaultValue: '0'
+  - name: vehicle_width
+    defaultValue: '0'
+  - name: vehicle_max_speed
+    defaultValue: '0'
+  - name: vehicle_weight
+    defaultValue: '0'
+  - name: windingness
+    defaultValue: None
+  - name: incline_level
+    defaultValue: None
+  - name: travel_mode
+    defaultValue: None
+  - name: avoid
+    defaultValue: None
+  - name: use_traffic_data
+    defaultValue: None
+  - name: route_type
+    defaultValue: None
+  - name: vehicle_load_type
+    defaultValue: None
+- uid: azure.maps.route.aio.MapsRouteClient.close
+  name: close
+  signature: async close() -> None
 - uid: azure.maps.route.aio.MapsRouteClient.get_route_directions
   name: get_route_directions
   summary: 'Returns a route between an origin and a destination, passing through waypoints
@@ -369,7 +741,7 @@ methods:
     or turn by turn
 
     instructions is also available, depending on the options selected.'
-  signature: 'async get_route_directions(route_points: List[LatLon] | List[Tuple],
+  signature: 'async get_route_directions(route_points: List[LatLongPair] | List[Tuple],
     **kwargs: Any) -> RouteDirections'
   parameters:
   - name: route_points
@@ -377,7 +749,7 @@ methods:
       as (lat, lon)
     isRequired: true
     types:
-    - <xref:typing.List>[<xref:azure.maps.route.models.LatLon>]
+    - <xref:typing.List>[<xref:azure.maps.route.models.LatLongPair>]
     - <xref:typing.List>[<xref:typing.Tuple>]
   keywordOnlyParameters:
   - name: supporting_points
@@ -567,8 +939,10 @@ methods:
   - name: filter_section_type
     description: 'Specifies which of the section types is reported in the route
 
-      response. `<br>`:code:>>`<<<br>`For example if sectionType = pedestrian the
-      sections which
+      response.
+
+
+      For example if sectionType = pedestrian the sections which
 
       are suited for pedestrians only are returned. Multiple types can be used. The
       default
@@ -656,8 +1030,8 @@ methods:
     description: 'Level of turns for thrilling route. This parameter can only be used
       in
 
-      conjunction with >>``<<routeType``=thrilling. Known values are: "low", "normal",
-      and "high".
+      conjunction with `routeType=thrilling`. Known values are: "low", "normal", and
+      "high".
 
       Default value is None.'
     types:
@@ -667,8 +1041,8 @@ methods:
     description: 'Degree of hilliness for thrilling route. This parameter can only
       be
 
-      used in conjunction with >>``<<routeType``=thrilling. Known values are: "low",
-      "normal", and
+      used in conjunction with `routeType=thrilling`. Known values are: "low", "normal",
+      and
 
       "high". Default value is None.'
     types:
@@ -883,6 +1257,737 @@ methods:
     - <xref:azure.maps.route.models.RouteDirectionsBatchResult>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+- uid: azure.maps.route.aio.MapsRouteClient.get_route_directions_with_additional_parameters
+  name: get_route_directions_with_additional_parameters
+  summary: '**Applies to**: see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
+
+
+    Returns  a route between an origin and a destination, passing through waypoints
+    if they are
+
+    specified. The route will take into account factors such as current traffic and
+    the typical
+
+    road speeds on the requested day of the week and time of day.
+
+
+    Information returned includes the distance, estimated travel time, and a representation
+    of the
+
+    route geometry. Additional routing information such as optimized waypoint order
+    or turn by turn
+
+    instructions is also available, depending on the options selected.
+
+
+    Routing service provides a set of parameters for a detailed description of a vehicle-specific
+
+    Consumption Model. Please check [Consumption Model](https://docs.microsoft.com/azure/azure-maps/consumption-model)
+    for detailed explanation of
+
+    the concepts and parameters involved.'
+  signature: 'async get_route_directions_with_additional_parameters(route_direction_parameters:
+    RouteDirectionParameters | IO[bytes], format: str | ResponseFormat = ''json'',
+    *, route_points: str, max_alternatives: int | None = None, alternative_type: str
+    | AlternativeRouteType | None = None, min_deviation_distance: int | None = None,
+    min_deviation_time: int | None = None, instructions_type: str | RouteInstructionsType
+    | None = None, language: str | None = None, compute_best_waypoint_order: bool
+    | None = None, route_representation_for_best_order: str | RouteRepresentationForBestOrder
+    | None = None, compute_travel_time: str | ComputeTravelTime | None = None, vehicle_heading:
+    int | None = None, report: str | Report | None = None, filter_section_type: str
+    | SectionType | None = None, arrive_at: datetime | None = None, depart_at: datetime
+    | None = None, vehicle_axle_weight: int = 0, vehicle_length: float = 0, vehicle_height:
+    float = 0, vehicle_width: float = 0, vehicle_max_speed: int = 0, vehicle_weight:
+    int = 0, is_commercial_vehicle: bool = False, windingness: str | WindingnessLevel
+    | None = None, incline_level: str | InclineLevel | None = None, travel_mode: str
+    | TravelMode | None = None, avoid: List[str | RouteAvoidType] | None = None, use_traffic_data:
+    bool | None = None, route_type: str | RouteType | None = None, vehicle_load_type:
+    str | VehicleLoadType | None = None, vehicle_engine_type: str | VehicleEngineType
+    | None = None, constant_speed_consumption_in_liters_per_hundred_km: str | None
+    = None, current_fuel_in_liters: float | None = None, auxiliary_power_in_liters_per_hour:
+    float | None = None, fuel_energy_density_in_megajoules_per_liter: float | None
+    = None, acceleration_efficiency: float | None = None, deceleration_efficiency:
+    float | None = None, uphill_efficiency: float | None = None, downhill_efficiency:
+    float | None = None, constant_speed_consumption_in_kw_h_per_hundred_km: str |
+    None = None, current_charge_in_kw_h: float | None = None, max_charge_in_kw_h:
+    float | None = None, auxiliary_power_in_kw: float | None = None, **kwargs: Any)
+    -> RouteDirections'
+  parameters:
+  - name: route_direction_parameters
+    description: "Used for reconstructing a route and for calculating zero or\nmore\
+      \ alternative routes to this reference route.  The provided sequence of coordinates\
+      \ is used\nas input for route reconstruction. The alternative routes  are calculated\
+      \ between the origin\nand destination points specified in the base path parameter\
+      \ locations.  If both\nminDeviationDistance and minDeviationTime are set to\
+      \ zero, then these origin and destination\npoints  are expected to be at (or\
+      \ very near) the beginning and end of the reference route,\nrespectively. Intermediate\
+      \  locations (waypoints) are not supported when using\nsupportingPoints.\n\n\
+      Setting at least one of minDeviationDistance or minDeviationTime to a value\
+      \ greater than zero\nhas the  following consequences:\n\n* The origin point\
+      \ of the calculateRoute request must be on (or very near) the input reference\
+      \ route. If  this is not the case, an error is returned. However, the origin\
+      \ point does not need to be at the beginning of  the input reference route (it\
+      \ can be thought of as the current vehicle position on the reference route).\
+      \ \n\n* The reference route, returned as the first route in the calculateRoute\
+      \ response, will start at the origin  point specified in the calculateRoute\
+      \ request. The initial part of the input reference route up until the  origin\
+      \ point will be excluded from the response. \n\n* The values of minDeviationDistance\
+      \ and minDeviationTime determine how far alternative routes will be  guaranteed\
+      \ to follow the reference route from the origin point onwards. \n\n* The route\
+      \ must use departAt. \n\n* The vehicleHeading is ignored. Is either a RouteDirectionParameters\
+      \ type or a IO[bytes] type. Required."
+    isRequired: true
+    types:
+    - <xref:azure.maps.route.models.RouteDirectionParameters>
+    - <xref:typing.IO>[<xref:bytes>]
+  - name: format
+    description: 'Desired format of the response. Value can be either *json* or *xml*.
+      Known
+
+      values are: "json" and "xml". Default value is "json".'
+    defaultValue: json
+    types:
+    - <xref:str>
+    - <xref:azure.maps.route.models.ResponseFormat>
+  keywordOnlyParameters:
+  - name: route_points
+    description: 'The Coordinates through which the route is calculated, delimited
+      by a
+
+      colon.  A minimum of two coordinates is required.  The first one is the origin
+      and the last is
+
+      the destination of the route. Optional coordinates in-between act as WayPoints
+      in the route.
+
+      You can pass up to 150 WayPoints. Required.'
+    types:
+    - <xref:str>
+  - name: max_alternatives
+    description: 'Number of desired alternative routes to be calculated. Default:
+      0,
+
+      minimum: 0 and maximum: 5. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: alternative_type
+    description: 'Controls the optimality, with respect to the given planning
+
+      criteria, of the calculated alternatives compared to the reference route. Known
+      values are:
+
+      "anyRoute" and "betterRoute". Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.maps.route.models.AlternativeRouteType>
+  - name: min_deviation_distance
+    description: 'All alternative routes returned will follow the reference
+
+      route (see section POST Requests) from the origin point of the calculateRoute
+      request for at
+
+      least this number of meters. Can only be used when reconstructing a route. The
+
+      minDeviationDistance parameter cannot be used in conjunction with arriveAt.
+      Default value is
+
+      None.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: min_deviation_time
+    description: "All alternative routes returned will follow the reference route\n\
+      (see section POST Requests) from the origin point of the calculateRoute request\
+      \ for at least\nthis number of seconds. Can only be used when reconstructing\
+      \ a route. The minDeviationTime\nparameter cannot be used in conjunction with\
+      \ arriveAt. Default value is 0. Setting\n)minDeviationTime_ to a value greater\
+      \ than zero has the following consequences:\n\n* The origin point of the *calculateRoute*\
+      \ Request must be on (or very near) the input reference route. \n\n  * If this\
+      \ is not the case, an error is returned. \n\n  * However, the origin point does\
+      \ not need to be at the beginning of the input reference route (it can be thought\
+      \ of as the current vehicle position on the reference route). \n\n* The reference\
+      \ route, returned as the first route in the *calculateRoute* Response, will\
+      \ start at the origin point specified in the *calculateRoute* Request. The initial\
+      \ part of the input reference route up until the origin point will be excluded\
+      \ from the Response. \n\n* The values of *minDeviationDistance* and *minDeviationTime*\
+      \ determine how far alternative routes will be guaranteed to follow the reference\
+      \ route from the origin point onwards. \n\n* The route must use *departAt*.\
+      \ \n\n* The *vehicleHeading* is ignored. Default value is None."
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: instructions_type
+    description: 'If specified, guidance instructions will be returned. Note that
+      the
+
+      instructionsType parameter cannot be used in conjunction with routeRepresentation=none.
+      Known
+
+      values are: "coded", "text", and "tagged". Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.maps.route.models.RouteInstructionsType>
+  - name: language
+    description: 'The language parameter determines the language of the guidance messages.
+      It
+
+      does not affect proper nouns (the names of streets, plazas, etc.) It has no
+      effect when
+
+      instructionsType=coded. Allowed values are (a subset of) the IETF language tags
+      described.
+
+      Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: compute_best_waypoint_order
+    description: 'Re-order the route waypoints using a fast heuristic
+
+      algorithm to reduce the route length. Yields best results when used in conjunction
+      with
+
+      routeType *shortest*. Notice that origin and destination are excluded from the
+      optimized
+
+      waypoint indices. To include origin and destination in the response, please
+      increase all the
+
+      indices by 1 to account for the origin, and then add the destination as the
+      final index.
+
+      Possible values are true or false. True computes a better order if possible,
+      but is not allowed
+
+      to be used in conjunction with maxAlternatives value greater than 0 or in conjunction
+      with
+
+      circle waypoints. False will use the locations in the given order and not allowed
+      to be used in
+
+      conjunction with routeRepresentation *none*. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:bool>
+  - name: route_representation_for_best_order
+    description: 'Specifies the representation of the set of routes
+
+      provided as response. This parameter value can only be used in conjunction with
+
+      computeBestOrder=true. Known values are: "polyline", "summaryOnly", and "none".
+      Default value
+
+      is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.maps.route.models.RouteRepresentationForBestOrder>
+  - name: compute_travel_time
+    description: 'Specifies whether to return additional travel times using
+
+      different types of traffic information (none, historic, live) as well as the
+      default
+
+      best-estimate travel time. Known values are: "none" and "all". Default value
+      is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.maps.route.models.ComputeTravelTime>
+  - name: vehicle_heading
+    description: 'The directional heading of the vehicle in degrees starting at true
+
+      North and continuing in clockwise direction. North is 0 degrees, east is 90
+      degrees, south is
+
+      180 degrees, west is 270 degrees. Possible values 0-359. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: report
+    description: 'Specifies which data should be reported for diagnosis purposes.
+      The only
+
+      possible value is *effectiveSettings*. Reports the effective parameters or data
+      used when
+
+      calling the API. In the case of defaulted parameters the default will be reflected
+      where the
+
+      parameter was not specified by the caller. "effectiveSettings" Default value
+      is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.maps.route.models.Report>
+  - name: filter_section_type
+    description: 'Specifies which of the section types is reported in the route
+
+      response. For example if sectionType = pedestrian the sections which
+
+      are suited for pedestrians only are returned. Multiple types can be used. The
+      default
+
+      sectionType refers to the travelMode input. By default travelMode is set to
+      car. Known values
+
+      are: "carTrain", "country", "ferry", "motorway", "pedestrian", "tollRoad", "tollVignette",
+
+      "traffic", "travelMode", "tunnel", "carpool", and "urban". Default value is
+      None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.maps.route.models.SectionType>
+  - name: arrive_at
+    description: 'The date and time of arrival at the destination point. It must be
+      specified
+
+      as a dateTime. When a time zone offset is not specified it will be assumed to
+      be that of the
+
+      destination point. The arriveAt value must be in the future. The arriveAt parameter
+      cannot be
+
+      used in conjunction with departAt, minDeviationDistance or minDeviationTime.
+      Default value is
+
+      None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: depart_at
+    description: 'The date and time of departure from the origin point. Departure
+      times apart
+
+      from now must be specified as a dateTime. When a time zone offset is not specified,
+      it will be
+
+      assumed to be that of the origin point. The departAt value must be in the future
+      in the
+
+      date-time format (1996-12-19T16:39:57-08:00). Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: vehicle_axle_weight
+    description: 'Weight per axle of the vehicle in kg. A value of 0 means that
+
+      weight restrictions per axle are not considered. Default value is 0.'
+    defaultValue: '0'
+    types:
+    - <xref:int>
+  - name: vehicle_length
+    description: 'Length of the vehicle in meters. A value of 0 means that length
+
+      restrictions are not considered. Default value is 0.'
+    defaultValue: '0'
+    types:
+    - <xref:float>
+  - name: vehicle_height
+    description: 'Height of the vehicle in meters. A value of 0 means that height
+
+      restrictions are not considered. Default value is 0.'
+    defaultValue: '0'
+    types:
+    - <xref:float>
+  - name: vehicle_width
+    description: 'Width of the vehicle in meters. A value of 0 means that width
+
+      restrictions are not considered. Default value is 0.'
+    defaultValue: '0'
+    types:
+    - <xref:float>
+  - name: vehicle_max_speed
+    description: "Maximum speed of the vehicle in km/hour. The max speed in the\n\
+      vehicle profile is used to check whether a vehicle is allowed on motorways.\n\
+      \n* A value of 0 means that an appropriate value for the vehicle will be determined\
+      \ and applied during route planning. \n\n* A non-zero value may be overridden\
+      \ during route planning. For example, the current traffic flow is 60 km/hour.\
+      \ If the vehicle  maximum speed is set to 50 km/hour, the routing engine will\
+      \ consider 60 km/hour as this is the current situation.  If the maximum speed\
+      \ of the vehicle is provided as 80 km/hour but the current traffic flow is 60\
+      \ km/hour, then routing engine will again use 60 km/hour. Default value is 0."
+    defaultValue: '0'
+    types:
+    - <xref:int>
+  - name: vehicle_weight
+    description: "Weight of the vehicle in kilograms.\n\n* It is mandatory if any\
+      \ of the Efficiency parameters are set. \n\n* It must be strictly positive when\
+      \ used in the context of the Consumption Model. Weight restrictions are considered.\
+      \ \n\n* If no detailed **Consumption Model** is specified and the value of **vehicleWeight**\
+      \ is non-zero, then weight restrictions are considered. \n\n* In all other cases,\
+      \ this parameter is ignored. \n\nSensible Values : for **Combustion Model**\
+      \ : 1600, for **Electric Model** : 1900. Default\nvalue is 0."
+    defaultValue: '0'
+    types:
+    - <xref:int>
+  - name: is_commercial_vehicle
+    description: 'Whether the vehicle is used for commercial purposes. Commercial
+
+      vehicles may not be allowed to drive on some roads. Default value is False.'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: windingness
+    description: 'Level of turns for thrilling route. This parameter can only be used
+      in
+
+      conjunction with `routeType`=thrilling. Known values are: "low", "normal", and
+      "high".
+
+      Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.maps.route.models.WindingnessLevel>
+  - name: incline_level
+    description: 'Degree of hilliness for thrilling route. This parameter can only
+      be
+
+      used in conjunction with `routeType`=thrilling. Known values are: "low", "normal",
+      and
+
+      "high". Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.maps.route.models.InclineLevel>
+  - name: travel_mode
+    description: 'The mode of travel for the requested route. If not defined, default
+      is
+
+      ''car''. Note that the requested travelMode may not be available for the entire
+      route. Where the
+
+      requested travelMode is not available for a particular section, the travelMode
+      element of the
+
+      response for that section will be "other". Note that travel modes bus, motorcycle,
+      taxi and van
+
+      are BETA functionality. Full restriction data is not available in all areas.
+      In
+
+      **calculateReachableRange** requests, the values bicycle and pedestrian must
+      not be used. Known
+
+      values are: "car", "truck", "taxi", "bus", "van", "motorcycle", "bicycle", and
+      "pedestrian".
+
+      Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.maps.route.models.TravelMode>
+  - name: avoid
+    description: 'Specifies something that the route calculation should try to avoid
+      when
+
+      determining the route. Can be specified multiple times in one request, for example,
+
+      ''&avoid=motorways&avoid=tollRoads&avoid=ferries''. In calculateReachableRange
+      requests, the
+
+      value alreadyUsedRoads must not be used. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:list>[<xref:str>
+    - <xref:azure.maps.route.models.RouteAvoidType>]
+  - name: use_traffic_data
+    description: "Possible values:\n\n* true - Do consider all available traffic information\
+      \ during routing \n\n* false - Ignore current traffic data during routing. Note\
+      \ that although the current traffic data is ignored during routing, the effect\
+      \ of historic traffic on effective road speeds is still incorporated. Default\
+      \ value is None."
+    defaultValue: None
+    types:
+    - <xref:bool>
+  - name: route_type
+    description: 'The type of route requested. Known values are: "fastest", "shortest",
+
+      "eco", and "thrilling". Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.maps.route.models.RouteType>
+  - name: vehicle_load_type
+    description: 'Types of cargo that may be classified as hazardous materials and
+
+      restricted from some roads. Available vehicleLoadType values are US Hazmat classes
+      1 through 9,
+
+      plus generic classifications for use in other countries. Values beginning with
+      USHazmat are for
+
+      US routing while otherHazmat should be used for all other countries. vehicleLoadType
+      can be
+
+      specified multiple times. This parameter is currently only considered for travelMode=truck.
+
+      Known values are: "USHazmatClass1", "USHazmatClass2", "USHazmatClass3", "USHazmatClass4",
+
+      "USHazmatClass5", "USHazmatClass6", "USHazmatClass7", "USHazmatClass8", "USHazmatClass9",
+
+      "otherHazmatExplosive", "otherHazmatGeneral", and "otherHazmatHarmfulToWater".
+      Default value is
+
+      None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.maps.route.models.VehicleLoadType>
+  - name: vehicle_engine_type
+    description: 'Engine type of the vehicle. When a detailed Consumption Model is
+
+      specified, it must be consistent with the value of **vehicleEngineType**. Known
+      values are:
+
+      "combustion" and "electric". Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.maps.route.models.VehicleEngineType>
+  - name: constant_speed_consumption_in_liters_per_hundred_km
+    description: "Specifies the speed-dependent\ncomponent of consumption.\n\nProvided\
+      \ as an unordered list of colon-delimited speed & consumption-rate pairs. The\
+      \ list\ndefines points on a consumption curve. Consumption rates for speeds\
+      \ not in the list are found\nas follows:\n\n* by linear interpolation, if the\
+      \ given speed lies in between two speeds in the list \n\n* by linear extrapolation\
+      \ otherwise, assuming a constant (\u0394Consumption/\u0394Speed) determined\
+      \ by the nearest two points in the list \n\nThe list must contain between 1\
+      \ and 25 points (inclusive), and may not contain duplicate\npoints for the same\
+      \ speed. If it only contains a single point, then the consumption rate of\n\
+      that point is used without further processing.\n\nConsumption specified for\
+      \ the largest speed must be greater than or equal to that of the\npenultimate\
+      \ largest speed. This ensures that extrapolation does not lead to negative\n\
+      consumption rates.\n\nSimilarly, consumption values specified for the two smallest\
+      \ speeds in the list cannot lead to\na negative consumption rate for any smaller\
+      \ speed.\n\nThe valid range for the consumption values(expressed in l/100km)\
+      \ is between 0.01 and 100000.0.\n\nSensible Values : 50,6.3:130,11.5\n\n**Note**\
+      \ : This parameter is required for **The Combustion Consumption Model**. Default\
+      \ value\nis None."
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: current_fuel_in_liters
+    description: 'Specifies the current supply of fuel in liters.
+
+
+      Sensible Values : 55. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:float>
+  - name: auxiliary_power_in_liters_per_hour
+    description: 'Specifies the amount of fuel consumed for
+
+      sustaining auxiliary systems of the vehicle, in liters per hour.
+
+
+      It can be used to specify consumption due to devices and systems such as AC
+      systems, radio,
+
+      heating, etc.
+
+
+      Sensible Values : 0.2. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:float>
+  - name: fuel_energy_density_in_megajoules_per_liter
+    description: 'Specifies the amount of chemical energy
+
+      stored in one liter of fuel in megajoules (MJ). It is used in conjunction with
+      the
+
+      ***Efficiency** parameters for conversions between saved or consumed energy
+      and fuel. For
+
+      example, energy density is 34.2 MJ/l for gasoline, and 35.8 MJ/l for Diesel
+      fuel.
+
+
+      This parameter is required if any ***Efficiency** parameter is set.
+
+
+      Sensible Values : 34.2. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:float>
+  - name: acceleration_efficiency
+    description: 'Specifies the efficiency of converting chemical energy stored
+
+      in fuel to kinetic energy when the vehicle accelerates *(i.e.
+
+      KineticEnergyGained/ChemicalEnergyConsumed). ChemicalEnergyConsumed* is obtained
+      by converting
+
+      consumed fuel to chemical energy using **fuelEnergyDensityInMJoulesPerLiter**.
+
+
+      Must be paired with **decelerationEfficiency**.
+
+
+      The range of values allowed are 0.0 to 1/**decelerationEfficiency**.
+
+
+      Sensible Values : for **Combustion Model** : 0.33, for **Electric Model** :
+      0.66. Default
+
+      value is None.'
+    defaultValue: None
+    types:
+    - <xref:float>
+  - name: deceleration_efficiency
+    description: 'Specifies the efficiency of converting kinetic energy to
+
+      saved (not consumed) fuel when the vehicle decelerates *(i.e.
+
+      ChemicalEnergySaved/KineticEnergyLost). ChemicalEnergySaved* is obtained by
+      converting saved
+
+      (not consumed) fuel to energy using **fuelEnergyDensityInMJoulesPerLiter**.
+
+
+      Must be paired with **accelerationEfficiency**.
+
+
+      The range of values allowed are 0.0 to 1/**accelerationEfficiency**.
+
+
+      Sensible Values : for **Combustion Model** : 0.83, for **Electric Model** :
+      0.91. Default
+
+      value is None.'
+    defaultValue: None
+    types:
+    - <xref:float>
+  - name: uphill_efficiency
+    description: 'Specifies the efficiency of converting chemical energy stored in
+
+      fuel to potential energy when the vehicle gains elevation *(i.e.
+
+      PotentialEnergyGained/ChemicalEnergyConsumed). ChemicalEnergyConsumed* is obtained
+      by
+
+      converting consumed fuel to chemical energy using **fuelEnergyDensityInMJoulesPerLiter**.
+
+
+      Must be paired with **downhillEfficiency**.
+
+
+      The range of values allowed are 0.0 to 1/**downhillEfficiency**.
+
+
+      Sensible Values : for **Combustion Model** : 0.27, for **Electric Model** :
+      0.74. Default
+
+      value is None.'
+    defaultValue: None
+    types:
+    - <xref:float>
+  - name: downhill_efficiency
+    description: 'Specifies the efficiency of converting potential energy to saved
+
+      (not consumed) fuel when the vehicle loses elevation *(i.e.
+
+      ChemicalEnergySaved/PotentialEnergyLost). ChemicalEnergySaved* is obtained by
+      converting saved
+
+      (not consumed) fuel to energy using **fuelEnergyDensityInMJoulesPerLiter**.
+
+
+      Must be paired with **uphillEfficiency**.
+
+
+      The range of values allowed are 0.0 to 1/**uphillEfficiency**.
+
+
+      Sensible Values : for **Combustion Model** : 0.51, for **Electric Model** :
+      0.73. Default
+
+      value is None.'
+    defaultValue: None
+    types:
+    - <xref:float>
+  - name: constant_speed_consumption_in_kw_h_per_hundred_km
+    description: "Specifies the speed-dependent\ncomponent of consumption.\n\nProvided\
+      \ as an unordered list of speed/consumption-rate pairs. The list defines points\
+      \ on a\nconsumption curve. Consumption rates for speeds not in the list are\
+      \ found as follows:\n\n* by linear interpolation, if the given speed lies in\
+      \ between two speeds in the list \n\n* by linear extrapolation otherwise, assuming\
+      \ a constant (\u0394Consumption/\u0394Speed) determined by the nearest two points\
+      \ in the list \n\nThe list must contain between 1 and 25 points (inclusive),\
+      \ and may not contain duplicate\npoints for the same speed. If it only contains\
+      \ a single point, then the consumption rate of\nthat point is used without further\
+      \ processing.\n\nConsumption specified for the largest speed must be greater\
+      \ than or equal to that of the\npenultimate largest speed. This ensures that\
+      \ extrapolation does not lead to negative\nconsumption rates.\n\nSimilarly,\
+      \ consumption values specified for the two smallest speeds in the list cannot\
+      \ lead to\na negative consumption rate for any smaller  speed.\n\nThe valid\
+      \ range for the consumption values(expressed in kWh/100km) is between 0.01 and\n\
+      100000.0.\n\nSensible Values : 50,8.2:130,21.3\n\nThis parameter is required\
+      \ for **Electric consumption model**. Default value is None."
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: current_charge_in_kw_h
+    description: 'Specifies the current electric energy supply in kilowatt hours
+
+      (kWh).
+
+
+      This parameter co-exists with **maxChargeInkWh** parameter.
+
+
+      The range of values allowed are 0.0 to **maxChargeInkWh**.
+
+
+      Sensible Values : 43. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:float>
+  - name: max_charge_in_kw_h
+    description: 'Specifies the maximum electric energy supply in kilowatt hours
+
+      (kWh) that may be stored in the vehicle''s battery.
+
+
+      This parameter co-exists with **currentChargeInkWh** parameter.
+
+
+      Minimum value has to be greater than or equal to **currentChargeInkWh**.
+
+
+      Sensible Values : 85. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:float>
+  - name: auxiliary_power_in_kw
+    description: 'Specifies the amount of power consumed for sustaining auxiliary
+
+      systems, in kilowatts (kW).
+
+
+      It can be used to specify consumption due to devices and systems such as AC
+      systems, radio,
+
+      heating, etc.
+
+
+      Sensible Values : 1.7. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:float>
+  return:
+    description: RouteDirections
+    types:
+    - <xref:azure.maps.route.models.RouteDirections>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.maps.route.aio.MapsRouteClient.get_route_matrix
   name: get_route_matrix
   summary: "Calculates a matrix of route summaries for a set of routes defined by\
@@ -938,8 +2043,10 @@ methods:
   - name: filter_section_type
     description: 'Specifies which of the section types is reported in the route
 
-      response. `<br>`:code:>>`<<<br>`For example if sectionType = pedestrian the
-      sections which
+      response.
+
+
+      For example if sectionType = pedestrian the sections which
 
       are suited for pedestrians only are returned. Multiple types can be used. The
       default
@@ -1019,8 +2126,8 @@ methods:
     description: 'Level of turns for thrilling route. This parameter can only be used
       in
 
-      conjunction with >>``<<routeType``=thrilling. Known values are: "low", "normal",
-      and "high".
+      conjunction with `routeType=thrilling`. Known values are: "low", "normal", and
+      "high".
 
       Default value is None.'
     types:
@@ -1030,8 +2137,8 @@ methods:
     description: 'Degree of hilliness for thrilling route. This parameter can only
       be
 
-      used in conjunction with >>``<<routeType``=thrilling. Known values are: "low",
-      "normal", and
+      used in conjunction with `routeType=thrilling`. Known values are: "low", "normal",
+      and
 
       "high". Default value is None.'
     types:
@@ -1144,27 +2251,26 @@ methods:
     center which was
 
     the result of the origin point.'
-  signature: 'async get_route_range(coordinates: LatLon | Tuple, **kwargs: Any) ->
-    RouteRangeResult'
+  signature: 'async get_route_range(coordinates: LatLongPair | Tuple[float, float],
+    **kwargs: Any) -> RouteRangeResult'
   parameters:
   - name: coordinates
     description: The Coordinate from which the range calculation should start, coordinates
       as (lat, lon)
     isRequired: true
     types:
-    - <xref:azure.maps.route.models.LatLon>
+    - <xref:azure.maps.route.models.LatLongPair>
     - <xref:typing.Tuple>
   keywordOnlyParameters:
   - name: fuel_budget_in_liters
     description: 'Fuel budget in liters that determines maximal range which can
 
-      be travelled using the specified Combustion Consumption Model.:code:*<br>* When
+      be travelled using the specified Combustion Consumption Model. When
 
       fuelBudgetInLiters is used, it is mandatory to specify a detailed  Combustion
       Consumption
 
-      Model.:code:*<br>* Exactly one budget (fuelBudgetInLiters, energyBudgetInkWh,
-      timeBudgetInSec,
+      Model. Exactly one budget (fuelBudgetInLiters, energyBudgetInkWh, timeBudgetInSec,
 
       or distanceBudgetInMeters) must be used. Default value is None.'
     types:
@@ -1174,10 +2280,9 @@ methods:
 
       maximal range which can be travelled using the specified Electric Consumption
 
-      Model.:code:*<br>* When energyBudgetInkWh is used, it is mandatory to specify
-      a detailed
+      Model. When energyBudgetInkWh is used, it is mandatory to specify a detailed
 
-      Electric Consumption Model.:code:*<br>* Exactly one budget (fuelBudgetInLiters,
+      Electric Consumption Model. Exactly one budget (fuelBudgetInLiters,
 
       energyBudgetInkWh, timeBudgetInSec, or distanceBudgetInMeters) must be used.
       Default value is
@@ -1191,8 +2296,7 @@ methods:
       travelled using driving time. The Consumption Model will only affect the range
       when routeType
 
-      is eco.:code:*<br>* Exactly one budget (fuelBudgetInLiters, energyBudgetInkWh,
-      timeBudgetInSec,
+      is eco. Exactly one budget (fuelBudgetInLiters, energyBudgetInkWh, timeBudgetInSec,
 
       or distanceBudgetInMeters) must be used. Default value is None.'
     types:
@@ -1203,7 +2307,7 @@ methods:
       which can be travelled using driving distance.  The Consumption Model will only
       affect the
 
-      range when routeType is eco.:code:*<br>* Exactly one budget (fuelBudgetInLiters,
+      range when routeType is eco. Exactly one budget (fuelBudgetInLiters,
 
       energyBudgetInkWh, timeBudgetInSec, or distanceBudgetInMeters) must be used.
       Default value is
@@ -1282,8 +2386,8 @@ methods:
     description: 'Degree of hilliness for thrilling route. This parameter can only
       be
 
-      used in conjunction with >>``<<routeType``=thrilling. Known values are: "low",
-      "normal", and
+      used in conjunction with `routeType=thrilling`. Known values are: "low", "normal",
+      and
 
       "high". Default value is None.'
     types:
@@ -1293,8 +2397,8 @@ methods:
     description: 'Level of turns for thrilling route. This parameter can only be used
       in
 
-      conjunction with >>``<<routeType``=thrilling. Known values are: "low", "normal",
-      and "high".
+      conjunction with `routeType=thrilling`. Known values are: "low", "normal", and
+      "high".
 
       Default value is None.'
     types:
@@ -1487,3 +2591,363 @@ methods:
     - <xref:azure.maps.route.models.RouteRangeResult>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+- uid: azure.maps.route.aio.MapsRouteClient.request_route_directions_batch_sync
+  name: request_route_directions_batch_sync
+  summary: "**Route Directions Batch API**\n\n**Applies to**: see pricing [tiers](https://aka.ms/AzureMapsPricingTier).\n\
+    \nThe Route Directions Batch API sends batches of queries to [Route Directions\
+    \ API](https://docs.microsoft.com/rest/api/maps/route/getroutedirections) using\
+    \ just a single API\ncall. You can call Route Directions Batch API to run either\
+    \ asynchronously (async) or\nsynchronously (sync). The async API allows caller\
+    \ to batch up to **700** queries and sync API\nup to **100** queries.\n\n# Submit\
+    \ Synchronous Batch Request\n\nThe Synchronous API is recommended for lightweight\
+    \ batch requests. When the service receives a\nrequest, it will respond as soon\
+    \ as the batch items are calculated and there will be no\npossibility to retrieve\
+    \ the results later. The Synchronous API will return a timeout error (a\n408 response)\
+    \ if the request takes longer than 60 seconds. The number of batch items is limited\n\
+    to **100** for this API.\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
+    \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"default\", \"highlight_args\": {}, \"linenos\"\
+    : false} -->\n\n````default\n\n   POST\n   https://atlas.microsoft.com/route/directions/batch/sync/json?api-version=1.0&subscription-key={subscription-key}\n\
+    \   ````\n\n# Batch Response Model\n\nThe returned data content is similar for\
+    \ async and sync requests. When downloading the results\nof an async batch request,\
+    \ if the batch has finished processing, the response body contains the\nbatch\
+    \ response. This batch response contains a `summary` component that indicates\
+    \ the\n`totalRequests` that were part of the original batch request and `successfulRequests`i.e.\
+    \ queries which were executed successfully. The batch response also includes a\n\
+    `batchItems` array which contains a response for each and every query in the batch\
+    \ request.\nThe `batchItems` will contain the results in the exact same order\
+    \ the original queries were\nsent in the batch request. Each item in `batchItems`\
+    \ contains `statusCode` and `response`\nfields. Each `response` in `batchItems`\
+    \ is of one of the following types:\n\n* *``RouteDirections`* <[https://docs.microsoft.com/rest/api/maps/route/getroutedirections#routedirections](https://docs.microsoft.com/rest/api/maps/route/getroutedirections#routedirections)>`_\
+    \ - If the query completed successfully. \n\n* `Error` - If the query failed.\
+    \ The response will contain a `code` and a `message` in this case. \n\nHere's\
+    \ a sample Batch Response with 1 *successful* and 1 *failed* result:\n\n<!-- literal_block\
+    \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
+    : [], \"xml:space\": \"preserve\", \"force\": false, \"language\": \"json\", \"\
+    highlight_args\": {}, \"linenos\": false} -->\n\n````json\n\n   {\n       \"summary\"\
+    : {\n           \"successfulRequests\": 1,\n           \"totalRequests\": 2\n\
+    \       },\n       \"batchItems\": [\n           {\n               \"statusCode\"\
+    : 200,\n               \"response\": {\n                   \"routes\": [\n   \
+    \                    {\n                           \"summary\": {\n          \
+    \                     \"lengthInMeters\": 1758,\n                            \
+    \   \"travelTimeInSeconds\": 387,\n                               \"trafficDelayInSeconds\"\
+    : 0,\n                               \"departureTime\": \"2018-07-17T00:49:56+00:00\"\
+    ,\n                               \"arrivalTime\": \"2018-07-17T00:56:22+00:00\"\
+    \n                           },\n                           \"legs\": [\n    \
+    \                           {\n                                   \"summary\"\
+    : {\n                                       \"lengthInMeters\": 1758,\n      \
+    \                                 \"travelTimeInSeconds\": 387,\n            \
+    \                           \"trafficDelayInSeconds\": 0,\n                  \
+    \                     \"departureTime\": \"2018-07-17T00:49:56+00:00\",\n    \
+    \                                   \"arrivalTime\": \"2018-07-17T00:56:22+00:00\"\
+    \n                                   },\n                                   \"\
+    points\": [\n                                       {\n                      \
+    \                     \"latitude\": 47.62094,\n                              \
+    \             \"longitude\": -122.34892\n                                    \
+    \   },\n                                       {\n                           \
+    \                \"latitude\": 47.62094,\n                                   \
+    \        \"longitude\": -122.3485\n                                       },\n\
+    \                                       {\n                                  \
+    \         \"latitude\": 47.62095,\n                                          \
+    \ \"longitude\": -122.3476\n                                       }\n       \
+    \                            ]\n                               }\n           \
+    \                ],\n                           \"sections\": [\n            \
+    \                   {\n                                   \"startPointIndex\"\
+    : 0,\n                                   \"endPointIndex\": 40,\n            \
+    \                       \"sectionType\": \"TRAVEL_MODE\",\n                  \
+    \                 \"travelMode\": \"bicycle\"\n                              \
+    \ }\n                           ]\n                       }\n                \
+    \   ]\n               }\n           },\n           {\n               \"statusCode\"\
+    : 400,\n               \"response\":\n               {\n                   \"\
+    error\":\n                   {\n                       \"code\": \"400 BadRequest\"\
+    ,\n                       \"message\":\n                    \"Bad request: one\
+    \ or more parameters were incorrectly specified or are mutually exclusive.\"\n\
+    \                   }\n               }\n           }\n       ]\n   }\n   ````\n\
+    \nparam route_directions_batch_queries:\n   The list of route directions queries/requests\
+    \ to\n   process. The list can contain  a max of 700 queries for async and 100\
+    \ queries for sync version\n   and must contain at least 1 query. Is either a\
+    \ BatchRequest type or a IO[bytes] type. Required.\n\ntype route_directions_batch_queries:\n\
+    \   ~azure.maps.route.models.BatchRequest or IO[bytes]\n\nparam format:\n   Desired\
+    \ format of the response. Only `json` format is supported. \"json\"\n   Default\
+    \ value is \"json\".\n\ntype format:\n   str or ~azure.maps.route.models.JsonFormat\n\
+    \nreturn:\n   RouteDirectionsBatchResult\n\nrtype:\n   ~azure.maps.route.models.RouteDirectionsBatchResult\n\
+    \nraises ~azure.core.exceptions.HttpResponseError:"
+  signature: 'async request_route_directions_batch_sync(route_directions_batch_queries:
+    BatchRequest | IO[bytes], format: str | JsonFormat = ''json'', **kwargs: Any)
+    -> RouteDirectionsBatchResult'
+  parameters:
+  - name: route_directions_batch_queries
+    isRequired: true
+  - name: format
+    defaultValue: json
+- uid: azure.maps.route.aio.MapsRouteClient.request_route_matrix_sync
+  name: request_route_matrix_sync
+  summary: "**Applies to**: see pricing [tiers](https://aka.ms/AzureMapsPricingTier).\n\
+    \nThe Matrix Routing service allows calculation of a matrix of route summaries\
+    \ for a set of\nroutes defined by origin and destination locations by using an\
+    \ asynchronous (async) or\nsynchronous (sync) POST request. For every given origin,\
+    \ the service calculates the cost of\nrouting from that origin to every given\
+    \ destination. The set of origins and the set of\ndestinations can be thought\
+    \ of as the column and row headers of a table and each cell in the\ntable contains\
+    \ the costs of routing from the origin to the destination for that cell. As an\n\
+    example, let's say a food delivery company has 20 drivers and they need to find\
+    \ the closest\ndriver to pick up the delivery from the restaurant. To solve this\
+    \ use case, they can call\nMatrix Route API.\n\nFor each route, the travel times\
+    \ and distances are returned. You can use the computed costs to\ndetermine which\
+    \ detailed routes to calculate using the Route Directions API.\n\nThe maximum\
+    \ size of a matrix for async request is **700** and for sync request it's **100**\n\
+    (the number of origins multiplied by the number of destinations).\n\n# Submit\
+    \ Synchronous Route Matrix Request\n\nIf your scenario requires synchronous requests\
+    \ and the maximum size of the matrix is less than\nor equal to 100, you might\
+    \ want to make synchronous request. The maximum size of a matrix for\nthis API\
+    \ is **100** (the number of origins multiplied by the number of destinations).\
+    \ With that\nconstraint in mind, examples of possible matrix dimensions are: 10x10,\
+    \ 6x8, 9x8 (it does not\nneed to be square).\n\n<!-- literal_block {\"ids\": [],\
+    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"default\", \"highlight_args\"\
+    : {}, \"linenos\": false} -->\n\n````default\n\n   POST https://atlas.microsoft.com/route/matrix/sync/json?api-version=1.0&subscription-key={subscription-key}\n\
+    \   ````\n\n# Submit Asynchronous Route Matrix Request\n\nThe Asynchronous API\
+    \ is appropriate for processing big volumes of relatively complex routing\nrequests.\
+    \ When you make a request by using async request, by default the service returns\
+    \ a 202\nresponse code along a redirect URL in the Location field of the response\
+    \ header. This URL\nshould be checked periodically until the response data or\
+    \ error information is available. If\n`waitForResults` parameter in the request\
+    \ is set to true, user will get a 200 response if the\nrequest is finished under\
+    \ 120 seconds.\n\nThe maximum size of a matrix for this API is **700** (the number\
+    \ of origins multiplied by the\nnumber of destinations). With that constraint\
+    \ in mind, examples of possible matrix dimensions\nare: 50x10, 10x10, 28x25. 10x70\
+    \ (it does not need to be square).\n\nThe asynchronous responses are stored for\
+    \ **14** days. The redirect URL returns a 404 response\nif used after the expiration\
+    \ period.\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [],\
+    \ \"dupnames\": [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\":\
+    \ false, \"language\": \"default\", \"highlight_args\": {}, \"linenos\": false}\
+    \ -->\n\n````default\n\n   POST https://atlas.microsoft.com/route/matrix/json?api-version=1.0&subscription-key={subscription-key}\n\
+    \   ````\n\nHere's a typical sequence of asynchronous operations:\n\n1. Client\
+    \ sends a Route Matrix POST request to Azure Maps \n\n2. The server will respond\
+    \ with one of the following: \n\n      HTTP `202 Accepted` -  Route Matrix request\
+    \ has been accepted.\n\n      HTTP `Error` - There was an error processing your\
+    \ Route Matrix request. This could\n      either be a 400 Bad Request or any other\
+    \ Error status code.\n\n3. If the Matrix Route request was accepted successfully,\
+    \ the Location header in the response contains the URL to download the results\
+    \ of the request. This status URI looks like the following: \n\n   <!-- literal_block\
+    \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
+    : [], \"xml:space\": \"preserve\", \"force\": false, \"language\": \"default\"\
+    , \"highlight_args\": {}, \"linenos\": false} -->\n\n   ````default\n\n      GET\n\
+    \      https://atlas.microsoft.com/route/matrix/{matrixId}?api-version=1.0?subscription-key={subscription-key}\n\
+    \      ````\n\n4. Client issues a GET request on the download URL obtained in\
+    \ Step 3 to download the results \n\n# Download Sync Results\n\nWhen you make\
+    \ a POST request for Route Matrix Sync API, the service returns 200 response code\n\
+    for successful request and a response array. The response body will contain the\
+    \ data and there\nwill be no possibility to retrieve the results later.\n\n# Download\
+    \ Async Results\n\nWhen a request issues a `202 Accepted` response, the request\
+    \ is being processed using our\nasync pipeline. You will be given a URL to check\
+    \ the progress of your  async request in the\nlocation header of the response.\
+    \ This status URI looks like the following:\n\n<!-- literal_block {\"ids\": [],\
+    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"default\", \"highlight_args\"\
+    : {}, \"linenos\": false} -->\n\n````default\n\n   GET\n     https://atlas.microsoft.com/route/matrix/{matrixId}?api-version=1.0?subscription-key={subscription-key}\n\
+    \   ````\n\nThe URL provided by the location header will return the following\
+    \ responses when a `GET`\nrequest is issued.\n\n   HTTP `202 Accepted` - Matrix\
+    \ request was accepted but is still being processed. Please try\n   again in some\
+    \ time.\n\n   HTTP `200 OK` - Matrix request successfully processed. The response\
+    \ body contains all of\n   the results.\n\nparam route_matrix_query:\n   The matrix\
+    \ of origin and destination coordinates to compute the\n   route distance, travel\
+    \ time and other summary for each cell of the matrix based on the input\n   parameters.\
+    \ The minimum and the maximum cell count supported are 1 and **700** for async\
+    \ and\n   **100** for sync respectively. For example, it can be 35 origins and\
+    \ 20 destinations or 25\n   origins and 25 destinations for async API. Is either\
+    \ a RouteMatrixQuery type or a IO[bytes]\n   type. Required.\n\ntype route_matrix_query:\n\
+    \   ~azure.maps.route.models.RouteMatrixQuery or IO[bytes]\n\nparam format:\n\
+    \   Desired format of the response. Only `json` format is supported. \"json\"\n\
+    \   Default value is \"json\".\n\ntype format:\n   str or ~azure.maps.route.models.JsonFormat\n\
+    \nkeyword wait_for_results:\n   Boolean to indicate whether to execute the request\
+    \ synchronously. If\n   set to true, user will get a 200 response if the request\
+    \ is finished under 120 seconds.\n   Otherwise, user will get a 202 response right\
+    \ away. Please refer to the API description for\n   more details on 202 response.\
+    \ **Supported only for async request**. Default value is None.\n\nparamtype wait_for_results:\n\
+    \   bool\n\nkeyword compute_travel_time:\n   Specifies whether to return additional\
+    \ travel times using\n   different types of traffic information (none, historic,\
+    \ live) as well as the default\n   best-estimate travel time. Known values are:\
+    \ \"none\" and \"all\". Default value is None.\n\nparamtype compute_travel_time:\n\
+    \   str or ~azure.maps.route.models.ComputeTravelTime\n\nkeyword filter_section_type:\n\
+    \   Specifies which of the section types is reported in the route\n   response.\
+    \ For example if sectionType = pedestrian the sections which\n   are suited for\
+    \ pedestrians only are returned. Multiple types can be used. The default\n   sectionType\
+    \ refers to the travelMode input. By default travelMode is set to car. Known values\n\
+    \   are: \"carTrain\", \"country\", \"ferry\", \"motorway\", \"pedestrian\", \"\
+    tollRoad\", \"tollVignette\",\n   \"traffic\", \"travelMode\", \"tunnel\", \"\
+    carpool\", and \"urban\". Default value is None.\n\nparamtype filter_section_type:\n\
+    \   str or ~azure.maps.route.models.SectionType\n\nkeyword arrive_at:\n   The\
+    \ date and time of arrival at the destination point. It must be specified\n  \
+    \ as a dateTime. When a time zone offset is not specified it will be assumed to\
+    \ be that of the\n   destination point. The arriveAt value must be in the future.\
+    \ The arriveAt parameter cannot be\n   used in conjunction with departAt, minDeviationDistance\
+    \ or minDeviationTime. Default value is\n   None.\n\nparamtype arrive_at:\n  \
+    \ ~datetime.datetime\n\nkeyword depart_at:\n   The date and time of departure\
+    \ from the origin point. Departure times apart\n   from now must be specified\
+    \ as a dateTime. When a time zone offset is not specified, it will be\n   assumed\
+    \ to be that of the origin point. The departAt value must be in the future in\
+    \ the\n   date-time format (1996-12-19T16:39:57-08:00). Default value is None.\n\
+    \nparamtype depart_at:\n   ~datetime.datetime\n\nkeyword vehicle_axle_weight:\n\
+    \   Weight per axle of the vehicle in kg. A value of 0 means that\n   weight restrictions\
+    \ per axle are not considered. Default value is 0.\n\nparamtype vehicle_axle_weight:\n\
+    \   int\n\nkeyword vehicle_length:\n   Length of the vehicle in meters. A value\
+    \ of 0 means that length\n   restrictions are not considered. Default value is\
+    \ 0.\n\nparamtype vehicle_length:\n   float\n\nkeyword vehicle_height:\n   Height\
+    \ of the vehicle in meters. A value of 0 means that height\n   restrictions are\
+    \ not considered. Default value is 0.\n\nparamtype vehicle_height:\n   float\n\
+    \nkeyword vehicle_width:\n   Width of the vehicle in meters. A value of 0 means\
+    \ that width\n   restrictions are not considered. Default value is 0.\n\nparamtype\
+    \ vehicle_width:\n   float\n\nkeyword vehicle_max_speed:\n   Maximum speed of\
+    \ the vehicle in km/hour. The max speed in the\n   vehicle profile is used to\
+    \ check whether a vehicle is allowed on motorways.\n\n   * A value of 0 means\
+    \ that an appropriate value for the vehicle will be determined and applied during\
+    \ route planning. \n\n   * A non-zero value may be overridden during route planning.\
+    \ For example, the current traffic flow is 60 km/hour. If the vehicle  maximum\
+    \ speed is set to 50 km/hour, the routing engine will consider 60 km/hour as this\
+    \ is the current situation.  If the maximum speed of the vehicle is provided as\
+    \ 80 km/hour but the current traffic flow is 60 km/hour, then routing engine will\
+    \ again use 60 km/hour. Default value is 0. \n\nparamtype vehicle_max_speed:\n\
+    \   int\n\nkeyword vehicle_weight:\n   Weight of the vehicle in kilograms. Default\
+    \ value is 0.\n\nparamtype vehicle_weight:\n   int\n\nkeyword windingness:\n \
+    \  Level of turns for thrilling route. This parameter can only be used in\n  \
+    \ conjunction with `routeType`=thrilling. Known values are: \"low\", \"normal\"\
+    , and \"high\".\n   Default value is None.\n\nparamtype windingness:\n   str or\
+    \ ~azure.maps.route.models.WindingnessLevel\n\nkeyword incline_level:\n   Degree\
+    \ of hilliness for thrilling route. This parameter can only be\n   used in conjunction\
+    \ with `routeType`=thrilling. Known values are: \"low\", \"normal\", and\n   \"\
+    high\". Default value is None.\n\nparamtype incline_level:\n   str or ~azure.maps.route.models.InclineLevel\n\
+    \nkeyword travel_mode:\n   The mode of travel for the requested route. If not\
+    \ defined, default is\n   'car'. Note that the requested travelMode may not be\
+    \ available for the entire route. Where the\n   requested travelMode is not available\
+    \ for a particular section, the travelMode element of the\n   response for that\
+    \ section will be \"other\". Note that travel modes bus, motorcycle, taxi and\
+    \ van\n   are BETA functionality. Full restriction data is not available in all\
+    \ areas. In\n   **calculateReachableRange** requests, the values bicycle and pedestrian\
+    \ must not be used. Known\n   values are: \"car\", \"truck\", \"taxi\", \"bus\"\
+    , \"van\", \"motorcycle\", \"bicycle\", and \"pedestrian\".\n   Default value\
+    \ is None.\n\nparamtype travel_mode:\n   str or ~azure.maps.route.models.TravelMode\n\
+    \nkeyword avoid:\n   Specifies something that the route calculation should try\
+    \ to avoid when\n   determining the route. Can be specified multiple times in\
+    \ one request, for example,\n   '&avoid=motorways&avoid=tollRoads&avoid=ferries'.\
+    \ In calculateReachableRange requests, the\n   value alreadyUsedRoads must not\
+    \ be used. Default value is None.\n\nparamtype avoid:\n   list[str or ~azure.maps.route.models.RouteAvoidType]\n\
+    \nkeyword use_traffic_data:\n   Possible values:\n\n   * true - Do consider all\
+    \ available traffic information during routing \n\n   * false - Ignore current\
+    \ traffic data during routing. Note that although the current traffic data is\
+    \ ignored during routing, the effect of historic traffic on effective road speeds\
+    \ is still incorporated. Default value is None. \n\nparamtype use_traffic_data:\n\
+    \   bool\n\nkeyword route_type:\n   The type of route requested. Known values\
+    \ are: \"fastest\", \"shortest\",\n   \"eco\", and \"thrilling\". Default value\
+    \ is None.\n\nparamtype route_type:\n   str or ~azure.maps.route.models.RouteType\n\
+    \nkeyword vehicle_load_type:\n   Types of cargo that may be classified as hazardous\
+    \ materials and\n   restricted from some roads. Available vehicleLoadType values\
+    \ are US Hazmat classes 1 through 9,\n   plus generic classifications for use\
+    \ in other countries. Values beginning with USHazmat are for\n   US routing while\
+    \ otherHazmat should be used for all other countries. vehicleLoadType can be\n\
+    \   specified multiple times. This parameter is currently only considered for\
+    \ travelMode=truck.\n   Known values are: \"USHazmatClass1\", \"USHazmatClass2\"\
+    , \"USHazmatClass3\", \"USHazmatClass4\",\n   \"USHazmatClass5\", \"USHazmatClass6\"\
+    , \"USHazmatClass7\", \"USHazmatClass8\", \"USHazmatClass9\",\n   \"otherHazmatExplosive\"\
+    , \"otherHazmatGeneral\", and \"otherHazmatHarmfulToWater\". Default value is\n\
+    \   None.\n\nparamtype vehicle_load_type:\n   str or ~azure.maps.route.models.VehicleLoadType\n\
+    \nreturn:\n   RouteMatrixResult\n\nrtype:\n   ~azure.maps.route.models.RouteMatrixResult\n\
+    \nraises ~azure.core.exceptions.HttpResponseError:"
+  signature: 'async request_route_matrix_sync(route_matrix_query: RouteMatrixQuery
+    | IO[bytes], format: str | JsonFormat = ''json'', *, wait_for_results: bool |
+    None = None, compute_travel_time: str | ComputeTravelTime | None = None, filter_section_type:
+    str | SectionType | None = None, arrive_at: datetime | None = None, depart_at:
+    datetime | None = None, vehicle_axle_weight: int = 0, vehicle_length: float =
+    0, vehicle_height: float = 0, vehicle_width: float = 0, vehicle_max_speed: int
+    = 0, vehicle_weight: int = 0, windingness: str | WindingnessLevel | None = None,
+    incline_level: str | InclineLevel | None = None, travel_mode: str | TravelMode
+    | None = None, avoid: List[str | RouteAvoidType] | None = None, use_traffic_data:
+    bool | None = None, route_type: str | RouteType | None = None, vehicle_load_type:
+    str | VehicleLoadType | None = None, **kwargs: Any) -> RouteMatrixResult'
+  parameters:
+  - name: route_matrix_query
+    isRequired: true
+  - name: format
+    defaultValue: json
+  keywordOnlyParameters:
+  - name: wait_for_results
+    defaultValue: None
+  - name: compute_travel_time
+    defaultValue: None
+  - name: filter_section_type
+    defaultValue: None
+  - name: arrive_at
+    defaultValue: None
+  - name: depart_at
+    defaultValue: None
+  - name: vehicle_axle_weight
+    defaultValue: '0'
+  - name: vehicle_length
+    defaultValue: '0'
+  - name: vehicle_height
+    defaultValue: '0'
+  - name: vehicle_width
+    defaultValue: '0'
+  - name: vehicle_max_speed
+    defaultValue: '0'
+  - name: vehicle_weight
+    defaultValue: '0'
+  - name: windingness
+    defaultValue: None
+  - name: incline_level
+    defaultValue: None
+  - name: travel_mode
+    defaultValue: None
+  - name: avoid
+    defaultValue: None
+  - name: use_traffic_data
+    defaultValue: None
+  - name: route_type
+    defaultValue: None
+  - name: vehicle_load_type
+    defaultValue: None
+- uid: azure.maps.route.aio.MapsRouteClient.send_request
+  name: send_request
+  summary: 'Runs the network request through the client''s chained policies.
+
+
+    ```
+
+
+    >>> from azure.core.rest import HttpRequest
+
+    >>> request = HttpRequest("GET", "https://www.example.org/")
+
+    <HttpRequest [GET], url: ''https://www.example.org/''>
+
+    >>> response = await client.send_request(request)
+
+    <AsyncHttpResponse: 200 OK>
+
+    ```
+
+
+    For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> Awaitable[AsyncHttpResponse]'
+  parameters:
+  - name: request
+    description: The network request you want to make. Required.
+    isRequired: true
+    types:
+    - <xref:azure.core.rest.HttpRequest>
+  keywordOnlyParameters:
+  - name: stream
+    description: Whether the response payload will be streamed. Defaults to False.
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  return:
+    description: The response of your network call. Does not do error handling on
+      your response.
+    types:
+    - <xref:azure.core.rest.AsyncHttpResponse>
+attributes:
+- uid: azure.maps.route.aio.MapsRouteClient.models
+  name: models
+  signature: models = <module 'azure.maps.route.models' from 'C:\\ToolCache\\Python\\3.11.9\\x64\\Lib\\site-packages\\py2docfx\\venv\\venv65\\Lib\\site-packages\\azure\\maps\\route\\models\\__init__.py'>

@@ -6,7 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: cost-management-billing
 ms.subservice: cost-management
-ms.technology: azure
 ---
 ## Microsoft Azure SDK for Python
 

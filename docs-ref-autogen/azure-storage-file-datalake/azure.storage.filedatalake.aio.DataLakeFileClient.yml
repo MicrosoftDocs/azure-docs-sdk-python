@@ -3,9 +3,6 @@ uid: azure.storage.filedatalake.aio.DataLakeFileClient
 name: DataLakeFileClient
 fullName: azure.storage.filedatalake.aio.DataLakeFileClient
 module: azure.storage.filedatalake.aio
-inheritances:
-- azure.storage.filedatalake.aio._path_client_async.PathClient
-- azure.storage.filedatalake._data_lake_file_client.DataLakeFileClient
 summary: A client to interact with the DataLake file, even if the file may not yet
   exist.
 constructor:
@@ -57,7 +54,7 @@ constructor:
     - <xref:azure.core.credentials.AzureSasCredential>
     - <xref:azure.core.credentials_async.AsyncTokenCredential>
     - <xref:str>
-    - <xref:dict>[<xref:str>, <xref:str>]
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
     - <xref:None>
   keywordOnlyParameters:
   - name: api_version
@@ -71,34 +68,20 @@ constructor:
   - name: audience
     description: 'The audience to use when requesting tokens for Azure Active Directory
 
-      authentication. Only has an effect when credential is of type TokenCredential.
+      authentication. Only has an effect when credential is of type AsyncTokenCredential.
       The value could be
 
       [https://storage.azure.com/](https://storage.azure.com/) (default) or [https:/](https:/)/<account>.blob.core.windows.net.'
     types:
     - <xref:str>
-variables:
-- description: The full endpoint URL to the file system, including SAS token if used.
-  name: url
-  types:
-  - <xref:str>
-- description: The full primary endpoint URL.
-  name: primary_endpoint
-  types:
-  - <xref:str>
-- description: The hostname of the primary endpoint.
-  name: primary_hostname
-  types:
-  - <xref:str>
 examples:
 - "Creating the DataLakeServiceClient from connection string.<!--[!code-python[Main](les\\\
   datalake_samples_instantiate_client_async.py )]-->\n\n<!-- literal_block {\"ids\"\
   : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-  : \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
-  \\py2docfx\\\\dist_temp\\\\229\\\\azure_storage_file_datalake-12.17.0\\\\samples\\\
-  \\datalake_samples_instantiate_client_async.py\", \"xml:space\": \"preserve\", \"\
-  force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\":\
-  \ 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.storage.filedatalake.aio\
+  : \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\
+  \\dist_temp\\\\264\\\\azure_storage_file_datalake-12.22.0\\\\samples\\\\datalake_samples_instantiate_client_async.py\"\
+  , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.storage.filedatalake.aio\
   \ import DataLakeFileClient\n   DataLakeFileClient.from_connection_string(connection_string,\
   \ \"myfilesystem\", \"mydirectory\", \"myfile\")\n\n   ````\n"
 methods:
@@ -110,8 +93,8 @@ methods:
     the DataLake service creates a lease on the file/directory and returns a new
 
     lease ID.'
-  signature: 'async acquire_lease(lease_duration: int | None = -1, lease_id: str |
-    None = None, **kwargs) -> DataLakeLeaseClient'
+  signature: 'async acquire_lease(lease_duration: int = -1, lease_id: str | None =
+    None, **kwargs: Any) -> DataLakeLeaseClient'
   parameters:
   - name: lease_duration
     description: 'Specifies the duration of the lease, in seconds, or negative one
@@ -121,7 +104,7 @@ methods:
       between 15 and 60 seconds. A lease duration cannot be changed
 
       using renew or change. Default is -1 (infinite lease).'
-    isRequired: true
+    defaultValue: '-1'
     types:
     - <xref:int>
   - name: lease_id
@@ -129,7 +112,7 @@ methods:
       returns
 
       400 (Invalid request) if the proposed lease ID is not in the correct format.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   keywordOnlyParameters:
@@ -187,15 +170,14 @@ methods:
 - uid: azure.storage.filedatalake.aio.DataLakeFileClient.append_data
   name: append_data
   summary: Append data to the file.
-  signature: 'async append_data(data: bytes | str | Iterable[AnyStr] | IO[AnyStr],
-    offset: int, length: int | None = None, **kwargs) -> Dict[str, str | datetime
-    | int]'
+  signature: 'async append_data(data: bytes | str | AsyncIterable | IO, offset: int,
+    length: int | None = None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: data
     description: Content to be appended to file
     isRequired: true
     types:
-    - <xref:bytes>, <xref:str>, <xref:typing.Iterable>[<xref:typing.AnyStr>]
+    - <xref:bytes>, <xref:str>, <xref:typing.AsyncIterable>[<xref:typing.AnyStr>]
     - <xref:typing.IO>[<xref:typing.AnyStr>]
   - name: offset
     description: start position of the data to be appended to.
@@ -204,7 +186,7 @@ methods:
     - <xref:int>
   - name: length
     description: Size of the data in bytes.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int>
     - <xref:None>
@@ -274,42 +256,44 @@ methods:
     types:
     - <xref:azure.storage.filedatalake.CustomerProvidedEncryptionKey>
   return:
-    description: dict of the response header.
+    description: A dictionary of response headers.
     types:
-    - <xref:dict>[<xref:str>, <xref:str>], <xref:dict>[<xref:str>, <xref:datetime.datetime>],
-    - <xref:dict>[<xref:str>, <xref:int>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   examples:
   - "Append data to the file.<!--[!code-python[Main](les\\datalake_samples_upload_download_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    229\\\\azure_storage_file_datalake-12.17.0\\\\samples\\\\datalake_samples_upload_download_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   await file_client.append_data(data=file_content[2048:3072], offset=2048,\
-    \ length=1024)\n\n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\264\\\\azure_storage_file_datalake-12.22.0\\\
+    \\samples\\\\datalake_samples_upload_download_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   await file_client.append_data(data=file_content[2048:3072],\
+    \ offset=2048, length=1024)\n\n   ````\n"
 - uid: azure.storage.filedatalake.aio.DataLakeFileClient.close
   name: close
   summary: 'This method is to close the sockets opened by the client.
 
     It need not be used when using with a context manager.'
   signature: async close() -> None
+  return:
+    description: None
+    types:
+    - <xref:None>
 - uid: azure.storage.filedatalake.aio.DataLakeFileClient.create_file
   name: create_file
   summary: Create a new file.
   signature: 'async create_file(content_settings: ContentSettings | None = None, metadata:
-    Dict[str, str] | None = None, **kwargs) -> Dict[str, str | datetime]'
+    Dict[str, str] | None = None, **kwargs: Any) -> Dict[str, str | datetime]'
   parameters:
   - name: content_settings
     description: ContentSettings object used to set path properties.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:azure.storage.filedatalake.ContentSettings>
   - name: metadata
     description: Name-value pairs associated with the file as metadata.
-    isRequired: true
+    defaultValue: None
     types:
-    - <xref:typing.Optional>[<xref:dict>[<xref:str>, <xref:str>]]
+    - <xref:typing.Optional>[<xref:typing.Dict>[<xref:str>, <xref:str>]]
   keywordOnlyParameters:
   - name: lease
     description: 'Required if the file has an active lease. Value can be a DataLakeLeaseClient
@@ -463,24 +447,22 @@ methods:
     types:
     - <xref:str>
   return:
-    description: response dict (Etag and last modified).
+    description: A dictionary of response headers.
     types:
-    - <xref:dict>[<xref:str>, <xref:str>]
-    - <xref:dict>[<xref:datetime.datetime>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   examples:
   - "Create file.<!--[!code-python[Main](les\\datalake_samples_upload_download_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    229\\\\azure_storage_file_datalake-12.17.0\\\\samples\\\\datalake_samples_upload_download_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   file_client = filesystem_client.get_file_client(file_name)\n   await file_client.create_file()\n\
-    \n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\264\\\\azure_storage_file_datalake-12.22.0\\\
+    \\samples\\\\datalake_samples_upload_download_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   file_client = filesystem_client.get_file_client(file_name)\n\
+    \   await file_client.create_file()\n\n   ````\n"
 - uid: azure.storage.filedatalake.aio.DataLakeFileClient.delete_file
   name: delete_file
   summary: Marks the specified file for deletion.
-  signature: async delete_file(**kwargs) -> None
+  signature: 'async delete_file(**kwargs: Any) -> None'
   keywordOnlyParameters:
   - name: lease
     description: 'Required if the file has an active lease. Value can be a LeaseClient
@@ -538,18 +520,18 @@ methods:
     types:
     - <xref:int>
   return:
-    description: None.
+    description: A dictionary of response headers.
     types:
-    - <xref:None>
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   examples:
   - "Delete file.<!--[!code-python[Main](les\\datalake_samples_upload_download_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    229\\\\azure_storage_file_datalake-12.17.0\\\\samples\\\\datalake_samples_upload_download_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   await new_client.delete_file()\n\n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\264\\\\azure_storage_file_datalake-12.22.0\\\
+    \\samples\\\\datalake_samples_upload_download_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   await new_client.delete_file()\n\
+    \n   ````\n"
 - uid: azure.storage.filedatalake.aio.DataLakeFileClient.download_file
   name: download_file
   summary: 'Downloads a file to the StorageStreamDownloader. The readall() method
@@ -567,14 +549,14 @@ methods:
     description: 'Start of byte range to use for downloading a section of the file.
 
       Must be set if length is provided.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int>
   - name: length
     description: 'Number of bytes to read from the stream. This is optional, but
 
       should be supplied for optimal performance.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int>
   keywordOnlyParameters:
@@ -629,9 +611,23 @@ methods:
     types:
     - <xref:azure.storage.filedatalake.CustomerProvidedEncryptionKey>
   - name: max_concurrency
-    description: The number of parallel connections with which to download.
+    description: 'Maximum number of parallel connections to use when transferring
+      the file in chunks.
+
+      This option does not affect the underlying connection pool, and may
+
+      require a separate configuration of the connection pool.'
     types:
     - <xref:int>
+  - name: progress_hook
+    description: 'A callback to track the progress of a long-running download. The
+      signature is
+
+      function(current: int, total: int) where current is the number of bytes transferred
+
+      so far, and total is the total size of the download.'
+    types:
+    - <xref:typing.Callable>[[<xref:int>, <xref:typing.Optional>[<xref:int>]], <xref:typing.Awaitable>[<xref:None>]]
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -648,19 +644,18 @@ methods:
     types:
     - <xref:int>
   return:
-    description: A streaming object (StorageStreamDownloader)
+    description: A streaming object (StorageStreamDownloader).
     types:
     - <xref:azure.storage.filedatalake.aio.StorageStreamDownloader>
   examples:
   - "Return the downloaded data.<!--[!code-python[Main](les\\datalake_samples_upload_download_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    229\\\\azure_storage_file_datalake-12.17.0\\\\samples\\\\datalake_samples_upload_download_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   download = await file_client.download_file()\n   downloaded_bytes = await\
-    \ download.readall()\n\n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\264\\\\azure_storage_file_datalake-12.22.0\\\
+    \\samples\\\\datalake_samples_upload_download_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   download = await file_client.download_file()\n\
+    \   downloaded_bytes = await download.readall()\n\n   ````\n"
 - uid: azure.storage.filedatalake.aio.DataLakeFileClient.exists
   name: exists
   summary: Returns True if a file exists and returns False otherwise.
@@ -686,7 +681,7 @@ methods:
   name: flush_data
   summary: Commit the previous appended data.
   signature: 'async flush_data(offset: int, retain_uncommitted_data: bool | None =
-    False, **kwargs) -> Dict[str, str | datetime]'
+    False, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: offset
     description: 'offset is equal to the length of the file after commit the
@@ -709,7 +704,7 @@ methods:
       this optional parameter allows data after the flush position to be
 
       retained for a future flush operation.'
-    isRequired: true
+    defaultValue: 'False'
     types:
     - <xref:bool>
   keywordOnlyParameters:
@@ -828,28 +823,26 @@ methods:
     types:
     - <xref:azure.storage.filedatalake.CustomerProvidedEncryptionKey>
   return:
-    description: response header in dict.
+    description: A dictionary of response headers.
     types:
-    - <xref:dict>[<xref:str>, <xref:str>]
-    - <xref:dict>[<xref:str>, <xref:datetime.datetime>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   examples:
   - "Commit the previous appended data.<!--[!code-python[Main](les\\datalake_samples_file_system_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    229\\\\azure_storage_file_datalake-12.17.0\\\\samples\\\\datalake_samples_file_system_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   file_client = file_system_client.get_file_client(\"myfile\")\n   await file_client.create_file()\n\
-    \   with open(SOURCE_FILE, \"rb\") as data:\n       length = data.tell()\n   \
-    \    await file_client.append_data(data, 0)\n       await file_client.flush_data(length)\n\
-    \n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\264\\\\azure_storage_file_datalake-12.22.0\\\
+    \\samples\\\\datalake_samples_file_system_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   file_client = file_system_client.get_file_client(\"\
+    myfile\")\n   await file_client.create_file()\n   with open(SOURCE_FILE, \"rb\"\
+    ) as data:\n       length = data.tell()\n       await file_client.append_data(data,\
+    \ 0)\n       await file_client.flush_data(length)\n\n   ````\n"
 - uid: azure.storage.filedatalake.aio.DataLakeFileClient.from_connection_string
   name: from_connection_string
   summary: Create DataLakeFileClient from a Connection String.
   signature: 'from_connection_string(conn_str: str, file_system_name: str, file_path:
     str, credential: str | Dict[str, str] | AzureNamedKeyCredential | AzureSasCredential
-    | TokenCredential | None = None, **kwargs: Any) -> Self'
+    | AsyncTokenCredential | None = None, **kwargs: Any) -> Self'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Storage account.
@@ -892,15 +885,15 @@ methods:
     types:
     - <xref:azure.core.credentials.AzureNamedKeyCredential>
     - <xref:azure.core.credentials.AzureSasCredential>
-    - <xref:azure.core.credentials.TokenCredential>
+    - <xref:azure.core.credentials_async.AsyncTokenCredential>
     - <xref:str>
-    - <xref:dict>[<xref:str>, <xref:str>]
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
     - <xref:None>
   keywordOnlyParameters:
   - name: audience
     description: 'The audience to use when requesting tokens for Azure Active Directory
 
-      authentication. Only has an effect when credential is of type TokenCredential.
+      authentication. Only has an effect when credential is of type AsyncTokenCredential.
       The value could be
 
       [https://storage.azure.com/](https://storage.azure.com/) (default) or [https:/](https:/)/<account>.blob.core.windows.net.'
@@ -909,12 +902,12 @@ methods:
   return:
     description: A DataLakeFileClient.
     types:
-    - <xref:azure.storage.filedatalake.DataLakeFileClient>
+    - <xref:azure.storage.filedatalake.aio.DataLakeFileClient>
 - uid: azure.storage.filedatalake.aio.DataLakeFileClient.get_access_control
   name: get_access_control
   summary: Get the owner, group, permissions, or access control list for a path.
-  signature: 'async get_access_control(upn: bool | None = None, **kwargs) -> Dict[str,
-    Any]'
+  signature: 'async get_access_control(upn: bool | None = None, **kwargs: Any) ->
+    Dict[str, Any]'
   parameters:
   - name: upn
     description: 'Optional. Valid only when Hierarchical Namespace is
@@ -932,7 +925,7 @@ methods:
       application Object IDs are not translated because they do not have
 
       unique friendly names.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:bool>
   keywordOnlyParameters:
@@ -992,10 +985,9 @@ methods:
     types:
     - <xref:int>
   return:
-    description: response dict containing access control options (Etag and last modified).
+    description: A dictionary of response headers.
     types:
-    - <xref:dict>[<xref:str>, <xref:str>]
-    - <xref:dict>[<xref:str>, <xref:datetime.datetime>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
 - uid: azure.storage.filedatalake.aio.DataLakeFileClient.get_file_properties
   name: get_file_properties
   summary: 'Returns all user-defined metadata, standard HTTP properties, and
@@ -1091,152 +1083,12 @@ methods:
   examples:
   - "Getting the properties for a file.<!--[!code-python[Main](les\\datalake_samples_upload_download_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    229\\\\azure_storage_file_datalake-12.17.0\\\\samples\\\\datalake_samples_upload_download_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   properties = await file_client.get_file_properties()\n\n   ````\n"
-- uid: azure.storage.filedatalake.aio.DataLakeFileClient.query_file
-  name: query_file
-  summary: 'Enables users to select/project on datalake file data by providing simple
-    query expressions.
-
-    This operations returns a DataLakeFileQueryReader, users need to use readall()
-    or readinto() to get query data.'
-  signature: 'query_file(query_expression: str, **kwargs: Any) -> DataLakeFileQueryReader'
-  parameters:
-  - name: query_expression
-    description: 'Required. a query statement.
-
-      eg. Select * from DataLakeStorage'
-    isRequired: true
-    types:
-    - <xref:str>
-  keywordOnlyParameters:
-  - name: on_error
-    description: A function to be called on any processing errors returned by the
-      service.
-    types:
-    - <xref:typing.Callable>[<xref:azure.storage.filedatalake.DataLakeFileQueryError>]
-  - name: file_format
-    description: 'Optional. Defines the serialization of the data currently stored
-      in the file. The default is to
-
-      treat the file data as CSV data formatted in the default dialect. This can be
-      overridden with
-
-      a custom DelimitedTextDialect, or DelimitedJsonDialect or "ParquetDialect" (passed
-      as a string or enum).
-
-      These dialects can be passed through their respective classes, the QuickQueryDialect
-      enum or as a string.'
-    types:
-    - <xref:azure.storage.filedatalake.DelimitedTextDialect>
-    - <xref:azure.storage.filedatalake.DelimitedJsonDialect>
-    - <xref:azure.storage.filedatalake.QuickQueryDialect>
-    - <xref:str>
-  - name: output_format
-    description: 'Optional. Defines the output serialization for the data stream.
-      By default the data will be returned
-
-      as it is represented in the file. By providing an output format,
-
-      the file data will be reformatted according to that profile.
-
-      This value can be a DelimitedTextDialect or a DelimitedJsonDialect or ArrowDialect.
-
-      These dialects can be passed through their respective classes, the QuickQueryDialect
-      enum or as a string.'
-    types:
-    - <xref:azure.storage.filedatalake.DelimitedTextDialect>
-    - <xref:azure.storage.filedatalake.DelimitedJsonDialect>
-    - <xref:list>[<xref:azure.storage.filedatalake.ArrowDialect>]
-    - <xref:azure.storage.filedatalake.QuickQueryDialect>
-    - <xref:str>
-  - name: lease
-    description: 'Required if the file has an active lease. Value can be a DataLakeLeaseClient
-      object
-
-      or the lease ID as a string.'
-    types:
-    - <xref:azure.storage.filedatalake.DataLakeLeaseClient>
-    - <xref:str>
-  - name: if_modified_since
-    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
-
-      If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-      If a date is passed in without timezone info, it is assumed to be UTC.
-
-      Specify this header to perform the operation only
-
-      if the resource has been modified since the specified time.'
-    types:
-    - <xref:datetime.datetime>
-  - name: if_unmodified_since
-    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
-
-      If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-      If a date is passed in without timezone info, it is assumed to be UTC.
-
-      Specify this header to perform the operation only if
-
-      the resource has not been modified since the specified date/time.'
-    types:
-    - <xref:datetime.datetime>
-  - name: etag
-    description: 'An ETag value, or the wildcard character (*). Used to check if the
-      resource has changed,
-
-      and act according to the condition specified by the *match_condition* parameter.'
-    types:
-    - <xref:str>
-  - name: match_condition
-    description: The match condition to use upon the etag.
-    types:
-    - <xref:azure.core.MatchConditions>
-  - name: cpk
-    description: 'Decrypts the data on the service-side with the given key.
-
-      Use of customer-provided keys must be done over HTTPS.
-
-      Required if the file was created with a Customer-Provided Key.'
-    types:
-    - <xref:azure.storage.filedatalake.CustomerProvidedEncryptionKey>
-  - name: timeout
-    description: 'Sets the server-side timeout for the operation in seconds. For more
-      details see
-
-      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
-
-      This value is not tracked or validated on the client. To configure client-side
-      network timesouts
-
-      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-datalake#other-client--per-operation-configuration).'
-    types:
-    - <xref:int>
-  return:
-    description: A streaming object (DataLakeFileQueryReader)
-    types:
-    - <xref:azure.storage.filedatalake.DataLakeFileQueryReader>
-  examples:
-  - "select/project on datalake file data by providing simple query expressions.<!--[!code-python[Main](les\\\
-    datalake_samples_query.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
-    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
-    hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\229\\\\azure_storage_file_datalake-12.17.0\\\\samples\\\
-    \\datalake_samples_query.py\", \"xml:space\": \"preserve\", \"force\": false,\
-    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
-    : false} -->\n\n````python\n\n   errors = []\n   def on_error(error):\n      \
-    \ errors.append(error)\n\n   # upload the csv file\n   file_client = datalake_service_client.get_file_client(filesystem_name,\
-    \ \"csvfile\")\n   file_client.upload_data(CSV_DATA, overwrite=True)\n\n   # select\
-    \ the second column of the csv file\n   query_expression = \"SELECT _2 from DataLakeStorage\"\
-    \n   input_format = DelimitedTextDialect(delimiter=',', quotechar='\"', lineterminator='\\\
-    n', escapechar=\"\", has_header=False)\n   output_format = DelimitedJsonDialect(delimiter='\\\
-    n')\n   reader = file_client.query_file(query_expression, on_error=on_error, file_format=input_format,\
-    \ output_format=output_format)\n   content = reader.readall()\n\n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\264\\\\azure_storage_file_datalake-12.22.0\\\
+    \\samples\\\\datalake_samples_upload_download_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   properties = await file_client.get_file_properties()\n\
+    \n   ````\n"
 - uid: azure.storage.filedatalake.aio.DataLakeFileClient.remove_access_control_recursive
   name: remove_access_control_recursive
   summary: Removes the Access Control on a path and sub-paths.
@@ -1320,7 +1172,7 @@ methods:
 
       as well as a continuation token in case the operation was terminated prematurely.'
     types:
-    - :~<xref:azure.storage.filedatalake.AccessControlChangeResult>`
+    - <xref:azure.storage.filedatalake.AccessControlChangeResult>
   exceptions:
   - type: azure.core.exceptions.AzureError
     description: User can restart the operation using continuation_token field of
@@ -1345,9 +1197,7 @@ methods:
   - name: source_lease
     description: 'A lease ID for the source path. If specified,
 
-      the source path must have an active lease and the lease ID must
-
-      match.'
+      the source path must have an active lease and the lease ID must match.'
     types:
     - <xref:azure.storage.filedatalake.aio.DataLakeLeaseClient>
     - <xref:str>
@@ -1442,34 +1292,33 @@ methods:
     types:
     - <xref:int>
   return:
-    description: the renamed file client
+    description: The renamed file client.
     types:
     - <xref:azure.storage.filedatalake.aio.DataLakeFileClient>
   examples:
   - "Rename the source file.<!--[!code-python[Main](les\\datalake_samples_upload_download_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    229\\\\azure_storage_file_datalake-12.17.0\\\\samples\\\\datalake_samples_upload_download_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   new_client = await file_client.rename_file(file_client.file_system_name +\
-    \ '/' + 'newname')\n\n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\264\\\\azure_storage_file_datalake-12.22.0\\\
+    \\samples\\\\datalake_samples_upload_download_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   new_client = await file_client.rename_file(file_client.file_system_name\
+    \ + '/' + 'newname')\n\n   ````\n"
 - uid: azure.storage.filedatalake.aio.DataLakeFileClient.set_access_control
   name: set_access_control
   summary: Set the owner, group, permissions, or access control list for a path.
   signature: 'async set_access_control(owner: str | None = None, group: str | None
-    = None, permissions: str | None = None, acl: str | None = None, **kwargs) -> Dict[str,
-    str | datetime]'
+    = None, permissions: str | None = None, acl: str | None = None, **kwargs: Any)
+    -> Dict[str, str | datetime]'
   parameters:
   - name: owner
     description: Optional. The owner of the file or directory.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   - name: group
     description: Optional. The owning group of the file or directory.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   - name: permissions
@@ -1486,7 +1335,7 @@ methods:
       supported.
 
       permissions and acl are mutually exclusive.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   - name: acl
@@ -1501,7 +1350,7 @@ methods:
       "[scope:][type]:[id]:[permissions]".
 
       permissions and acl are mutually exclusive.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   keywordOnlyParameters:
@@ -1561,11 +1410,9 @@ methods:
     types:
     - <xref:int>
   return:
-    description: dict containing access control options after setting modifications
-      (Etag and last modified).
+    description: A dictionary of response headers.
     types:
-    - <xref:dict>[<xref:str>, <xref:str>]
-    - <xref:dict>[<xref:str>, <xref:datetime.datetime>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Union>[<xref:str>, <xref:datetime.datetime>]]
 - uid: azure.storage.filedatalake.aio.DataLakeFileClient.set_access_control_recursive
   name: set_access_control_recursive
   summary: Sets the Access Control on a path and sub-paths.
@@ -1651,7 +1498,7 @@ methods:
 
       as well as a continuation token in case the operation was terminated prematurely.'
     types:
-    - :~<xref:azure.storage.filedatalake.AccessControlChangeResult>`
+    - <xref:azure.storage.filedatalake.AccessControlChangeResult>
   exceptions:
   - type: azure.core.exceptions.AzureError
     description: User can restart the operation using continuation_token field of
@@ -1660,7 +1507,7 @@ methods:
   name: set_file_expiry
   summary: Sets the time a file will expire and be deleted.
   signature: 'async set_file_expiry(expiry_options: str, expires_on: datetime | int
-    | None = None, **kwargs) -> None'
+    | None = None, **kwargs: Any) -> None'
   parameters:
   - name: expiry_options
     description: 'Required. Indicates mode of the expiry time.
@@ -1674,7 +1521,7 @@ methods:
     description: 'The time to set the file to expiry.
 
       When expiry_options is RelativeTo*, expires_on should be an int in milliseconds'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:datetime>
     - <xref:int>
@@ -1701,11 +1548,11 @@ methods:
 
     If one property is set for the content_settings, all properties will be overridden.'
   signature: 'async set_http_headers(content_settings: ContentSettings | None = None,
-    **kwargs) -> Dict[str, Any]'
+    **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: content_settings
     description: ContentSettings object used to set file/directory properties.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:azure.storage.filedatalake.ContentSettings>
   keywordOnlyParameters:
@@ -1764,9 +1611,9 @@ methods:
     types:
     - <xref:int>
   return:
-    description: file/directory-updated property dict (Etag and last modified)
+    description: A dictionary of response headers.
     types:
-    - <xref:dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
 - uid: azure.storage.filedatalake.aio.DataLakeFileClient.set_metadata
   name: set_metadata
   summary: 'Sets one or more user-defined name-value pairs for the specified
@@ -1776,7 +1623,7 @@ methods:
     attached to the file system. To remove all metadata from the file system,
 
     call this operation with no metadata dict.'
-  signature: 'async set_metadata(metadata: Dict[str, str], **kwargs) -> Dict[str,
+  signature: 'async set_metadata(metadata: Dict[str, str], **kwargs: Any) -> Dict[str,
     str | datetime]'
   parameters:
   - name: metadata
@@ -1786,7 +1633,7 @@ methods:
       metadata. Example: {''category'':''test''}'
     isRequired: true
     types:
-    - <xref:dict>[<xref:str>, <xref:str>]
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
   keywordOnlyParameters:
   - name: lease
     description: 'If specified, set_file_system_metadata only succeeds if the
@@ -1849,10 +1696,9 @@ methods:
     types:
     - <xref:int>
   return:
-    description: file system-updated property dict (Etag and last modified).
+    description: A dictionary of response headers.
     types:
-    - <xref:dict>[<xref:str>, <xref:str>]
-    - <xref:dict>[<xref:str>, <xref:datetime.datetime>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Union>[<xref:str>, <xref:datetime.datetime>]]
 - uid: azure.storage.filedatalake.aio.DataLakeFileClient.update_access_control_recursive
   name: update_access_control_recursive
   summary: Modifies the Access Control on a path and sub-paths.
@@ -1939,7 +1785,7 @@ methods:
 
       as well as a continuation token in case the operation was terminated prematurely.'
     types:
-    - :~<xref:azure.storage.filedatalake.AccessControlChangeResult>`
+    - <xref:azure.storage.filedatalake.AccessControlChangeResult>
   exceptions:
   - type: azure.core.exceptions.AzureError
     description: User can restart the operation using continuation_token field of
@@ -1947,24 +1793,23 @@ methods:
 - uid: azure.storage.filedatalake.aio.DataLakeFileClient.upload_data
   name: upload_data
   summary: Upload data to a file.
-  signature: 'async upload_data(data: bytes | str | Iterable | AsyncIterable | IO,
-    length: int | None = None, overwrite: bool | None = False, **kwargs) -> Dict[str,
-    Any]'
+  signature: 'async upload_data(data: bytes | str | AsyncIterable | IO, length: int
+    | None = None, overwrite: bool | None = False, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: data
     description: Content to be uploaded to file
     isRequired: true
     types:
-    - <xref:bytes>, <xref:str>, <xref:typing.Iterable>[<xref:typing.AnyStr>], <xref:typing.AsyncIterable>[<xref:typing.AnyStr>]
+    - <xref:bytes>, <xref:str>, <xref:typing.AsyncIterable>[<xref:typing.AnyStr>]
     - <xref:typing.IO>[<xref:typing.AnyStr>]
   - name: length
     description: Size of the data in bytes.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int>
   - name: overwrite
     description: to overwrite an existing file or not.
-    isRequired: true
+    defaultValue: 'False'
     types:
     - <xref:bool>
   keywordOnlyParameters:
@@ -1975,7 +1820,7 @@ methods:
   - name: metadata
     description: Name-value pairs associated with the blob as metadata.
     types:
-    - <xref:dict>[<xref:str>, <xref:str>]
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
     - <xref:None>
   - name: lease
     description: 'Required if the blob has an active lease. Value can be a DataLakeLeaseClient
@@ -2094,6 +1939,15 @@ methods:
       the timeout will apply to each call individually.'
     types:
     - <xref:int>
+  - name: max_concurrency
+    description: 'Maximum number of parallel connections to use when transferring
+      the file in chunks.
+
+      This option does not affect the underlying connection pool, and may
+
+      require a separate configuration of the connection pool.'
+    types:
+    - <xref:int>
   - name: chunk_size
     description: 'The maximum chunk size for uploading a file in chunks.
 
@@ -2104,10 +1958,19 @@ methods:
     description: Specifies the encryption context to set on the file.
     types:
     - <xref:str>
-  return:
-    description: response dict (Etag and last modified).
+  - name: progress_hook
+    description: 'A callback to track the progress of a long-running upload. The signature
+      is
+
+      function(current: int, total: int) where current is the number of bytes transferred
+
+      so far, and total is the total size of the download.'
     types:
-    - <xref:dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:typing.Callable>[[<xref:int>, <xref:typing.Optional>[<xref:int>]], <xref:typing.Awaitable>[<xref:None>]]
+  return:
+    description: A dictionary of response headers.
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
 attributes:
 - uid: azure.storage.filedatalake.aio.DataLakeFileClient.api_version
   name: api_version
@@ -2122,20 +1985,15 @@ attributes:
 
     By default this will be "primary". Options include "primary" and "secondary".'
   return:
+    description: The current location mode.
     types:
     - <xref:str>
 - uid: azure.storage.filedatalake.aio.DataLakeFileClient.primary_endpoint
   name: primary_endpoint
   summary: The full primary endpoint URL.
-  return:
-    types:
-    - <xref:str>
 - uid: azure.storage.filedatalake.aio.DataLakeFileClient.primary_hostname
   name: primary_hostname
   summary: The hostname of the primary endpoint.
-  return:
-    types:
-    - <xref:str>
 - uid: azure.storage.filedatalake.aio.DataLakeFileClient.secondary_endpoint
   name: secondary_endpoint
   summary: 'The full secondary endpoint URL if configured.
@@ -2146,10 +2004,12 @@ attributes:
 
     *secondary_hostname* keyword argument on instantiation.'
   return:
+    description: The full secondary endpoint URL.
     types:
     - <xref:str>
   exceptions:
   - type: ValueError
+    description: If no secondary endpoint is configured.
 - uid: azure.storage.filedatalake.aio.DataLakeFileClient.secondary_hostname
   name: secondary_hostname
   summary: 'The hostname of the secondary endpoint.
@@ -2160,17 +2020,9 @@ attributes:
 
     *secondary_hostname* keyword argument on instantiation.'
   return:
+    description: The hostname of the secondary endpoint, or None if not configured.
     types:
     - <xref:typing.Optional>[<xref:str>]
 - uid: azure.storage.filedatalake.aio.DataLakeFileClient.url
   name: url
-  summary: 'The full endpoint URL to this entity, including SAS token if used.
-
-
-    This could be either the primary endpoint,
-
-    or the secondary endpoint depending on the current <xref:azure.storage.filedatalake.aio.DataLakeFileClient.location_mode>.
-
-    :returns: The full endpoint URL to this entity, including SAS token if used.
-
-    :rtype: str'
+  summary: The full endpoint URL to the file system, including SAS token if used.

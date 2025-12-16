@@ -1,12 +1,12 @@
 ---
 title: Azure Communication Call Automation client library for Python
 keywords: Azure, python, SDK, API, azure-communication-callautomation, communication
-ms.date: 08/02/2024
+ms.date: 09/12/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: communication
 ---
-# Azure Communication Call Automation client library for Python - version 1.3.0b1 
+# Azure Communication Call Automation client library for Python - version 1.6.0b1 
 
 
 This package contains a Python SDK for Azure Communication Call Automation. Call Automation provides developers the ability to build server-based, intelligent call workflows, and call recording for voice and PSTN channels.
@@ -19,7 +19,7 @@ refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
 
 ## Getting started
 ### Prerequisites
-- Python 3.7 or later is required to use this package.
+- Python 3.8 or later is required to use this package.
 - You need an [Azure subscription][azure_sub] to use this package.
 - A deployed Communication Services resource. You can use the [Azure Portal][azure_portal] or the [Azure PowerShell][azure_powershell] to set it up.
 
@@ -41,11 +41,13 @@ pip install azure-communication-callautomation
 ## Examples
 ### Initialize CallAutomationClient
 ```Python
+from azure.identity import DefaultAzureCredential
 from azure.communication.callautomation import (CallAutomationClient)
 
 # Your unique Azure Communication service endpoint
 endpoint_url = '<ENDPOINT>'
-client = CallAutomationClient.from_connection_string(endpoint_url)
+credential = DefaultAzureCredential()
+client = CallAutomationClient(endpoint_url, credential)
 ```
 
 ### Create Call
@@ -64,7 +66,7 @@ callback_url = "https://<MY-EVENT-HANDLER-URL>/events"
 # send out the invitation, creating call
 result = client.create_call(
     target_participant=user,
-    callback_url=callback_uri
+    callback_url=callback_url
 )
 
 # this id can be used to do further actions in the call
@@ -115,11 +117,11 @@ additional questions or comments.
 
 <!-- LINKS -->
 [overview]: https://learn.microsoft.com/azure/communication-services/concepts/voice-video-calling/call-automation
-[product_docs]: /azure/communication-services/overview
-[azure_cli]: /cli/azure
+[product_docs]: https://learn.microsoft.com/azure/communication-services/overview
+[azure_cli]: https://learn.microsoft.com/cli/azure
 [azure_sub]: https://azure.microsoft.com/free/
 [azure_portal]: https://portal.azure.com
-[azure_powershell]: /powershell/module/az.communication/new-azcommunicationservice
+[azure_powershell]: https://learn.microsoft.com/powershell/module/az.communication/new-azcommunicationservice
 [build_doc]: https://aka.ms/AzureSDKBundling
 [incomingcall]: https://learn.microsoft.com/azure/communication-services/concepts/voice-video-calling/incoming-call-notification
 [build1]: https://learn.microsoft.com/azure/communication-services/quickstarts/voice-video-calling/callflows-for-customer-interactions?pivots=programming-language-csha

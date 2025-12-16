@@ -3,9 +3,7 @@ uid: azure.mgmt.redisenterprise.models.DatabaseUpdate
 name: DatabaseUpdate
 fullName: azure.mgmt.redisenterprise.models.DatabaseUpdate
 module: azure.mgmt.redisenterprise.models
-inheritances:
-- azure.mgmt.redisenterprise._serialization.Model
-summary: 'A partial update to the RedisEnterprise database.
+summary: 'A partial update to the Redis Enterprise database.
 
 
   Variables are only populated by the server, and will be ignored when sending a request.'
@@ -13,9 +11,10 @@ constructor:
   syntax: 'DatabaseUpdate(*, client_protocol: str | _models.Protocol | None = None,
     port: int | None = None, clustering_policy: str | _models.ClusteringPolicy | None
     = None, eviction_policy: str | _models.EvictionPolicy | None = None, persistence:
-    _models.Persistence | None = None, modules: List[_models.Module] | None = None,
-    geo_replication: _models.DatabasePropertiesGeoReplication | None = None, **kwargs:
-    Any)'
+    _models.Persistence | None = None, modules: list[''_models.Module''] | None =
+    None, geo_replication: _models.DatabasePropertiesGeoReplication | None = None,
+    defer_upgrade: str | _models.DeferUpgradeSetting | None = None, access_keys_authentication:
+    str | _models.AccessKeysAuthentication | None = None, **kwargs: Any)'
   keywordOnlyParameters:
   - name: client_protocol
     description: 'Specifies whether redis clients can connect using TLS-encrypted
@@ -25,20 +24,28 @@ constructor:
       and
 
       "Plaintext".'
+    defaultValue: None
     types:
     - <xref:str>
-    - <xref:typing.Protocol>
+    - <xref:azure.mgmt.redisenterprise.models.Protocol>
   - name: port
     description: 'TCP port of the database endpoint. Specified at create time. Defaults
       to an
 
       available port.'
+    defaultValue: None
     types:
     - <xref:int>
   - name: clustering_policy
-    description: 'Clustering policy - default is OSSCluster. Specified at create
+    description: 'Clustering policy - default is OSSCluster. This property can be
 
-      time. Known values are: "EnterpriseCluster" and "OSSCluster".'
+      updated only if the current value is NoCluster. If the value is OSSCluster or
+
+      EnterpriseCluster, it cannot be updated without deleting the database. Known
+      values are:
+
+      "EnterpriseCluster", "OSSCluster", and "NoCluster".'
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:azure.mgmt.redisenterprise.models.ClusteringPolicy>
@@ -48,11 +55,13 @@ constructor:
       "AllKeysLFU", "AllKeysLRU", "AllKeysRandom", "VolatileLRU", "VolatileLFU", "VolatileTTL",
 
       "VolatileRandom", and "NoEviction".'
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:azure.mgmt.redisenterprise.models.EvictionPolicy>
   - name: persistence
     description: Persistence settings.
+    defaultValue: None
     types:
     - <xref:azure.mgmt.redisenterprise.models.Persistence>
   - name: modules
@@ -60,14 +69,39 @@ constructor:
       can only
 
       be added at creation time.'
+    defaultValue: None
     types:
     - <xref:list>[<xref:azure.mgmt.redisenterprise.models.Module>]
   - name: geo_replication
     description: 'Optional set of properties to configure geo replication for this
 
       database.'
+    defaultValue: None
     types:
     - <xref:azure.mgmt.redisenterprise.models.DatabasePropertiesGeoReplication>
+  - name: defer_upgrade
+    description: 'Option to defer upgrade when newest version is released - default
+      is
+
+      NotDeferred. Learn more: [https://aka.ms/redisversionupgrade](https://aka.ms/redisversionupgrade).
+      Known values are: "Deferred" and
+
+      "NotDeferred".'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.redisenterprise.models.DeferUpgradeSetting>
+  - name: access_keys_authentication
+    description: 'This property can be Enabled/Disabled to allow or deny
+
+      access with the current access keys. Can be updated even after database is created.
+      Known
+
+      values are: "Disabled" and "Enabled".'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.redisenterprise.models.AccessKeysAuthentication>
 variables:
 - description: 'Specifies whether redis clients can connect using TLS-encrypted or
 
@@ -78,7 +112,7 @@ variables:
   name: client_protocol
   types:
   - <xref:str>
-  - <xref:typing.Protocol>
+  - <xref:azure.mgmt.redisenterprise.models.Protocol>
 - description: 'TCP port of the database endpoint. Specified at create time. Defaults
     to an
 
@@ -98,14 +132,22 @@ variables:
     "Creating", "CreateFailed", "Updating", "UpdateFailed", "Deleting", "DeleteFailed",
     "Enabling",
 
-    "EnableFailed", "Disabling", "DisableFailed", "Disabled", "Scaling", and "ScalingFailed".'
+    "EnableFailed", "Disabling", "DisableFailed", "Disabled", "Scaling", "ScalingFailed",
+    and
+
+    "Moving".'
   name: resource_state
   types:
   - <xref:str>
   - <xref:azure.mgmt.redisenterprise.models.ResourceState>
-- description: 'Clustering policy - default is OSSCluster. Specified at create time.
+- description: 'Clustering policy - default is OSSCluster. This property can be
 
-    Known values are: "EnterpriseCluster" and "OSSCluster".'
+    updated only if the current value is NoCluster. If the value is OSSCluster or
+
+    EnterpriseCluster, it cannot be updated without deleting the database. Known values
+    are:
+
+    "EnterpriseCluster", "OSSCluster", and "NoCluster".'
   name: clustering_policy
   types:
   - <xref:str>
@@ -136,3 +178,28 @@ variables:
   name: geo_replication
   types:
   - <xref:azure.mgmt.redisenterprise.models.DatabasePropertiesGeoReplication>
+- description: Version of Redis the database is running on, e.g. '6.0'.
+  name: redis_version
+  types:
+  - <xref:str>
+- description: 'Option to defer upgrade when newest version is released - default
+    is
+
+    NotDeferred. Learn more: [https://aka.ms/redisversionupgrade](https://aka.ms/redisversionupgrade).
+    Known values are: "Deferred" and
+
+    "NotDeferred".'
+  name: defer_upgrade
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.redisenterprise.models.DeferUpgradeSetting>
+- description: 'This property can be Enabled/Disabled to allow or deny access
+
+    with the current access keys. Can be updated even after database is created. Known
+    values are:
+
+    "Disabled" and "Enabled".'
+  name: access_keys_authentication
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.redisenterprise.models.AccessKeysAuthentication>

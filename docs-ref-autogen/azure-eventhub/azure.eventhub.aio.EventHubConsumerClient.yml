@@ -3,8 +3,6 @@ uid: azure.eventhub.aio.EventHubConsumerClient
 name: EventHubConsumerClient
 fullName: azure.eventhub.aio.EventHubConsumerClient
 module: azure.eventhub.aio
-inheritances:
-- azure.eventhub.aio._client_base_async.ClientBaseAsync
 summary: 'The EventHubConsumerClient class defines a high level interface for
 
   receiving events from the Azure Event Hubs service.
@@ -240,6 +238,8 @@ constructor:
 
       other paths needed for the host environment. Default is None.
 
+      Unless specified otherwise, default transport type is TransportType.AmqpOverWebsockets.
+
       The format would be like "sb://<custom_endpoint_hostname>:<custom_endpoint_port>".
 
       If port is not specified in the *custom_endpoint_address*, by default port 443
@@ -255,6 +255,14 @@ constructor:
       Default is None in which case *certifi.where()* will be used.'
     types:
     - <xref:typing.Optional>[<xref:str>]
+  - name: ssl_context
+    description: 'The SSLContext object to use in the underlying Pure Python AMQP
+      transport. If specified,
+
+      connection_verify will be ignored.'
+    types:
+    - <xref:ssl.SSLContext>
+    - <xref:None>
   - name: uamqp_transport
     description: 'Whether to use the *uamqp* library as the underlying transport.
       The default value is
@@ -282,18 +290,17 @@ examples:
 - "Create a new instance of the EventHubConsumerClient.<!--[!code-python[Main](les\\\
   async_samples\\sample_code_eventhub_async.py )]-->\n\n<!-- literal_block {\"ids\"\
   : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-  : \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
-  \\py2docfx\\\\dist_temp\\\\42\\\\azure-eventhub-5.12.1\\\\samples\\\\async_samples\\\
-  \\sample_code_eventhub_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
-  \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
-  : false} -->\n\n````python\n\n   import os\n   from azure.eventhub.aio import EventHubConsumerClient,\
-  \ EventHubSharedKeyCredential\n\n   fully_qualified_namespace = os.environ['EVENT_HUB_HOSTNAME']\n\
-  \   eventhub_name = os.environ['EVENT_HUB_NAME']\n   shared_access_policy = os.environ['EVENT_HUB_SAS_POLICY']\n\
-  \   shared_access_key = os.environ['EVENT_HUB_SAS_KEY']\n\n   consumer = EventHubConsumerClient(fully_qualified_namespace=fully_qualified_namespace,\n\
-  \                                     consumer_group='$Default',\n             \
-  \                        eventhub_name=eventhub_name,\n                        \
-  \             credential=EventHubSharedKeyCredential(shared_access_policy, shared_access_key))\n\
-  \n   ````\n"
+  : \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\
+  \\dist_temp\\\\53\\\\azure_eventhub-5.15.1\\\\samples\\\\async_samples\\\\sample_code_eventhub_async.py\"\
+  , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
+  \   from azure.eventhub.aio import EventHubConsumerClient, EventHubSharedKeyCredential\n\
+  \n   fully_qualified_namespace = os.environ[\"EVENT_HUB_HOSTNAME\"]\n   eventhub_name\
+  \ = os.environ[\"EVENT_HUB_NAME\"]\n   shared_access_policy = os.environ[\"EVENT_HUB_SAS_POLICY\"\
+  ]\n   shared_access_key = os.environ[\"EVENT_HUB_SAS_KEY\"]\n\n   consumer = EventHubConsumerClient(\n\
+  \       fully_qualified_namespace=fully_qualified_namespace,\n       consumer_group=\"\
+  $Default\",\n       eventhub_name=eventhub_name,\n       credential=EventHubSharedKeyCredential(shared_access_policy,\
+  \ shared_access_key),\n   )\n\n   ````\n"
 methods:
 - uid: azure.eventhub.aio.EventHubConsumerClient.close
   name: close
@@ -306,17 +313,18 @@ methods:
   examples:
   - "Close down the client.<!--[!code-python[Main](les\\async_samples\\sample_code_eventhub_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    42\\\\azure-eventhub-5.12.1\\\\samples\\\\async_samples\\\\sample_code_eventhub_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   import os\n\n   event_hub_connection_str = os.environ['EVENT_HUB_CONN_STR']\n\
-    \   eventhub_name = os.environ['EVENT_HUB_NAME']\n\n   from azure.eventhub.aio\
-    \ import EventHubConsumerClient\n   consumer = EventHubConsumerClient.from_connection_string(\n\
-    \       conn_str=event_hub_connection_str,\n       consumer_group='$Default',\n\
-    \       eventhub_name=eventhub_name  # EventHub name should be specified if it\
-    \ doesn't show up in connection string.\n   )\n\n   logger = logging.getLogger(\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\53\\\\azure_eventhub-5.15.1\\\
+    \\samples\\\\async_samples\\\\sample_code_eventhub_async.py\", \"xml:space\":\
+    \ \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
+    \   from azure.identity.aio import DefaultAzureCredential\n\n   fully_qualified_namespace\
+    \ = os.environ[\"EVENT_HUB_HOSTNAME\"]\n   eventhub_name = os.environ[\"EVENT_HUB_NAME\"\
+    ]\n\n   from azure.eventhub.aio import EventHubConsumerClient\n\n   consumer =\
+    \ EventHubConsumerClient(\n       fully_qualified_namespace=fully_qualified_namespace,\n\
+    \       consumer_group=\"$Default\",\n       eventhub_name=eventhub_name,  # EventHub\
+    \ name should be specified if it doesn't show up in connection string.\n     \
+    \  credential=DefaultAzureCredential(),\n   )\n\n   logger = logging.getLogger(\"\
     azure.eventhub\")\n\n   async def on_event(partition_context, event):\n      \
     \ # Put your code here.\n       # If the operation is i/o intensive, async will\
     \ have better performance.\n       logger.info(\"Received event from partition:\
@@ -339,7 +347,8 @@ methods:
     ''CheckpointStore'' | None = None, load_balancing_interval: float = 30, partition_ownership_expiration_interval:
     float | None = None, load_balancing_strategy: str | LoadBalancingStrategy = LoadBalancingStrategy.GREEDY,
     custom_endpoint_address: str | None = None, connection_verify: str | None = None,
-    uamqp_transport: bool = False, **kwargs: Any) -> EventHubConsumerClient'
+    ssl_context: ''SSLContext'' | None = None, uamqp_transport: bool = False, **kwargs:
+    Any) -> EventHubConsumerClient'
   parameters:
   - name: conn_str
     description: The connection string of an Event Hub.
@@ -354,10 +363,12 @@ methods:
   keywordOnlyParameters:
   - name: eventhub_name
     description: The path of the specific Event Hub to connect the client to.
+    defaultValue: None
     types:
     - <xref:str>
   - name: logging_enable
     description: Whether to output network trace logs to the logger. Default is *False*.
+    defaultValue: 'False'
     types:
     - <xref:bool>
   - name: http_proxy
@@ -366,6 +377,7 @@ methods:
       keys: *''proxy_hostname''* (str value) and *''proxy_port''* (int value).
 
       Additionally the following keys may also be present: *''username'', ''password''*.'
+    defaultValue: None
     types:
     - <xref:dict>
   - name: auth_timeout
@@ -379,6 +391,7 @@ methods:
     - <xref:float>
   - name: user_agent
     description: If specified, this will be added in front of the user agent string.
+    defaultValue: None
     types:
     - <xref:str>
   - name: retry_total
@@ -444,6 +457,7 @@ methods:
       the client will not shutdown due
 
       to inactivity unless initiated by the service.'
+    defaultValue: None
     types:
     - <xref:float>
   - name: transport_type
@@ -473,6 +487,7 @@ methods:
 
       in memory, and the *EventHubConsumerClient* instance will receive events without
       load-balancing.'
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:azure.eventhub.aio.CheckpointStore>]
   - name: load_balancing_interval
@@ -492,6 +507,7 @@ methods:
       load_balancing_interval
 
       of 30 seconds.'
+    defaultValue: None
     types:
     - <xref:float>
   - name: load_balancing_strategy
@@ -532,10 +548,13 @@ methods:
 
       other paths needed for the host environment. Default is None.
 
+      Unless specified otherwise, default transport type is TransportType.AmqpOverWebsockets.
+
       The format would be like "sb://<custom_endpoint_hostname>:<custom_endpoint_port>".
 
       If port is not specified in the *custom_endpoint_address*, by default port 443
       will be used.'
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:str>]
   - name: connection_verify
@@ -545,13 +564,24 @@ methods:
       authenticate the identity of the connection endpoint.
 
       Default is None in which case *certifi.where()* will be used.'
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:str>]
+  - name: ssl_context
+    description: 'The SSLContext object to use in the underlying Pure Python AMQP
+      transport. If specified,
+
+      connection_verify will be ignored.'
+    defaultValue: None
+    types:
+    - <xref:ssl.SSLContext>
+    - <xref:None>
   - name: uamqp_transport
     description: 'Whether to use the *uamqp* library as the underlying transport.
       The default value is
 
       False and the Pure Python AMQP library will be used as the underlying transport.'
+    defaultValue: 'False'
     types:
     - <xref:bool>
   return:
@@ -562,16 +592,17 @@ methods:
   - "Create a new instance of the EventHubConsumerClient from connection string.<!--[!code-python[Main](les\\\
     async_samples\\sample_code_eventhub_async.py )]-->\n\n<!-- literal_block {\"ids\"\
     : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\42\\\\azure-eventhub-5.12.1\\\\samples\\\\async_samples\\\
-    \\sample_code_eventhub_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
-    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
-    : false} -->\n\n````python\n\n   import os\n   from azure.eventhub.aio import\
-    \ EventHubConsumerClient\n   event_hub_connection_str = os.environ['EVENT_HUB_CONN_STR']\n\
-    \   eventhub_name = os.environ['EVENT_HUB_NAME']\n   consumer = EventHubConsumerClient.from_connection_string(\n\
-    \       conn_str=event_hub_connection_str,\n       consumer_group='$Default',\n\
-    \       eventhub_name=eventhub_name  # EventHub name should be specified if it\
-    \ doesn't show up in connection string.\n   )\n\n   ````\n"
+    : \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\
+    \\dist_temp\\\\53\\\\azure_eventhub-5.15.1\\\\samples\\\\async_samples\\\\sample_code_eventhub_async.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   import os\n   from azure.eventhub.aio import EventHubConsumerClient\n   from\
+    \ azure.identity.aio import DefaultAzureCredential\n\n   fully_qualified_namespace\
+    \ = os.environ[\"EVENT_HUB_HOSTNAME\"]\n   eventhub_name = os.environ[\"EVENT_HUB_NAME\"\
+    ]\n   consumer = EventHubConsumerClient(\n       fully_qualified_namespace=fully_qualified_namespace,\n\
+    \       credential=DefaultAzureCredential(),\n       consumer_group=\"$Default\"\
+    ,\n       eventhub_name=eventhub_name,  # EventHub name should be specified if\
+    \ it doesn't show up in connection string.\n   )\n\n   ````\n"
 - uid: azure.eventhub.aio.EventHubConsumerClient.get_eventhub_properties
   name: get_eventhub_properties
   summary: "Get properties of the Event Hub.\n\nKeys in the returned dictionary include:\n\
@@ -654,12 +685,14 @@ methods:
 
       If this value is set to *None* or 0 (the default), the callback will not be
       called until an event is received.'
+    defaultValue: None
     types:
     - <xref:float>
   - name: partition_id
     description: 'If specified, the client will receive from this partition only.
 
       Otherwise the client will receive from all partitions.'
+    defaultValue: None
     types:
     - <xref:str>
   - name: owner_level
@@ -669,6 +702,7 @@ methods:
       has higher exclusive
 
       priority. The owner level is also know as the ''epoch value'' of the consumer.'
+    defaultValue: None
     types:
     - <xref:int>
   - name: prefetch
@@ -696,6 +730,7 @@ methods:
       making requests for partition properties using the Event Hub client.
 
       It is set to *False* by default.'
+    defaultValue: 'False'
     types:
     - <xref:bool>
   - name: starting_position
@@ -712,6 +747,7 @@ methods:
 
       values "-1" for receiving from the beginning of the stream, and "@latest" for
       receiving only new events.'
+    defaultValue: None
     types:
     - <xref:str>, <xref:int>, <xref:datetime.datetime>
     - <xref:dict>[<xref:str>,<xref:any>]
@@ -726,6 +762,7 @@ methods:
 
       This can also be a single bool value for all starting_position. The default
       value is False.'
+    defaultValue: 'False'
     types:
     - <xref:bool>
     - <xref:dict>[<xref:str>,<xref:bool>]
@@ -748,6 +785,7 @@ methods:
       during
 
       the *on_event* callback.'
+    defaultValue: None
     types:
     - <xref:typing.Callable>[[<xref:azure.eventhub.aio.PartitionContext>, <xref:Exception>]]
   - name: on_partition_initialize
@@ -765,6 +803,7 @@ methods:
       which contains the partition information. The callback should be defined
 
       like: *on_partition_initialize(partition_context)*.'
+    defaultValue: None
     types:
     - <xref:typing.Callable>[[<xref:azure.eventhub.aio.PartitionContext>]]
   - name: on_partition_close
@@ -782,6 +821,7 @@ methods:
       *on_partition_close(partition_context, reason)*.
 
       Please refer to <xref:azure.eventhub.CloseReason> for the various closing reasons.'
+    defaultValue: None
     types:
     - <xref:typing.Callable>[[<xref:azure.eventhub.aio.PartitionContext>, <xref:azure.eventhub.CloseReason>]]
   return:
@@ -791,18 +831,17 @@ methods:
   - "Receive events from the EventHub.<!--[!code-python[Main](les\\async_samples\\\
     sample_code_eventhub_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
-    hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\42\\\\azure-eventhub-5.12.1\\\\samples\\\\async_samples\\\
-    \\sample_code_eventhub_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
-    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
-    : false} -->\n\n````python\n\n       logger = logging.getLogger(\"azure.eventhub\"\
-    )\n\n       async def on_event(partition_context, event):\n           # Put your\
-    \ code here.\n           # If the operation is i/o intensive, async will have\
-    \ better performance.\n           logger.info(\"Received event from partition:\
-    \ {}\".format(partition_context.partition_id))\n\n       async with consumer:\n\
-    \           await consumer.receive(\n               on_event=on_event,\n     \
-    \          starting_position=\"-1\",  # \"-1\" is from the beginning of the partition.\n\
-    \           )\n\n   ````\n"
+    ToolCache\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
+    \\53\\\\azure_eventhub-5.15.1\\\\samples\\\\async_samples\\\\sample_code_eventhub_async.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n       logger = logging.getLogger(\"azure.eventhub\")\n\n       async def on_event(partition_context,\
+    \ event):\n           # Put your code here.\n           # If the operation is\
+    \ i/o intensive, async will have better performance.\n           logger.info(\"\
+    Received event from partition: {}\".format(partition_context.partition_id))\n\n\
+    \       async with consumer:\n           await consumer.receive(\n           \
+    \    on_event=on_event,\n               starting_position=\"-1\",  # \"-1\" is\
+    \ from the beginning of the partition.\n           )\n\n   ````\n"
 - uid: azure.eventhub.aio.EventHubConsumerClient.receive_batch
   name: receive_batch
   summary: Receive events from partition(s) in batches, with optional load-balancing
@@ -862,12 +901,14 @@ methods:
 
       If this value is set to *None* or 0 (the default), the callback will not be
       called until events are received.'
+    defaultValue: None
     types:
     - <xref:float>
   - name: partition_id
     description: 'If specified, the client will receive from this partition only.
 
       Otherwise the client will receive from all partitions.'
+    defaultValue: None
     types:
     - <xref:str>
   - name: owner_level
@@ -877,6 +918,7 @@ methods:
       has higher exclusive
 
       priority. The owner level is also know as the ''epoch value'' of the consumer.'
+    defaultValue: None
     types:
     - <xref:int>
   - name: prefetch
@@ -904,6 +946,7 @@ methods:
       making requests for partition properties using the Event Hub client.
 
       It is set to *False* by default.'
+    defaultValue: 'False'
     types:
     - <xref:bool>
   - name: starting_position
@@ -920,6 +963,7 @@ methods:
 
       values "-1" for receiving from the beginning of the stream, and "@latest" for
       receiving only new events.'
+    defaultValue: None
     types:
     - <xref:str>, <xref:int>, <xref:datetime.datetime>
     - <xref:dict>[<xref:str>,<xref:any>]
@@ -934,6 +978,7 @@ methods:
 
       This can also be a single bool value for all starting_position. The default
       value is False.'
+    defaultValue: 'False'
     types:
     - <xref:bool>
     - <xref:dict>[<xref:str>,<xref:bool>]
@@ -956,6 +1001,7 @@ methods:
       during
 
       the *on_event* callback.'
+    defaultValue: None
     types:
     - <xref:typing.Callable>[[<xref:azure.eventhub.aio.PartitionContext>, <xref:Exception>]]
   - name: on_partition_initialize
@@ -973,6 +1019,7 @@ methods:
       which contains the partition information. The callback should be defined
 
       like: *on_partition_initialize(partition_context)*.'
+    defaultValue: None
     types:
     - <xref:typing.Callable>[[<xref:azure.eventhub.aio.PartitionContext>]]
   - name: on_partition_close
@@ -990,6 +1037,7 @@ methods:
       *on_partition_close(partition_context, reason)*.
 
       Please refer to <xref:azure.eventhub.CloseReason> for the various closing reasons.'
+    defaultValue: None
     types:
     - <xref:typing.Callable>[[<xref:azure.eventhub.aio.PartitionContext>, <xref:azure.eventhub.CloseReason>]]
   return:
@@ -999,15 +1047,15 @@ methods:
   - "Receive events in batches from the EventHub.<!--[!code-python[Main](les\\async_samples\\\
     sample_code_eventhub_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
-    hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\42\\\\azure-eventhub-5.12.1\\\\samples\\\\async_samples\\\
-    \\sample_code_eventhub_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
-    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
-    : false} -->\n\n````python\n\n       logger = logging.getLogger(\"azure.eventhub\"\
-    )\n\n       async def on_event_batch(partition_context, event_batch):\n      \
-    \     # Put your code here.\n           # If the operation is i/o intensive, async\
-    \ will have better performance.\n           logger.info(\n               \"{}\
-    \ events received from partition: {}\".format(len(event_batch), partition_context.partition_id)\n\
-    \           )\n\n       async with consumer:\n           await consumer.receive_batch(\n\
-    \               on_event_batch=on_event_batch,\n               starting_position=\"\
-    -1\",  # \"-1\" is from the beginning of the partition.\n           )\n\n   ````\n"
+    ToolCache\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
+    \\53\\\\azure_eventhub-5.15.1\\\\samples\\\\async_samples\\\\sample_code_eventhub_async.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n       logger = logging.getLogger(\"azure.eventhub\")\n\n       async def on_event_batch(partition_context,\
+    \ event_batch):\n           # Put your code here.\n           # If the operation\
+    \ is i/o intensive, async will have better performance.\n           logger.info(\n\
+    \               \"{} events received from partition: {}\".format(len(event_batch),\
+    \ partition_context.partition_id)\n           )\n\n       async with consumer:\n\
+    \           await consumer.receive_batch(\n               on_event_batch=on_event_batch,\n\
+    \               starting_position=\"-1\",  # \"-1\" is from the beginning of the\
+    \ partition.\n           )\n\n   ````\n"

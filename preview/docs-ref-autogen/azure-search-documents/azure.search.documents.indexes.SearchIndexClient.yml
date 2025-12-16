@@ -3,8 +3,6 @@ uid: azure.search.documents.indexes.SearchIndexClient
 name: SearchIndexClient
 fullName: azure.search.documents.indexes.SearchIndexClient
 module: azure.search.documents.indexes
-inheritances:
-- azure.search.documents._headers_mixin.HeadersMixin
 summary: A client to interact with Azure search service index.
 constructor:
   syntax: 'SearchIndexClient(endpoint: str, credential: AzureKeyCredential | TokenCredential,
@@ -27,8 +25,8 @@ constructor:
     types:
     - <xref:str>
   - name: audience
-    description: 'sets the Audience to use for authentication with Azure Active Directory
-      (AAD). The
+    description: 'sets the Audience to use for authentication with Microsoft Entra
+      ID. The
 
       audience is not considered when using a shared key. If audience is not provided,
       the public cloud audience
@@ -59,11 +57,12 @@ methods:
     - <xref:azure.search.documents.indexes.models.AnalyzeResult>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+    description: If the operation fails.
   examples:
   - "Analyze text<!--[!code-python[Main](les\\sample_analyze_text.py )]-->\n\n<!--\
     \ literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
-    \ \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\213\\\\azure-search-documents-11.6.0b4\\\
+    \ \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\x64\\\
+    \\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\292\\\\azure_search_documents-11.7.0b2\\\
     \\samples\\\\sample_analyze_text.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   from azure.core.credentials import AzureKeyCredential\n\
@@ -74,12 +73,12 @@ methods:
     \ analyze_request)\n   print(result.as_dict())\n\n   ````\n"
 - uid: azure.search.documents.indexes.SearchIndexClient.close
   name: close
-  summary: 'Close the session.
-
-    :return: None
-
-    :rtype: None'
+  summary: Close the session.
   signature: close() -> None
+  return:
+    description: None
+    types:
+    - <xref:None>
 - uid: azure.search.documents.indexes.SearchIndexClient.create_alias
   name: create_alias
   summary: Creates a new search alias.
@@ -96,16 +95,16 @@ methods:
     - <xref:azure.search.documents.indexes.models.SearchAlias>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+    description: If the operation fails.
   examples:
   - "Creating a new alias.<!--[!code-python[Main](les\\sample_index_alias_crud_operations.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    213\\\\azure-search-documents-11.6.0b4\\\\samples\\\\sample_index_alias_crud_operations.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   alias = SearchAlias(name=alias_name, indexes=[index_name])\n   result = client.create_alias(alias)\n\
-    \n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\292\\\\azure_search_documents-11.7.0b2\\\
+    \\samples\\\\sample_index_alias_crud_operations.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   alias = SearchAlias(name=alias_name,\
+    \ indexes=[index_name])\n   result = client.create_alias(alias)\n\n   ````\n"
 - uid: azure.search.documents.indexes.SearchIndexClient.create_index
   name: create_index
   summary: Creates a new search index.
@@ -122,26 +121,63 @@ methods:
     - <xref:azure.search.documents.indexes.models.SearchIndex>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+    description: If the operation fails.
   examples:
   - "Creating a new index.<!--[!code-python[Main](les\\sample_index_crud_operations.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    213\\\\azure-search-documents-11.6.0b4\\\\samples\\\\sample_index_crud_operations.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   client = SearchIndexClient(service_endpoint, AzureKeyCredential(key))\n \
-    \  name = \"hotels\"\n   fields = [\n       SimpleField(name=\"hotelId\", type=SearchFieldDataType.String,\
-    \ key=True),\n       SimpleField(name=\"baseRate\", type=SearchFieldDataType.Double),\n\
-    \       SearchableField(name=\"description\", type=SearchFieldDataType.String,\
-    \ collection=True),\n       ComplexField(\n           name=\"address\",\n    \
-    \       fields=[\n               SimpleField(name=\"streetAddress\", type=SearchFieldDataType.String),\n\
-    \               SimpleField(name=\"city\", type=SearchFieldDataType.String),\n\
-    \           ],\n           collection=True,\n       ),\n   ]\n   cors_options\
-    \ = CorsOptions(allowed_origins=[\"*\"], max_age_in_seconds=60)\n   scoring_profiles:\
-    \ List[ScoringProfile] = []\n   index = SearchIndex(name=name, fields=fields,\
-    \ scoring_profiles=scoring_profiles, cors_options=cors_options)\n\n   result =\
-    \ client.create_index(index)\n\n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\292\\\\azure_search_documents-11.7.0b2\\\
+    \\samples\\\\sample_index_crud_operations.py\", \"xml:space\": \"preserve\", \"\
+    force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   client = SearchIndexClient(service_endpoint,\
+    \ AzureKeyCredential(key))\n   name = \"hotels\"\n   fields = [\n       SimpleField(name=\"\
+    hotelId\", type=SearchFieldDataType.String, key=True),\n       SimpleField(name=\"\
+    hotelName\", type=SearchFieldDataType.String, searchable=True),\n       SimpleField(name=\"\
+    baseRate\", type=SearchFieldDataType.Double),\n       SearchableField(name=\"\
+    description\", type=SearchFieldDataType.String, collection=True),\n       ComplexField(\n\
+    \           name=\"address\",\n           fields=[\n               SimpleField(name=\"\
+    streetAddress\", type=SearchFieldDataType.String),\n               SimpleField(name=\"\
+    city\", type=SearchFieldDataType.String),\n           ],\n           collection=True,\n\
+    \       ),\n   ]\n   cors_options = CorsOptions(allowed_origins=[\"*\"], max_age_in_seconds=60)\n\
+    \   scoring_profiles: List[ScoringProfile] = []\n   index = SearchIndex(name=name,\
+    \ fields=fields, scoring_profiles=scoring_profiles, cors_options=cors_options)\n\
+    \n   result = client.create_index(index)\n\n   ````\n"
+- uid: azure.search.documents.indexes.SearchIndexClient.create_knowledge_base
+  name: create_knowledge_base
+  summary: Creates a new knowledge base.
+  signature: 'create_knowledge_base(knowledge_base: KnowledgeBase, **kwargs: Any)
+    -> KnowledgeBase'
+  parameters:
+  - name: knowledge_base
+    description: The knowledge base object.
+    isRequired: true
+    types:
+    - <xref:azure.search.documents.indexes.models.KnowledgeBase>
+  return:
+    description: The knowledge base created
+    types:
+    - <xref:azure.search.documents.indexes.models.KnowledgeBase>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+    description: If the operation fails.
+- uid: azure.search.documents.indexes.SearchIndexClient.create_knowledge_source
+  name: create_knowledge_source
+  summary: Creates a new knowledge source.
+  signature: 'create_knowledge_source(knowledge_source: KnowledgeSource, **kwargs:
+    Any) -> KnowledgeSource'
+  parameters:
+  - name: knowledge_source
+    description: The knowledge source object.
+    isRequired: true
+    types:
+    - <xref:azure.search.documents.indexes.models.KnowledgeSource>
+  return:
+    description: The knowledge source created
+    types:
+    - <xref:azure.search.documents.indexes.models.KnowledgeSource>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+    description: If the operation fails.
 - uid: azure.search.documents.indexes.SearchIndexClient.create_or_update_alias
   name: create_or_update_alias
   summary: Creates a new search alias or updates an alias if it already exists.
@@ -156,6 +192,7 @@ methods:
   keywordOnlyParameters:
   - name: match_condition
     description: The match condition to use upon the etag
+    defaultValue: MatchConditions.Unconditionally
     types:
     - <xref:azure.core.MatchConditions>
   return:
@@ -163,30 +200,36 @@ methods:
     types:
     - <xref:azure.search.documents.indexes.models.SearchAlias>
   exceptions:
-  - type: azure.core.exceptions.ResourceNotFoundError orazure.core.exceptions.ResourceModifiedError
-      orazure.core.exceptions.ResourceNotModifiedError orazure.core.exceptions.ResourceNotFoundError
-      orazure.core.exceptions.ResourceExistsError`
+  - type: azure.core.exceptions.ResourceNotFoundError
+    description: If the alias doesn't exist.
+  - type: azure.core.exceptions.ResourceModifiedError
+    description: If the alias has been modified in the server.
+  - type: azure.core.exceptions.ResourceNotModifiedError
+    description: If the alias hasn't been modified in the server.
+  - type: azure.core.exceptions.ResourceNotFoundError
+    description: If the alias doesn't exist.
+  - type: azure.core.exceptions.ResourceExistsError
+    description: If the alias already exists.
   examples:
   - "Updating an alias.<!--[!code-python[Main](les\\sample_index_alias_crud_operations.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    213\\\\azure-search-documents-11.6.0b4\\\\samples\\\\sample_index_alias_crud_operations.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   new_index_name = \"hotels\"\n   fields = [\n       SimpleField(name=\"hotelId\"\
-    , type=SearchFieldDataType.String, key=True),\n       SimpleField(name=\"baseRate\"\
-    , type=SearchFieldDataType.Double),\n       SearchableField(name=\"description\"\
-    , type=SearchFieldDataType.String, collection=True),\n       SearchableField(name=\"\
-    hotelName\", type=SearchFieldDataType.String),\n       ComplexField(\n       \
-    \    name=\"address\",\n           fields=[\n               SimpleField(name=\"\
-    streetAddress\", type=SearchFieldDataType.String),\n               SimpleField(name=\"\
-    city\", type=SearchFieldDataType.String),\n               SimpleField(name=\"\
-    state\", type=SearchFieldDataType.String),\n           ],\n           collection=True,\n\
-    \       ),\n   ]\n   cors_options = CorsOptions(allowed_origins=[\"*\"], max_age_in_seconds=60)\n\
-    \   scoring_profile = ScoringProfile(name=\"MyProfile\")\n   scoring_profiles\
-    \ = []\n   scoring_profiles.append(scoring_profile)\n   index = SearchIndex(\n\
-    \       name=new_index_name, fields=fields, scoring_profiles=scoring_profiles,\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\292\\\\azure_search_documents-11.7.0b2\\\
+    \\samples\\\\sample_index_alias_crud_operations.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   new_index_name = \"hotels\"\n\
+    \   fields = [\n       SimpleField(name=\"hotelId\", type=SearchFieldDataType.String,\
+    \ key=True),\n       SimpleField(name=\"baseRate\", type=SearchFieldDataType.Double),\n\
+    \       SearchableField(name=\"description\", type=SearchFieldDataType.String,\
+    \ collection=True),\n       SearchableField(name=\"hotelName\", type=SearchFieldDataType.String),\n\
+    \       ComplexField(\n           name=\"address\",\n           fields=[\n   \
+    \            SimpleField(name=\"streetAddress\", type=SearchFieldDataType.String),\n\
+    \               SimpleField(name=\"city\", type=SearchFieldDataType.String),\n\
+    \               SimpleField(name=\"state\", type=SearchFieldDataType.String),\n\
+    \           ],\n           collection=True,\n       ),\n   ]\n   cors_options\
+    \ = CorsOptions(allowed_origins=[\"*\"], max_age_in_seconds=60)\n   scoring_profile\
+    \ = ScoringProfile(name=\"MyProfile\")\n   scoring_profiles = []\n   scoring_profiles.append(scoring_profile)\n\
+    \   index = SearchIndex(\n       name=new_index_name, fields=fields, scoring_profiles=scoring_profiles,\
     \ cors_options=cors_options\n   )\n\n   result_index = client.create_or_update_index(index=index)\n\
     \n   alias = SearchAlias(name=alias_name, indexes=[new_index_name])\n   result\
     \ = client.create_or_update_alias(alias)\n\n\n   ````\n"
@@ -215,12 +258,13 @@ methods:
       longer for very
 
       large indexes.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:bool>
   keywordOnlyParameters:
   - name: match_condition
     description: The match condition to use upon the etag
+    defaultValue: MatchConditions.Unconditionally
     types:
     - <xref:azure.core.MatchConditions>
   return:
@@ -228,32 +272,103 @@ methods:
     types:
     - <xref:azure.search.documents.indexes.models.SearchIndex>
   exceptions:
-  - type: azure.core.exceptions.ResourceNotFoundError orazure.core.exceptions.ResourceModifiedError
-      orazure.core.exceptions.ResourceNotModifiedError orazure.core.exceptions.ResourceNotFoundError
-      orazure.core.exceptions.ResourceExistsError
+  - type: azure.core.exceptions.ResourceNotFoundError
+    description: If the index doesn't exist.
+  - type: azure.core.exceptions.ResourceModifiedError
+    description: If the index has been modified in the server.
+  - type: azure.core.exceptions.ResourceNotModifiedError
+    description: If the index hasn't been modified in the server.
+  - type: azure.core.exceptions.ResourceNotFoundError
+    description: If the index doesn't exist.
+  - type: azure.core.exceptions.ResourceExistsError
+    description: If the index already exists.
   examples:
   - "Update an index.<!--[!code-python[Main](les\\sample_index_crud_operations.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    213\\\\azure-search-documents-11.6.0b4\\\\samples\\\\sample_index_crud_operations.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   client = SearchIndexClient(service_endpoint, AzureKeyCredential(key))\n \
-    \  name = \"hotels\"\n   fields = [\n       SimpleField(name=\"hotelId\", type=SearchFieldDataType.String,\
-    \ key=True),\n       SimpleField(name=\"baseRate\", type=SearchFieldDataType.Double),\n\
-    \       SearchableField(name=\"description\", type=SearchFieldDataType.String,\
-    \ collection=True),\n       SearchableField(name=\"hotelName\", type=SearchFieldDataType.String),\n\
-    \       ComplexField(\n           name=\"address\",\n           fields=[\n   \
-    \            SimpleField(name=\"streetAddress\", type=SearchFieldDataType.String),\n\
-    \               SimpleField(name=\"city\", type=SearchFieldDataType.String),\n\
-    \               SimpleField(name=\"state\", type=SearchFieldDataType.String),\n\
-    \           ],\n           collection=True,\n       ),\n   ]\n   cors_options\
-    \ = CorsOptions(allowed_origins=[\"*\"], max_age_in_seconds=60)\n   scoring_profile\
-    \ = ScoringProfile(name=\"MyProfile\")\n   scoring_profiles = []\n   scoring_profiles.append(scoring_profile)\n\
-    \   index = SearchIndex(name=name, fields=fields, scoring_profiles=scoring_profiles,\
-    \ cors_options=cors_options)\n\n   result = client.create_or_update_index(index=index)\n\
-    \n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\292\\\\azure_search_documents-11.7.0b2\\\
+    \\samples\\\\sample_index_crud_operations.py\", \"xml:space\": \"preserve\", \"\
+    force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   client = SearchIndexClient(service_endpoint,\
+    \ AzureKeyCredential(key))\n   name = \"hotels\"\n   fields = [\n       SimpleField(name=\"\
+    hotelId\", type=SearchFieldDataType.String, key=True),\n       SimpleField(name=\"\
+    hotelName\", type=SearchFieldDataType.String, searchable=True),\n       SimpleField(name=\"\
+    baseRate\", type=SearchFieldDataType.Double),\n       SearchableField(name=\"\
+    description\", type=SearchFieldDataType.String, collection=True),\n       ComplexField(\n\
+    \           name=\"address\",\n           fields=[\n               SimpleField(name=\"\
+    streetAddress\", type=SearchFieldDataType.String),\n               SimpleField(name=\"\
+    city\", type=SearchFieldDataType.String),\n               SimpleField(name=\"\
+    state\", type=SearchFieldDataType.String),\n           ],\n           collection=True,\n\
+    \       ),\n   ]\n   cors_options = CorsOptions(allowed_origins=[\"*\"], max_age_in_seconds=60)\n\
+    \   scoring_profile = ScoringProfile(name=\"MyProfile\")\n   scoring_profiles\
+    \ = []\n   scoring_profiles.append(scoring_profile)\n   index = SearchIndex(name=name,\
+    \ fields=fields, scoring_profiles=scoring_profiles, cors_options=cors_options)\n\
+    \n   result = client.create_or_update_index(index=index)\n\n   ````\n"
+- uid: azure.search.documents.indexes.SearchIndexClient.create_or_update_knowledge_base
+  name: create_or_update_knowledge_base
+  summary: Creates a new knowledge base or updates one if it already exists.
+  signature: 'create_or_update_knowledge_base(knowledge_base: KnowledgeBase, *, match_condition:
+    MatchConditions = MatchConditions.Unconditionally, **kwargs: Any) -> KnowledgeBase'
+  parameters:
+  - name: knowledge_base
+    description: The knowledge base object.
+    isRequired: true
+    types:
+    - <xref:azure.search.documents.indexes.models.KnowledgeBase>
+  keywordOnlyParameters:
+  - name: match_condition
+    description: The match condition to use upon the etag
+    defaultValue: MatchConditions.Unconditionally
+    types:
+    - <xref:azure.core.MatchConditions>
+  return:
+    description: The knowledge base created or updated
+    types:
+    - <xref:azure.search.documents.indexes.models.KnowledgeBase>
+  exceptions:
+  - type: azure.core.exceptions.ResourceNotFoundError
+    description: If the knowledge base doesn't exist.
+  - type: azure.core.exceptions.ResourceModifiedError
+    description: If the knowledge base has been modified on the server.
+  - type: azure.core.exceptions.ResourceNotModifiedError
+    description: 'If the knowledge base hasn''t been
+
+      modified on the server.'
+  - type: azure.core.exceptions.ResourceExistsError
+    description: If the knowledge base already exists.
+- uid: azure.search.documents.indexes.SearchIndexClient.create_or_update_knowledge_source
+  name: create_or_update_knowledge_source
+  summary: Creates a new knowledge source or updates an existing one.
+  signature: 'create_or_update_knowledge_source(knowledge_source: KnowledgeSource,
+    *, match_condition: MatchConditions = MatchConditions.Unconditionally, **kwargs:
+    Any) -> KnowledgeSource'
+  parameters:
+  - name: knowledge_source
+    description: The knowledge source object.
+    isRequired: true
+    types:
+    - <xref:azure.search.documents.indexes.models.KnowledgeSource>
+  keywordOnlyParameters:
+  - name: match_condition
+    description: The match condition to use upon the etag
+    defaultValue: MatchConditions.Unconditionally
+    types:
+    - <xref:azure.core.MatchConditions>
+  return:
+    description: The knowledge source created or updated
+    types:
+    - <xref:azure.search.documents.indexes.models.KnowledgeSource>
+  exceptions:
+  - type: azure.core.exceptions.ResourceNotFoundError
+    description: If the index doesn't exist.
+  - type: azure.core.exceptions.ResourceModifiedError
+    description: If the index has been modified in the server.
+  - type: azure.core.exceptions.ResourceNotModifiedError
+    description: If the index hasn't been modified in the server.
+  - type: azure.core.exceptions.ResourceNotFoundError
+    description: If the index doesn't exist.
+  - type: azure.core.exceptions.ResourceExistsError
+    description: If the index already exists.
 - uid: azure.search.documents.indexes.SearchIndexClient.create_or_update_synonym_map
   name: create_or_update_synonym_map
   summary: 'Create a new Synonym Map in an Azure Search service, or update an
@@ -270,6 +385,7 @@ methods:
   keywordOnlyParameters:
   - name: match_condition
     description: The match condition to use upon the etag
+    defaultValue: MatchConditions.Unconditionally
     types:
     - <xref:azure.core.MatchConditions>
   return:
@@ -293,15 +409,15 @@ methods:
   examples:
   - "Create a Synonym Map<!--[!code-python[Main](les\\sample_synonym_map_operations.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    213\\\\azure-search-documents-11.6.0b4\\\\samples\\\\sample_synonym_map_operations.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   synonyms = [\n       \"USA, United States, United States of America\",\n\
-    \       \"Washington, Wash. => WA\",\n   ]\n   synonym_map = SynonymMap(name=\"\
-    test-syn-map\", synonyms=synonyms)\n   result = client.create_synonym_map(synonym_map)\n\
-    \   print(\"Create new Synonym Map 'test-syn-map succeeded\")\n\n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\292\\\\azure_search_documents-11.7.0b2\\\
+    \\samples\\\\sample_synonym_map_operations.py\", \"xml:space\": \"preserve\",\
+    \ \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   synonyms = [\n       \"USA,\
+    \ United States, United States of America\",\n       \"Washington, Wash. => WA\"\
+    ,\n   ]\n   synonym_map = SynonymMap(name=\"test-syn-map\", synonyms=synonyms)\n\
+    \   result = client.create_synonym_map(synonym_map)\n   print(\"Create new Synonym\
+    \ Map 'test-syn-map succeeded\")\n\n   ````\n"
 - uid: azure.search.documents.indexes.SearchIndexClient.delete_alias
   name: delete_alias
   summary: 'Deletes a search alias and its associated mapping to an index. This operation
@@ -320,19 +436,21 @@ methods:
   keywordOnlyParameters:
   - name: match_condition
     description: The match condition to use upon the etag
+    defaultValue: MatchConditions.Unconditionally
     types:
     - <xref:azure.core.MatchConditions>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+    description: If the operation fails.
   examples:
   - "Deleting an alias.<!--[!code-python[Main](les\\sample_index_alias_crud_operations.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    213\\\\azure-search-documents-11.6.0b4\\\\samples\\\\sample_index_alias_crud_operations.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n\n   client.delete_alias(alias_name)\n\n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\292\\\\azure_search_documents-11.7.0b2\\\
+    \\samples\\\\sample_index_alias_crud_operations.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n\n   client.delete_alias(alias_name)\n\
+    \n   ````\n"
 - uid: azure.search.documents.indexes.SearchIndexClient.delete_index
   name: delete_index
   summary: 'Deletes a search index and all the documents it contains. The model must
@@ -351,20 +469,65 @@ methods:
   keywordOnlyParameters:
   - name: match_condition
     description: The match condition to use upon the etag
+    defaultValue: MatchConditions.Unconditionally
     types:
     - <xref:azure.core.MatchConditions>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+    description: If the operation fails.
   examples:
   - "Delete an index.<!--[!code-python[Main](les\\sample_index_crud_operations.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    213\\\\azure-search-documents-11.6.0b4\\\\samples\\\\sample_index_crud_operations.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   client = SearchIndexClient(service_endpoint, AzureKeyCredential(key))\n \
-    \  name = \"hotels\"\n   client.delete_index(name)\n\n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\292\\\\azure_search_documents-11.7.0b2\\\
+    \\samples\\\\sample_index_crud_operations.py\", \"xml:space\": \"preserve\", \"\
+    force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   client = SearchIndexClient(service_endpoint,\
+    \ AzureKeyCredential(key))\n   name = \"hotels\"\n   client.delete_index(name)\n\
+    \n   ````\n"
+- uid: azure.search.documents.indexes.SearchIndexClient.delete_knowledge_base
+  name: delete_knowledge_base
+  summary: Deletes an existing knowledge base.
+  signature: 'delete_knowledge_base(knowledge_base: str | KnowledgeBase, *, match_condition:
+    MatchConditions = MatchConditions.Unconditionally, **kwargs: Any) -> None'
+  parameters:
+  - name: knowledge_base
+    description: The knowledge base name or object to delete.
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:azure.search.documents.indexes.models.KnowledgeBase>
+  keywordOnlyParameters:
+  - name: match_condition
+    description: The match condition to use upon the etag
+    defaultValue: MatchConditions.Unconditionally
+    types:
+    - <xref:azure.core.MatchConditions>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+    description: If the operation fails.
+- uid: azure.search.documents.indexes.SearchIndexClient.delete_knowledge_source
+  name: delete_knowledge_source
+  summary: Deletes an existing knowledge source.
+  signature: 'delete_knowledge_source(knowledge_source: str | KnowledgeSource, *,
+    match_condition: MatchConditions = MatchConditions.Unconditionally, **kwargs:
+    Any) -> None'
+  parameters:
+  - name: knowledge_source
+    description: The knowledge source name or object to delete.
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:azure.search.documents.indexes.models.KnowledgeSource>
+  keywordOnlyParameters:
+  - name: match_condition
+    description: The match condition to use upon the etag
+    defaultValue: MatchConditions.Unconditionally
+    types:
+    - <xref:azure.core.MatchConditions>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+    description: If the operation fails.
 - uid: azure.search.documents.indexes.SearchIndexClient.delete_synonym_map
   name: delete_synonym_map
   summary: 'Delete a named Synonym Map in an Azure Search service. To use access conditions,
@@ -384,18 +547,18 @@ methods:
   keywordOnlyParameters:
   - name: match_condition
     description: The match condition to use upon the etag
+    defaultValue: MatchConditions.Unconditionally
     types:
     - <xref:azure.core.MatchConditions>
   examples:
   - "Delete a Synonym Map<!--[!code-python[Main](les\\sample_synonym_map_operations.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    213\\\\azure-search-documents-11.6.0b4\\\\samples\\\\sample_synonym_map_operations.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   client.delete_synonym_map(\"test-syn-map\")\n   print(\"Synonym Map 'test-syn-map'\
-    \ deleted\")\n\n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\292\\\\azure_search_documents-11.7.0b2\\\
+    \\samples\\\\sample_synonym_map_operations.py\", \"xml:space\": \"preserve\",\
+    \ \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   client.delete_synonym_map(\"\
+    test-syn-map\")\n   print(\"Synonym Map 'test-syn-map' deleted\")\n\n   ````\n"
 - uid: azure.search.documents.indexes.SearchIndexClient.get_alias
   name: get_alias
   signature: 'get_alias(name: str, **kwargs: Any) -> SearchAlias'
@@ -411,8 +574,10 @@ methods:
     - <xref:azure.search.documents.indexes.models.SearchAlias>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+    description: If the operation fails.
 - uid: azure.search.documents.indexes.SearchIndexClient.get_index
   name: get_index
+  summary: Retrieve a named index in an Azure Search service
   signature: 'get_index(name: str, **kwargs: Any) -> SearchIndex'
   parameters:
   - name: name
@@ -426,11 +591,12 @@ methods:
     - <xref:azure.search.documents.indexes.models.SearchIndex>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+    description: If the operation fails.
   examples:
   - "Get an index.<!--[!code-python[Main](les\\sample_index_crud_operations.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\213\\\\azure-search-documents-11.6.0b4\\\
+    : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\\
+    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\292\\\\azure_search_documents-11.7.0b2\\\
     \\samples\\\\sample_index_crud_operations.py\", \"xml:space\": \"preserve\", \"\
     force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
     : 1}, \"linenos\": false} -->\n\n````python\n\n   client = SearchIndexClient(service_endpoint,\
@@ -456,6 +622,57 @@ methods:
     - <xref:typing.Dict>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+    description: If the operation fails.
+- uid: azure.search.documents.indexes.SearchIndexClient.get_knowledge_base
+  name: get_knowledge_base
+  summary: Gets a knowledge base definition.
+  signature: 'get_knowledge_base(name: str, **kwargs: Any) -> KnowledgeBase'
+  parameters:
+  - name: name
+    description: The name of the knowledge base to retrieve.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: KnowledgeBase object
+    types:
+    - <xref:azure.search.documents.indexes.models.KnowledgeBase>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+    description: If the operation fails.
+- uid: azure.search.documents.indexes.SearchIndexClient.get_knowledge_source
+  name: get_knowledge_source
+  signature: 'get_knowledge_source(name: str, **kwargs: Any) -> KnowledgeSource'
+  parameters:
+  - name: name
+    description: The name of the knowledge source to retrieve.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: KnowledgeSource object
+    types:
+    - <xref:azure.search.documents.indexes.models.KnowledgeSource>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+    description: If the operation fails.
+- uid: azure.search.documents.indexes.SearchIndexClient.get_knowledge_source_status
+  name: get_knowledge_source_status
+  summary: Returns the current status and synchronization history of a knowledge source.
+  signature: 'get_knowledge_source_status(name: str, **kwargs: Any) -> KnowledgeSourceStatus'
+  parameters:
+  - name: name
+    description: The name of the knowledge source for which to retrieve status.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: KnowledgeSourceStatus object
+    types:
+    - <xref:azure.search.documents.indexes.models.KnowledgeSourceStatus>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+    description: If the operation fails.
 - uid: azure.search.documents.indexes.SearchIndexClient.get_search_client
   name: get_search_client
   summary: Return a client to perform operations on Search
@@ -494,17 +711,18 @@ methods:
     - <xref:azure.search.documents.indexes.models.SynonymMap>
   exceptions:
   - type: azure.core.exceptions.ResourceNotFoundError
+    description: If the Synonym Map doesn't exist.
   examples:
   - "Get a Synonym Map<!--[!code-python[Main](les\\sample_synonym_map_operations.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    213\\\\azure-search-documents-11.6.0b4\\\\samples\\\\sample_synonym_map_operations.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   result = client.get_synonym_map(\"test-syn-map\")\n   print(\"Retrived Synonym\
-    \ Map 'test-syn-map' with synonyms\")\n   for syn in result.synonyms:\n      \
-    \ print(\"    {}\".format(syn))\n\n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\292\\\\azure_search_documents-11.7.0b2\\\
+    \\samples\\\\sample_synonym_map_operations.py\", \"xml:space\": \"preserve\",\
+    \ \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   result = client.get_synonym_map(\"\
+    test-syn-map\")\n   print(\"Retrived Synonym Map 'test-syn-map' with synonyms\"\
+    )\n   if result:\n       for syn in result.synonyms:\n           print(\"    {}\"\
+    .format(syn))\n\n   ````\n"
 - uid: azure.search.documents.indexes.SearchIndexClient.get_synonym_map_names
   name: get_synonym_map_names
   summary: List the Synonym Map names in an Azure Search service.
@@ -515,6 +733,7 @@ methods:
     - <xref:list>[<xref:str>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+    description: If the operation fails.
 - uid: azure.search.documents.indexes.SearchIndexClient.get_synonym_maps
   name: get_synonym_maps
   summary: List the Synonym Maps in an Azure Search service.
@@ -527,6 +746,7 @@ methods:
       list of JSON property names, or ''*'' for all properties. The default is all
 
       properties.'
+    defaultValue: None
     types:
     - <xref:list>[<xref:str>]
   return:
@@ -535,17 +755,17 @@ methods:
     - <xref:list>[<xref:azure.search.documents.indexes.models.SynonymMap>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+    description: If the operation fails.
   examples:
   - "List Synonym Maps<!--[!code-python[Main](les\\sample_synonym_map_operations.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    213\\\\azure-search-documents-11.6.0b4\\\\samples\\\\sample_synonym_map_operations.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   result = client.get_synonym_maps()\n   names = [x.name for x in result]\n\
-    \   print(\"Found {} Synonym Maps in the service: {}\".format(len(result), \"\
-    , \".join(names)))\n\n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\292\\\\azure_search_documents-11.7.0b2\\\
+    \\samples\\\\sample_synonym_map_operations.py\", \"xml:space\": \"preserve\",\
+    \ \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   result = client.get_synonym_maps()\n\
+    \   names = [x.name for x in result]\n   print(\"Found {} Synonym Maps in the\
+    \ service: {}\".format(len(result), \", \".join(names)))\n\n   ````\n"
 - uid: azure.search.documents.indexes.SearchIndexClient.list_alias_names
   name: list_alias_names
   summary: List the alias names in an Azure Search service.
@@ -556,6 +776,7 @@ methods:
     - <xref:azure.core.paging.ItemPaged>[<xref:str>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+    description: If the operation fails.
 - uid: azure.search.documents.indexes.SearchIndexClient.list_aliases
   name: list_aliases
   summary: List the aliases in an Azure Search service.
@@ -568,6 +789,7 @@ methods:
       list of JSON property names, or ''*'' for all properties. The default is all
 
       properties.'
+    defaultValue: None
     types:
     - <xref:list>[<xref:str>]
   return:
@@ -576,6 +798,7 @@ methods:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.search.documents.indexes.models.SearchAlias>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+    description: If the operation fails.
 - uid: azure.search.documents.indexes.SearchIndexClient.list_index_names
   name: list_index_names
   summary: List the index names in an Azure Search service.
@@ -586,6 +809,15 @@ methods:
     - <xref:azure.core.paging.ItemPaged>[<xref:str>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+    description: If the operation fails.
+- uid: azure.search.documents.indexes.SearchIndexClient.list_index_stats_summary
+  name: list_index_stats_summary
+  summary: Get index level statistics for a search service.
+  signature: 'list_index_stats_summary(**kwargs: Any) -> ItemPaged[IndexStatisticsSummary]'
+  return:
+    description: Index statistics result.
+    types:
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.search.documents.indexes.models.IndexStatisticsSummary>]
 - uid: azure.search.documents.indexes.SearchIndexClient.list_indexes
   name: list_indexes
   summary: List the indexes in an Azure Search service.
@@ -598,6 +830,7 @@ methods:
       list of JSON property names, or ''*'' for all properties. The default is all
 
       properties.'
+    defaultValue: None
     types:
     - <xref:list>[<xref:str>]
   return:
@@ -606,6 +839,29 @@ methods:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.search.documents.indexes.models.SearchIndex>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+    description: If the operation fails.
+- uid: azure.search.documents.indexes.SearchIndexClient.list_knowledge_bases
+  name: list_knowledge_bases
+  summary: List the knowledge bases in an Azure Search service.
+  signature: 'list_knowledge_bases(**kwargs: Any) -> ItemPaged[KnowledgeBase]'
+  return:
+    description: List of knowledge bases
+    types:
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.search.documents.indexes.models.KnowledgeBase>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+    description: If the operation fails.
+- uid: azure.search.documents.indexes.SearchIndexClient.list_knowledge_sources
+  name: list_knowledge_sources
+  summary: List the knowledge sources in an Azure Search service.
+  signature: 'list_knowledge_sources(**kwargs: Any) -> ItemPaged[KnowledgeSource]'
+  return:
+    description: List of Knowledge Sources
+    types:
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.search.documents.indexes.models.KnowledgeSource>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+    description: If the operation fails.
 - uid: azure.search.documents.indexes.SearchIndexClient.send_request
   name: send_request
   summary: Runs a network request using the client's existing pipeline.
@@ -620,6 +876,7 @@ methods:
   keywordOnlyParameters:
   - name: stream
     description: Whether the response payload will be streamed. Defaults to False.
+    defaultValue: 'False'
     types:
     - <xref:bool>
   return:

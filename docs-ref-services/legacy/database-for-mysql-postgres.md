@@ -5,7 +5,6 @@ keywords: Azure, Python, SDK, API, SQL, database, MySQL, PostgreSQL
 ms.date: 10/02/2019
 ms.topic: reference
 ms.devlang: azure-python
-ms.technology: azure
 manager: douge
 ---
 # Azure Database for MySQL/PostgreSQL libraries for Python

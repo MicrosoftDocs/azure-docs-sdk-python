@@ -5,7 +5,6 @@ ms.date: 09/08/2020
 ms.topic: reference
 ms.devlang: python
 ms.service: azure-python
-ms.technology: azure
 ---
 # Microsoft Azure Data SDK for Python
 

@@ -3,8 +3,6 @@ uid: azure.keyvault.keys.aio.KeyClient
 name: KeyClient
 fullName: azure.keyvault.keys.aio.KeyClient
 module: azure.keyvault.keys.aio
-inheritances:
-- azure.keyvault.keys._shared.async_client_base.AsyncKeyVaultClientBase
 summary: A high-level asynchronous interface for managing a vault's keys.
 constructor:
   syntax: 'KeyClient(vault_url: str, credential: AsyncTokenCredential, **kwargs: Any)'
@@ -86,7 +84,12 @@ methods:
 
 
     Requires the keys/create permission.'
-  signature: 'async create_ec_key(name: str, **kwargs: Any) -> KeyVaultKey'
+  signature: 'async create_ec_key(name: str, *, curve: str | KeyCurveName | None =
+    None, key_operations: List[str | KeyOperation] | None = None, hardware_protected:
+    bool | None = False, enabled: bool | None = None, tags: Dict[str, str] | None
+    = None, not_before: datetime | None = None, expires_on: datetime | None = None,
+    exportable: bool | None = None, release_policy: KeyReleasePolicy | None = None,
+    **kwargs: Any) -> KeyVaultKey'
   parameters:
   - name: name
     description: The name for the new key.
@@ -96,50 +99,59 @@ methods:
   keywordOnlyParameters:
   - name: curve
     description: Elliptic curve name. Defaults to the NIST P-256 elliptic curve.
+    defaultValue: None
     types:
     - <xref:azure.keyvault.keys.KeyCurveName>
     - <xref:str>
     - <xref:None>
   - name: key_operations
     description: Allowed key operations
+    defaultValue: None
     types:
-    - <xref:list>[<xref:azure.keyvault.keys.KeyOperation>
+    - <xref:typing.List>[<xref:azure.keyvault.keys.KeyOperation>
     - <xref:str>]
     - <xref:None>
   - name: hardware_protected
     description: 'Whether the key should be created in a hardware security module.
 
       Defaults to `False`.'
+    defaultValue: 'False'
     types:
     - <xref:bool>
     - <xref:None>
   - name: enabled
     description: Whether the key is enabled for use.
+    defaultValue: None
     types:
     - <xref:bool>
     - <xref:None>
   - name: tags
     description: Application specific metadata in the form of key-value pairs.
+    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
     - <xref:None>
   - name: not_before
     description: Not before date of the key in UTC
+    defaultValue: None
     types:
     - <xref:datetime.datetime>
     - <xref:None>
   - name: expires_on
     description: Expiry date of the key in UTC
+    defaultValue: None
     types:
     - <xref:datetime.datetime>
     - <xref:None>
   - name: exportable
     description: Whether the private key can be exported.
+    defaultValue: None
     types:
     - <xref:bool>
     - <xref:None>
   - name: release_policy
     description: The policy rules under which the key can be exported.
+    defaultValue: None
     types:
     - <xref:azure.keyvault.keys.KeyReleasePolicy>
     - <xref:None>
@@ -156,8 +168,12 @@ methods:
 
 
     Requires keys/create permission.'
-  signature: 'async create_key(name: str, key_type: str | KeyType, **kwargs: Any)
-    -> KeyVaultKey'
+  signature: 'async create_key(name: str, key_type: str | KeyType, *, size: int |
+    None = None, curve: str | KeyCurveName | None = None, public_exponent: int | None
+    = None, key_operations: List[str | KeyOperation] | None = None, enabled: bool
+    | None = None, tags: Dict[str, str] | None = None, not_before: datetime | None
+    = None, expires_on: datetime | None = None, exportable: bool | None = None, release_policy:
+    KeyReleasePolicy | None = None, **kwargs: Any) -> KeyVaultKey'
   parameters:
   - name: name
     description: The name of the new key.
@@ -177,6 +193,7 @@ methods:
 
       <xref:azure.keyvault.keys.aio.KeyClient.create_rsa_key> or <xref:azure.keyvault.keys.aio.KeyClient.create_oct_key>
       instead.'
+    defaultValue: None
     types:
     - <xref:int>
     - <xref:None>
@@ -186,6 +203,7 @@ methods:
 
       elliptic curve. To create an elliptic curve key, consider using <xref:azure.keyvault.keys.aio.KeyClient.create_ec_key>
       instead.'
+    defaultValue: None
     types:
     - <xref:azure.keyvault.keys.KeyCurveName>
     - <xref:str>
@@ -193,42 +211,50 @@ methods:
   - name: public_exponent
     description: The RSA public exponent to use. Applies only to RSA keys created
       in a Managed HSM.
+    defaultValue: None
     types:
     - <xref:int>
     - <xref:None>
   - name: key_operations
     description: Allowed key operations
+    defaultValue: None
     types:
-    - <xref:list>[<xref:azure.keyvault.keys.KeyOperation>
+    - <xref:typing.List>[<xref:azure.keyvault.keys.KeyOperation>
     - <xref:str>]
     - <xref:None>
   - name: enabled
     description: Whether the key is enabled for use.
+    defaultValue: None
     types:
     - <xref:bool>
     - <xref:None>
   - name: tags
     description: Application specific metadata in the form of key-value pairs.
+    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
     - <xref:None>
   - name: not_before
     description: Not before date of the key in UTC
+    defaultValue: None
     types:
     - <xref:datetime.datetime>
     - <xref:None>
   - name: expires_on
     description: Expiry date of the key in UTC
+    defaultValue: None
     types:
     - <xref:datetime.datetime>
     - <xref:None>
   - name: exportable
     description: Whether the private key can be exported.
+    defaultValue: None
     types:
     - <xref:bool>
     - <xref:None>
   - name: release_policy
     description: The policy rules under which the key can be exported.
+    defaultValue: None
     types:
     - <xref:azure.keyvault.keys.KeyReleasePolicy>
     - <xref:None>
@@ -245,7 +271,11 @@ methods:
 
 
     Requires the keys/create permission.'
-  signature: 'async create_oct_key(name: str, **kwargs: Any) -> KeyVaultKey'
+  signature: 'async create_oct_key(name: str, *, size: int | None = None, key_operations:
+    List[str | KeyOperation] | None = None, hardware_protected: bool | None = False,
+    enabled: bool | None = None, tags: Dict[str, str] | None = None, not_before: datetime
+    | None = None, expires_on: datetime | None = None, exportable: bool | None = None,
+    release_policy: KeyReleasePolicy | None = None, **kwargs: Any) -> KeyVaultKey'
   parameters:
   - name: name
     description: The name for the new key.
@@ -255,49 +285,58 @@ methods:
   keywordOnlyParameters:
   - name: size
     description: Key size in bits, for example 128, 192, or 256.
+    defaultValue: None
     types:
     - <xref:int>
     - <xref:None>
   - name: key_operations
     description: Allowed key operations.
+    defaultValue: None
     types:
-    - <xref:list>[<xref:azure.keyvault.keys.KeyOperation>
+    - <xref:typing.List>[<xref:azure.keyvault.keys.KeyOperation>
     - <xref:str>]
     - <xref:None>
   - name: hardware_protected
     description: 'Whether the key should be created in a hardware security module.
 
       Defaults to `False`.'
+    defaultValue: 'False'
     types:
     - <xref:bool>
     - <xref:None>
   - name: enabled
     description: Whether the key is enabled for use.
+    defaultValue: None
     types:
     - <xref:bool>
     - <xref:None>
   - name: tags
     description: Application specific metadata in the form of key-value pairs.
+    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
     - <xref:None>
   - name: not_before
     description: Not before date of the key in UTC
+    defaultValue: None
     types:
     - <xref:datetime.datetime>
     - <xref:None>
   - name: expires_on
     description: Expiry date of the key in UTC
+    defaultValue: None
     types:
     - <xref:datetime.datetime>
     - <xref:None>
   - name: exportable
     description: Whether the key can be exported.
+    defaultValue: None
     types:
     - <xref:bool>
     - <xref:None>
   - name: release_policy
     description: The policy rules under which the key can be exported.
+    defaultValue: None
     types:
     - <xref:azure.keyvault.keys.KeyReleasePolicy>
     - <xref:None>
@@ -314,7 +353,12 @@ methods:
 
 
     Requires the keys/create permission.'
-  signature: 'async create_rsa_key(name: str, **kwargs: Any) -> KeyVaultKey'
+  signature: 'async create_rsa_key(name: str, *, size: int | None = None, public_exponent:
+    int | None = None, hardware_protected: bool | None = False, key_operations: List[str
+    | KeyOperation] | None = None, enabled: bool | None = None, tags: Dict[str, str]
+    | None = None, not_before: datetime | None = None, expires_on: datetime | None
+    = None, exportable: bool | None = None, release_policy: KeyReleasePolicy | None
+    = None, **kwargs: Any) -> KeyVaultKey'
   parameters:
   - name: name
     description: The name for the new key.
@@ -324,12 +368,14 @@ methods:
   keywordOnlyParameters:
   - name: size
     description: Key size in bits, for example 2048, 3072, or 4096.
+    defaultValue: None
     types:
     - <xref:int>
     - <xref:None>
   - name: public_exponent
     description: The RSA public exponent to use. Applies only to RSA keys created
       in a Managed HSM.
+    defaultValue: None
     types:
     - <xref:int>
     - <xref:None>
@@ -337,42 +383,50 @@ methods:
     description: 'Whether the key should be created in a hardware security module.
 
       Defaults to `False`.'
+    defaultValue: 'False'
     types:
     - <xref:bool>
     - <xref:None>
   - name: key_operations
     description: Allowed key operations
+    defaultValue: None
     types:
-    - <xref:list>[<xref:azure.keyvault.keys.KeyOperation>
+    - <xref:typing.List>[<xref:azure.keyvault.keys.KeyOperation>
     - <xref:str>]
     - <xref:None>
   - name: enabled
     description: Whether the key is enabled for use.
+    defaultValue: None
     types:
     - <xref:bool>
     - <xref:None>
   - name: tags
     description: Application specific metadata in the form of key-value pairs.
+    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
     - <xref:None>
   - name: not_before
     description: Not before date of the key in UTC
+    defaultValue: None
     types:
     - <xref:datetime.datetime>
     - <xref:None>
   - name: expires_on
     description: Expiry date of the key in UTC
+    defaultValue: None
     types:
     - <xref:datetime.datetime>
     - <xref:None>
   - name: exportable
     description: Whether the private key can be exported.
+    defaultValue: None
     types:
     - <xref:bool>
     - <xref:None>
   - name: release_policy
     description: The policy rules under which the key can be exported.
+    defaultValue: None
     types:
     - <xref:azure.keyvault.keys.KeyReleasePolicy>
     - <xref:None>
@@ -421,6 +475,7 @@ methods:
   keywordOnlyParameters:
   - name: key_version
     description: Optional version of the key used to perform cryptographic operations.
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:None>
@@ -471,7 +526,7 @@ methods:
       gets the latest version
 
       of the key.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:None>
@@ -483,6 +538,38 @@ methods:
   - type: azure.core.exceptions.ResourceNotFoundError
   - type: azure.core.exceptions.HttpResponseError
     description: the former if the key doesn't exist; the latter for other errors
+- uid: azure.keyvault.keys.aio.KeyClient.get_key_attestation
+  name: get_key_attestation
+  summary: 'Get a key and its attestation blob.
+
+
+    This method is applicable to any key stored in Azure Key Vault Managed HSM. This
+    operation requires the keys/get
+
+    permission.'
+  signature: 'async get_key_attestation(name: str, version: str | None = None, **kwargs:
+    Any) -> KeyVaultKey'
+  parameters:
+  - name: name
+    description: The name of the key.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: version
+    description: '(optional) A specific version of the key to get. If not specified,
+      gets the latest version
+
+      of the key.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:None>
+  return:
+    description: The key attestation.
+    types:
+    - <xref:azure.keyvault.keys.KeyAttestation>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.keyvault.keys.aio.KeyClient.get_key_rotation_policy
   name: get_key_rotation_policy
   summary: Get the rotation policy of a Key Vault key.
@@ -525,7 +612,11 @@ methods:
 
     Requires keys/import permission. If `name` is already in use, the key will be
     imported as a new version.'
-  signature: 'async import_key(name: str, key: JsonWebKey, **kwargs: Any) -> KeyVaultKey'
+  signature: 'async import_key(name: str, key: JsonWebKey, *, hardware_protected:
+    bool | None = None, enabled: bool | None = None, tags: Dict[str, str] | None =
+    None, not_before: datetime | None = None, expires_on: datetime | None = None,
+    exportable: bool | None = None, release_policy: KeyReleasePolicy | None = None,
+    **kwargs: Any) -> KeyVaultKey'
   parameters:
   - name: name
     description: Name for the imported key
@@ -540,36 +631,43 @@ methods:
   keywordOnlyParameters:
   - name: hardware_protected
     description: Whether the key should be backed by a hardware security module
+    defaultValue: None
     types:
     - <xref:bool>
     - <xref:None>
   - name: enabled
     description: Whether the key is enabled for use.
+    defaultValue: None
     types:
     - <xref:bool>
     - <xref:None>
   - name: tags
     description: Application specific metadata in the form of key-value pairs.
+    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
     - <xref:None>
   - name: not_before
     description: Not before date of the key in UTC
+    defaultValue: None
     types:
     - <xref:datetime.datetime>
     - <xref:None>
   - name: expires_on
     description: Expiry date of the key in UTC
+    defaultValue: None
     types:
     - <xref:datetime.datetime>
     - <xref:None>
   - name: exportable
     description: Whether the private key can be exported.
+    defaultValue: None
     types:
     - <xref:bool>
     - <xref:None>
   - name: release_policy
     description: The policy rules under which the key can be exported.
+    defaultValue: None
     types:
     - <xref:azure.keyvault.keys.KeyReleasePolicy>
     - <xref:None>
@@ -691,8 +789,9 @@ methods:
     be marked
 
     exportable. This operation requires the keys/release permission.'
-  signature: 'async release_key(name: str, target_attestation_token: str, **kwargs:
-    Any) -> ReleaseKeyResult'
+  signature: 'async release_key(name: str, target_attestation_token: str, *, version:
+    str | None = None, algorithm: str | KeyExportEncryptionAlgorithm | None = None,
+    nonce: str | None = None, **kwargs: Any) -> ReleaseKeyResult'
   parameters:
   - name: name
     description: The name of the key to get.
@@ -708,17 +807,20 @@ methods:
   - name: version
     description: A specific version of the key to release. If unspecified, the latest
       version is released.
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:None>
   - name: algorithm
     description: The encryption algorithm to use to protect the released key material.
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:azure.keyvault.keys.KeyExportEncryptionAlgorithm>
     - <xref:None>
   - name: nonce
     description: A client-provided nonce for freshness.
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:None>
@@ -802,6 +904,7 @@ methods:
   keywordOnlyParameters:
   - name: stream
     description: Whether the response payload will be streamed. Defaults to False.
+    defaultValue: 'False'
     types:
     - <xref:bool>
   return:
@@ -815,8 +918,11 @@ methods:
 
 
     Requires keys/update permission.'
-  signature: 'async update_key_properties(name: str, version: str | None = None, **kwargs:
-    Any) -> KeyVaultKey'
+  signature: 'async update_key_properties(name: str, version: str | None = None, *,
+    key_operations: List[str | KeyOperation] | None = None, enabled: bool | None =
+    None, tags: Dict[str, str] | None = None, not_before: datetime | None = None,
+    expires_on: datetime | None = None, release_policy: KeyReleasePolicy | None =
+    None, **kwargs: Any) -> KeyVaultKey'
   parameters:
   - name: name
     description: The name of key to update
@@ -826,39 +932,45 @@ methods:
   - name: version
     description: (optional) The version of the key to update. If unspecified, the
       latest version is updated.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:None>
   keywordOnlyParameters:
   - name: key_operations
     description: Allowed key operations
+    defaultValue: None
     types:
-    - <xref:list>[<xref:azure.keyvault.keys.KeyOperation>
+    - <xref:typing.List>[<xref:azure.keyvault.keys.KeyOperation>
     - <xref:str>]
     - <xref:None>
   - name: enabled
     description: Whether the key is enabled for use.
+    defaultValue: None
     types:
     - <xref:bool>
     - <xref:None>
   - name: tags
     description: Application specific metadata in the form of key-value pairs.
+    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
     - <xref:None>
   - name: not_before
     description: Not before date of the key in UTC
+    defaultValue: None
     types:
     - <xref:datetime.datetime>
     - <xref:None>
   - name: expires_on
     description: Expiry date of the key in UTC
+    defaultValue: None
     types:
     - <xref:datetime.datetime>
     - <xref:None>
   - name: release_policy
     description: The policy rules under which the key can be exported.
+    defaultValue: None
     types:
     - <xref:azure.keyvault.keys.KeyReleasePolicy>
     - <xref:None>
@@ -877,7 +989,8 @@ methods:
 
     This operation requires the keys/update permission.'
   signature: 'async update_key_rotation_policy(key_name: str, policy: KeyRotationPolicy,
-    **kwargs: Any) -> KeyRotationPolicy'
+    *, lifetime_actions: List[KeyRotationLifetimeAction] | None = None, expires_in:
+    str | None = None, **kwargs: Any) -> KeyRotationPolicy'
   parameters:
   - name: key_name
     description: The name of the key in the given vault.
@@ -895,8 +1008,9 @@ methods:
       a key. This will
 
       override the lifetime actions of the provided `policy`.'
+    defaultValue: None
     types:
-    - <xref:list>[<xref:azure.keyvault.keys.KeyRotationLifetimeAction>]
+    - <xref:typing.List>[<xref:azure.keyvault.keys.KeyRotationLifetimeAction>]
   - name: expires_in
     description: 'The expiry time of the policy that will be applied on new key versions,
       defined as an
@@ -908,6 +1022,7 @@ methods:
       on ISO 8601 durations.
 
       This will override the expiry time of the provided `policy`.'
+    defaultValue: None
     types:
     - <xref:str>
   return:

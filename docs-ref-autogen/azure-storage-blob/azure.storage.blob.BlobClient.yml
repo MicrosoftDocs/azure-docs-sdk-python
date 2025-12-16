@@ -3,9 +3,6 @@ uid: azure.storage.blob.BlobClient
 name: BlobClient
 fullName: azure.storage.blob.BlobClient
 module: azure.storage.blob
-inheritances:
-- azure.storage.blob._shared.base_client.StorageAccountHostsMixin
-- azure.storage.blob._encryption.StorageEncryptionMixin
 summary: 'A client to interact with a specific blob, although that blob may not yet
   exist.
 
@@ -167,6 +164,7 @@ methods:
     - <xref:str>
     - <xref:azure.storage.blob.BlobProperties>
   return:
+    description: None
     types:
     - <xref:None>
 - uid: azure.storage.blob.BlobClient.acquire_lease
@@ -188,7 +186,7 @@ methods:
       between 15 and 60 seconds. A lease duration cannot be changed
 
       using renew or change. Default is -1 (infinite lease).'
-    isRequired: true
+    defaultValue: '-1'
     types:
     - <xref:int>
   - name: lease_id
@@ -197,7 +195,7 @@ methods:
       returns 400 (Invalid request) if the proposed lease ID is not
 
       in the correct format.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   keywordOnlyParameters:
@@ -278,7 +276,7 @@ methods:
     - <xref:typing.Iterable>
   - name: length
     description: Size of the block in bytes.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int>
   keywordOnlyParameters:
@@ -440,13 +438,13 @@ methods:
   - name: source_offset
     description: This indicates the start of the range of bytes (inclusive) that has
       to be taken from the copy source.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int>
   - name: source_length
     description: This indicates the end of the range of bytes that has to be taken
       from the copy source.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int>
   keywordOnlyParameters:
@@ -615,6 +613,15 @@ methods:
       the prefix of the source_authorization string.'
     types:
     - <xref:str>
+  - name: source_token_intent
+    description: "Required when source is Azure Storage Files and using *TokenCredential*\
+      \ for authentication.\nThis is ignored for other forms of authentication.\n\
+      Specifies the intent for all requests when using *TokenCredential* authentication.\
+      \ Possible values are:\n\nbackup - Specifies requests are intended for backup/admin\
+      \ type operations, meaning that all file/directory\n   ACLs are bypassed and\
+      \ full permissions are granted. User must also have required RBAC permission."
+    types:
+    - <xref:typing.Literal>['backup']
   return:
     description: Result after appending a new block.
     types:
@@ -751,7 +758,11 @@ methods:
   summary: 'This method is to close the sockets opened by the client.
 
     It need not be used when using with a context manager.'
-  signature: close()
+  signature: close() -> None
+  return:
+    description: None
+    types:
+    - <xref:None>
 - uid: azure.storage.blob.BlobClient.commit_block_list
   name: commit_block_list
   summary: 'The Commit Block List operation writes a blob by specifying the list of
@@ -771,12 +782,12 @@ methods:
       content type, encoding,
 
       language, disposition, md5, and cache control.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:azure.storage.blob.ContentSettings>
   - name: metadata
     description: Name-value pairs associated with the blob as metadata.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   keywordOnlyParameters:
@@ -946,12 +957,12 @@ methods:
       content type, encoding,
 
       language, disposition, md5, and cache control.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:azure.storage.blob.ContentSettings>
   - name: metadata
     description: Name-value pairs associated with the blob as metadata.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:dict>(<xref:str>, <xref:str>)
   keywordOnlyParameters:
@@ -1093,12 +1104,12 @@ methods:
       content type, encoding,
 
       language, disposition, md5, and cache control.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:azure.storage.blob.ContentSettings>
   - name: metadata
     description: Name-value pairs associated with the blob as metadata.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:dict>(<xref:str>, <xref:str>)
   - name: premium_page_blob_tier
@@ -1108,7 +1119,7 @@ methods:
       blob and number of allowed IOPS. This is only applicable to page blobs on
 
       premium storage accounts.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:azure.storage.blob.PremiumPageBlobTier>
   keywordOnlyParameters:
@@ -1262,7 +1273,7 @@ methods:
   parameters:
   - name: metadata
     description: Name-value pairs associated with the blob as metadata.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:dict>(<xref:str>, <xref:str>)
   keywordOnlyParameters:
@@ -1385,7 +1396,7 @@ methods:
     Soft deleted blob is accessible through <xref:azure.storage.blob.ContainerClient.list_blobs>
     specifying *include=[''deleted'']*
 
-    option. Soft-deleted blob can be restored using <xref:azure.storage.blob.undelete>
+    option. Soft-deleted blob can be restored using <xref:azure.storage.blob.BlobClient.undelete_blob>
     operation.'
   signature: 'delete_blob(delete_snapshots: str | None = None, **kwargs: Any) -> None'
   parameters:
@@ -1393,7 +1404,7 @@ methods:
     description: "Required if the blob has associated snapshots. Values include:\n\
       \   * \"only\": Deletes only the blobs snapshots. \n\n   * \"include\": Deletes\
       \ the blob along with all snapshots."
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:str>]
   keywordOnlyParameters:
@@ -1471,6 +1482,7 @@ methods:
     types:
     - <xref:int>
   return:
+    description: None
     types:
     - <xref:None>
 - uid: azure.storage.blob.BlobClient.delete_immutability_policy
@@ -1482,6 +1494,12 @@ methods:
     *New in version 12.10.0:* This operation was introduced in API version ''2020-10-02''.'
   signature: 'delete_immutability_policy(**kwargs: Any) -> None'
   keywordOnlyParameters:
+  - name: version_id
+    description: 'The version id parameter is an opaque DateTime
+
+      value that, when present, specifies the version of the blob to check if it exists.'
+    types:
+    - <xref:str>
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -1515,14 +1533,14 @@ methods:
     description: 'Start of byte range to use for downloading a section of the blob.
 
       Must be set if length is provided.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int>
   - name: length
     description: 'Number of bytes to read from the stream. This is optional, but
 
       should be supplied for optimal performance.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int>
   keywordOnlyParameters:
@@ -1617,12 +1635,18 @@ methods:
     types:
     - <xref:azure.storage.blob.CustomerProvidedEncryptionKey>
   - name: max_concurrency
-    description: The number of parallel connections with which to download.
+    description: 'Maximum number of parallel connections to use when transferring
+      the blob in chunks.
+
+      This option does not affect the underlying connection pool, and may
+
+      require a separate configuration of the connection pool.'
     types:
     - <xref:int>
   - name: encoding
     description: Encoding to decode the downloaded bytes. Default is None, i.e. no
       decoding.
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:str>]
   - name: progress_hook
@@ -2012,7 +2036,7 @@ methods:
       blocks, the list of uncommitted blocks, or both lists together.
 
       Possible values include: ''committed'', ''uncommitted'', ''all'''
-    isRequired: true
+    defaultValue: committed
     types:
     - <xref:str>
   keywordOnlyParameters:
@@ -2086,7 +2110,7 @@ methods:
       must be a modulus of 512 and the length must be a modulus of
 
       512.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int>
   - name: length
@@ -2103,7 +2127,7 @@ methods:
       must be a modulus of 512 and the length must be a modulus of
 
       512.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int>
   keywordOnlyParameters:
@@ -2189,7 +2213,7 @@ methods:
       must be a modulus of 512 and the length must be a modulus of
 
       512.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int>
   - name: length
@@ -2206,7 +2230,7 @@ methods:
       must be a modulus of 512 and the length must be a modulus of
 
       512.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int>
   - name: previous_snapshot_diff
@@ -2216,7 +2240,7 @@ methods:
       specifies a previous blob snapshot to be compared
 
       against a more recent snapshot or the current blob.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   keywordOnlyParameters:
@@ -2314,6 +2338,7 @@ methods:
       must be a modulus of 512 and the length must be a modulus of
 
       512.'
+    defaultValue: None
     types:
     - <xref:int>
   - name: length
@@ -2330,6 +2355,7 @@ methods:
       must be a modulus of 512 and the length must be a modulus of
 
       512.'
+    defaultValue: None
     types:
     - <xref:int>
   - name: previous_snapshot
@@ -2343,6 +2369,7 @@ methods:
       by *previous_snapshot*
 
       is the older of the two.'
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
@@ -2751,7 +2778,7 @@ methods:
       replaces all existing metadata attached to the blob. To remove all
 
       metadata from the blob, call this operation with no metadata headers.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:dict>(<xref:str>, <xref:str>)
   keywordOnlyParameters:
@@ -2874,7 +2901,7 @@ methods:
 
       space ('' ''), plus (+), minus (-), period (.), solidus (/), colon (:), equals
       (=), underscore (_)'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:dict>(<xref:str>, <xref:str>)
   keywordOnlyParameters:
@@ -2943,7 +2970,7 @@ methods:
       content type, encoding,
 
       language, disposition, md5, and cache control.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:azure.storage.blob.ContentSettings>
   keywordOnlyParameters:
@@ -3036,6 +3063,12 @@ methods:
     types:
     - <xref:azure.storage.blob.ImmutabilityPolicy>
   keywordOnlyParameters:
+  - name: version_id
+    description: 'The version id parameter is an opaque DateTime
+
+      value that, when present, specifies the version of the blob to check if it exists.'
+    types:
+    - <xref:str>
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -3067,6 +3100,12 @@ methods:
     types:
     - <xref:bool>
   keywordOnlyParameters:
+  - name: version_id
+    description: 'The version id parameter is an opaque DateTime
+
+      value that, when present, specifies the version of the blob to check if it exists.'
+    types:
+    - <xref:str>
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -3133,6 +3172,7 @@ methods:
     - <xref:azure.storage.blob.BlobLeaseClient>
     - <xref:str>
   return:
+    description: None
     types:
     - <xref:None>
 - uid: azure.storage.blob.BlobClient.set_sequence_number
@@ -3156,7 +3196,7 @@ methods:
       user-controlled property that you can use to track requests and manage
 
       concurrency issues.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   keywordOnlyParameters:
@@ -3299,6 +3339,7 @@ methods:
     - <xref:azure.storage.blob.BlobLeaseClient>
     - <xref:str>
   return:
+    description: None
     types:
     - <xref:None>
 - uid: azure.storage.blob.BlobClient.stage_block
@@ -3324,7 +3365,7 @@ methods:
       <xref:typing.IO>[<xref:typing.AnyStr>]]
   - name: length
     description: Size of the block.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int>
   keywordOnlyParameters:
@@ -3429,19 +3470,19 @@ methods:
     description: 'Start of byte range to use for the block.
 
       Must be set if source length is provided.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int>
   - name: source_length
     description: The size of the block in bytes.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int>
   - name: source_content_md5
     description: 'Specify the md5 calculated for the range of
 
       bytes that must be read from the copy source.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:bytearray>
   keywordOnlyParameters:
@@ -3499,6 +3540,15 @@ methods:
       the prefix of the source_authorization string.'
     types:
     - <xref:str>
+  - name: source_token_intent
+    description: "Required when source is Azure Storage Files and using *TokenCredential*\
+      \ for authentication.\nThis is ignored for other forms of authentication.\n\
+      Specifies the intent for all requests when using *TokenCredential* authentication.\
+      \ Possible values are:\n\nbackup - Specifies requests are intended for backup/admin\
+      \ type operations, meaning that all file/directory\n   ACLs are bypassed and\
+      \ full permissions are granted. User must also have required RBAC permission."
+    types:
+    - <xref:typing.Literal>['backup']
   return:
     description: Blob property dict.
     types:
@@ -3595,7 +3645,7 @@ methods:
       pairs are specified, the destination blob is created with the specified
 
       metadata, and metadata is not copied from the source blob or file.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:dict>(<xref:str>, <xref:str>)
   - name: incremental_copy
@@ -3609,7 +3659,7 @@ methods:
       The copied snapshots are complete copies of the original snapshot and
 
       can be read or copied from as usual. Defaults to False.'
-    isRequired: true
+    defaultValue: 'False'
     types:
     - <xref:bool>
   keywordOnlyParameters:
@@ -3806,6 +3856,15 @@ methods:
       *New in version 12.9.0.*'
     types:
     - <xref:str>
+  - name: source_token_intent
+    description: "Required when source is Azure Storage Files and using *TokenCredential*\
+      \ for authentication.\nThis is ignored for other forms of authentication.\n\
+      Specifies the intent for all requests when using *TokenCredential* authentication.\
+      \ Possible values are:\n\nbackup - Specifies requests are intended for backup/admin\
+      \ type operations, meaning that all file/directory\n   ACLs are bypassed and\
+      \ full permissions are granted. User must also have required RBAC permission."
+    types:
+    - <xref:typing.Literal>['backup']
   - name: encryption_scope
     description: 'A predefined encryption scope used to encrypt the data on the sync
       copied blob. An encryption
@@ -3858,6 +3917,7 @@ methods:
     types:
     - <xref:int>
   return:
+    description: None
     types:
     - <xref:None>
 - uid: azure.storage.blob.BlobClient.upload_blob
@@ -3877,19 +3937,19 @@ methods:
     description: 'The type of the blob. This can be
 
       either BlockBlob, PageBlob or AppendBlob. The default value is BlockBlob.'
-    isRequired: true
+    defaultValue: BlobType.BLOCKBLOB
     types:
     - <xref:azure.storage.blob.BlobType>
   - name: length
     description: 'Number of bytes to read from the stream. This is optional, but
 
       should be supplied for optimal performance.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int>
   - name: metadata
     description: Name-value pairs associated with the blob as metadata.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:dict>(<xref:str>, <xref:str>)
   keywordOnlyParameters:
@@ -4058,10 +4118,12 @@ methods:
     types:
     - <xref:int>
   - name: max_concurrency
-    description: 'Maximum number of parallel connections to use when the blob size
-      exceeds
+    description: 'Maximum number of parallel connections to use when transferring
+      the blob in chunks.
 
-      64MB.'
+      This option does not affect the underlying connection pool, and may
+
+      require a separate configuration of the connection pool.'
     types:
     - <xref:int>
   - name: cpk
@@ -4130,7 +4192,8 @@ methods:
     given URL.
 
     The content of an existing blob is overwritten with the new blob.'
-  signature: 'upload_blob_from_url(source_url: str, **kwargs: Any) -> Dict[str, Any]'
+  signature: 'upload_blob_from_url(source_url: str, *, metadata: Dict[str, str] |
+    None = None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: source_url
     description: 'A URL of up to 2 KB in length that specifies a file or blob.
@@ -4156,6 +4219,11 @@ methods:
     types:
     - <xref:str>
   keywordOnlyParameters:
+  - name: metadata
+    description: Name-value pairs associated with the blob as metadata.
+    defaultValue: None
+    types:
+    - <xref:dict>(<xref:str>, <xref:str>)
   - name: overwrite
     description: 'Whether the blob to be uploaded should overwrite the current data.
 
@@ -4326,6 +4394,15 @@ methods:
       the prefix of the source_authorization string.'
     types:
     - <xref:str>
+  - name: source_token_intent
+    description: "Required when source is Azure Storage Files and using *TokenCredential*\
+      \ for authentication.\nThis is ignored for other forms of authentication.\n\
+      Specifies the intent for all requests when using *TokenCredential* authentication.\
+      \ Possible values are:\n\nbackup - Specifies requests are intended for backup/admin\
+      \ type operations, meaning that all file/directory\n   ACLs are bypassed and\
+      \ full permissions are granted. User must also have required RBAC permission."
+    types:
+    - <xref:typing.Literal>['backup']
   return:
     description: Blob-updated property Dict (Etag and last modified)
     types:
@@ -4700,6 +4777,15 @@ methods:
       the prefix of the source_authorization string.'
     types:
     - <xref:str>
+  - name: source_token_intent
+    description: "Required when source is Azure Storage Files and using *TokenCredential*\
+      \ for authentication.\nThis is ignored for other forms of authentication.\n\
+      Specifies the intent for all requests when using *TokenCredential* authentication.\
+      \ Possible values are:\n\nbackup - Specifies requests are intended for backup/admin\
+      \ type operations, meaning that all file/directory\n   ACLs are bypassed and\
+      \ full permissions are granted. User must also have required RBAC permission."
+    types:
+    - <xref:typing.Literal>['backup']
   return:
     description: Response after uploading pages from specified URL.
     types:
@@ -4718,18 +4804,21 @@ attributes:
 
     By default this will be "primary". Options include "primary" and "secondary".'
   return:
+    description: The current location mode.
     types:
     - <xref:str>
 - uid: azure.storage.blob.BlobClient.primary_endpoint
   name: primary_endpoint
   summary: The full primary endpoint URL.
   return:
+    description: The full primary endpoint URL.
     types:
     - <xref:str>
 - uid: azure.storage.blob.BlobClient.primary_hostname
   name: primary_hostname
   summary: The hostname of the primary endpoint.
   return:
+    description: The hostname of the primary endpoint.
     types:
     - <xref:str>
 - uid: azure.storage.blob.BlobClient.secondary_endpoint
@@ -4742,10 +4831,12 @@ attributes:
 
     *secondary_hostname* keyword argument on instantiation.'
   return:
+    description: The full secondary endpoint URL.
     types:
     - <xref:str>
   exceptions:
   - type: ValueError
+    description: If no secondary endpoint is configured.
 - uid: azure.storage.blob.BlobClient.secondary_hostname
   name: secondary_hostname
   summary: 'The hostname of the secondary endpoint.
@@ -4756,6 +4847,7 @@ attributes:
 
     *secondary_hostname* keyword argument on instantiation.'
   return:
+    description: The hostname of the secondary endpoint, or None if not configured.
     types:
     - <xref:typing.Optional>[<xref:str>]
 - uid: azure.storage.blob.BlobClient.url
@@ -4765,8 +4857,8 @@ attributes:
 
     This could be either the primary endpoint,
 
-    or the secondary endpoint depending on the current <xref:azure.storage.blob.BlobClient.location_mode>.
-
-    :returns: The full endpoint URL to this entity, including SAS token if used.
-
-    :rtype: str'
+    or the secondary endpoint depending on the current <xref:azure.storage.blob.BlobClient.location_mode>.'
+  return:
+    description: The full endpoint URL to this entity, including SAS token if used.
+    types:
+    - <xref:str>

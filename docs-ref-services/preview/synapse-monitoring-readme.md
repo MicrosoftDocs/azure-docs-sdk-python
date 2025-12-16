@@ -5,7 +5,6 @@ ms.date: 03/31/2022
 ms.topic: reference
 ms.devlang: python
 ms.service: synapse-analytics
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 
@@ -27,5 +26,5 @@ If you encounter any bugs or have suggestions, please file an issue in the
 [Issues](https://github.com/Azure/azure-sdk-for-python/issues)
 section of the project.
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-synapse-monitoring%2FREADME.png)
+
 

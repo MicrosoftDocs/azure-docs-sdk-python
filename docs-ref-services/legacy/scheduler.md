@@ -1,13 +1,12 @@
 ---
-title: Azure Scheduler libraries for python
-description: Reference for Azure Scheduler libraries for python
-keywords: Azure, python, SDK, API, Scheduler
-ms.date: 02/21/2018
+title: Azure Scheduler SDK for Python
+description: Reference for Azure Scheduler SDK for Python
+ms.date: 12/15/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: scheduler
-ms.technology: azure
 manager: mbaldwin
+keywords: Azure, python, SDK, API, Scheduler
 ---
 # Azure Scheduler libraries for python
 
@@ -75,4 +74,3 @@ scheduler_client.job_collections.create_or_update(
 
 > [!div class="nextstepaction"]
 > [Explore the Management APIs](/python/api/overview/azure/scheduler/management)
-

@@ -3,9 +3,6 @@ uid: azure.ai.ml.entities.Command
 name: Command
 fullName: azure.ai.ml.entities.Command
 module: azure.ai.ml.entities
-inheritances:
-- azure.ai.ml.entities._builders.base_node.BaseNode
-- azure.ai.ml.entities._job.pipeline._io.mixin.NodeWithGroupInputMixin
 summary: 'Base class for command node, used for command component version consumption.
 
 
@@ -21,7 +18,8 @@ constructor:
     environment: Environment | str | None = None, environment_variables: Dict | None
     = None, resources: JobResourceConfiguration | None = None, services: Dict[str,
     JobService | JupyterLabJobService | SshJobService | TensorBoardJobService | VsCodeJobService]
-    | None = None, queue_settings: QueueSettings | None = None, **kwargs: Any)'
+    | None = None, queue_settings: QueueSettings | None = None, parent_job_name: str
+    | None = None, **kwargs: Any)'
   keywordOnlyParameters:
   - name: component
     description: The ID or instance of the command component or job to be run for
@@ -30,36 +28,43 @@ constructor:
     - <xref:typing.Union>[<xref:str>, <xref:azure.ai.ml.entities.CommandComponent>]
   - name: compute
     description: The compute target the job will run on.
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:str>]
   - name: inputs
     description: A mapping of input names to input data sources used in the job.
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:dict>[<xref:str>, <xref:typing.Union>[ <xref:azure.ai.ml.Input>,
       <xref:str>, <xref:bool>, <xref:int>, <xref:float>, <xref:Enum>]]]
   - name: outputs
     description: A mapping of output names to output data sources used in the job.
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:dict>[<xref:str>, <xref:typing.Union>[<xref:str>,
       <xref:azure.ai.ml.Output>]]]
   - name: limits
     description: The limits for the command component or job.
+    defaultValue: None
     types:
     - <xref:azure.ai.ml.entities.CommandJobLimits>
   - name: identity
     description: The identity that the command job will use while running on compute.
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:typing.Union>[ <xref:dict>[<xref:str>, <xref:str>],
       <xref:azure.ai.ml.entities.ManagedIdentityConfiguration>, <xref:azure.ai.ml.entities.AmlTokenConfiguration>,
       <xref:azure.ai.ml.entities.UserIdentityConfiguration>]]
   - name: distribution
     description: The configuration for distributed jobs.
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:typing.Union>[<xref:dict>, <xref:azure.ai.ml.PyTorchDistribution>,
       <xref:azure.ai.ml.MpiDistribution>, <xref:azure.ai.ml.TensorFlowDistribution>,
       <xref:azure.ai.ml.RayDistribution>]]
   - name: environment
     description: The environment that the job will run in.
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:azure.ai.ml.entities.Environment>]]
   - name: environment_variables
@@ -67,10 +72,12 @@ constructor:
 
       These environment variables are set on the process where the user script is
       being executed.'
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:dict>[<xref:str>, <xref:str>]]
   - name: resources
     description: The compute resource configuration for the command.
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:azure.ai.ml.entities.JobResourceConfiguration>]
   - name: services
@@ -79,14 +86,21 @@ constructor:
 
       time. Please see [https://aka.ms/azuremlexperimental](https://aka.ms/azuremlexperimental)
       for more information.'
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:dict>[<xref:str>, <xref:typing.Union>[<xref:azure.ai.ml.entities.JobService>,
       <xref:azure.ai.ml.entities.JupyterLabJobService>, <xref:azure.ai.ml.entities.SshJobService>,
       <xref:azure.ai.ml.entities.TensorBoardJobService>, <xref:azure.ai.ml.entities.VsCodeJobService>]]]
   - name: queue_settings
     description: Queue settings for the job.
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:azure.ai.ml.entities.QueueSettings>]
+  - name: parent_job_name
+    description: parent job id for command job
+    defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:str>]
 methods:
 - uid: azure.ai.ml.entities.Command.clear
   name: clear
@@ -122,9 +136,6 @@ methods:
     isRequired: true
   - name: value
     defaultValue: None
-  parameters:
-  - name: type
-    isRequired: true
 - uid: azure.ai.ml.entities.Command.get
   name: get
   summary: Return the value for key if key is in the dictionary, else default.
@@ -168,8 +179,8 @@ methods:
   - "Setting a timeout limit of 10 seconds on a Command.<!--[!code-python[Main](les\\\
     ml_samples_command_configurations.py )]-->\n\n<!-- literal_block {\"ids\": [],\
     \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\7\\\\azure-ai-ml-1.20.0\\\\samples\\\\ml_samples_command_configurations.py\"\
+    : \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\
+    \\dist_temp\\\\19\\\\azure_ai_ml-1.30.0\\\\samples\\\\ml_samples_command_configurations.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   from azure.ai.ml import Input, Output, command\n\n   command_node = command(\n\
@@ -189,41 +200,43 @@ methods:
   - name: job_tier
     description: The job tier. Accepted values are "Spot", "Basic", "Standard", or
       "Premium".
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:str>]
   - name: priority
     description: The priority of the job on the compute. Defaults to "Medium".
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:str>]
   examples:
   - "Configuring queue settings on a Command.<!--[!code-python[Main](les\\ml_samples_command_configurations.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    7\\\\azure-ai-ml-1.20.0\\\\samples\\\\ml_samples_command_configurations.py\",\
-    \ \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   from azure.ai.ml import Input, Output, command\n\n   command_node = command(\n\
-    \       environment=\"AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:33\",\n       command='echo\
-    \ \"hello world\"',\n       distribution={\"type\": \"Pytorch\", \"process_count_per_instance\"\
-    : 2},\n       inputs={\n           \"training_data\": Input(type=\"uri_folder\"\
-    ),\n           \"max_epochs\": 20,\n           \"learning_rate\": 1.8,\n     \
-    \      \"learning_rate_schedule\": \"time-based\",\n       },\n       outputs={\"\
-    model_output\": Output(type=\"uri_folder\")},\n   )\n\n   command_node.set_queue_settings(job_tier=\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\19\\\\azure_ai_ml-1.30.0\\\
+    \\samples\\\\ml_samples_command_configurations.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml import Input,\
+    \ Output, command\n\n   command_node = command(\n       environment=\"AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:33\"\
+    ,\n       command='echo \"hello world\"',\n       distribution={\"type\": \"Pytorch\"\
+    , \"process_count_per_instance\": 2},\n       inputs={\n           \"training_data\"\
+    : Input(type=\"uri_folder\"),\n           \"max_epochs\": 20,\n           \"learning_rate\"\
+    : 1.8,\n           \"learning_rate_schedule\": \"time-based\",\n       },\n  \
+    \     outputs={\"model_output\": Output(type=\"uri_folder\")},\n   )\n\n   command_node.set_queue_settings(job_tier=\"\
     standard\", priority=\"medium\")\n\n   ````\n"
 - uid: azure.ai.ml.entities.Command.set_resources
   name: set_resources
   summary: Set resources for Command.
   signature: 'set_resources(*, instance_type: str | List[str] | None = None, instance_count:
     int | None = None, locations: List[str] | None = None, properties: Dict | None
-    = None, docker_args: str | None = None, shm_size: str | None = None, **kwargs:
-    Any) -> None'
+    = None, docker_args: str | List[str] | None = None, shm_size: str | None = None,
+    **kwargs: Any) -> None'
   keywordOnlyParameters:
   - name: instance_type
     description: 'The type of compute instance to run the job on. If not specified,
       the job will run on
 
       the default compute target.'
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:typing.List>[<xref:str>]]]
   - name: instance_count
@@ -231,6 +244,7 @@ methods:
       job will run on a
 
       single instance.'
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:int>]
   - name: locations
@@ -238,16 +252,19 @@ methods:
       the job will run on the
 
       default compute target.'
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:typing.List>[<xref:str>]]
   - name: properties
     description: The properties of the job.
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:dict>]
   - name: docker_args
     description: The Docker arguments for the job.
+    defaultValue: None
     types:
-    - <xref:typing.Optional>[<xref:str>]
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>,<xref:typing.List>[<xref:str>]]]
   - name: shm_size
     description: 'The size of the docker container''s shared memory block. This should
       be in the
@@ -256,23 +273,23 @@ methods:
       can be one of
 
       b(bytes), k(kilobytes), m(megabytes), or g(gigabytes).'
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:str>]
   examples:
   - "Setting resources on a Command.<!--[!code-python[Main](les\\ml_samples_command_configurations.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    7\\\\azure-ai-ml-1.20.0\\\\samples\\\\ml_samples_command_configurations.py\",\
-    \ \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   from azure.ai.ml import Input, Output, command\n\n   command_node = command(\n\
-    \       environment=\"AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:33\",\n       command='echo\
-    \ \"hello world\"',\n       distribution={\"type\": \"Pytorch\", \"process_count_per_instance\"\
-    : 2},\n       inputs={\n           \"training_data\": Input(type=\"uri_folder\"\
-    ),\n           \"max_epochs\": 20,\n           \"learning_rate\": 1.8,\n     \
-    \      \"learning_rate_schedule\": \"time-based\",\n       },\n       outputs={\"\
-    model_output\": Output(type=\"uri_folder\")},\n   )\n\n   command_node.set_resources(\n\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\19\\\\azure_ai_ml-1.30.0\\\
+    \\samples\\\\ml_samples_command_configurations.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml import Input,\
+    \ Output, command\n\n   command_node = command(\n       environment=\"AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:33\"\
+    ,\n       command='echo \"hello world\"',\n       distribution={\"type\": \"Pytorch\"\
+    , \"process_count_per_instance\": 2},\n       inputs={\n           \"training_data\"\
+    : Input(type=\"uri_folder\"),\n           \"max_epochs\": 20,\n           \"learning_rate\"\
+    : 1.8,\n           \"learning_rate_schedule\": \"time-based\",\n       },\n  \
+    \     outputs={\"model_output\": Output(type=\"uri_folder\")},\n   )\n\n   command_node.set_resources(\n\
     \       instance_count=1,\n       instance_type=\"STANDARD_D2_v2\",\n       properties={\"\
     key\": \"new_val\"},\n       shm_size=\"3g\",\n   )\n\n   ````\n"
 - uid: azure.ai.ml.entities.Command.setdefault
@@ -311,18 +328,21 @@ methods:
   keywordOnlyParameters:
   - name: queue_settings
     description: The queue settings for the job.
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:azure.ai.ml.entities.QueueSettings>]
   - name: job_tier
     description: '**Experimental** The job tier. Accepted values are "Spot", "Basic",
 
       "Standard", or "Premium".'
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:str>]
   - name: priority
     description: '**Experimental** The compute priority. Accepted values are "low",
 
       "medium", and "high".'
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:str>]
   - name: primary_metric
@@ -332,21 +352,21 @@ methods:
   - name: sampling_algorithm
     defaultValue: random
   - name: compute
-    isRequired: true
+    defaultValue: None
   - name: max_concurrent_trials
-    isRequired: true
+    defaultValue: None
   - name: max_total_trials
-    isRequired: true
+    defaultValue: None
   - name: timeout
-    isRequired: true
+    defaultValue: None
   - name: trial_timeout
-    isRequired: true
+    defaultValue: None
   - name: early_termination_policy
-    isRequired: true
+    defaultValue: None
   - name: search_space
-    isRequired: true
+    defaultValue: None
   - name: identity
-    isRequired: true
+    defaultValue: None
   return:
     description: A Sweep node with the component from current Command node as its
       trial component.
@@ -355,13 +375,13 @@ methods:
   examples:
   - "Creating a Sweep node from a Command job.<!--[!code-python[Main](les\\ml_samples_sweep_configurations.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    7\\\\azure-ai-ml-1.20.0\\\\samples\\\\ml_samples_sweep_configurations.py\", \"\
-    xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml\
-    \ import command\n\n   job = command(\n       inputs=dict(kernel=\"linear\", penalty=1.0),\n\
-    \       compute=cpu_cluster,\n       environment=f\"{job_env.name}:{job_env.version}\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\19\\\\azure_ai_ml-1.30.0\\\
+    \\samples\\\\ml_samples_sweep_configurations.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml import command\n\
+    \n   job = command(\n       inputs=dict(kernel=\"linear\", penalty=1.0),\n   \
+    \    compute=cpu_cluster,\n       environment=f\"{job_env.name}:{job_env.version}\"\
     ,\n       code=\"./scripts\",\n       command=\"python scripts/train.py --kernel\
     \ $kernel --penalty $penalty\",\n       experiment_name=\"sklearn-iris-flowers\"\
     ,\n   )\n\n   # we can reuse an existing Command Job as a function that we can\
@@ -402,7 +422,7 @@ attributes:
     - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:os.PathLike>]]
 - uid: azure.ai.ml.entities.Command.command
   name: command
-  summary: Sets the command to be executed.
+  summary: The command to be executed.
   return:
     types:
     - <xref:typing.Optional>[<xref:str>]

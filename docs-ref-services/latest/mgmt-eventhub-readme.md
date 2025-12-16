@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-eventhub, azure-event-hubs
-ms.date: 09/04/2024
+ms.date: 01/21/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: azure-event-hubs

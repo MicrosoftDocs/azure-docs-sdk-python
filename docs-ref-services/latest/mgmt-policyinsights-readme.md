@@ -5,7 +5,6 @@ ms.date: 03/02/2021
 ms.topic: reference
 ms.devlang: python
 ms.service: azure-policy
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 
@@ -27,5 +26,5 @@ If you encounter any bugs or have suggestions, please file an issue in the
 [Issues](https://github.com/Azure/azure-sdk-for-python/issues)
 section of the project.
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-policyinsights%2FREADME.png)
+
 

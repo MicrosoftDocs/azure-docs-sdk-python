@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-hardwaresecuritymodules, hardwaresecuritymodules
-ms.date: 01/26/2024
+ms.date: 02/06/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: hardwaresecuritymodules

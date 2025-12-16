@@ -5,7 +5,6 @@ ms.date: 09/27/2021
 ms.topic: reference
 ms.devlang: python
 ms.service: azure-python
-ms.technology: azure
 ---
 [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/azure-sdk-for-python.client?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=46?branchName=master)
 
@@ -42,5 +41,5 @@ More sample code should go here, along with links out to the appropriate example
 
 If you encounter any bugs or have suggestions, please file an issue in the [Issues](<https://github.com/Azure/azure-sdk-for-python/issues>) section of the project.
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fsdk%2Ftemplate%2Fazure-template%2FREADME.png)
+
 

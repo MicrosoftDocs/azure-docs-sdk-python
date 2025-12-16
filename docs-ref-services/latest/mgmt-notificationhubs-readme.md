@@ -5,7 +5,6 @@ ms.date: 01/06/2022
 ms.topic: reference
 ms.devlang: python
 ms.service: notification-hubs
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 
@@ -37,5 +36,5 @@ If you encounter any bugs or have suggestions, please file an issue in the
 section of the project. 
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-notificationhubs%2FREADME.png)
+
 

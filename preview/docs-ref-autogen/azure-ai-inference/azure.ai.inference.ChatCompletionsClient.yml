@@ -3,21 +3,19 @@ uid: azure.ai.inference.ChatCompletionsClient
 name: ChatCompletionsClient
 fullName: azure.ai.inference.ChatCompletionsClient
 module: azure.ai.inference
-inheritances:
-- azure.ai.inference._client.ChatCompletionsClient
 summary: ChatCompletionsClient.
 constructor:
   syntax: 'ChatCompletionsClient(endpoint: str, credential: AzureKeyCredential | TokenCredential,
     *, frequency_penalty: float | None = None, presence_penalty: float | None = None,
     temperature: float | None = None, top_p: float | None = None, max_tokens: int
-    | None = None, response_format: ChatCompletionsResponseFormat | None = None, stop:
-    List[str] | None = None, tools: List[ChatCompletionsToolDefinition] | None = None,
-    tool_choice: str | ChatCompletionsToolChoicePreset | ChatCompletionsNamedToolChoice
+    | None = None, response_format: Literal[''text'', ''json_object''] | JsonSchemaFormat
+    | None = None, stop: List[str] | None = None, tools: List[ChatCompletionsToolDefinition]
+    | None = None, tool_choice: str | ChatCompletionsToolChoicePreset | ChatCompletionsNamedToolChoice
     | None = None, seed: int | None = None, model: str | None = None, model_extras:
     Dict[str, Any] | None = None, **kwargs: Any)'
   parameters:
   - name: endpoint
-    description: Service host. Required.
+    description: Service endpoint URL for AI model inference. Required.
     isRequired: true
     types:
     - <xref:str>
@@ -44,6 +42,7 @@ constructor:
       Supported range is [-2, 2].
 
       Default value is None.'
+    defaultValue: None
     types:
     - <xref:float>
   - name: presence_penalty
@@ -61,6 +60,7 @@ constructor:
       Supported range is [-2, 2].
 
       Default value is None.'
+    defaultValue: None
     types:
     - <xref:float>
   - name: temperature
@@ -82,6 +82,7 @@ constructor:
       Supported range is [0, 1].
 
       Default value is None.'
+    defaultValue: None
     types:
     - <xref:float>
   - name: top_p
@@ -106,28 +107,35 @@ constructor:
       Supported range is [0, 1].
 
       Default value is None.'
+    defaultValue: None
     types:
     - <xref:float>
   - name: max_tokens
     description: The maximum number of tokens to generate. Default value is None.
+    defaultValue: None
     types:
     - <xref:int>
   - name: response_format
-    description: 'The format that the model must output. Use this to enable JSON mode
+    description: 'The format that the AI model must output. AI chat completions models
+      typically output
 
-      instead of the default text mode.
+      unformatted text by default. This is equivalent to setting "text" as the response_format.
 
-      Note that to enable JSON mode, some AI models may also require you to instruct
-      the model to
+      To output JSON format, without adhering to any schema, set to "json_object".
 
-      produce JSON via a system or user message. Default value is None.'
+      To output JSON format adhering to a provided schema, set this to an object of
+      the class
+
+      ~azure.ai.inference.models.JsonSchemaFormat. Default value is None.'
+    defaultValue: None
     types:
-    - <xref:azure.ai.inference.models.ChatCompletionsResponseFormat>
+    - <xref:typing.Union>[<xref:typing.Literal>['text', 'json_object'], azure.ai.inference.models.JsonSchemaFormat]
   - name: stop
     description: 'A collection of textual sequences that will end completions generation.
       Default
 
       value is None.'
+    defaultValue: None
     types:
     - <xref:list>[<xref:str>]
   - name: tools
@@ -135,6 +143,7 @@ constructor:
       can use,
 
       including caller-defined functions. Default value is None.'
+    defaultValue: None
     types:
     - <xref:list>[<xref:azure.ai.inference.models.ChatCompletionsToolDefinition>]
   - name: tool_choice
@@ -147,6 +156,7 @@ constructor:
       type.
 
       Default value is None.'
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:azure.ai.inference.models.ChatCompletionsToolChoicePreset>
@@ -159,6 +169,7 @@ constructor:
       same seed and parameters should return the same result. Determinism is not guaranteed.
 
       Default value is None.'
+    defaultValue: None
     types:
     - <xref:int>
   - name: model
@@ -166,6 +177,7 @@ constructor:
       on the
 
       endpoint. Default value is None.'
+    defaultValue: None
     types:
     - <xref:str>
   - name: model_extras
@@ -177,6 +189,7 @@ constructor:
       How the service handles these extra parameters depends on the value of the
 
       `extra-parameters` request header. Default value is None.'
+    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:typing.Any>]
   - name: api_version
@@ -205,21 +218,20 @@ methods:
     back to the client. Iterate over the resulting <xref:azure.ai.inference.models.StreamingChatCompletions>
 
     object to get content updates as they arrive.'
-  signature: 'complete(*, messages: List[_models.ChatRequestMessage], stream: Literal[False]
-    = False, frequency_penalty: float | None = None, presence_penalty: float | None
-    = None, temperature: float | None = None, top_p: float | None = None, max_tokens:
-    int | None = None, response_format: _models.ChatCompletionsResponseFormat | None
-    = None, stop: List[str] | None = None, tools: List[_models.ChatCompletionsToolDefinition]
-    | None = None, tool_choice: str | _models.ChatCompletionsToolChoicePreset | _models.ChatCompletionsNamedToolChoice
+  signature: 'complete(*, messages: List[ChatRequestMessage] | List[Dict[str, Any]],
+    stream: Literal[False] = False, frequency_penalty: float | None = None, presence_penalty:
+    float | None = None, temperature: float | None = None, top_p: float | None = None,
+    max_tokens: int | None = None, response_format: Literal[''text'', ''json_object'']
+    | JsonSchemaFormat | None = None, stop: List[str] | None = None, tools: List[ChatCompletionsToolDefinition]
+    | None = None, tool_choice: str | ChatCompletionsToolChoicePreset | ChatCompletionsNamedToolChoice
     | None = None, seed: int | None = None, model: str | None = None, model_extras:
-    Dict[str, Any] | None = None, **kwargs: Any) -> _models.ChatCompletions'
+    Dict[str, Any] | None = None, **kwargs: Any) -> ChatCompletions'
   parameters:
   - name: body
     description: 'Is either a MutableMapping[str, Any] type (like a dictionary) or
       a IO[bytes] type
 
       that specifies the full request payload. Required.'
-    isRequired: true
     types:
     - <xref:JSON>
     - <xref:typing.IO>[<xref:bytes>]
@@ -236,8 +248,10 @@ methods:
       User and
 
       Assistant roles. Required.'
+    defaultValue: <object object at 0x000001CE9781E280>
     types:
     - <xref:list>[<xref:azure.ai.inference.models.ChatRequestMessage>]
+    - <xref:list>[<xref:dict>[<xref:str>, <xref:typing.Any>]]
   - name: stream
     description: 'A value indicating whether chat completions should be streamed for
       this request.
@@ -245,6 +259,7 @@ methods:
       Default value is False. If streaming is enabled, the response will be a StreamingChatCompletions.
 
       Otherwise the response will be a ChatCompletions.'
+    defaultValue: None
     types:
     - <xref:bool>
   - name: frequency_penalty
@@ -260,6 +275,7 @@ methods:
       Supported range is [-2, 2].
 
       Default value is None.'
+    defaultValue: None
     types:
     - <xref:float>
   - name: presence_penalty
@@ -277,6 +293,7 @@ methods:
       Supported range is [-2, 2].
 
       Default value is None.'
+    defaultValue: None
     types:
     - <xref:float>
   - name: temperature
@@ -298,6 +315,7 @@ methods:
       Supported range is [0, 1].
 
       Default value is None.'
+    defaultValue: None
     types:
     - <xref:float>
   - name: top_p
@@ -322,28 +340,35 @@ methods:
       Supported range is [0, 1].
 
       Default value is None.'
+    defaultValue: None
     types:
     - <xref:float>
   - name: max_tokens
     description: The maximum number of tokens to generate. Default value is None.
+    defaultValue: None
     types:
     - <xref:int>
   - name: response_format
-    description: 'The format that the model must output. Use this to enable JSON mode
+    description: 'The format that the AI model must output. AI chat completions models
+      typically output
 
-      instead of the default text mode.
+      unformatted text by default. This is equivalent to setting "text" as the response_format.
 
-      Note that to enable JSON mode, some AI models may also require you to instruct
-      the model to
+      To output JSON format, without adhering to any schema, set to "json_object".
 
-      produce JSON via a system or user message. Default value is None.'
+      To output JSON format adhering to a provided schema, set this to an object of
+      the class
+
+      ~azure.ai.inference.models.JsonSchemaFormat. Default value is None.'
+    defaultValue: None
     types:
-    - <xref:azure.ai.inference.models.ChatCompletionsResponseFormat>
+    - <xref:typing.Union>[<xref:typing.Literal>['text', 'json_object'], azure.ai.inference.models.JsonSchemaFormat]
   - name: stop
     description: 'A collection of textual sequences that will end completions generation.
       Default
 
       value is None.'
+    defaultValue: None
     types:
     - <xref:list>[<xref:str>]
   - name: tools
@@ -351,6 +376,7 @@ methods:
       can use,
 
       including caller-defined functions. Default value is None.'
+    defaultValue: None
     types:
     - <xref:list>[<xref:azure.ai.inference.models.ChatCompletionsToolDefinition>]
   - name: tool_choice
@@ -363,6 +389,7 @@ methods:
       type.
 
       Default value is None.'
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:azure.ai.inference.models.ChatCompletionsToolChoicePreset>
@@ -375,6 +402,7 @@ methods:
       same seed and parameters should return the same result. Determinism is not guaranteed.
 
       Default value is None.'
+    defaultValue: None
     types:
     - <xref:int>
   - name: model
@@ -382,6 +410,7 @@ methods:
       on the
 
       endpoint. Default value is None.'
+    defaultValue: None
     types:
     - <xref:str>
   - name: model_extras
@@ -393,6 +422,7 @@ methods:
       How the service handles these extra parameters depends on the value of the
 
       `extra-parameters` request header. Default value is None.'
+    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:typing.Any>]
   return:
@@ -452,6 +482,7 @@ methods:
   keywordOnlyParameters:
   - name: stream
     description: Whether the response payload will be streamed. Defaults to False.
+    defaultValue: 'False'
     types:
     - <xref:bool>
   return:

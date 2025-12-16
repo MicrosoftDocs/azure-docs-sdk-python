@@ -6,7 +6,6 @@ ms.date: 10/02/2019
 ms.topic: reference
 ms.devlang: python
 ms.service: mysql
-ms.technology: azure
 manager: douge
 ---
 # Azure Database for MySQL/PostgreSQL libraries for Python

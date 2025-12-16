@@ -1,0 +1,3697 @@
+### YamlMime:PythonClass
+uid: azure.durable_functions.DFApp
+name: DFApp
+fullName: azure.durable_functions.DFApp
+module: azure.durable_functions
+summary: 'Durable Functions (DF) app.
+
+
+  Exports the decorators required to declare and index DF Function-types.
+
+
+  Instantiate a Durable Functions app with which to register Functions.'
+constructor:
+  syntax: 'DFApp(http_auth_level: AuthLevel | str = AuthLevel.FUNCTION)'
+  parameters:
+  - name: http_auth_level
+    description: 'Authorization level required for Function invocation.
+
+      Defaults to AuthLevel.Function.'
+    defaultValue: FUNCTION
+    types:
+    - <xref:Union>[<xref:AuthLevel>, <xref:str>]
+methods:
+- uid: azure.durable_functions.DFApp.activity_trigger
+  name: activity_trigger
+  summary: Register an Activity Function.
+  signature: 'activity_trigger(input_name: str, activity: str | None = None)'
+  parameters:
+  - name: input_name
+    description: Parameter name of the Activity input.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: activity
+    description: 'Name of Activity Function.
+
+      The value is None by default, in which case the name of the method is used.'
+    defaultValue: None
+    types:
+    - <xref:Optional>[<xref:str>]
+- uid: azure.durable_functions.DFApp.assistant_create_output
+  name: assistant_create_output
+  summary: The *assistantCreate* output binding creates a new assistant with a specified
+    system prompt.
+  signature: 'assistant_create_output(arg_name: str, data_type: DataType | str | None
+    = None, **kwargs) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: The name of the binding parameter in the function code.
+    isRequired: true
+  - name: data_type
+    description: Defines how the Functions runtime should treat the parameter value.
+    defaultValue: None
+  - name: kwargs
+    description: 'Additional keyword arguments for specifying extra binding fields
+
+      to include in the *function.json*.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.assistant_post_input
+  name: assistant_post_input
+  summary: 'The *assistantPost* output binding sends a message to the assistant and
+    saves
+
+    the response in its internal state.'
+  signature: 'assistant_post_input(arg_name: str, id: str, user_message: str, ai_connection_name:
+    str | None = '''', chat_model: str | OpenAIModels | None = OpenAIModels.DefaultChatModel,
+    chat_storage_connection_setting: str | None = ''AzureWebJobsStorage'', collection_name:
+    str | None = ''ChatState'', temperature: str | None = ''0.5'', top_p: str | None
+    = None, max_tokens: str | None = ''100'', is_reasoning_model: bool | None = False,
+    data_type: DataType | str | None = None, **kwargs) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: The name of the binding parameter in the function code.
+    isRequired: true
+  - name: id
+    description: The ID of the assistant to update.
+    isRequired: true
+  - name: user_message
+    description: 'The message entered by the user for the assistant to
+
+      respond to.'
+    isRequired: true
+  - name: ai_connection_name
+    description: "The name of the configuration section for AI service\nconnectivity.\n\
+      \n* **Azure OpenAI**: If specified, looks for \"Endpoint\" and/or \"Key\" in\
+      \ the section. \n\n* If not specified or missing, falls back to the *AZURE_OPENAI_ENDPOINT*\
+      \ and *AZURE_OPENAI_KEY* environment variables. \n\n* **Managed Identity**:\
+      \ Required for user-assigned identity auth. \n\n* **OpenAI (non-Azure)**: Set\
+      \ the *OPENAI_API_KEY* environment variable."
+    isRequired: true
+  - name: model
+    description: '*Deprecated.* Use *chat_model* instead. This parameter is unused
+
+      and will be removed in future versions.'
+    isRequired: true
+  - name: chat_model
+    description: 'The deployment or model name of the OpenAI Chat Completion API.
+
+      Default is *"gpt-3.5-turbo"*.'
+    defaultValue: DefaultChatModel
+  - name: chat_storage_connection_setting
+    description: 'The config section name for assistant
+
+      chat table storage. Default is *"AzureWebJobsStorage"*.'
+    defaultValue: AzureWebJobsStorage
+  - name: collection_name
+    description: 'The collection or table name used for assistant chat
+
+      storage. Default is *"ChatState"*.'
+    defaultValue: ChatState
+  - name: temperature
+    description: 'Sampling temperature, between 0 and 2. Higher values
+
+      (e.g., 0.8) increase randomness; lower values (e.g., 0.2) make output more
+
+      deterministic.'
+    defaultValue: '0.5'
+  - name: top_p
+    description: 'Alternative to temperature sampling. Uses nucleus sampling to
+
+      consider only the tokens comprising the top *top_p* probability mass.
+
+      Recommended to use either this or *temperature*.'
+    defaultValue: None
+  - name: max_tokens
+    description: 'Maximum tokens to generate. Total tokens (prompt + output)
+
+      must not exceed the model''s context length.'
+    defaultValue: '100'
+  - name: is_reasoning_model
+    description: 'Whether the chat model is a reasoning model. If
+
+      true, *max_tokens* and *temperature* are not supported.'
+    defaultValue: 'False'
+  - name: data_type
+    description: Defines how the Functions runtime should treat the parameter value.
+    defaultValue: None
+  - name: kwargs
+    description: 'Additional keyword arguments for specifying extra binding fields
+
+      in *function.json*.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.assistant_query_input
+  name: assistant_query_input
+  summary: 'The *assistantQuery* input binding retrieves assistant chat history and
+
+    passes it to the function.
+
+
+    This is typically used to provide the function access to previous messages
+
+    in a conversation, enabling more context-aware responses.'
+  signature: 'assistant_query_input(arg_name: str, id: str, timestamp_utc: str, chat_storage_connection_setting:
+    str | None = ''AzureWebJobsStorage'', collection_name: str | None = ''ChatState'',
+    data_type: DataType | str | None = None, **kwargs) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: The name of the binding parameter in the function code.
+    isRequired: true
+  - name: timestamp_utc
+    description: 'The earliest timestamp (in UTC) for the messages to
+
+      retrieve from the chat history. Must be in ISO 8601 format, e.g.,
+
+      *"2023-08-01T00:00:00Z"*.'
+    isRequired: true
+  - name: chat_storage_connection_setting
+    description: 'The name of the configuration section
+
+      containing the connection settings for assistant chat storage. Defaults to
+
+      *"AzureWebJobsStorage"*.'
+    defaultValue: AzureWebJobsStorage
+  - name: collection_name
+    description: 'The name of the table or collection used for assistant
+
+      chat storage. Defaults to *"ChatState"*.'
+    defaultValue: ChatState
+  - name: id
+    description: 'The unique identifier of the assistant whose history is being
+
+      queried.'
+    isRequired: true
+  - name: data_type
+    description: 'Defines how the Functions runtime should treat the
+
+      parameter value.'
+    defaultValue: None
+  - name: kwargs
+    description: 'Additional keyword arguments for specifying binding fields to
+
+      include in the *function.json*.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.assistant_skill_trigger
+  name: assistant_skill_trigger
+  summary: 'Assistants build on top of chat functionality by supporting custom skills
+
+    defined as functions. This internally uses OpenAI''s function calling
+
+    capabilities in GPT models to determine which functions to invoke and when.
+
+
+    Ref: [https://platform.openai.com/docs/guides/function-calling](https://platform.openai.com/docs/guides/function-calling)
+
+
+    You can define functions to be triggered by assistants using the
+
+    *assistantSkillTrigger* trigger binding. These functions are invoked by the
+
+    extension when an assistant signals it would like to invoke a function in
+
+    response to a user prompt.
+
+
+    The function name, its description (provided via the trigger), and the
+
+    parameter descriptions are all used as hints by the language model to
+
+    determine when and how to invoke an assistant function.'
+  signature: 'assistant_skill_trigger(arg_name: str, function_description: str, function_name:
+    str | None = None, parameter_description_json: str | None = None, data_type: DataType
+    | str | None = None, **kwargs: Any) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: The name of the trigger parameter in the function code.
+    isRequired: true
+  - name: function_description
+    description: 'A description of the assistant function,
+
+      which is provided to the model.'
+    isRequired: true
+  - name: function_name
+    description: 'The name of the assistant function, which is
+
+      passed to the language model.'
+    defaultValue: None
+  - name: parameter_description_json
+    description: 'A JSON-formatted description of the
+
+      function parameters, provided to the model.
+
+      If omitted, the description is autogenerated.'
+    defaultValue: None
+  - name: data_type
+    description: 'Defines how the Functions runtime should treat the
+
+      parameter value.'
+    defaultValue: None
+  - name: kwargs
+    description: 'Additional keyword arguments for specifying binding fields
+
+      to include in the *function.json*.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.blob_input
+  name: blob_input
+  summary: 'The *blob_input* decorator adds <xref:azure.durable_functions.BlobInput>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    object used
+
+    in the worker function indexing model.
+
+
+    This is equivalent to defining *BlobInput* in the *function.json*, which
+
+    enables the function to read from Azure Storage blobs.
+
+
+    All optional fields will be assigned default values by the function host
+
+    when parsed.
+
+
+    Ref: [https://aka.ms/azure-function-binding-storage-blob](https://aka.ms/azure-function-binding-storage-blob)'
+  signature: 'blob_input(arg_name: str, path: str, connection: str, data_type: DataType
+    | None = None, **kwargs) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: The name of the variable that represents the blob in the function
+      code.
+    isRequired: true
+  - name: path
+    description: The path to the blob.
+    isRequired: true
+  - name: connection
+    description: 'The name of an app setting or setting collection that specifies
+
+      how to connect to Azure Blobs.'
+    isRequired: true
+  - name: data_type
+    description: Defines how the Functions runtime should treat the parameter value.
+    defaultValue: None
+  - name: kwargs
+    description: 'Keyword arguments for specifying additional binding fields to include
+
+      in the binding JSON.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.blob_output
+  name: blob_output
+  summary: 'The *blob_output* decorator adds <xref:azure.durable_functions.BlobOutput>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    object used
+
+    in the worker function indexing model.
+
+
+    This is equivalent to defining *BlobOutput* in the *function.json*, which
+
+    enables the function to write message(s) to Azure Storage blobs.
+
+
+    All optional fields will be assigned default values by the function host
+
+    when parsed.
+
+
+    Ref: [https://aka.ms/azure-function-binding-storage-blob](https://aka.ms/azure-function-binding-storage-blob)'
+  signature: 'blob_output(arg_name: str, path: str, connection: str, data_type: DataType
+    | None = None, **kwargs) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: The name of the variable that represents the blob in the function
+      code.
+    isRequired: true
+  - name: path
+    description: The path to the blob.
+    isRequired: true
+  - name: connection
+    description: 'The name of an app setting or setting collection that specifies
+
+      how to connect to Azure Blobs.'
+    isRequired: true
+  - name: data_type
+    description: Defines how the Functions runtime should treat the parameter value.
+    defaultValue: None
+  - name: kwargs
+    description: 'Keyword arguments for specifying additional binding fields to include
+
+      in the binding JSON.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.blob_trigger
+  name: blob_trigger
+  summary: 'The blob_change_trigger decorator adds <xref:azure.durable_functions.BlobTrigger>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building <xref:azure.durable_functions.Function>
+    object
+
+    used in worker function indexing model. This is equivalent to defining
+
+    BlobTrigger in the function.json which enables the function to be triggered
+
+    when new message(s) are sent to storage blobs.
+
+
+    All optional fields will be given default values by the function host when
+
+    they are parsed.
+
+
+    Ref: [https://aka.ms/azure-function-binding-storage-blob](https://aka.ms/azure-function-binding-storage-blob)'
+  signature: 'blob_trigger(arg_name: str, path: str, connection: str, source: BlobSource
+    | None = None, data_type: DataType | None = None, **kwargs) -> Callable[[...],
+    Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents the
+
+      <xref:azure.durable_functions.InputStream> object in function code.'
+    isRequired: true
+  - name: path
+    description: The path to the blob.
+    isRequired: true
+  - name: connection
+    description: 'The name of an app setting or setting collection
+
+      that specifies how to connect to Azure Blobs.'
+    isRequired: true
+  - name: source
+    description: 'Sets the source of the triggering event.
+
+      Use "EventGrid" for an Event Grid-based blob trigger,
+
+      which provides much lower latency.
+
+      The default is "LogsAndContainerScan", which uses the standard
+
+      polling mechanism to detect changes in the container.'
+    defaultValue: None
+  - name: data_type
+    description: 'Defines how Functions runtime should treat the
+
+      parameter value.'
+    defaultValue: None
+  - name: kwargs
+    description: 'Keyword arguments for specifying additional binding
+
+      fields to include in the binding JSON.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.cosmos_db_input
+  name: cosmos_db_input
+  summary: 'The *cosmos_db_input* decorator adds <xref:azure.durable_functions.CosmosDBInput>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    object
+
+    used in the worker function indexing model.
+
+
+    This decorator works only with extension bundle version 4.x and above.
+
+    It is equivalent to defining *CosmosDBInput* in the *function.json*, which
+
+    enables the function to read from Azure Cosmos DB.
+
+
+    All optional fields will be assigned default values by the function host
+
+    when they are parsed.
+
+
+    Ref: [https://aka.ms/azure-function-binding-cosmosdb-v4](https://aka.ms/azure-function-binding-cosmosdb-v4)
+
+    Additional details: [https://aka.ms/cosmosdb-v4-update](https://aka.ms/cosmosdb-v4-update)'
+  signature: 'cosmos_db_input(arg_name: str, connection: str, database_name: str,
+    container_name: str, partition_key: str | None = None, id: str | None = None,
+    sql_query: str | None = None, preferred_locations: str | None = None, data_type:
+    DataType | str | None = None, **kwargs) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents the
+
+      <xref:azure.durable_functions.DocumentList> input object in the function code.'
+    isRequired: true
+  - name: connection
+    description: 'The name of an app setting or setting container that specifies
+
+      how to connect to the Azure Cosmos DB account being monitored.'
+    isRequired: true
+  - name: database_name
+    description: The name of the Cosmos DB database that contains the document.
+    isRequired: true
+  - name: container_name
+    description: The name of the container that holds the document.
+    isRequired: true
+  - name: partition_key
+    description: The partition key value for the document lookup.
+    defaultValue: None
+  - name: id
+    description: The ID of the document to retrieve.
+    defaultValue: None
+  - name: sql_query
+    description: An Azure Cosmos DB SQL query used to retrieve multiple documents.
+    defaultValue: None
+  - name: preferred_locations
+    description: '(Optional) Preferred geo-replicated regions. Values should be
+
+      comma-separated, e.g., "East US,South Central US,North Europe".'
+    defaultValue: None
+  - name: data_type
+    description: Defines how the Functions runtime should treat the parameter value.
+    defaultValue: None
+  - name: kwargs
+    description: Additional binding fields to include in the binding JSON.
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.cosmos_db_input_v3
+  name: cosmos_db_input_v3
+  summary: 'The *cosmos_db_input_v3* decorator adds <xref:azure.durable_functions.CosmosDBInput>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    object
+
+    used in the worker function indexing model.
+
+
+    This decorator works only with extension bundle 2.x or 3.x. It is equivalent
+
+    to defining *CosmosDBInput* in the *function.json*, which enables the
+
+    function to read from Azure Cosmos DB. All optional fields are assigned
+
+    default values by the function host when parsed.
+
+
+    For additional details, see: [https://aka.ms/cosmosdb-v4-update](https://aka.ms/cosmosdb-v4-update)
+
+    Ref: [https://aka.ms/azure-function-binding-cosmosdb-v2](https://aka.ms/azure-function-binding-cosmosdb-v2)'
+  signature: 'cosmos_db_input_v3(arg_name: str, database_name: str, collection_name:
+    str, connection_string_setting: str, id: str | None = None, sql_query: str | None
+    = None, partition_key: str | None = None, data_type: DataType | str | None = None,
+    **kwargs) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents the
+
+      <xref:azure.durable_functions.DocumentList> input object in the function code.'
+    isRequired: true
+  - name: database_name
+    description: 'The name of the Azure Cosmos DB database containing
+
+      the target collection.'
+    isRequired: true
+  - name: collection_name
+    description: The name of the collection that contains the document(s).
+    isRequired: true
+  - name: connection_string_setting
+    description: 'The name of the app setting that contains
+
+      the Azure Cosmos DB connection string.'
+    isRequired: true
+  - name: id
+    description: The ID of a single document to retrieve.
+    defaultValue: None
+  - name: sql_query
+    description: 'An Azure Cosmos DB SQL query used to retrieve
+
+      multiple documents.'
+    defaultValue: None
+  - name: partition_key
+    description: Specifies the partition key value for the lookup.
+    defaultValue: None
+  - name: data_type
+    description: 'Defines how the Functions runtime should treat the
+
+      parameter value.'
+    defaultValue: None
+  - name: kwargs
+    description: 'Additional keyword arguments for specifying binding fields
+
+      to include in the *function.json*.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.cosmos_db_output
+  name: cosmos_db_output
+  summary: 'The *cosmos_db_output* decorator adds <xref:azure.durable_functions.CosmosDBOutput>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    object
+
+    used in the worker function indexing model.
+
+
+    This decorator works only with extension bundle 4.x and above. It is
+
+    equivalent to defining *CosmosDBOutput* in the *function.json*, which
+
+    enables the function to write to Azure Cosmos DB. All optional fields are
+
+    assigned default values by the function host when parsed.
+
+
+    For additional details, see: [https://aka.ms/cosmosdb-v4-update](https://aka.ms/cosmosdb-v4-update)
+
+    Ref: [https://aka.ms/azure-function-binding-cosmosdb-v4](https://aka.ms/azure-function-binding-cosmosdb-v4)'
+  signature: 'cosmos_db_output(arg_name: str, connection: str, database_name: str,
+    container_name: str, create_if_not_exists: bool | None = None, partition_key:
+    str | None = None, container_throughput: int | None = None, preferred_locations:
+    str | None = None, data_type: DataType | str | None = None, **kwargs) -> Callable[[...],
+    Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents the Cosmos DB
+
+      output object in the function code.'
+    isRequired: true
+  - name: connection
+    description: 'The name of an app setting or setting collection that
+
+      specifies how to connect to the Azure Cosmos DB account.'
+    isRequired: true
+  - name: database_name
+    description: 'The name of the Azure Cosmos DB database containing
+
+      the target container.'
+    isRequired: true
+  - name: container_name
+    description: 'The name of the container to which documents
+
+      are written.'
+    isRequired: true
+  - name: create_if_not_exists
+    description: 'A boolean indicating whether the container
+
+      should be created automatically if it does not exist.'
+    defaultValue: None
+  - name: partition_key
+    description: 'When *create_if_not_exists* is *True*, this defines
+
+      the partition key path for the created container.'
+    defaultValue: None
+  - name: container_throughput
+    description: 'When *create_if_not_exists* is *True*, this
+
+      defines the throughput (Request Units) for the created container.'
+    defaultValue: None
+  - name: preferred_locations
+    description: 'Preferred geographic regions for geo-replicated
+
+      database accounts in Azure Cosmos DB. When set along with
+
+      *use_multiple_write_locations*, it enables multi-region writes.'
+    defaultValue: None
+  - name: data_type
+    description: 'Defines how the Functions runtime should treat the
+
+      parameter value.'
+    defaultValue: None
+  - name: kwargs
+    description: 'Additional keyword arguments for specifying binding fields
+
+      to include in the *function.json*.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.cosmos_db_output_v3
+  name: cosmos_db_output_v3
+  summary: 'The *cosmos_db_output_v3* decorator adds <xref:azure.durable_functions.CosmosDBOutput>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    object
+
+    used in the worker function indexing model.
+
+
+    This decorator works only with extension bundle 2.x or 3.x. It is equivalent
+
+    to defining *CosmosDBOutput* in the *function.json*, which enables the
+
+    function to write to Azure Cosmos DB. All optional fields are assigned
+
+    default values by the function host when parsed.
+
+
+    For additional details, see: [https://aka.ms/cosmosdb-v4-update](https://aka.ms/cosmosdb-v4-update)
+
+    Ref: [https://aka.ms/azure-function-binding-cosmosdb-v2](https://aka.ms/azure-function-binding-cosmosdb-v2)'
+  signature: 'cosmos_db_output_v3(arg_name: str, database_name: str, collection_name:
+    str, connection_string_setting: str, create_if_not_exists: bool | None = None,
+    partition_key: str | None = None, collection_throughput: int | None = None, use_multiple_write_locations:
+    bool | None = None, preferred_locations: str | None = None, data_type: DataType
+    | str | None = None, **kwargs) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents the Cosmos DB
+
+      output object in the function code.'
+    isRequired: true
+  - name: database_name
+    description: 'The name of the Azure Cosmos DB database containing
+
+      the monitored collection.'
+    isRequired: true
+  - name: collection_name
+    description: 'The name of the collection to which documents
+
+      are written.'
+    isRequired: true
+  - name: connection_string_setting
+    description: 'The name of an app setting or setting
+
+      collection that specifies how to connect to the Azure Cosmos DB account.'
+    isRequired: true
+  - name: create_if_not_exists
+    description: 'A boolean indicating whether the collection
+
+      should be created automatically if it does not exist.'
+    defaultValue: None
+  - name: partition_key
+    description: 'When *create_if_not_exists* is *True*, this defines
+
+      the partition key path for the created collection.'
+    defaultValue: None
+  - name: collection_throughput
+    description: 'When *create_if_not_exists* is *True*, this
+
+      defines the throughput (Request Units) for the created collection.'
+    defaultValue: None
+  - name: use_multiple_write_locations
+    description: 'When set to *True* and used in
+
+      conjunction with *preferred_locations*, this enables multi-region writes
+
+      in the Azure Cosmos DB service.'
+    defaultValue: None
+  - name: preferred_locations
+    description: 'Preferred geographic regions for geo-replicated
+
+      database accounts in Azure Cosmos DB.'
+    defaultValue: None
+  - name: data_type
+    description: 'Defines how the Functions runtime should treat the
+
+      parameter value.'
+    defaultValue: None
+  - name: kwargs
+    description: 'Additional keyword arguments for specifying binding fields
+
+      to include in the *function.json*.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.cosmos_db_trigger
+  name: cosmos_db_trigger
+  summary: 'The *cosmos_db_trigger* decorator adds <xref:azure.durable_functions.CosmosDBTrigger>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    object
+
+    used in the worker function indexing model.
+
+
+    This decorator works only with extension bundle 4.x and above. It is
+
+    equivalent to defining *CosmosDBTrigger* in the *function.json*, which
+
+    enables the function to be triggered when Cosmos DB data changes. All
+
+    optional fields are assigned default values by the function host when parsed.
+
+
+    See: [https://aka.ms/cosmosdb-v4-update](https://aka.ms/cosmosdb-v4-update)
+
+    Ref: [https://aka.ms/azure-function-binding-cosmosdb-v4](https://aka.ms/azure-function-binding-cosmosdb-v4)'
+  signature: 'cosmos_db_trigger(arg_name: str, connection: str, database_name: str,
+    container_name: str, lease_connection: str | None = None, lease_database_name:
+    str | None = None, lease_container_name: str | None = None, create_lease_container_if_not_exists:
+    bool | None = None, leases_container_throughput: int | None = None, lease_container_prefix:
+    str | None = None, feed_poll_delay: int | None = None, lease_acquire_interval:
+    int | None = None, lease_expiration_interval: int | None = None, lease_renew_interval:
+    int | None = None, max_items_per_invocation: int | None = None, start_from_beginning:
+    time | None = None, start_from_time: time | None = None, preferred_locations:
+    str | None = None, data_type: DataType | str | None = None, **kwargs: Any) ->
+    Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents the
+
+      <xref:azure.durable_functions.DocumentList> object in the function code.'
+    isRequired: true
+  - name: connection
+    description: 'The name of an app setting or setting collection
+
+      that specifies how to connect to the monitored Azure Cosmos DB account.'
+    isRequired: true
+  - name: database_name
+    description: 'The name of the Azure Cosmos DB database containing
+
+      the monitored collection.'
+    isRequired: true
+  - name: container_name
+    description: The name of the container being monitored.
+    isRequired: true
+  - name: lease_connection
+    description: '(Optional) The name of an app setting or setting
+
+      collection that specifies how to connect to the Cosmos DB account
+
+      that holds the lease container.'
+    defaultValue: None
+  - name: lease_database_name
+    description: 'The name of the database that holds the
+
+      collection used to store leases.'
+    defaultValue: None
+  - name: lease_container_name
+    description: '(Optional) The name of the container used
+
+      to store leases. If not set, the default value "leases" is used.'
+    defaultValue: None
+  - name: create_lease_container_if_not_exists
+    description: '(Optional) If *True*, the leases
+
+      container is created automatically if it does not exist. Defaults to *False*.
+
+      Note: When using Azure AD identities, container creation is not allowed,
+
+      and the function will not start if this is *True*.'
+    defaultValue: None
+  - name: leases_container_throughput
+    description: '(Optional) The number of Request Units
+
+      (RUs) to assign when the leases container is created. This is used only
+
+      when *create_lease_container_if_not_exists* is *True*. It is automatically
+
+      set when configured through the Azure Portal.'
+    defaultValue: None
+  - name: lease_container_prefix
+    description: '(Optional) A prefix added to leases created
+
+      in the lease container for this function. Use this to allow multiple
+
+      functions to share the same lease container with different prefixes.'
+    defaultValue: None
+  - name: feed_poll_delay
+    description: 'The delay (in milliseconds) between polling a
+
+      partition for new changes after draining current changes.'
+    defaultValue: None
+  - name: lease_acquire_interval
+    description: 'The interval (in milliseconds) to trigger a
+
+      task to check if partitions are evenly distributed across host instances.'
+    defaultValue: None
+  - name: lease_expiration_interval
+    description: 'The interval (in milliseconds) for which a
+
+      lease is held for a partition.'
+    defaultValue: None
+  - name: lease_renew_interval
+    description: 'The interval (in milliseconds) to renew all
+
+      leases for partitions currently held by an instance.'
+    defaultValue: None
+  - name: max_items_per_invocation
+    description: 'Maximum number of items received per
+
+      function call.'
+    defaultValue: None
+  - name: start_from_beginning
+    description: 'If *True*, the trigger starts reading changes
+
+      from the beginning of the collection''s change history instead of the
+
+      current time.'
+    defaultValue: None
+  - name: start_from_time
+    description: '(Optional) The date and time from which to begin
+
+      reading the change feed. Use ISO 8601 format with a UTC designator,
+
+      e.g., *2021-02-16T14:19:29Z*. Only used to set the initial trigger state;
+
+      has no effect once the trigger has a lease state.'
+    defaultValue: None
+  - name: preferred_locations
+    description: 'Preferred locations (regions) for geo-replicated
+
+      Cosmos DB accounts.'
+    defaultValue: None
+  - name: data_type
+    description: 'Defines how the Functions runtime should treat the
+
+      parameter value.'
+    defaultValue: None
+  - name: kwargs
+    description: 'Additional keyword arguments for specifying binding fields
+
+      to include in the *function.json*.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.cosmos_db_trigger_v3
+  name: cosmos_db_trigger_v3
+  summary: 'The *cosmos_db_trigger_v3* decorator adds <xref:azure.durable_functions.CosmosDBTrigger>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    object
+
+    used in the worker function indexing model. This decorator only works with
+
+    extension bundle 2.x or 3.x.
+
+
+    This is equivalent to defining *CosmosDBTrigger* in the *function.json*,
+
+    which enables the function to be triggered when Cosmos DB data changes.
+
+    All optional fields will be assigned default values by the function host
+
+    when they are parsed.
+
+
+    See: [https://aka.ms/cosmosdb-v4-update](https://aka.ms/cosmosdb-v4-update)
+
+    Ref: [https://aka.ms/azure-function-binding-cosmosdb-v2](https://aka.ms/azure-function-binding-cosmosdb-v2)'
+  signature: 'cosmos_db_trigger_v3(arg_name: str, database_name: str, collection_name:
+    str, connection_string_setting: str, lease_collection_name: str | None = None,
+    lease_connection_string_setting: str | None = None, lease_database_name: str |
+    None = None, create_lease_collection_if_not_exists: bool | None = None, leases_collection_throughput:
+    int | None = None, lease_collection_prefix: str | None = None, checkpoint_interval:
+    int | None = None, checkpoint_document_count: int | None = None, feed_poll_delay:
+    int | None = None, lease_renew_interval: int | None = None, lease_acquire_interval:
+    int | None = None, lease_expiration_interval: int | None = None, max_items_per_invocation:
+    int | None = None, start_from_beginning: bool | None = None, preferred_locations:
+    str | None = None, data_type: DataType | str | None = None, **kwargs: Any) ->
+    Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents the
+
+      <xref:azure.durable_functions.DocumentList> object in the function code.'
+    isRequired: true
+  - name: database_name
+    description: 'The name of the Azure Cosmos DB database containing
+
+      the monitored collection.'
+    isRequired: true
+  - name: collection_name
+    description: The name of the collection being monitored.
+    isRequired: true
+  - name: connection_string_setting
+    description: 'The name of an app setting or setting
+
+      collection specifying how to connect to the monitored Azure Cosmos DB account.'
+    isRequired: true
+  - name: lease_collection_name
+    description: The name of the collection used to store leases.
+    defaultValue: None
+  - name: lease_connection_string_setting
+    description: 'The name of an app setting or setting
+
+      collection that specifies how to connect to the Azure Cosmos DB account
+
+      that holds the lease collection.'
+    defaultValue: None
+  - name: lease_database_name
+    description: 'The name of the database that holds the lease
+
+      collection.'
+    defaultValue: None
+  - name: create_lease_collection_if_not_exists
+    description: 'If *True*, the lease collection
+
+      is automatically created when it does not already exist.'
+    defaultValue: None
+  - name: leases_collection_throughput
+    description: 'The number of Request Units (RUs)
+
+      assigned when the lease collection is created.'
+    defaultValue: None
+  - name: lease_collection_prefix
+    description: 'A prefix added to leases created in the lease
+
+      collection for this Function.'
+    defaultValue: None
+  - name: checkpoint_interval
+    description: 'The interval (in milliseconds) between lease
+
+      checkpoints. The default behavior is to checkpoint after every function call.'
+    defaultValue: None
+  - name: checkpoint_document_count
+    description: 'Number of documents processed between
+
+      lease checkpoints. Default is after every function call.'
+    defaultValue: None
+  - name: feed_poll_delay
+    description: 'The delay (in milliseconds) between polling a
+
+      partition for new changes after all current changes are drained.'
+    defaultValue: None
+  - name: lease_renew_interval
+    description: 'The interval (in milliseconds) to renew leases
+
+      for partitions currently held by an instance.'
+    defaultValue: None
+  - name: lease_acquire_interval
+    description: 'The interval (in milliseconds) to trigger a
+
+      task that checks whether partitions are evenly distributed among host
+
+      instances.'
+    defaultValue: None
+  - name: lease_expiration_interval
+    description: 'The interval (in milliseconds) for which
+
+      a lease is held for a partition.'
+    defaultValue: None
+  - name: max_items_per_invocation
+    description: 'Maximum number of items received per
+
+      function call.'
+    defaultValue: None
+  - name: start_from_beginning
+    description: 'If *True*, the trigger starts reading changes
+
+      from the beginning of the collection''s change history rather than from
+
+      the current time.'
+    defaultValue: None
+  - name: preferred_locations
+    description: 'Preferred locations (regions) for geo-replicated
+
+      database accounts in Azure Cosmos DB.'
+    defaultValue: None
+  - name: data_type
+    description: Defines how the Functions runtime should treat the parameter value.
+    defaultValue: None
+  - name: kwargs
+    description: 'Additional keyword arguments for specifying binding fields
+
+      in the *function.json*.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.dapr_binding_output
+  name: dapr_binding_output
+  summary: 'The *dapr_binding_output* decorator adds <xref:azure.durable_functions.DaprBindingOutput>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    object used in
+
+    the worker function indexing model.
+
+
+    This is equivalent to defining *DaprBindingOutput* in the *function.json*, which
+
+    enables the function to send a value to a Dapr output binding.
+
+
+    All optional fields will be assigned default values by the function host when
+    parsed.
+
+
+    Ref: [https://aka.ms/azure-function-dapr-binding-output-binding](https://aka.ms/azure-function-dapr-binding-output-binding)'
+  signature: 'dapr_binding_output(arg_name: str, binding_name: str, operation: str,
+    dapr_address: str | None = None, data_type: DataType | str | None = None, **kwargs)
+    -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents the Dapr state output
+
+      object in the function code.'
+    isRequired: true
+  - name: binding_name
+    description: The configured name of the binding.
+    isRequired: true
+  - name: operation
+    description: The configured operation.
+    isRequired: true
+  - name: dapr_address
+    description: 'The Dapr address. Optional; defaults to
+
+      [http://localhost](http://localhost):{daprHttpPort}.'
+    defaultValue: None
+  - name: data_type
+    description: Defines how the Functions runtime should treat the parameter value.
+    defaultValue: None
+  - name: kwargs
+    description: 'Additional keyword arguments for specifying binding fields in the
+
+      *function.json*.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.dapr_binding_trigger
+  name: dapr_binding_trigger
+  summary: 'The *dapr_binding_trigger* decorator adds <xref:azure.durable_functions.DaprBindingTrigger>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    used in the
+
+    worker function indexing model.
+
+
+    This is equivalent to defining *DaprBindingTrigger* in the *function.json*,
+
+    which enables the function to be triggered by a Dapr input binding.
+
+
+    All optional fields will be given default values by the function host when
+
+    they are parsed.
+
+
+    Ref: [https://aka.ms/azure-function-dapr-trigger-binding](https://aka.ms/azure-function-dapr-trigger-binding)'
+  signature: 'dapr_binding_trigger(arg_name: str, binding_name: str, data_type: DataType
+    | str | None = None, **kwargs: Any) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents the trigger input
+
+      in the function code.'
+    isRequired: true
+  - name: binding_name
+    description: 'The name of the Dapr trigger. If not specified, the
+
+      function name is used as the trigger name.'
+    isRequired: true
+  - name: data_type
+    description: 'Defines how the Functions runtime should treat the
+
+      parameter value.'
+    defaultValue: None
+  - name: kwargs
+    description: 'Keyword arguments for specifying additional binding fields
+
+      to include in the binding JSON.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.dapr_invoke_output
+  name: dapr_invoke_output
+  summary: 'The *dapr_invoke_output* decorator adds <xref:azure.durable_functions.DaprInvokeOutput>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    object used in
+
+    the worker function indexing model.
+
+
+    This is equivalent to defining *DaprInvokeOutput* in the *function.json*, which
+
+    enables the function to invoke another Dapr app.
+
+
+    All optional fields will be assigned default values by the function host when
+    parsed.
+
+
+    Ref: [https://aka.ms/azure-function-dapr-invoke-output-binding](https://aka.ms/azure-function-dapr-invoke-output-binding)'
+  signature: 'dapr_invoke_output(arg_name: str, app_id: str, method_name: str, http_verb:
+    str, dapr_address: str | None = None, data_type: DataType | str | None = None,
+    **kwargs) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents the Dapr state output
+
+      object in the function code.'
+    isRequired: true
+  - name: app_id
+    description: The Dapr app ID to invoke.
+    isRequired: true
+  - name: method_name
+    description: The method name of the app to invoke.
+    isRequired: true
+  - name: http_verb
+    description: The HTTP verb to use for the invocation (e.g., GET, POST).
+    isRequired: true
+  - name: dapr_address
+    description: 'The Dapr address. Optional; defaults to
+
+      [http://localhost](http://localhost):{daprHttpPort}.'
+    defaultValue: None
+  - name: data_type
+    description: Defines how the Functions runtime should treat the parameter value.
+    defaultValue: None
+  - name: kwargs
+    description: 'Additional keyword arguments for specifying binding fields in the
+
+      *function.json*.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.dapr_publish_output
+  name: dapr_publish_output
+  summary: 'The *dapr_publish_output* decorator adds <xref:azure.durable_functions.DaprPublishOutput>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    object used in
+
+    the worker function indexing model.
+
+
+    This is equivalent to defining *DaprPublishOutput* in the *function.json*, which
+
+    enables the function to publish to a topic.
+
+
+    All optional fields will be assigned default values by the function host when
+    parsed.
+
+
+    Ref: [https://aka.ms/azure-function-dapr-publish-output-binding](https://aka.ms/azure-function-dapr-publish-output-binding)'
+  signature: 'dapr_publish_output(arg_name: str, pub_sub_name: str, topic: str, dapr_address:
+    str | None = None, data_type: DataType | str | None = None, **kwargs) -> Callable[[...],
+    Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents the Dapr state output
+
+      object in the function code.'
+    isRequired: true
+  - name: pub_sub_name
+    description: The pub/sub component name to publish to.
+    isRequired: true
+  - name: topic
+    description: The name of the topic to publish to.
+    isRequired: true
+  - name: dapr_address
+    description: 'The Dapr address. Optional; defaults to
+
+      [http://localhost](http://localhost):{daprHttpPort}.'
+    defaultValue: None
+  - name: data_type
+    description: Defines how the Functions runtime should treat the parameter value.
+    defaultValue: None
+  - name: kwargs
+    description: 'Additional keyword arguments for specifying binding fields in the
+
+      *function.json*.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.dapr_secret_input
+  name: dapr_secret_input
+  summary: 'The *dapr_secret_input* decorator adds <xref:azure.durable_functions.DaprSecretInput>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    object used in the
+
+    worker function indexing model.
+
+
+    This is equivalent to defining *DaprSecretInput* in the *function.json*, which
+    enables
+
+    the function to read secrets from the underlying secret store component.
+
+
+    All optional fields will be assigned default values by the function host when
+    parsed.
+
+
+    Ref: [https://aka.ms/azure-function-dapr-secret-input-binding](https://aka.ms/azure-function-dapr-secret-input-binding)'
+  signature: 'dapr_secret_input(arg_name: str, secret_store_name: str, key: str, metadata:
+    str, dapr_address: str | None = None, data_type: DataType | str | None = None,
+    **kwargs) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents the Dapr state input object
+
+      in the function code.'
+    isRequired: true
+  - name: secret_store_name
+    description: The name of the secret store from which to retrieve the secret.
+    isRequired: true
+  - name: key
+    description: The key identifying the name of the secret to retrieve.
+    isRequired: true
+  - name: metadata
+    description: Metadata properties in the form "key1=value1&key2=value2".
+    isRequired: true
+  - name: dapr_address
+    description: 'The Dapr address. Optional;
+
+      Defaults to [http://localhost](http://localhost):{daprHttpPort}.'
+    defaultValue: None
+  - name: data_type
+    description: Defines how the Functions runtime should treat the parameter value.
+    defaultValue: None
+  - name: kwargs
+    description: 'Additional keyword arguments for specifying binding fields in the
+
+      *function.json*.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.dapr_service_invocation_trigger
+  name: dapr_service_invocation_trigger
+  summary: 'The *dapr_service_invocation_trigger* decorator adds
+
+    <xref:azure.durable_functions.DaprServiceInvocationTrigger> to the <xref:azure.durable_functions.FunctionBuilder>
+    object
+
+    for building a <xref:azure.durable_functions.Function> used in the worker function
+    indexing model.
+
+
+    This is equivalent to defining *DaprServiceInvocationTrigger* in the
+
+    *function.json*, which enables the function to be triggered when a service
+
+    invocation occurs through Dapr.
+
+
+    All optional fields will be given default values by the function host when
+
+    they are parsed.
+
+
+    Ref: [https://aka.ms/azure-function-dapr-trigger-service-invocation](https://aka.ms/azure-function-dapr-trigger-service-invocation)'
+  signature: 'dapr_service_invocation_trigger(arg_name: str, method_name: str, data_type:
+    DataType | str | None = None, **kwargs: Any) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents the service invocation
+
+      input in the function code.'
+    isRequired: true
+  - name: method_name
+    description: 'The name of the method on a remote Dapr App.
+
+      If not specified, the name of the function is used as the method name.'
+    isRequired: true
+  - name: data_type
+    description: 'Defines how the Functions runtime should treat the
+
+      parameter value.'
+    defaultValue: None
+  - name: kwargs
+    description: 'Keyword arguments for specifying additional binding
+
+      fields to include in the binding JSON.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.dapr_state_input
+  name: dapr_state_input
+  summary: 'The *dapr_state_input* decorator adds <xref:azure.durable_functions.DaprStateInput>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    object used in the
+
+    worker function indexing model.
+
+
+    This is equivalent to defining *DaprStateInput* in the *function.json*, which
+    enables
+
+    the function to read state from the underlying state store component.
+
+
+    All optional fields will be assigned default values by the function host when
+    parsed.
+
+
+    Ref: [https://aka.ms/azure-function-dapr-state-input-binding](https://aka.ms/azure-function-dapr-state-input-binding)'
+  signature: 'dapr_state_input(arg_name: str, state_store: str, key: str, dapr_address:
+    str | None = None, data_type: DataType | str | None = None, **kwargs) -> Callable[[...],
+    Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents the Dapr state input object
+
+      in the function code.'
+    isRequired: true
+  - name: state_store
+    description: The state store containing the state.
+    isRequired: true
+  - name: key
+    description: The name of the key to retrieve.
+    isRequired: true
+  - name: dapr_address
+    description: 'The Dapr address. Optional;
+
+      Defaults to [http://localhost](http://localhost):{daprHttpPort}.'
+    defaultValue: None
+  - name: data_type
+    description: Defines how the Functions runtime should treat the parameter value.
+    defaultValue: None
+  - name: kwargs
+    description: 'Additional keyword arguments for specifying binding fields in the
+
+      *function.json*.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.dapr_state_output
+  name: dapr_state_output
+  summary: 'The *dapr_state_output* decorator adds <xref:azure.durable_functions.DaprStateOutput>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    object used in
+
+    the worker function indexing model.
+
+
+    This is equivalent to defining *DaprStateOutput* in the *function.json*, which
+
+    enables the function to write to the Dapr state store.
+
+
+    All optional fields will be assigned default values by the function host when
+    parsed.
+
+
+    Ref: [https://aka.ms/azure-function-dapr-state-output-binding](https://aka.ms/azure-function-dapr-state-output-binding)'
+  signature: 'dapr_state_output(arg_name: str, state_store: str, key: str, dapr_address:
+    str | None = None, data_type: DataType | str | None = None, **kwargs) -> Callable[[...],
+    Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents the Dapr state
+
+      output object in the function code.'
+    isRequired: true
+  - name: state_store
+    description: The state store containing the state for the specified keys.
+    isRequired: true
+  - name: key
+    description: The name of the key used to store the state.
+    isRequired: true
+  - name: dapr_address
+    description: 'The Dapr address. Optional; defaults to
+
+      [http://localhost](http://localhost):{daprHttpPort}.'
+    defaultValue: None
+  - name: data_type
+    description: Defines how the Functions runtime should treat the parameter value.
+    defaultValue: None
+  - name: kwargs
+    description: 'Additional keyword arguments for specifying binding fields in the
+
+      *function.json*.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.dapr_topic_trigger
+  name: dapr_topic_trigger
+  summary: 'The *dapr_topic_trigger* decorator adds <xref:azure.durable_functions.DaprTopicTrigger>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    used in the
+
+    worker function indexing model.
+
+
+    This is equivalent to defining *DaprTopicTrigger* in the *function.json*,
+
+    which enables the function to be triggered when new message(s) are sent to
+
+    the Dapr pub/sub system.
+
+
+    All optional fields will be assigned default values by the function host
+
+    when they are parsed.
+
+
+    Ref: [https://aka.ms/azure-function-dapr-trigger-topic](https://aka.ms/azure-function-dapr-trigger-topic)'
+  signature: 'dapr_topic_trigger(arg_name: str, pub_sub_name: str, topic: str, route:
+    str | None = None, data_type: DataType | str | None = None, **kwargs: Any) ->
+    Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents the trigger input
+
+      in the function code.'
+    isRequired: true
+  - name: pub_sub_name
+    description: The name of the Dapr pub/sub component.
+    isRequired: true
+  - name: topic
+    description: The topic name. If unspecified, the function name is used.
+    isRequired: true
+  - name: route
+    description: The route for the trigger. If unspecified, the topic name is used.
+    defaultValue: None
+  - name: data_type
+    description: 'Defines how the Functions runtime should treat the
+
+      parameter value.'
+    defaultValue: None
+  - name: kwargs
+    description: 'Additional keyword arguments for specifying extra binding
+
+      fields to include in the binding JSON.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.durable_client_input
+  name: durable_client_input
+  summary: Register a Durable-client Function.
+  signature: 'durable_client_input(client_name: str, task_hub: str | None = None,
+    connection_name: str | None = None)'
+  parameters:
+  - name: client_name
+    description: Parameter name of durable client.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: task_hub
+    description: 'Used in scenarios where multiple function apps share the same storage
+      account
+
+      but need to be isolated from each other. If not specified, the default value
+
+      from host.json is used.
+
+      This value must match the value used by the target orchestrator functions.'
+    defaultValue: None
+    types:
+    - <xref:Optional>[<xref:str>]
+  - name: connection_name
+    description: 'The name of an app setting that contains a storage account connection
+      string.
+
+      The storage account represented by this connection string must be the same one
+
+      used by the target orchestrator functions. If not specified, the default storage
+
+      account connection string for the function app is used.'
+    defaultValue: None
+    types:
+    - <xref:Optional>[<xref:str>]
+- uid: azure.durable_functions.DFApp.embeddings_input
+  name: embeddings_input
+  summary: 'The embeddings input decorator generates embeddings used to measure the
+
+    relatedness of text strings.
+
+
+    Ref: [https://platform.openai.com/docs/guides/embeddings](https://platform.openai.com/docs/guides/embeddings)'
+  signature: 'embeddings_input(arg_name: str, input: str, input_type: InputType, ai_connection_name:
+    str | None = '''', embeddings_model: str | OpenAIModels | None = OpenAIModels.DefaultEmbeddingsModel,
+    max_chunk_length: int | None = 8192, max_overlap: int | None = 128, data_type:
+    DataType | str | None = None, **kwargs) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: The name of the binding parameter in the function code.
+    isRequired: true
+  - name: input
+    description: The input source containing the data to generate embeddings for.
+    isRequired: true
+  - name: input_type
+    description: The type of the input (e.g., string, list, file reference).
+    isRequired: true
+  - name: ai_connection_name
+    description: "The name of the configuration section for AI service\nconnectivity\
+      \ settings.\n\n* **Azure OpenAI**: If specified, looks for \"Endpoint\" and/or\
+      \ \"Key\" in this section. \n\n* If not specified or not found, falls back to\
+      \ the environment variables *AZURE_OPENAI_ENDPOINT* and *AZURE_OPENAI_KEY*.\
+      \ \n\n* For user-assigned managed identity authentication, this is required.\
+      \ \n\n* **OpenAI (non-Azure)**: Set the *OPENAI_API_KEY* environment variable."
+    isRequired: true
+  - name: model
+    description: '*(Deprecated)* Use *embeddings_model* instead. This parameter is
+      unused and
+
+      will be removed in future versions.'
+    isRequired: true
+  - name: embeddings_model
+    description: 'The deployment or model name for OpenAI Embeddings.
+
+      Default is *"text-embedding-ada-002"*.'
+    defaultValue: DefaultEmbeddingsModel
+  - name: max_chunk_length
+    description: 'The maximum number of characters into which the input
+
+      should be chunked. Default is *8 * 1024*.'
+    defaultValue: '8192'
+  - name: max_overlap
+    description: 'The maximum number of characters to overlap between input
+
+      chunks. Default is *128*.'
+    defaultValue: '128'
+  - name: data_type
+    description: 'Optional. Defines how the Functions runtime should interpret the
+
+      parameter value.'
+    defaultValue: None
+  - name: kwargs
+    description: 'Additional keyword arguments to include in the *function.json*
+
+      binding configuration.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.embeddings_store_output
+  name: embeddings_store_output
+  summary: "Add an embeddings input binding to the function.\n\nThe supported list\
+    \ of embeddings stores is extensible. Additional providers can be\nintegrated\
+    \ by authoring a specially crafted NuGet package. Refer to the provider-specific\n\
+    folders for detailed usage instructions:\n\n* Azure AI Search \n\n* Azure Data\
+    \ Explorer \n\n* Azure Cosmos DB using MongoDB"
+  signature: 'embeddings_store_output(arg_name: str, input: str, input_type: InputType,
+    store_connection_name: str, collection: str, ai_connection_name: str | None =
+    '''', embeddings_model: str | OpenAIModels | None = OpenAIModels.DefaultEmbeddingsModel,
+    max_chunk_length: int | None = 8192, max_overlap: int | None = 128, data_type:
+    DataType | str | None = None, **kwargs) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: The name of the binding parameter in the function code.
+    isRequired: true
+  - name: input
+    description: The input data for which embeddings should be generated.
+    isRequired: true
+  - name: input_type
+    description: The type of the input (e.g., string, list).
+    isRequired: true
+  - name: store_connection_name
+    description: 'The name of an app setting or environment variable
+
+      containing the vector store connection value.'
+    isRequired: true
+  - name: collection
+    description: The collection or table to search within.
+    isRequired: true
+  - name: ai_connection_name
+    description: "The name of the configuration section for AI service\nconnectivity\
+      \ settings.\n\n* For Azure OpenAI: If specified, looks for \"Endpoint\" and/or\
+      \ \"Key\" in this configuration section. \n\n* If not specified, or if the section\
+      \ is missing, falls back to environment variables: *AZURE_OPENAI_ENDPOINT* and\
+      \ *AZURE_OPENAI_KEY*. \n\n* For user-assigned managed identity, this property\
+      \ is required. \n\n* For OpenAI (non-Azure), set the *OPENAI_API_KEY* environment\
+      \ variable."
+    isRequired: true
+  - name: model
+    description: 'Deprecated. Use *embeddings_model* instead. This parameter is unused
+      and
+
+      will be removed in future versions.'
+    isRequired: true
+  - name: embeddings_model
+    description: 'The deployment or model name for OpenAI Embeddings. The default
+
+      is "text-embedding-ada-002".'
+    defaultValue: DefaultEmbeddingsModel
+  - name: max_chunk_length
+    description: The maximum number of characters to chunk the input into.
+    defaultValue: '8192'
+  - name: max_overlap
+    description: The maximum number of characters to overlap between chunks.
+    defaultValue: '128'
+  - name: data_type
+    description: 'Optional. Defines how the Functions runtime should treat the parameter
+
+      value. Defaults to None.'
+    defaultValue: None
+  - name: kwargs
+    description: Additional keyword arguments to include in the *function.json* binding.
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.entity_trigger
+  name: entity_trigger
+  summary: Register an Entity Function.
+  signature: 'entity_trigger(context_name: str, entity_name: str | None = None)'
+  parameters:
+  - name: context_name
+    description: Parameter name of the Entity input.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: entity_name
+    description: 'Name of Entity Function.
+
+      The value is None by default, in which case the name of the method is used.'
+    defaultValue: None
+    types:
+    - <xref:Optional>[<xref:str>]
+- uid: azure.durable_functions.DFApp.event_grid_output
+  name: event_grid_output
+  summary: 'The *event_grid_output* decorator adds <xref:azure.durable_functions.EventGridOutput>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    object used
+
+    in the worker function indexing model.
+
+
+    This is equivalent to defining the output binding in the *function.json*,
+
+    which enables the function to write events to a custom topic.
+
+
+    All optional fields will be assigned default values by the function host
+
+    when parsed.
+
+
+    Ref: [https://aka.ms/eventgridtrigger](https://aka.ms/eventgridtrigger)'
+  signature: 'event_grid_output(arg_name: str, topic_endpoint_uri: str | None = None,
+    topic_key_setting: str | None = None, connection: str | None = None, data_type:
+    DataType | str | None = None, **kwargs) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: The variable name used in the function code that represents the event.
+    isRequired: true
+  - name: data_type
+    description: Defines how the Functions runtime should treat the parameter value.
+    defaultValue: None
+  - name: topic_endpoint_uri
+    description: 'The name of an app setting that contains the URI for the
+
+      custom topic.'
+    defaultValue: None
+  - name: topic_key_setting
+    description: 'The name of an app setting that contains an access key for the
+
+      custom topic.'
+    defaultValue: None
+  - name: connection
+    description: 'The value of the common prefix for the setting that contains the
+      topic
+
+      endpoint URI.'
+    defaultValue: None
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.event_grid_trigger
+  name: event_grid_trigger
+  summary: 'The *event_grid_trigger* decorator adds <xref:azure.durable_functions.EventGridTrigger>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    used in the
+
+    worker function indexing model.
+
+
+    This is equivalent to defining an Event Grid trigger in *function.json*, which
+
+    enables the function to be triggered in response to an event sent to an Event
+    Grid topic.
+
+
+    All optional fields will be given default values by the function host when they
+    are parsed.
+
+
+    Ref: [https://aka.ms/eventgridtrigger](https://aka.ms/eventgridtrigger)'
+  signature: 'event_grid_trigger(arg_name: str, data_type: DataType | str | None =
+    None, **kwargs) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: 'The variable name used in the function code for the parameter
+
+      that receives the event data.'
+    isRequired: true
+  - name: data_type
+    description: Defines how the Functions runtime should treat the parameter value.
+    defaultValue: None
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.event_hub_message_trigger
+  name: event_hub_message_trigger
+  summary: 'The *event_hub_message_trigger* decorator adds <xref:azure.durable_functions.EventHubTrigger>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    used in the
+
+    worker function indexing model.
+
+
+    This is equivalent to defining an *EventHubTrigger* in the *function.json*, which
+
+    enables the function to be triggered when new message(s) are sent to the Event
+    Hub.
+
+
+    All optional fields will be given default values by the function host when they
+    are parsed.
+
+
+    Ref: [https://aka.ms/azure-function-binding-event-hubs](https://aka.ms/azure-function-binding-event-hubs)'
+  signature: 'event_hub_message_trigger(arg_name: str, connection: str, event_hub_name:
+    str, data_type: DataType | str | None = None, cardinality: Cardinality | str |
+    None = None, consumer_group: str | None = None, **kwargs: Any) -> Callable[[...],
+    Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents the
+
+      <xref:azure.durable_functions.EventHubEvent> object in the function code.'
+    isRequired: true
+  - name: connection
+    description: 'The name of an app setting or setting collection that specifies
+
+      how to connect to Event Hubs.'
+    isRequired: true
+  - name: event_hub_name
+    description: The name of the Event Hub.
+    isRequired: true
+  - name: data_type
+    description: Defines how the Functions runtime should treat the parameter value.
+    defaultValue: None
+  - name: cardinality
+    description: Set to "many" to enable batching.
+    defaultValue: None
+  - name: consumer_group
+    description: Optional. The consumer group used to subscribe to events in the hub.
+    defaultValue: None
+  - name: kwargs
+    description: Additional keyword arguments to include in the binding JSON.
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.event_hub_output
+  name: event_hub_output
+  summary: 'The *event_hub_output* decorator adds <xref:azure.durable_functions.EventHubOutput>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    object
+
+    used in the worker function indexing model.
+
+
+    This is equivalent to defining *EventHubOutput* in the *function.json*,
+
+    which enables the function to write messages to an Azure Event Hub.
+
+
+    All optional fields will be given default values by the function host
+
+    when parsed.
+
+
+    Ref: [https://aka.ms/azure-function-binding-event-hubs](https://aka.ms/azure-function-binding-event-hubs)'
+  signature: 'event_hub_output(arg_name: str, connection: str, event_hub_name: str,
+    data_type: DataType | str | None = None, **kwargs) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable representing the Event Hub output
+
+      object in the function code.'
+    isRequired: true
+  - name: connection
+    description: 'The name of an app setting or setting collection that
+
+      specifies how to connect to Event Hub.'
+    isRequired: true
+  - name: event_hub_name
+    description: The name of the Event Hub to send messages to.
+    isRequired: true
+  - name: data_type
+    description: 'Defines how the Functions runtime should treat the
+
+      parameter value.'
+    defaultValue: None
+  - name: kwargs
+    description: 'Additional keyword arguments for specifying binding fields
+
+      to include in the binding JSON.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.function_name
+  name: function_name
+  summary: 'Optional: Sets name of the <xref:azure.durable_functions.Function> object.
+    If not set,
+
+    it will default to the name of the method name.
+
+
+    additional setting fields
+
+    :return: Decorator function.'
+  signature: 'function_name(name: str, setting_extra_fields: Dict[str, Any] | None
+    = None) -> Callable[[...], Any]'
+  parameters:
+  - name: name
+    description: Name of the function.
+    isRequired: true
+  - name: setting_extra_fields
+    description: Keyword arguments for specifying
+    defaultValue: None
+- uid: azure.durable_functions.DFApp.generic_input_binding
+  name: generic_input_binding
+  summary: 'The *generic_input_binding* decorator adds <xref:azure.durable_functions.GenericInputBinding>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    object used in the
+
+    worker function indexing model.
+
+
+    This is equivalent to defining a generic input binding in the *function.json*,
+    which
+
+    enables the function to read data from a custom-defined input source.
+
+
+    All optional fields will be assigned default values by the function host when
+    parsed.
+
+
+    Ref: [https://aka.ms/azure-function-binding-custom](https://aka.ms/azure-function-binding-custom)'
+  signature: 'generic_input_binding(arg_name: str, type: str, data_type: DataType
+    | str | None = None, **kwargs) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: The name of the input parameter in the function code.
+    isRequired: true
+  - name: type
+    description: The type of the binding.
+    isRequired: true
+  - name: data_type
+    description: Defines how the Functions runtime should treat the parameter value.
+    defaultValue: None
+  - name: kwargs
+    description: 'Additional keyword arguments for specifying binding fields in the
+
+      *function.json*.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.generic_output_binding
+  name: generic_output_binding
+  summary: 'The *generic_output_binding* decorator adds <xref:azure.durable_functions.GenericOutputBinding>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    object used in the
+
+    worker function indexing model.
+
+
+    This is equivalent to defining a generic output binding in the *function.json*,
+    which
+
+    enables the function to write data to a custom-defined output source.
+
+
+    All optional fields will be assigned default values by the function host when
+    parsed.
+
+
+    Ref: [https://aka.ms/azure-function-binding-custom](https://aka.ms/azure-function-binding-custom)'
+  signature: 'generic_output_binding(arg_name: str, type: str, data_type: DataType
+    | str | None = None, **kwargs) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: The name of the output parameter in the function code.
+    isRequired: true
+  - name: type
+    description: The type of the binding.
+    isRequired: true
+  - name: data_type
+    description: Defines how the Functions runtime should treat the parameter value.
+    defaultValue: None
+  - name: kwargs
+    description: 'Additional keyword arguments for specifying binding fields in the
+
+      *function.json*.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.generic_trigger
+  name: generic_trigger
+  summary: 'The *generic_trigger* decorator adds <xref:azure.durable_functions.GenericTrigger>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    used in the
+
+    worker function indexing model.
+
+
+    This is equivalent to defining a generic trigger in the *function.json*, which
+
+    triggers the function to execute when generic trigger events are received by
+
+    the host.
+
+
+    All optional fields will be given default values by the function host when
+
+    they are parsed.
+
+
+    Ref: [https://aka.ms/azure-function-binding-custom](https://aka.ms/azure-function-binding-custom)'
+  signature: 'generic_trigger(arg_name: str, type: str, data_type: DataType | str
+    | None = None, **kwargs) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: The name of the trigger parameter in the function code.
+    isRequired: true
+  - name: type
+    description: The type of the binding.
+    isRequired: true
+  - name: data_type
+    description: 'Defines how the Functions runtime should treat the
+
+      parameter value.'
+    defaultValue: None
+  - name: kwargs
+    description: 'Keyword arguments for specifying additional binding
+
+      fields to include in the binding JSON.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.get_functions
+  name: get_functions
+  summary: Get the function objects in the function app.
+  signature: get_functions() -> List[Function]
+  return:
+    description: A list of <xref:azure.durable_functions.Function> objects defined
+      in the app.
+- uid: azure.durable_functions.DFApp.http_type
+  name: http_type
+  summary: Set http type of the <xref:azure.durable_functions.Function> object.
+  signature: 'http_type(http_type: str) -> Callable[[...], Any]'
+  parameters:
+  - name: http_type
+    description: Http type of the function.
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.kafka_output
+  name: kafka_output
+  summary: 'The *kafka_output* decorator adds <xref:azure.durable_functions.KafkaOutput>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    object
+
+    used in the worker function indexing model.
+
+
+    This is equivalent to defining a Kafka output binding in *function.json*,
+
+    which enables the function to write events to a Kafka topic. All optional
+
+    fields are assigned default values by the function host when parsed.
+
+
+    Ref: [https://aka.ms/kafkaoutput](https://aka.ms/kafkaoutput)'
+  signature: 'kafka_output(arg_name: str, topic: str, broker_list: str, avro_schema:
+    str | None = None, username: str | None = None, password: str | None = None, ssl_key_location:
+    str | None = None, ssl_ca_location: str | None = None, ssl_certificate_location:
+    str | None = None, ssl_key_password: str | None = None, schema_registry_url: str
+    | None = None, schema_registry_username: str | None = None, schema_registry_password:
+    str | None = None, o_auth_bearer_method: OAuthBearerMethod | str | None = None,
+    o_auth_bearer_client_id: str | None = None, o_auth_bearer_client_secret: str |
+    None = None, o_auth_bearer_scope: str | None = None, o_auth_bearer_token_endpoint_url:
+    str | None = None, o_auth_bearer_extensions: str | None = None, max_message_bytes:
+    int = 1000000, batch_size: int = 10000, enable_idempotence: bool = False, message_timeout_ms:
+    int = 300000, request_timeout_ms: int = 5000, max_retries: int = 2147483647, authentication_mode:
+    BrokerAuthenticationMode | str | None = ''NOTSET'', protocol: BrokerProtocol |
+    str | None = ''NOTSET'', linger_ms: int = 5, data_type: DataType | str | None
+    = None, **kwargs) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: 'The variable name used in the function code that
+
+      represents the output event.'
+    isRequired: true
+  - name: topic
+    description: The Kafka topic to which messages are published.
+    isRequired: true
+  - name: broker_list
+    description: The list of Kafka brokers to which the producer connects.
+    isRequired: true
+  - name: avro_schema
+    description: Optional. Avro schema to generate a generic record.
+    defaultValue: None
+  - name: username
+    description: 'SASL username for use with the PLAIN and SASL-SCRAM
+
+      mechanisms. Equivalent to *''sasl.username''* in librdkafka.'
+    defaultValue: None
+  - name: password
+    description: 'SASL password for use with the PLAIN and SASL-SCRAM
+
+      mechanisms. Equivalent to *''sasl.password''* in librdkafka.'
+    defaultValue: None
+  - name: ssl_key_location
+    description: 'Path to the client''s private key (PEM) for
+
+      authentication. Equivalent to *''ssl.key.location''* in librdkafka.'
+    defaultValue: None
+  - name: ssl_ca_location
+    description: 'Path to the CA certificate for verifying the broker''s
+
+      certificate. Equivalent to *''ssl.ca.location''* in librdkafka.'
+    defaultValue: None
+  - name: ssl_certificate_location
+    description: 'Path to the client''s certificate file.
+
+      Equivalent to *''ssl.certificate.location''* in librdkafka.'
+    defaultValue: None
+  - name: ssl_key_password
+    description: 'Password for the client''s SSL key.
+
+      Equivalent to *''ssl.key.password''* in librdkafka.'
+    defaultValue: None
+  - name: schema_registry_url
+    description: URL of the Avro Schema Registry.
+    defaultValue: None
+  - name: schema_registry_username
+    description: Username for accessing the Schema Registry.
+    defaultValue: None
+  - name: schema_registry_password
+    description: Password for accessing the Schema Registry.
+    defaultValue: None
+  - name: o_auth_bearer_method
+    description: 'OAuth bearer method to use, e.g., *''default''* or *''oidc''*.
+
+      Equivalent to *''sasl.oauthbearer.method''* in librdkafka.'
+    defaultValue: None
+  - name: o_auth_bearer_client_id
+    description: 'Used with *oidc* method. Equivalent to
+
+      *''sasl.oauthbearer.client.id''* in librdkafka.'
+    defaultValue: None
+  - name: o_auth_bearer_client_secret
+    description: 'Used with *oidc* method. Equivalent to
+
+      *''sasl.oauthbearer.client.secret''* in librdkafka.'
+    defaultValue: None
+  - name: o_auth_bearer_scope
+    description: 'Scope of the access request sent to the broker.
+
+      Equivalent to *''sasl.oauthbearer.scope''* in librdkafka.'
+    defaultValue: None
+  - name: o_auth_bearer_token_endpoint_url
+    description: 'OAuth token endpoint.
+
+      Equivalent to *''sasl.oauthbearer.token.endpoint.url''* in librdkafka.'
+    defaultValue: None
+  - name: o_auth_bearer_extensions
+    description: 'Additional metadata sent to the broker.
+
+      Comma-separated key=value pairs, e.g.,
+
+      *"supportFeatureX=true,organizationId=sales-emea"*.
+
+      Equivalent to *''sasl.oauthbearer.extensions''* in librdkafka.'
+    defaultValue: None
+  - name: max_message_bytes
+    description: 'Maximum size (in bytes) of a transmitted message.
+
+      Default is 1MB.'
+    defaultValue: '1000000'
+  - name: batch_size
+    description: 'Maximum number of messages batched in one MessageSet.
+
+      Default is 10,000.'
+    defaultValue: '10000'
+  - name: enable_idempotence
+    description: 'If *True*, ensures messages are delivered exactly
+
+      once and in order. Default is *False*.'
+    defaultValue: 'False'
+  - name: message_timeout_ms
+    description: Local timeout for message delivery. Default is 300000 ms.
+    defaultValue: '300000'
+  - name: request_timeout_ms
+    description: 'Timeout for producer request acknowledgment.
+
+      Default is 5000 ms.'
+    defaultValue: '5000'
+  - name: max_retries
+    description: 'Maximum number of retry attempts for failed messages.
+
+      Default is 2147483647. Retrying may cause reordering unless
+
+      *enable_idempotence=True*.'
+    defaultValue: '2147483647'
+  - name: authentication_mode
+    description: 'SASL mechanism used for authentication.
+
+      Allowed values: *Gssapi*, *Plain*, *ScramSha256*, *ScramSha512*.
+
+      Default is *Plain*. Equivalent to *''sasl.mechanism''* in librdkafka.'
+    defaultValue: NOTSET
+  - name: protocol
+    description: 'Security protocol used for broker communication.
+
+      Default is plaintext. Equivalent to *''security.protocol''* in librdkafka.'
+    defaultValue: NOTSET
+  - name: linger_ms
+    description: 'Time to wait between sending batches of messages to allow
+
+      for better throughput via batching.'
+    defaultValue: '5'
+  - name: data_type
+    description: 'Defines how the Functions runtime should treat the
+
+      parameter value.'
+    defaultValue: None
+  - name: kwargs
+    description: 'Additional keyword arguments for specifying binding fields
+
+      to include in the *function.json*.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.kafka_trigger
+  name: kafka_trigger
+  summary: 'The *kafka_trigger* decorator adds <xref:azure.durable_functions.KafkaTrigger>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    used in the
+
+    worker function indexing model.
+
+
+    This is equivalent to defining a Kafka trigger in *function.json*, which enables
+
+    the function to be triggered in response to an event sent to a Kafka topic.
+
+
+    All optional fields will be given default values by the function host when
+
+    parsed.
+
+
+    Ref: [https://aka.ms/kafkatrigger](https://aka.ms/kafkatrigger)'
+  signature: 'kafka_trigger(arg_name: str, topic: str, broker_list: str, event_hub_connection_string:
+    str | None = None, consumer_group: str | None = None, avro_schema: str | None
+    = None, username: str | None = None, password: str | None = None, ssl_key_location:
+    str | None = None, ssl_ca_location: str | None = None, ssl_certificate_location:
+    str | None = None, ssl_key_password: str | None = None, schema_registry_url: str
+    | None = None, schema_registry_username: str | None = None, schema_registry_password:
+    str | None = None, o_auth_bearer_method: OAuthBearerMethod | str | None = None,
+    o_auth_bearer_client_id: str | None = None, o_auth_bearer_client_secret: str |
+    None = None, o_auth_bearer_scope: str | None = None, o_auth_bearer_token_endpoint_url:
+    str | None = None, o_auth_bearer_extensions: str | None = None, authentication_mode:
+    BrokerAuthenticationMode | str | None = ''NotSet'', protocol: BrokerProtocol |
+    str | None = ''NotSet'', cardinality: Cardinality | str | None = ''One'', lag_threshold:
+    int = 1000, data_type: DataType | str | None = None, **kwargs) -> Callable[[...],
+    Any]'
+  parameters:
+  - name: arg_name
+    description: 'The variable name used in the function code for the parameter
+
+      that receives the Kafka event data.'
+    isRequired: true
+  - name: topic
+    description: The topic monitored by the trigger.
+    isRequired: true
+  - name: broker_list
+    description: The list of Kafka brokers monitored by the trigger.
+    isRequired: true
+  - name: event_hub_connection_string
+    description: 'The name of an app setting that contains the
+
+      connection string for Event Hub (when using Kafka protocol headers with
+
+      Azure Event Hubs).'
+    defaultValue: None
+  - name: consumer_group
+    description: Kafka consumer group used by the trigger.
+    defaultValue: None
+  - name: avro_schema
+    description: Used only if a generic Avro record should be generated.
+    defaultValue: None
+  - name: username
+    description: 'SASL username for use with the PLAIN or SASL-SCRAM mechanisms.
+
+      Equivalent to ''sasl.username'' in librdkafka. Default is empty string.'
+    defaultValue: None
+  - name: password
+    description: 'SASL password for use with the PLAIN or SASL-SCRAM mechanisms.
+
+      Equivalent to ''sasl.password'' in librdkafka. Default is empty string.'
+    defaultValue: None
+  - name: ssl_key_location
+    description: 'Path to the client''s private key (PEM) used for
+
+      authentication. Equivalent to ''ssl.key.location'' in librdkafka.'
+    defaultValue: None
+  - name: ssl_ca_location
+    description: 'Path to the CA certificate file for verifying the broker''s
+
+      certificate. Equivalent to ''ssl.ca.location'' in librdkafka.'
+    defaultValue: None
+  - name: ssl_certificate_location
+    description: 'Path to the client''s certificate.
+
+      Equivalent to ''ssl.certificate.location'' in librdkafka.'
+    defaultValue: None
+  - name: ssl_key_password
+    description: 'Password for the client''s certificate.
+
+      Equivalent to ''ssl.key.password'' in librdkafka.'
+    defaultValue: None
+  - name: schema_registry_url
+    description: URL of the Avro Schema Registry.
+    defaultValue: None
+  - name: schema_registry_username
+    description: Username for the Schema Registry.
+    defaultValue: None
+  - name: schema_registry_password
+    description: Password for the Schema Registry.
+    defaultValue: None
+  - name: o_auth_bearer_method
+    description: 'Either ''default'' or ''oidc''. Equivalent to
+
+      ''sasl.oauthbearer.method'' in librdkafka.'
+    defaultValue: None
+  - name: o_auth_bearer_client_id
+    description: 'Specify only if *o_auth_bearer_method* is ''oidc''.
+
+      Equivalent to ''sasl.oauthbearer.client.id'' in librdkafka.'
+    defaultValue: None
+  - name: o_auth_bearer_client_secret
+    description: 'Specify only if *o_auth_bearer_method* is ''oidc''.
+
+      Equivalent to ''sasl.oauthbearer.client.secret'' in librdkafka.'
+    defaultValue: None
+  - name: o_auth_bearer_scope
+    description: 'Specify only if *o_auth_bearer_method* is ''oidc''.
+
+      Used to specify access scope. Equivalent to ''sasl.oauthbearer.scope''.'
+    defaultValue: None
+  - name: o_auth_bearer_token_endpoint_url
+    description: 'Specify only if *o_auth_bearer_method* is ''oidc''.
+
+      Equivalent to ''sasl.oauthbearer.token.endpoint.url'' in librdkafka.'
+    defaultValue: None
+  - name: o_auth_bearer_extensions
+    description: 'Additional information for the broker, in the form
+
+      of a comma-separated list of key=value pairs (e.g., "orgId=abc,flag=true").
+
+      Equivalent to ''sasl.oauthbearer.extensions'' in librdkafka.'
+    defaultValue: None
+  - name: authentication_mode
+    description: 'SASL mechanism to use. Allowed: Gssapi, Plain,
+
+      ScramSha256, ScramSha512. Default: Plain. Equivalent to ''sasl.mechanism''.'
+    defaultValue: NotSet
+  - name: protocol
+    description: 'Security protocol used to communicate with brokers.
+
+      Default: plaintext. Equivalent to ''security.protocol''.'
+    defaultValue: NotSet
+  - name: lag_threshold
+    description: 'Max number of unprocessed messages per worker instance.
+
+      Used in scaling logic to estimate needed worker instances. Default is 1000.'
+    defaultValue: '1000'
+  - name: data_type
+    description: Defines how Functions runtime should treat the parameter value.
+    defaultValue: None
+  - name: kwargs
+    description: Additional keyword arguments for extra binding fields in the binding
+      JSON.
+    isRequired: true
+  - name: cardinality
+    defaultValue: One
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.mcp_tool_trigger
+  name: mcp_tool_trigger
+  summary: 'The *mcp_tool_trigger* decorator adds <xref:azure.durable_functions.MCPToolTrigger>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    object
+
+    used in the worker function indexing model.
+
+
+    This is equivalent to defining *MCPToolTrigger* in the *function.json*,
+
+    which enables the function to be triggered when MCP tool requests are
+
+    received by the host.
+
+
+    All optional fields will be given default values by the function host when
+
+    they are parsed.
+
+
+    Ref: [https://aka.ms/remote-mcp-functions-python](https://aka.ms/remote-mcp-functions-python)'
+  signature: 'mcp_tool_trigger(arg_name: str, tool_name: str, description: str | None
+    = None, tool_properties: str | None = None, data_type: DataType | str | None =
+    None, **kwargs) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: The name of the trigger parameter in the function code.
+    isRequired: true
+  - name: tool_name
+    description: The logical tool name exposed to the host.
+    isRequired: true
+  - name: description
+    description: Optional human-readable description of the tool.
+    defaultValue: None
+  - name: tool_properties
+    description: JSON-serialized tool properties/parameters list.
+    defaultValue: None
+  - name: data_type
+    description: 'Defines how the Functions runtime should treat the
+
+      parameter value.'
+    defaultValue: None
+  - name: kwargs
+    description: 'Keyword arguments for specifying additional binding
+
+      fields to include in the binding JSON.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.mysql_input
+  name: mysql_input
+  summary: 'The *mysql_input* decorator adds <xref:azure.durable_functions.MySqlInput>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    object
+
+    used in the worker function indexing model.
+
+
+    This decorator works only with extension bundle 4.x and above. It is
+
+    equivalent to defining *MySqlInput* in the *function.json*, which enables
+
+    the function to read data from a MySQL database. All optional fields are
+
+    automatically assigned default values by the function host when parsed.
+
+
+    Ref: [https://aka.ms/mysqlbindings](https://aka.ms/mysqlbindings)'
+  signature: 'mysql_input(arg_name: str, command_text: str, connection_string_setting:
+    str, command_type: str | None = ''Text'', parameters: str | None = None, data_type:
+    DataType | None = None, **kwargs) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents a
+
+      <xref:azure.durable_functions.MySqlRowList> input object in the function code.'
+    isRequired: true
+  - name: command_text
+    description: 'The SQL query string or the name of the stored procedure
+
+      to execute.'
+    isRequired: true
+  - name: connection_string_setting
+    description: 'The name of the app setting that contains
+
+      the connection string to the MySQL database.'
+    isRequired: true
+  - name: command_type
+    description: 'The type of command being executed. Accepts *"Text"* for
+
+      SQL queries or *"StoredProcedure"* for stored procedures.'
+    defaultValue: Text
+  - name: parameters
+    description: 'One or more parameter values passed to the SQL command.
+
+      Should be provided as a comma-separated string in the format:
+
+      *"@param1=value1,@param2=value2"*.'
+    defaultValue: None
+  - name: data_type
+    description: 'Defines how the Functions runtime should treat the
+
+      parameter value.'
+    defaultValue: None
+  - name: kwargs
+    description: 'Additional keyword arguments used to define fields in the
+
+      *function.json* binding.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.mysql_output
+  name: mysql_output
+  summary: 'The *mysql_output* decorator adds <xref:azure.durable_functions.MySqlOutput>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    object
+
+    used in the worker function indexing model.
+
+
+    This decorator is supported only with extension bundle 4.x and above.
+
+    It is equivalent to defining *MySqlOutput* in the *function.json*,
+
+    enabling the function to write data to a MySQL database.
+
+
+    All optional fields will be assigned default values by the function host
+
+    when parsed.
+
+
+    Ref: [https://aka.ms/mysqlbindings](https://aka.ms/mysqlbindings)'
+  signature: 'mysql_output(arg_name: str, command_text: str, connection_string_setting:
+    str, data_type: DataType | None = None, **kwargs) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents the MySQL output
+
+      object in the function code.'
+    isRequired: true
+  - name: command_text
+    description: 'The SQL command or the name of the stored procedure
+
+      executed by the binding.'
+    isRequired: true
+  - name: connection_string_setting
+    description: 'The name of the app setting that contains
+
+      the connection string for the target MySQL database.'
+    isRequired: true
+  - name: data_type
+    description: 'Defines how the Functions runtime should treat the
+
+      parameter value.'
+    defaultValue: None
+  - name: kwargs
+    description: 'Additional keyword arguments used to define fields in the
+
+      *function.json* binding.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.mysql_trigger
+  name: mysql_trigger
+  summary: 'The *mysql_trigger* decorator adds <xref:azure.durable_functions.MySqlTrigger>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    object
+
+    used in the worker function indexing model.
+
+
+    This decorator works only with extension bundle 4.x and above. It is
+
+    equivalent to defining *MySqlTrigger* in the *function.json*, which enables
+
+    the function to be triggered when there are changes in the MySQL table.
+
+    All optional fields are assigned default values by the function host
+
+    when parsed.
+
+
+    Ref: [https://aka.ms/mysqlbindings](https://aka.ms/mysqlbindings)'
+  signature: 'mysql_trigger(arg_name: str, table_name: str, connection_string_setting:
+    str, leases_table_name: str | None = None, data_type: DataType | None = None,
+    **kwargs) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents a
+
+      <xref:azure.durable_functions.MySqlRowList> object in the function code.'
+    isRequired: true
+  - name: table_name
+    description: The name of the MySQL table monitored by the trigger.
+    isRequired: true
+  - name: connection_string_setting
+    description: 'The name of an app setting that contains
+
+      the connection string for the database against which the query or
+
+      stored procedure is executed.'
+    isRequired: true
+  - name: leases_table_name
+    description: 'The name of the table used to store leases.
+
+      If not specified, the default table name is
+
+      *Leases_{FunctionId}_{TableId}*.'
+    defaultValue: None
+  - name: data_type
+    description: 'Defines how the Functions runtime should treat the
+
+      parameter value.'
+    defaultValue: None
+  - name: kwargs
+    description: 'Additional keyword arguments for specifying binding fields
+
+      to include in the *function.json*.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.orchestration_trigger
+  name: orchestration_trigger
+  summary: Register an Orchestrator Function.
+  signature: 'orchestration_trigger(context_name: str, orchestration: str | None =
+    None)'
+  parameters:
+  - name: context_name
+    description: Parameter name of the DurableOrchestrationContext object.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: orchestration
+    description: 'Name of Orchestrator Function.
+
+      The value is None by default, in which case the name of the method is used.'
+    defaultValue: None
+    types:
+    - <xref:Optional>[<xref:str>]
+- uid: azure.durable_functions.DFApp.queue_output
+  name: queue_output
+  summary: 'The *queue_output* decorator adds <xref:azure.durable_functions.QueueOutput>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    used in
+
+    the worker function indexing model.
+
+
+    This is equivalent to defining *QueueOutput* in the *function.json*, which
+
+    enables the function to write messages to an Azure Storage Queue.
+
+
+    All optional fields will be given default values by the function host
+
+    when parsed.
+
+
+    Ref: [https://aka.ms/azure-function-binding-queue](https://aka.ms/azure-function-binding-queue)'
+  signature: 'queue_output(arg_name: str, queue_name: str, connection: str, data_type:
+    DataType | None = None, **kwargs) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents the storage queue
+
+      output object in the function code.'
+    isRequired: true
+  - name: queue_name
+    description: The name of the queue to which messages will be written.
+    isRequired: true
+  - name: connection
+    description: 'The name of an app setting or setting collection that
+
+      specifies how to connect to Azure Queues.'
+    isRequired: true
+  - name: data_type
+    description: 'Defines how the Functions runtime should treat the
+
+      parameter value.'
+    defaultValue: None
+  - name: kwargs
+    description: 'Additional keyword arguments for specifying binding fields
+
+      to include in the binding JSON.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.queue_trigger
+  name: queue_trigger
+  summary: 'The *queue_trigger* decorator adds <xref:azure.durable_functions.QueueTrigger>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    used in the
+
+    worker function indexing model.
+
+
+    This is equivalent to defining a *QueueTrigger* in the *function.json*, which
+
+    enables the function to be triggered when new message(s) are sent to an Azure
+    Storage queue.
+
+
+    All optional fields will be assigned default values by the function host when
+    parsed.
+
+
+    Ref: [https://aka.ms/azure-function-binding-queue](https://aka.ms/azure-function-binding-queue)'
+  signature: 'queue_trigger(arg_name: str, queue_name: str, connection: str, data_type:
+    DataType | None = None, **kwargs) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents the
+
+      <xref:azure.durable_functions.QueueMessage> object in the function code.'
+    isRequired: true
+  - name: queue_name
+    description: The name of the queue to monitor.
+    isRequired: true
+  - name: connection
+    description: 'The name of an app setting or setting collection that specifies
+
+      how to connect to Azure Queues.'
+    isRequired: true
+  - name: data_type
+    description: Defines how the Functions runtime should treat the parameter value.
+    defaultValue: None
+  - name: kwargs
+    description: Additional keyword arguments to include in the binding JSON.
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.register_blueprint
+  name: register_blueprint
+  summary: Register a list of functions in the function app.
+  signature: 'register_blueprint(function_container: DecoratorApi) -> None'
+  parameters:
+  - name: function_container
+    description: 'Instance extending <xref:azure.durable_functions.DecoratorApi>,
+
+      which contains a list of functions to be registered.'
+    isRequired: true
+  exceptions:
+  - type: TypeError
+    description: If the provided container is an instance of
+  - type: azure.durable_functions.FunctionRegister
+- uid: azure.durable_functions.DFApp.register_functions
+  name: register_functions
+  summary: Register a list of functions in the function app.
+  signature: 'register_functions(function_container: DecoratorApi) -> None'
+  parameters:
+  - name: function_container
+    description: 'Instance extending <xref:azure.durable_functions.DecoratorApi>,
+
+      which contains a list of functions to be registered.'
+    isRequired: true
+  exceptions:
+  - type: TypeError
+    description: If the provided container is an instance of
+  - type: azure.durable_functions.FunctionRegister
+- uid: azure.durable_functions.DFApp.retry
+  name: retry
+  summary: 'The *retry* decorator adds a <xref:azure.durable_functions.RetryPolicy>
+    to the function settings object.
+
+
+    Used for building a <xref:azure.durable_functions.Function> object in the worker
+    function indexing model.
+
+    This is equivalent to defining a RetryPolicy in *function.json*, which enables
+
+    the function to automatically retry on failure.
+
+
+    All optional fields are assigned default values by the function host during parsing.
+
+
+    Ref: [https://aka.ms/azure_functions_retries](https://aka.ms/azure_functions_retries)'
+  signature: 'retry(strategy: str, max_retry_count: str, delay_interval: str | None
+    = None, minimum_interval: str | None = None, maximum_interval: str | None = None,
+    setting_extra_fields: Dict[str, Any] | None = None) -> Callable[[...], Any]'
+  parameters:
+  - name: strategy
+    description: The retry strategy to use.
+    isRequired: true
+  - name: max_retry_count
+    description: The maximum number of retry attempts.
+    isRequired: true
+  - name: delay_interval
+    description: The delay interval between retry attempts.
+    defaultValue: None
+  - name: minimum_interval
+    description: The minimum delay interval between retry attempts.
+    defaultValue: None
+  - name: maximum_interval
+    description: The maximum delay interval between retry attempts.
+    defaultValue: None
+  - name: setting_extra_fields
+    description: Keyword arguments for specifying additional setting fields.
+    defaultValue: None
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.route
+  name: route
+  summary: 'The *route* decorator adds <xref:azure.durable_functions.HttpTrigger>
+    and <xref:azure.durable_functions.HttpOutput>
+
+    bindings to the <xref:azure.durable_functions.FunctionBuilder> object for building
+    a <xref:azure.durable_functions.Function>
+
+    used in the worker function indexing model.
+
+
+    This is equivalent to defining both *HttpTrigger* and *HttpOutput* bindings
+
+    in the *function.json*, which enables your function to be triggered when
+
+    HTTP requests hit the specified route.
+
+
+    All optional fields will be given default values by the function host when parsed.
+
+
+    Ref: [https://aka.ms/azure-function-binding-http](https://aka.ms/azure-function-binding-http)'
+  signature: 'route(route: str | None = None, trigger_arg_name: str = ''req'', binding_arg_name:
+    str = ''$return'', methods: Iterable[str] | Iterable[HttpMethod] | None = None,
+    auth_level: AuthLevel | str | None = None, trigger_extra_fields: Dict[str, Any]
+    | None = None, binding_extra_fields: Dict[str, Any] | None = None) -> Callable[[...],
+    Any]'
+  parameters:
+  - name: route
+    description: 'Route for the HTTP endpoint. If None, it defaults to the function
+
+      name (if present) or the user-defined Python function name.'
+    defaultValue: None
+  - name: trigger_arg_name
+    description: Argument name for <xref:azure.durable_functions.HttpRequest>. Defaults
+      to *'req'*.
+    defaultValue: req
+  - name: binding_arg_name
+    description: Argument name for <xref:azure.durable_functions.HttpResponse>. Defaults
+      to *'$return'*.
+    defaultValue: $return
+  - name: methods
+    description: A tuple of the HTTP methods to which the function responds.
+    defaultValue: None
+  - name: auth_level
+    description: 'Determines what keys, if any, need to be present
+
+      on the request in order to invoke the function.'
+    defaultValue: None
+  - name: trigger_extra_fields
+    description: 'Additional fields to include in the trigger JSON.
+
+      For example:
+
+      >>> data_type=''STRING''  # results in ''dataType'': ''STRING'' in the trigger
+      JSON'
+    defaultValue: None
+  - name: binding_extra_fields
+    description: 'Additional fields to include in the binding JSON.
+
+      For example:
+
+      >>> data_type=''STRING''  # results in ''dataType'': ''STRING'' in the binding
+      JSON'
+    defaultValue: None
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.schedule
+  name: schedule
+  summary: 'The *schedule* or *timer* decorator adds <xref:azure.durable_functions.TimerTrigger>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    used in the
+
+    worker function indexing model.
+
+
+    This is equivalent to defining a *TimerTrigger* in the *function.json*, which
+
+    enables your function to be triggered on the specified schedule.
+
+
+    All optional fields will be given default values by the function host when parsed.
+
+
+    Ref: [https://aka.ms/azure-function-binding-timer](https://aka.ms/azure-function-binding-timer)'
+  signature: 'schedule(arg_name: str, schedule: str, run_on_startup: bool | None =
+    None, use_monitor: bool | None = None, data_type: DataType | str | None = None,
+    **kwargs: Any) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents the
+
+      <xref:azure.durable_functions.TimerRequest> object in function code.'
+    isRequired: true
+  - name: schedule
+    description: 'A string representing a CRON expression used to schedule
+
+      the function execution.'
+    isRequired: true
+  - name: run_on_startup
+    description: If True, the function is invoked when the runtime starts.
+    defaultValue: None
+  - name: use_monitor
+    description: 'Set to True or False to indicate whether the
+
+      schedule should be monitored.'
+    defaultValue: None
+  - name: data_type
+    description: Defines how the Functions runtime should treat the parameter value.
+    defaultValue: None
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.semantic_search_input
+  name: semantic_search_input
+  summary: "Enable semantic search capabilities using vector databases and OpenAI\
+    \ models.\n\nThis feature allows you to import documents into a vector database\
+    \ via an output binding\nand perform semantic queries against them via an input\
+    \ binding. For example, one function\ncan import documents into the database,\
+    \ while another function issues queries to OpenAI\nusing that data as context\
+    \ \u2014 a pattern known as Retrieval Augmented Generation (RAG).\n\nRef: [https://platform.openai.com/docs/guides/embeddings](https://platform.openai.com/docs/guides/embeddings)"
+  signature: 'semantic_search_input(arg_name: str, search_connection_name: str, collection:
+    str, query: str | None = None, ai_connection_name: str | None = '''', embeddings_model:
+    str | OpenAIModels | None = OpenAIModels.DefaultEmbeddingsModel, chat_model: str
+    | OpenAIModels | None = OpenAIModels.DefaultChatModel, system_prompt: str | None
+    = ''You are a helpful assistant. You are responding to requests\n    from a user
+    about internal emails and documents. You can and\n    should refer to the internal
+    documents to help respond to\n    requests. If a user makes a request that\''s
+    not covered by the\n    internal emails and documents, explain that you don\''t
+    know the\n    answer or that you don\''t have access to the information.\n\n    The
+    following is a list of documents that you can refer to when\n    answering questions.
+    The documents are in the format\n    [filename]: [text] and are separated by newlines.
+    If you answer\n    a question by referencing any of the documents, please cite
+    the\n    document in your answer. For example, if you answer a question\n    by
+    referencing info.txt, you should add "Reference: info.txt"\n    to the end of
+    your answer on a separate line.'', max_knowledge_count: int | None = 1, temperature:
+    str | None = ''0.5'', top_p: str | None = None, max_tokens: str | None = ''100'',
+    is_reasoning_model: bool | None = False, data_type: DataType | str | None = None,
+    **kwargs) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: The name of the binding parameter in the function code.
+    isRequired: true
+  - name: search_connection_name
+    description: 'The name of the app setting or environment variable
+
+      that contains the vector search connection value.'
+    isRequired: true
+  - name: collection
+    description: The name of the collection or table to search or store.
+    isRequired: true
+  - name: query
+    description: The semantic query text used for searching the database.
+    defaultValue: None
+  - name: ai_connection_name
+    description: "The name of the configuration section for AI service\nconnectivity\
+      \ settings.\n\n* For Azure OpenAI: If specified, looks for \"Endpoint\" and/or\
+      \ \"Key\" in this configuration section. \n\n* If not specified or the section\
+      \ is missing, defaults to the environment variables *AZURE_OPENAI_ENDPOINT*\
+      \ and *AZURE_OPENAI_KEY*. \n\n* For user-assigned managed identity authentication,\
+      \ this field is required. \n\n* For OpenAI (non-Azure), set the *OPENAI_API_KEY*\
+      \ environment variable."
+    isRequired: true
+  - name: embeddings_model
+    description: 'The deployment or model name for OpenAI Embeddings.
+
+      Defaults to "text-embedding-ada-002".'
+    defaultValue: DefaultEmbeddingsModel
+  - name: chat_model
+    description: 'The deployment or model name for the OpenAI Chat Completion API.
+
+      Defaults to "gpt-3.5-turbo".'
+    defaultValue: DefaultChatModel
+  - name: system_prompt
+    description: Optional. The system prompt provided to the large language model.
+    defaultValue: "You are a helpful assistant. You are responding to requests\n \
+      \   from a user about internal emails and documents. You can and\n    should\
+      \ refer to the internal documents to help respond to\n    requests. If a user\
+      \ makes a request that's not covered by the\n    internal emails and documents,\
+      \ explain that you don't know the\n    answer or that you don't have access\
+      \ to the information.\n\n    The following is a list of documents that you can\
+      \ refer to when\n    answering questions. The documents are in the format\n\
+      \    [filename]: [text] and are separated by newlines. If you answer\n    a\
+      \ question by referencing any of the documents, please cite the\n    document\
+      \ in your answer. For example, if you answer a question\n    by referencing\
+      \ info.txt, you should add \"Reference: info.txt\"\n    to the end of your answer\
+      \ on a separate line."
+  - name: max_knowledge_count
+    description: 'Optional. The number of knowledge items to inject into
+
+      the system prompt. Default is 1.'
+    defaultValue: '1'
+  - name: temperature
+    description: 'The sampling temperature to use (range: 0 to 2). Higher values like
+
+      0.8 yield more random output; lower values like 0.2 make output more focused.'
+    defaultValue: '0.5'
+  - name: top_p
+    description: 'Alternative to temperature sampling (nucleus sampling). For example,
+      0.1
+
+      considers only the top 10% of tokens by probability mass. Use this or *temperature*.'
+    defaultValue: None
+  - name: max_tokens
+    description: 'The maximum number of tokens to generate in the completion.
+
+      The sum of prompt tokens and *max_tokens* must not exceed the model''s context
+      length
+
+      (usually 2048 or 4096 for newer models).'
+    defaultValue: '100'
+  - name: is_reasoning_model
+    description: 'Indicates whether the chat model is a reasoning model.
+
+      If True, *max_tokens* and *temperature* are not supported.'
+    defaultValue: 'False'
+  - name: data_type
+    description: 'Optional. Defines how the Functions runtime should interpret the
+
+      parameter value. Default is None.'
+    defaultValue: None
+  - name: kwargs
+    description: 'Additional keyword arguments for specifying extra fields in the
+
+      *function.json* binding.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.service_bus_queue_output
+  name: service_bus_queue_output
+  summary: 'The *service_bus_queue_output* decorator adds <xref:azure.durable_functions.ServiceBusQueueOutput>
+
+    to the <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    used
+
+    in the worker function indexing model.
+
+
+    This is equivalent to defining *ServiceBusQueueOutput* in the *function.json*,
+
+    which enables the function to write messages to a Service Bus queue.
+
+
+    All optional fields will be assigned default values by the function host
+
+    when they are parsed.
+
+
+    Ref: [https://aka.ms/azure-function-binding-service-bus](https://aka.ms/azure-function-binding-service-bus)'
+  signature: 'service_bus_queue_output(arg_name: str, connection: str, queue_name:
+    str, data_type: DataType | str | None = None, access_rights: AccessRights | str
+    | None = None, **kwargs) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents the Service Bus queue
+
+      output object in the function code.'
+    isRequired: true
+  - name: connection
+    description: 'The name of an app setting or setting collection that
+
+      specifies how to connect to Service Bus.'
+    isRequired: true
+  - name: queue_name
+    description: The name of the queue to which messages will be sent.
+    isRequired: true
+  - name: data_type
+    description: 'Defines how the Functions runtime should treat the
+
+      parameter value.'
+    defaultValue: None
+  - name: access_rights
+    description: The access rights required for the connection string.
+    defaultValue: None
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.service_bus_queue_trigger
+  name: service_bus_queue_trigger
+  summary: 'The *on_service_bus_queue_change* decorator adds <xref:azure.durable_functions.ServiceBusQueueTrigger>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    used in the worker
+
+    function indexing model.
+
+
+    This is equivalent to defining a *ServiceBusQueueTrigger* in the *function.json*,
+
+    which enables the function to be triggered when new message(s) are sent to the
+
+    Service Bus queue.
+
+
+    All optional fields will be given default values by the function host when parsed.
+
+
+    Ref: [https://aka.ms/azure-function-binding-service-bus](https://aka.ms/azure-function-binding-service-bus)'
+  signature: 'service_bus_queue_trigger(arg_name: str, connection: str, queue_name:
+    str, data_type: DataType | str | None = None, access_rights: AccessRights | str
+    | None = None, is_sessions_enabled: bool | None = None, cardinality: Cardinality
+    | str | None = None, **kwargs: Any) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents the
+
+      <xref:azure.durable_functions.ServiceBusMessage> object in the function code.'
+    isRequired: true
+  - name: connection
+    description: 'The name of an app setting or setting collection that specifies
+
+      how to connect to Service Bus.'
+    isRequired: true
+  - name: queue_name
+    description: The name of the queue to monitor.
+    isRequired: true
+  - name: data_type
+    description: Defines how the Functions runtime should treat the parameter value.
+    defaultValue: None
+  - name: access_rights
+    description: Access rights for the connection string.
+    defaultValue: None
+  - name: is_sessions_enabled
+    description: 'Set to True if connecting to a session-aware queue
+
+      or subscription.'
+    defaultValue: None
+  - name: cardinality
+    description: Set to "many" to enable batching.
+    defaultValue: None
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.service_bus_topic_output
+  name: service_bus_topic_output
+  summary: 'The *service_bus_topic_output* decorator adds <xref:azure.durable_functions.ServiceBusTopicOutput>
+
+    to the <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    used
+
+    in the worker function indexing model.
+
+
+    This is equivalent to defining *ServiceBusTopicOutput* in the *function.json*,
+
+    which enables the function to write messages to a Service Bus topic.
+
+
+    All optional fields will be assigned default values by the function host
+
+    when they are parsed.
+
+
+    Ref: [https://aka.ms/azure-function-binding-service-bus](https://aka.ms/azure-function-binding-service-bus)'
+  signature: 'service_bus_topic_output(arg_name: str, connection: str, topic_name:
+    str, subscription_name: str | None = None, data_type: DataType | str | None =
+    None, access_rights: AccessRights | str | None = None, **kwargs) -> Callable[[...],
+    Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents the Service Bus topic
+
+      output object in the function code.'
+    isRequired: true
+  - name: connection
+    description: 'The name of an app setting or setting collection that
+
+      specifies how to connect to Service Bus.'
+    isRequired: true
+  - name: topic_name
+    description: The name of the topic to which messages will be sent.
+    isRequired: true
+  - name: subscription_name
+    description: The name of the subscription (optional for output).
+    defaultValue: None
+  - name: data_type
+    description: 'Defines how the Functions runtime should treat the
+
+      parameter value. Defaults to DataType.UNDEFINED.'
+    defaultValue: None
+  - name: access_rights
+    description: The access rights required for the connection string.
+    defaultValue: None
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.service_bus_topic_trigger
+  name: service_bus_topic_trigger
+  summary: 'The *on_service_bus_topic_change* decorator adds <xref:azure.durable_functions.ServiceBusTopicTrigger>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    used in the worker
+
+    function indexing model.
+
+
+    This is equivalent to defining a *ServiceBusTopicTrigger* in the *function.json*,
+
+    which enables the function to be triggered when new message(s) are sent to a
+
+    Service Bus topic.
+
+
+    All optional fields will be given default values by the function host when parsed.
+
+
+    Ref: [https://aka.ms/azure-function-binding-service-bus](https://aka.ms/azure-function-binding-service-bus)'
+  signature: 'service_bus_topic_trigger(arg_name: str, connection: str, topic_name:
+    str, subscription_name: str, data_type: DataType | str | None = None, access_rights:
+    AccessRights | str | None = None, is_sessions_enabled: bool | None = None, cardinality:
+    Cardinality | str | None = None, **kwargs: Any) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents the
+
+      <xref:azure.durable_functions.ServiceBusMessage> object in the function code.'
+    isRequired: true
+  - name: connection
+    description: 'The name of an app setting or setting collection that specifies
+
+      how to connect to Service Bus.'
+    isRequired: true
+  - name: topic_name
+    description: The name of the topic to monitor.
+    isRequired: true
+  - name: subscription_name
+    description: The name of the subscription to monitor.
+    isRequired: true
+  - name: data_type
+    description: Defines how the Functions runtime should treat the parameter value.
+    defaultValue: None
+  - name: access_rights
+    description: Access rights for the connection string.
+    defaultValue: None
+  - name: is_sessions_enabled
+    description: 'Set to True if connecting to a session-aware queue
+
+      or subscription.'
+    defaultValue: None
+  - name: cardinality
+    description: Set to "many" to enable batching.
+    defaultValue: None
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.sql_input
+  name: sql_input
+  summary: 'The *sql_input* decorator adds <xref:azure.durable_functions.SqlInput>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    object
+
+    used in the worker function indexing model.
+
+
+    This decorator works only with extension bundle 4.x and above. It is
+
+    equivalent to defining *SqlInput* in the *function.json*, which enables the
+
+    function to read from a SQL database. All optional fields are assigned
+
+    default values by the function host when parsed.
+
+
+    Ref: [https://aka.ms/sqlbindings](https://aka.ms/sqlbindings)'
+  signature: 'sql_input(arg_name: str, command_text: str, connection_string_setting:
+    str, command_type: str | None = ''Text'', parameters: str | None = None, data_type:
+    DataType | None = None, **kwargs) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents a
+
+      <xref:azure.durable_functions.SqlRowList> input object in the function code.'
+    isRequired: true
+  - name: command_text
+    description: 'The Transact-SQL query or the name of the stored
+
+      procedure executed by the binding.'
+    isRequired: true
+  - name: connection_string_setting
+    description: 'The name of the app setting that contains
+
+      the connection string to the target SQL database.'
+    isRequired: true
+  - name: command_type
+    description: 'The command type. Use *"Text"* for a raw SQL query and
+
+      *"StoredProcedure"* for a stored procedure.'
+    defaultValue: Text
+  - name: parameters
+    description: 'A comma-separated string of parameter assignments to pass
+
+      to the SQL command. Format:
+
+      *@param1=value1,@param2=value2*'
+    defaultValue: None
+  - name: data_type
+    description: 'Defines how the Functions runtime should treat the
+
+      parameter value.'
+    defaultValue: None
+  - name: kwargs
+    description: 'Additional keyword arguments for specifying binding fields to
+
+      include in the *function.json*.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.sql_output
+  name: sql_output
+  summary: 'The *sql_output* decorator adds <xref:azure.durable_functions.SqlOutput>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    object
+
+    used in the worker function indexing model.
+
+
+    This decorator works only with extension bundle 4.x and above. It is
+
+    equivalent to defining *SqlOutput* in the *function.json*, which enables
+
+    the function to write to a SQL database. All optional fields are assigned
+
+    default values by the function host when parsed.
+
+
+    Ref: [https://aka.ms/sqlbindings](https://aka.ms/sqlbindings)'
+  signature: 'sql_output(arg_name: str, command_text: str, connection_string_setting:
+    str, data_type: DataType | None = None, **kwargs) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents the SQL output
+
+      object in the function code.'
+    isRequired: true
+  - name: command_text
+    description: 'The Transact-SQL query or the name of the stored
+
+      procedure executed by the binding.'
+    isRequired: true
+  - name: connection_string_setting
+    description: 'The name of the app setting that contains
+
+      the connection string to the target SQL database.'
+    isRequired: true
+  - name: data_type
+    description: 'Defines how the Functions runtime should treat the
+
+      parameter value.'
+    defaultValue: None
+  - name: kwargs
+    description: 'Additional keyword arguments for specifying binding fields to
+
+      include in the *function.json*.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.sql_trigger
+  name: sql_trigger
+  summary: 'The *sql_trigger* decorator adds <xref:azure.durable_functions.SqlTrigger>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    object
+
+    used in the worker function indexing model.
+
+
+    This decorator works only with extension bundle 4.x and above. It is
+
+    equivalent to defining *SqlTrigger* in the *function.json*, which enables
+
+    the function to be triggered when there are changes in the SQL table.
+
+    All optional fields are assigned default values by the function host
+
+    when parsed.
+
+
+    Ref: [https://aka.ms/sqlbindings](https://aka.ms/sqlbindings)'
+  signature: 'sql_trigger(arg_name: str, table_name: str, connection_string_setting:
+    str, leases_table_name: str | None = None, data_type: DataType | None = None,
+    **kwargs) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents a
+
+      <xref:azure.durable_functions.SqlRowList> object in the function code.'
+    isRequired: true
+  - name: table_name
+    description: The name of the SQL table monitored by the trigger.
+    isRequired: true
+  - name: connection_string_setting
+    description: 'The name of an app setting that contains
+
+      the connection string for the database against which the query or
+
+      stored procedure is executed.'
+    isRequired: true
+  - name: leases_table_name
+    description: 'The name of the table used to store leases.
+
+      If not specified, the default name is
+
+      *Leases_{FunctionId}_{TableId}*.'
+    defaultValue: None
+  - name: data_type
+    description: 'Defines how the Functions runtime should treat the
+
+      parameter value.'
+    defaultValue: None
+  - name: kwargs
+    description: 'Additional keyword arguments for specifying binding fields
+
+      to include in the *function.json*.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.table_input
+  name: table_input
+  summary: 'The *table_input* decorator adds <xref:azure.durable_functions.TableInput>
+    to the <xref:azure.durable_functions.FunctionBuilder>
+
+    object for building a <xref:azure.durable_functions.Function> object used in the
+    worker function indexing model.
+
+
+    This is equivalent to defining *TableInput* in the *function.json*, which enables
+    the
+
+    function to read from a table in Azure Storage or a Cosmos DB account.
+
+
+    All optional fields will be assigned default values by the function host when
+    parsed.
+
+
+    Ref: [https://aka.ms/tablesbindings](https://aka.ms/tablesbindings)'
+  signature: 'table_input(arg_name: str, connection: str, table_name: str, row_key:
+    str | None = None, partition_key: str | None = None, take: int | None = None,
+    filter: str | None = None, data_type: DataType | str | None = None) -> Callable[[...],
+    Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents the table or entity in
+      the
+
+      function code.'
+    isRequired: true
+  - name: connection
+    description: 'The name of an app setting or setting collection that specifies
+      how
+
+      to connect to the table service.'
+    isRequired: true
+  - name: table_name
+    description: The name of the table.
+    isRequired: true
+  - name: row_key
+    description: The row key of the table entity to read.
+    defaultValue: None
+  - name: partition_key
+    description: The partition key of the table entity to read.
+    defaultValue: None
+  - name: take
+    description: The maximum number of entities to return.
+    defaultValue: None
+  - name: filter
+    description: An OData filter expression to apply when retrieving entities.
+    defaultValue: None
+  - name: data_type
+    description: Defines how the Functions runtime should treat the parameter value.
+    defaultValue: None
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.table_output
+  name: table_output
+  summary: 'The *table_output* decorator adds <xref:azure.durable_functions.TableOutput>
+    to the <xref:azure.durable_functions.FunctionBuilder>
+
+    object for building a <xref:azure.durable_functions.Function> object used in the
+    worker function indexing model.
+
+
+    This is equivalent to defining *TableOutput* in the *function.json*, which enables
+    the
+
+    function to write entities to a table in Azure Storage.
+
+
+    All optional fields will be assigned default values by the function host when
+    parsed.
+
+
+    Ref: [https://aka.ms/tablesbindings](https://aka.ms/tablesbindings)'
+  signature: 'table_output(arg_name: str, connection: str, table_name: str, row_key:
+    str | None = None, partition_key: str | None = None, data_type: DataType | str
+    | None = None) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents the table or entity in
+      the
+
+      function code.'
+    isRequired: true
+  - name: connection
+    description: 'The name of an app setting or setting collection that specifies
+      how
+
+      to connect to the table service.'
+    isRequired: true
+  - name: table_name
+    description: The name of the table.
+    isRequired: true
+  - name: row_key
+    description: The row key of the table entity to read.
+    defaultValue: None
+  - name: partition_key
+    description: The partition key of the table entity to read.
+    defaultValue: None
+  - name: data_type
+    description: Defines how the Functions runtime should treat the parameter value.
+    defaultValue: None
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.text_completion_input
+  name: text_completion_input
+  summary: 'The *textCompletion* input binding is used to invoke the OpenAI Chat Completions
+    API
+
+    and return the generated results to the function.
+
+
+    Ref: [https://platform.openai.com/docs/guides/text-generation/chat-completions-vs-completions](https://platform.openai.com/docs/guides/text-generation/chat-completions-vs-completions)
+
+
+    The examples typically define an HTTP-triggered function with a hardcoded
+
+    prompt such as *"who is {name}?"*, where *{name}* is dynamically substituted
+
+    from the HTTP request path. The OpenAI input binding sends this prompt to the
+
+    configured GPT model and returns the generated response to the function, which
+
+    then returns the result as the HTTP response content.'
+  signature: 'text_completion_input(arg_name: str, prompt: str, ai_connection_name:
+    str | None = '''', chat_model: str | OpenAIModels | None = OpenAIModels.DefaultChatModel,
+    temperature: str | None = ''0.5'', top_p: str | None = None, max_tokens: str |
+    None = ''100'', is_reasoning_model: bool | None = False, data_type: DataType |
+    str | None = None, **kwargs) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: The name of the binding parameter in the function code.
+    isRequired: true
+  - name: prompt
+    description: The text prompt to generate completions for.
+    isRequired: true
+  - name: ai_connection_name
+    description: "The name of the configuration section that defines\nAI service connectivity\
+      \ settings.\n\n* For **Azure OpenAI**: If specified, it looks for *\"Endpoint\"\
+      * and/or \n\n*\"Key\"* in this section. If not specified or missing, it falls\
+      \ back to\nthe environment variables *AZURE_OPENAI_ENDPOINT* and *AZURE_OPENAI_KEY*.\n\
+      - For **user-assigned managed identity**, this setting is required.\n- For **non-Azure\
+      \ OpenAI**, ensure the *OPENAI_API_KEY* environment\nvariable is set."
+    isRequired: true
+  - name: model
+    description: '*(Deprecated)* Use *chat_model* instead. This parameter is
+
+      unused and will be removed in future versions.'
+    isRequired: true
+  - name: chat_model
+    description: 'The deployment or model name to use for the Chat
+
+      Completions API. Default is *"gpt-3.5-turbo"*.'
+    defaultValue: DefaultChatModel
+  - name: temperature
+    description: "Sampling temperature (0\u20132). Higher values (e.g., 0.8)\nproduce\
+      \ more random output; lower values (e.g., 0.2) make output more\nfocused and\
+      \ deterministic."
+    defaultValue: '0.5'
+  - name: top_p
+    description: 'Controls nucleus sampling. For example, *top_p=0.1* considers
+
+      only tokens in the top 10% cumulative probability. Recommended to use
+
+      either *temperature* or *top_p*, but not both.'
+    defaultValue: None
+  - name: max_tokens
+    description: 'The maximum number of tokens to generate. The sum of prompt
+
+      tokens and *max_tokens* must not exceed the model''s context length
+
+      (usually 2048 or 4096 for newer models).'
+    defaultValue: '100'
+  - name: is_reasoning_model
+    description: 'If *True*, indicates that the configured chat model
+
+      is a reasoning model. In this case, *max_tokens* and *temperature* are
+
+      not supported.'
+    defaultValue: 'False'
+  - name: data_type
+    description: 'Defines how the Functions runtime should treat the
+
+      parameter value.'
+    defaultValue: None
+  - name: kwargs
+    description: 'Additional keyword arguments for specifying binding fields
+
+      to include in the *function.json*.'
+    isRequired: true
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.timer_trigger
+  name: timer_trigger
+  summary: 'The *schedule* or *timer* decorator adds <xref:azure.durable_functions.TimerTrigger>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    used in the
+
+    worker function indexing model.
+
+
+    This is equivalent to defining a *TimerTrigger* in the *function.json*, which
+
+    enables your function to be triggered on the specified schedule.
+
+
+    All optional fields will be given default values by the function host when parsed.
+
+
+    Ref: [https://aka.ms/azure-function-binding-timer](https://aka.ms/azure-function-binding-timer)'
+  signature: 'timer_trigger(arg_name: str, schedule: str, run_on_startup: bool | None
+    = None, use_monitor: bool | None = None, data_type: DataType | str | None = None,
+    **kwargs: Any) -> Callable[[...], Any]'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents the
+
+      <xref:azure.durable_functions.TimerRequest> object in function code.'
+    isRequired: true
+  - name: schedule
+    description: 'A string representing a CRON expression used to schedule
+
+      the function execution.'
+    isRequired: true
+  - name: run_on_startup
+    description: If True, the function is invoked when the runtime starts.
+    defaultValue: None
+  - name: use_monitor
+    description: 'Set to True or False to indicate whether the
+
+      schedule should be monitored.'
+    defaultValue: None
+  - name: data_type
+    description: Defines how the Functions runtime should treat the parameter value.
+    defaultValue: None
+  return:
+    description: Decorator function.
+- uid: azure.durable_functions.DFApp.validate_function_names
+  name: validate_function_names
+  summary: 'Validate that all functions have unique names within the app.
+
+
+    The *functions_bindings* dictionary maps function names to their bindings.
+
+    If multiple functions share the same name, indexing will fail.'
+  signature: 'validate_function_names(functions: List[Function])'
+  parameters:
+  - name: functions
+    description: A list of <xref:azure.durable_functions.Function> objects to validate.
+    isRequired: true
+  exceptions:
+  - type: ValueError
+    description: If any function name is duplicated.
+- uid: azure.durable_functions.DFApp.warm_up_trigger
+  name: warm_up_trigger
+  summary: 'The *warm_up* decorator adds <xref:azure.durable_functions.WarmUpTrigger>
+    to the
+
+    <xref:azure.durable_functions.FunctionBuilder> object for building a <xref:azure.durable_functions.Function>
+    used in the
+
+    worker function indexing model.
+
+
+    This is equivalent to defining a *WarmUpTrigger* in the *function.json*, which
+
+    enables your function to be triggered on the specified schedule.
+
+
+    All optional fields will be given default values by the function host when parsed.
+
+
+    Ref: [https://aka.ms/azure-function-binding-warmup](https://aka.ms/azure-function-binding-warmup)'
+  signature: 'warm_up_trigger(arg_name: str, data_type: DataType | str | None = None,
+    **kwargs) -> Callable'
+  parameters:
+  - name: arg_name
+    description: 'The name of the variable that represents the
+
+      <xref:azure.durable_functions.TimerRequest> object in the function code.'
+    isRequired: true
+  - name: data_type
+    description: Defines how the Functions runtime should treat the parameter value.
+    defaultValue: None
+  return:
+    description: Decorator function.
+attributes:
+- uid: azure.durable_functions.DFApp.app_script_file
+  name: app_script_file
+  summary: "Name of function app script file in which all the functions\n   are defined.\n\
+    \n   Script file defined here is for placeholder purpose, please refer to\n  \
+    \ worker defined script file path as the single point of truth."
+  return:
+    description: Script file name.
+- uid: azure.durable_functions.DFApp.auth_level
+  name: auth_level
+  summary: "Authorization level of the function app. Will be applied to the http\n\
+    \   trigger functions which do not have authorization level specified."
+  return:
+    description: Authorization level of the function app.

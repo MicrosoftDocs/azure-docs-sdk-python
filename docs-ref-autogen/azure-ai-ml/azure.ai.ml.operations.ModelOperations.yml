@@ -3,8 +3,6 @@ uid: azure.ai.ml.operations.ModelOperations
 name: ModelOperations
 fullName: azure.ai.ml.operations.ModelOperations
 module: azure.ai.ml.operations
-inheritances:
-- azure.ai.ml._scope_dependent_operations._ScopeDependentOperations
 summary: 'ModelOperations.
 
 
@@ -15,8 +13,8 @@ summary: 'ModelOperations.
 constructor:
   syntax: 'ModelOperations(operation_scope: OperationScope, operation_config: OperationConfig,
     service_client: AzureMachineLearningWorkspaces | AzureMachineLearningWorkspaces,
-    datastore_operations: DatastoreOperations, all_operations: OperationsContainer
-    | None = None, **kwargs)'
+    datastore_operations: DatastoreOperations, service_client_model_dataplane: AzureMachineLearningWorkspaces
+    = None, all_operations: OperationsContainer | None = None, **kwargs)'
   parameters:
   - name: operation_scope
     description: Scope variables for the operations classes of an MLClient object.
@@ -48,6 +46,8 @@ constructor:
     defaultValue: None
     types:
     - <xref:azure.ai.ml._scope_dependent_operations.OperationsContainer>
+  - name: service_client_model_dataplane
+    defaultValue: None
 methods:
 - uid: azure.ai.ml.operations.ModelOperations.archive
   name: archive
@@ -62,20 +62,20 @@ methods:
     - <xref:str>
   - name: version
     description: Version of model asset.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   - name: label
     description: Label of the model asset. (mutually exclusive with version)
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   examples:
   - "Archive a model.<!--[!code-python[Main](les\\ml_samples_misc.py )]-->\n\n<!--\
     \ literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
-    \ \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\7\\\\azure-ai-ml-1.20.0\\\
-    \\samples\\\\ml_samples_misc.py\", \"xml:space\": \"preserve\", \"force\": false,\
+    \ \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\x64\\\
+    \\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\19\\\\azure_ai_ml-1.30.0\\\\\
+    samples\\\\ml_samples_misc.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   ml_client.models.archive(name=\"model1\", version=\"\
     5\")\n\n   ````\n"
@@ -125,7 +125,7 @@ methods:
       directory of the current
 
       user. Contents will be overwritten.'
-    isRequired: true
+    defaultValue: .
     types:
     - <xref:typing.Union>[<xref:PathLike>, <xref:str>]
   exceptions:
@@ -144,12 +144,12 @@ methods:
     - <xref:str>
   - name: version
     description: Version of the model.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   - name: label
     description: Label of the model. (mutually exclusive with version)
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   return:
@@ -169,12 +169,12 @@ methods:
   parameters:
   - name: name
     description: Name of the model.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:str>]
   - name: stage
     description: The Model stage
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:str>]
   keywordOnlyParameters:
@@ -182,6 +182,7 @@ methods:
     description: 'View type for including/excluding (for example) archived models.
 
       Defaults to <xref:ListViewType.ACTIVE_ONLY>.'
+    defaultValue: ListViewType.ACTIVE_ONLY
     types:
     - <xref:azure.ai.ml.constants.ListViewType>
   return:
@@ -234,19 +235,19 @@ methods:
     - <xref:str>
   - name: version
     description: Version of model asset.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   - name: label
     description: Label of the model asset. (mutually exclusive with version)
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   examples:
   - "Restore an archived model.<!--[!code-python[Main](les\\ml_samples_misc.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\7\\\\azure-ai-ml-1.20.0\\\
+    : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\\
+    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\19\\\\azure_ai_ml-1.30.0\\\
     \\samples\\\\ml_samples_misc.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   ml_client.models.restore(name=\"model1\", version=\"\

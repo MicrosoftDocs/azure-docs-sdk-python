@@ -3,8 +3,6 @@ uid: azure.keyvault.administration.aio.KeyVaultAccessControlClient
 name: KeyVaultAccessControlClient
 fullName: azure.keyvault.administration.aio.KeyVaultAccessControlClient
 module: azure.keyvault.administration.aio
-inheritances:
-- azure.keyvault.administration._internal.async_client_base.AsyncKeyVaultClientBase
 summary: Manages role-based access to Azure Key Vault.
 constructor:
   syntax: 'KeyVaultAccessControlClient(vault_url: str, credential: AsyncTokenCredential,
@@ -55,7 +53,7 @@ methods:
   name: create_role_assignment
   summary: Create a role assignment.
   signature: 'async create_role_assignment(scope: str | KeyVaultRoleScope, definition_id:
-    str, principal_id: str, **kwargs: Any) -> KeyVaultRoleAssignment'
+    str, principal_id: str, *, name: str | UUID | None = None, **kwargs: Any) -> KeyVaultRoleAssignment'
   parameters:
   - name: scope
     description: 'scope the role assignment will apply over. <xref:azure.keyvault.administration.aio.KeyVaultRoleScope>
@@ -82,6 +80,7 @@ methods:
   keywordOnlyParameters:
   - name: name
     description: a name for the role assignment. Must be a UUID.
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:uuid.UUID>
@@ -258,6 +257,7 @@ methods:
   keywordOnlyParameters:
   - name: stream
     description: Whether the response payload will be streamed. Defaults to False.
+    defaultValue: 'False'
     types:
     - <xref:bool>
   return:
@@ -271,8 +271,10 @@ methods:
 
 
     To update a role definition, specify the definition''s `name`.'
-  signature: 'async set_role_definition(scope: str | KeyVaultRoleScope, **kwargs:
-    Any) -> KeyVaultRoleDefinition'
+  signature: 'async set_role_definition(scope: str | KeyVaultRoleScope, *, name: str
+    | UUID | None = None, role_name: str | None = None, description: str | None =
+    None, permissions: List[KeyVaultPermission] | None = None, assignable_scopes:
+    List[str | KeyVaultRoleScope] | None = None, **kwargs: Any) -> KeyVaultRoleDefinition'
   parameters:
   - name: scope
     description: 'scope of the role definition. <xref:azure.keyvault.administration.aio.KeyVaultRoleScope>
@@ -293,6 +295,7 @@ methods:
 
       When this argument has no value, a new role definition will be created with
       a generated name.'
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:uuid.UUID>
@@ -302,6 +305,7 @@ methods:
       a role definition, the
 
       role name will be set to an empty string.'
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:None>
@@ -310,6 +314,7 @@ methods:
       or updating a role
 
       definition, the description will be set to an empty string.'
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:None>
@@ -318,11 +323,13 @@ methods:
       or updating a role
 
       definition, the role definition will have no action permissions.'
+    defaultValue: None
     types:
     - <xref:list>[<xref:azure.keyvault.administration.KeyVaultPermission>]
     - <xref:None>
   - name: assignable_scopes
     description: the scopes for which the role definition can be assigned.
+    defaultValue: None
     types:
     - <xref:list>[<xref:str>]
     - <xref:list>[<xref:azure.keyvault.administration.KeyVaultRoleScope>]

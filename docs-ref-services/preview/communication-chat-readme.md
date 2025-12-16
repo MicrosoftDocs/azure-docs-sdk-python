@@ -6,7 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: azure-communication-services
 ms.subservice: chat
-ms.technology: azure
 ---
 # Azure Communication Chat Package client library for Python - version 1.1.0b1 
 
@@ -577,5 +576,5 @@ More sample code should go [here](https://github.com/Azure/azure-sdk-for-python/
 
 If you encounter any bugs or have suggestions, please file an issue in the [Issues](<https://github.com/Azure/azure-sdk-for-python/issues>) section of the project.
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fsdk%2Ftemplate%2Fazure-template%2FREADME.png)
+
 

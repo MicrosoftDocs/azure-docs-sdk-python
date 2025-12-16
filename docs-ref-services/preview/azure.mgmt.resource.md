@@ -6,7 +6,6 @@ ms.date: 06/19/2017
 ms.topic: reference
 ms.devlang: python
 ms.service: azure-python
-ms.technology: azure
 manager: douge
 ---
 # Azure Resources libraries for Python 

@@ -3,8 +3,6 @@ uid: azure.mgmt.elasticsan.aio.operations.VolumesOperations
 name: VolumesOperations
 fullName: azure.mgmt.elasticsan.aio.operations.VolumesOperations
 module: azure.mgmt.elasticsan.aio.operations
-inheritances:
-- builtins.object
 summary: "> [!WARNING]\n> DO NOT instantiate this class directly.\n>\n> \n>\n> Instead,\
   \ you should access the following operations through\n>\n> <xref:azure.mgmt.elasticsan.aio.ElasticSanMgmtClient>'s\n\
   >\n> <xref:volumes> attribute.\n>"
@@ -41,43 +39,11 @@ methods:
     types:
     - <xref:str>
   - name: parameters
-    description: Volume object. Is either a Volume type or a IO type. Required.
+    description: Volume object. Is either a Volume type or a IO[bytes] type. Required.
     isRequired: true
     types:
     - <xref:azure.mgmt.elasticsan.models.Volume>
-    - <xref:typing.IO>
-  keywordOnlyParameters:
-  - name: content_type
-    description: 'Body Parameter content-type. Known values are: ''application/json''.
-
-      Default value is None.'
-    types:
-    - <xref:str>
-  - name: cls
-    description: A custom type or function that will be passed the direct response
-    types:
-    - <xref:callable>
-  - name: continuation_token
-    description: A continuation token to restart a poller from a saved state.
-    types:
-    - <xref:str>
-  - name: polling
-    description: 'By default, your polling method will be AsyncARMPolling. Pass in
-      False for
-
-      this operation to not poll, or pass in your own initialized polling object for
-      a personal
-
-      polling strategy.'
-    types:
-    - <xref:bool>
-    - <xref:azure.core.polling.AsyncPollingMethod>
-  - name: polling_interval
-    description: 'Default waiting time between two polls for LRO operations if no
-
-      Retry-After header is present.'
-    types:
-    - <xref:int>
+    - <xref:typing.IO>[<xref:bytes>]
   return:
     description: 'An instance of AsyncLROPoller that returns either Volume or the
       result of
@@ -92,8 +58,8 @@ methods:
   summary: Delete an Volume.
   signature: 'async begin_delete(resource_group_name: str, elastic_san_name: str,
     volume_group_name: str, volume_name: str, x_ms_delete_snapshots: str | XMsDeleteSnapshots
-    | None = None, x_ms_force_delete: str | XMsForceDelete | None = None, **kwargs:
-    Any) -> AsyncLROPoller[None]'
+    | None = None, x_ms_force_delete: str | XMsForceDelete | None = None, delete_type:
+    str | DeleteType | None = None, **kwargs: Any) -> AsyncLROPoller[None]'
   parameters:
   - name: resource_group_name
     description: 'The name of the resource group. The name is case insensitive.
@@ -124,7 +90,7 @@ methods:
       "false". Default
 
       value is None.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:azure.mgmt.elasticsan.models.XMsDeleteSnapshots>
@@ -135,41 +101,121 @@ methods:
       and "false".
 
       Default value is None.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:azure.mgmt.elasticsan.models.XMsForceDelete>
-  keywordOnlyParameters:
-  - name: cls
-    description: A custom type or function that will be passed the direct response
-    types:
-    - <xref:callable>
-  - name: continuation_token
-    description: A continuation token to restart a poller from a saved state.
+  - name: delete_type
+    description: 'Optional. Specifies that the delete operation should be a permanent
+      delete
+
+      for the soft deleted volume. The value of deleteType can only be ''permanent''.
+      "permanent"
+
+      Default value is None.'
+    defaultValue: None
     types:
     - <xref:str>
-  - name: polling
-    description: 'By default, your polling method will be AsyncARMPolling. Pass in
-      False for
-
-      this operation to not poll, or pass in your own initialized polling object for
-      a personal
-
-      polling strategy.'
-    types:
-    - <xref:bool>
-    - <xref:azure.core.polling.AsyncPollingMethod>
-  - name: polling_interval
-    description: 'Default waiting time between two polls for LRO operations if no
-
-      Retry-After header is present.'
-    types:
-    - <xref:int>
+    - <xref:azure.mgmt.elasticsan.models.DeleteType>
   return:
     description: An instance of AsyncLROPoller that returns either None or the result
       of cls(response)
     types:
     - <xref:azure.core.polling.AsyncLROPoller>[<xref:None>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.mgmt.elasticsan.aio.operations.VolumesOperations.begin_pre_backup
+  name: begin_pre_backup
+  summary: Validate whether a disk snapshot backup can be taken for list of volumes.
+  signature: 'async begin_pre_backup(resource_group_name: str, elastic_san_name: str,
+    volume_group_name: str, parameters: _models.VolumeNameList, *, content_type: str
+    = ''application/json'', **kwargs: Any) -> AsyncLROPoller[_models.PreValidationResponse]'
+  parameters:
+  - name: resource_group_name
+    description: 'The name of the resource group. The name is case insensitive.
+
+      Required.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: elastic_san_name
+    description: The name of the ElasticSan. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: volume_group_name
+    description: The name of the VolumeGroup. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: parameters
+    description: 'Volume Name List (currently only one volume name in the list is
+      supported.
+
+      Server would return error if list is bigger). Is either a VolumeNameList type
+      or a IO[bytes]
+
+      type. Required.'
+    isRequired: true
+    types:
+    - <xref:azure.mgmt.elasticsan.models.VolumeNameList>
+    - <xref:typing.IO>[<xref:bytes>]
+  return:
+    description: 'An instance of AsyncLROPoller that returns either PreValidationResponse
+      or the result
+
+      of cls(response)'
+    types:
+    - <xref:azure.core.polling.AsyncLROPoller>[<xref:azure.mgmt.elasticsan.models.PreValidationResponse>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.mgmt.elasticsan.aio.operations.VolumesOperations.begin_pre_restore
+  name: begin_pre_restore
+  summary: Validate whether a list of backed up disk snapshots can be restored into
+    ElasticSan volumes.
+  signature: 'async begin_pre_restore(resource_group_name: str, elastic_san_name:
+    str, volume_group_name: str, parameters: _models.DiskSnapshotList, *, content_type:
+    str = ''application/json'', **kwargs: Any) -> AsyncLROPoller[_models.PreValidationResponse]'
+  parameters:
+  - name: resource_group_name
+    description: 'The name of the resource group. The name is case insensitive.
+
+      Required.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: elastic_san_name
+    description: The name of the ElasticSan. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: volume_group_name
+    description: The name of the VolumeGroup. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: parameters
+    description: 'Disk Snapshot List (currently only one Disk Snapshot in the list
+      is
+
+      supported and that the Disk Snapshot must be in same azure region as the ElasticSan.
+      Server
+
+      would return error if list is bigger). Is either a DiskSnapshotList type or
+      a IO[bytes] type.
+
+      Required.'
+    isRequired: true
+    types:
+    - <xref:azure.mgmt.elasticsan.models.DiskSnapshotList>
+    - <xref:typing.IO>[<xref:bytes>]
+  return:
+    description: 'An instance of AsyncLROPoller that returns either PreValidationResponse
+      or the result
+
+      of cls(response)'
+    types:
+    - <xref:azure.core.polling.AsyncLROPoller>[<xref:azure.mgmt.elasticsan.models.PreValidationResponse>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.mgmt.elasticsan.aio.operations.VolumesOperations.begin_update
@@ -202,43 +248,12 @@ methods:
     types:
     - <xref:str>
   - name: parameters
-    description: Volume object. Is either a VolumeUpdate type or a IO type. Required.
+    description: Volume object. Is either a VolumeUpdate type or a IO[bytes] type.
+      Required.
     isRequired: true
     types:
     - <xref:azure.mgmt.elasticsan.models.VolumeUpdate>
-    - <xref:typing.IO>
-  keywordOnlyParameters:
-  - name: content_type
-    description: 'Body Parameter content-type. Known values are: ''application/json''.
-
-      Default value is None.'
-    types:
-    - <xref:str>
-  - name: cls
-    description: A custom type or function that will be passed the direct response
-    types:
-    - <xref:callable>
-  - name: continuation_token
-    description: A continuation token to restart a poller from a saved state.
-    types:
-    - <xref:str>
-  - name: polling
-    description: 'By default, your polling method will be AsyncARMPolling. Pass in
-      False for
-
-      this operation to not poll, or pass in your own initialized polling object for
-      a personal
-
-      polling strategy.'
-    types:
-    - <xref:bool>
-    - <xref:azure.core.polling.AsyncPollingMethod>
-  - name: polling_interval
-    description: 'Default waiting time between two polls for LRO operations if no
-
-      Retry-After header is present.'
-    types:
-    - <xref:int>
+    - <xref:typing.IO>[<xref:bytes>]
   return:
     description: 'An instance of AsyncLROPoller that returns either Volume or the
       result of
@@ -276,11 +291,6 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: cls
-    description: A custom type or function that will be passed the direct response
-    types:
-    - <xref:callable>
   return:
     description: Volume or the result of cls(response)
     types:
@@ -291,7 +301,8 @@ methods:
   name: list_by_volume_group
   summary: List Volumes in a VolumeGroup.
   signature: 'list_by_volume_group(resource_group_name: str, elastic_san_name: str,
-    volume_group_name: str, **kwargs: Any) -> AsyncIterable[Volume]'
+    volume_group_name: str, x_ms_access_soft_deleted_resources: str | XMsAccessSoftDeletedResources
+    | None = None, **kwargs: Any) -> AsyncIterable[Volume]'
   parameters:
   - name: resource_group_name
     description: 'The name of the resource group. The name is case insensitive.
@@ -310,11 +321,17 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: cls
-    description: A custom type or function that will be passed the direct response
+  - name: x_ms_access_soft_deleted_resources
+    description: 'Optional, returns only soft deleted volumes if set
+
+      to true. If set to false or if not specified, returns only active volumes. Known
+      values are:
+
+      "true" and "false". Default value is None.'
+    defaultValue: None
     types:
-    - <xref:callable>
+    - <xref:str>
+    - <xref:azure.mgmt.elasticsan.models.XMsAccessSoftDeletedResources>
   return:
     description: An iterator like instance of either Volume or the result of cls(response)
     types:
@@ -324,4 +341,4 @@ methods:
 attributes:
 - uid: azure.mgmt.elasticsan.aio.operations.VolumesOperations.models
   name: models
-  signature: models = <module 'azure.mgmt.elasticsan.models' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\azure\\mgmt\\elasticsan\\models\\__init__.py'>
+  signature: models = <module 'azure.mgmt.elasticsan.models' from 'C:\\ToolCache\\Python\\3.11.9\\x64\\Lib\\site-packages\\py2docfx\\venv\\venv143\\Lib\\site-packages\\azure\\mgmt\\elasticsan\\models\\__init__.py'>

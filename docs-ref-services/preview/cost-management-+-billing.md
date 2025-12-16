@@ -7,7 +7,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: cost-management-billing
 manager: douge
-ms.technology: azure
 ---
 # Azure Billing libraries for python
 

@@ -3,8 +3,6 @@ uid: azure.functions.servicebus.ServiceBusMessageInConverter
 name: ServiceBusMessageInConverter
 fullName: azure.functions.servicebus.ServiceBusMessageInConverter
 module: azure.functions.servicebus
-inheritances:
-- azure.functions.meta.InConverter
 constructor:
   syntax: ServiceBusMessageInConverter()
 methods:
@@ -16,7 +14,52 @@ methods:
     isRequired: true
 - uid: azure.functions.servicebus.ServiceBusMessageInConverter.decode
   name: decode
-  signature: 'decode(data: Datum, *, trigger_metadata) -> ServiceBusMessage'
+  summary: Returns the application setting from environment variable.
+  signature: 'decode(data: Datum, *, trigger_metadata: Mapping[str, Datum]) -> ServiceBusMessage
+    | List[ServiceBusMessage]'
+  parameters:
+  - name: data
+    description: The datum from GRPC message
+    isRequired: true
+    types:
+    - <xref:meta.Datum>
+  - name: trigger_metadata
+    description: 'The metadata of the Service Bus trigger, usually populated by
+
+      function host'
+    isRequired: true
+    types:
+    - <xref:Mapping>[<xref:str>, <xref:meta.Datum>]
+  keywordOnlyParameters:
+  - name: trigger_metadata
+    isRequired: true
+  return:
+    description: 'When ''cardinality'' is set to ''one'', this method returns a single
+
+      ServiceBusMessage. When ''cardinality'' is set to ''many'' this method
+
+      returns a list of ServiceBusMessage.'
+    types:
+    - <xref:typing.Union>[<xref:azure.functions.servicebus.ServiceBusMessage>, <xref:typing.List>[<xref:azure.functions.servicebus.ServiceBusMessage>]]
+- uid: azure.functions.servicebus.ServiceBusMessageInConverter.decode_multiple_messages
+  name: decode_multiple_messages
+  summary: 'Unlike EventHub, the trigger_metadata already contains a set of
+
+    arrays (e.g. ''ContentTypeArray'', ''CorrelationidArray''...). We can
+
+    retrieve message properties directly from those array.'
+  signature: 'decode_multiple_messages(data: Datum, *, trigger_metadata: Mapping[str,
+    Datum]) -> List[ServiceBusMessage]'
+  parameters:
+  - name: data
+    isRequired: true
+  keywordOnlyParameters:
+  - name: trigger_metadata
+    isRequired: true
+- uid: azure.functions.servicebus.ServiceBusMessageInConverter.decode_single_message
+  name: decode_single_message
+  signature: 'decode_single_message(data: Datum, *, trigger_metadata: Mapping[str,
+    Datum]) -> ServiceBusMessage'
   parameters:
   - name: data
     isRequired: true

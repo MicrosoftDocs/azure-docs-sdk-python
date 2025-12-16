@@ -3,15 +3,66 @@ uid: azure.search.documents.indexes.models.SearchField
 name: SearchField
 fullName: azure.search.documents.indexes.models.SearchField
 module: azure.search.documents.indexes.models
-inheritances:
-- builtins.object
 summary: 'Represents a field in an index definition, which describes the name, data
-  type, and search behavior of a field.
+  type, and search
+
+  behavior of a field.
 
 
-  All required parameters must be populated in order to send to Azure.'
+  All required parameters must be populated in order to send to server.'
 constructor:
-  syntax: SearchField(**kwargs)
+  syntax: 'SearchField(*, name: str, type: str | SearchFieldDataType, key: bool |
+    None = None, hidden: bool | None = None, stored: bool | None = None, searchable:
+    bool | None = None, filterable: bool | None = None, sortable: bool | None = None,
+    facetable: bool | None = None, permission_filter: str | PermissionFilter | None
+    = None, sensitivity_label: bool | None = None, analyzer_name: str | LexicalAnalyzerName
+    | None = None, search_analyzer_name: str | LexicalAnalyzerName | None = None,
+    index_analyzer_name: str | LexicalAnalyzerName | None = None, synonym_map_names:
+    List[str] | None = None, fields: List[SearchField] | None = None, normalizer_name:
+    str | LexicalAnalyzerName | None = None, vector_search_dimensions: int | None
+    = None, vector_search_profile_name: str | None = None, vector_encoding_format:
+    str | VectorEncodingFormat | None = None, **kwargs)'
+  keywordOnlyParameters:
+  - name: name
+    isRequired: true
+  - name: type
+    isRequired: true
+  - name: key
+    defaultValue: None
+  - name: hidden
+    defaultValue: None
+  - name: stored
+    defaultValue: None
+  - name: searchable
+    defaultValue: None
+  - name: filterable
+    defaultValue: None
+  - name: sortable
+    defaultValue: None
+  - name: facetable
+    defaultValue: None
+  - name: permission_filter
+    defaultValue: None
+  - name: sensitivity_label
+    defaultValue: None
+  - name: analyzer_name
+    defaultValue: None
+  - name: search_analyzer_name
+    defaultValue: None
+  - name: index_analyzer_name
+    defaultValue: None
+  - name: synonym_map_names
+    defaultValue: None
+  - name: fields
+    defaultValue: None
+  - name: normalizer_name
+    defaultValue: None
+  - name: vector_search_dimensions
+    defaultValue: None
+  - name: vector_search_profile_name
+    defaultValue: None
+  - name: vector_encoding_format
+    defaultValue: None
 variables:
 - description: 'The name of the field, which must be unique within the fields collection
     of the
@@ -43,6 +94,16 @@ variables:
   name: key
   types:
   - <xref:bool>
+- description: 'Convenience property that mirrors the generated `retrievable` flag.
+    Set this to
+
+    true to prevent the field from being returned in search results. Defaults to false
+    for simple
+
+    fields, true for vector fields, and null for complex fields.'
+  name: hidden
+  types:
+  - <xref:bool>
 - description: 'An immutable value indicating whether the field will be persisted
     separately on
 
@@ -55,43 +116,44 @@ variables:
     during index creation and only for vector fields. This property cannot be changed
     for existing
 
-    fields or set as false for new fields. If this property is set as false, the property
+    fields or set as false for new fields. If this property is set to false, `hidden`
+    must be set
 
-    ''hidden'' must be set to true. This property must be true or unset for key fields,
+    to true. This property must be true or unset for key fields, for new fields, and
+    for
 
-    for new fields, and for non-vector fields, and it must be null for complex fields.
-    Disabling
+    non-vector fields, and it must be null for complex fields. Disabling this property
+    will reduce
 
-    this property will reduce index storage requirements. The default is true for
-    vector fields.'
+    index storage requirements. The default is true for vector fields.'
   name: stored
   types:
   - <xref:bool>
 - description: 'A value indicating whether the field is full-text searchable. This
-    means it
+    means it will
 
-    will undergo analysis such as word-breaking during indexing. If you set a searchable
-    field to a
+    undergo analysis such as word-breaking during indexing. If you set a searchable
+    field to a value
 
-    value like "sunny day", internally it will be split into the individual tokens
-    "sunny" and
+    like "sunny day", internally it will be split into the individual tokens "sunny"
+    and "day".
 
-    "day". This enables full-text searches for these terms. Fields of type Edm.String
-    or
+    This enables full-text searches for these terms. Fields of type Edm.String or
+    Collection(Edm.String)
 
-    Collection(Edm.String) are searchable by default. This property must be false
-    for simple fields
+    are searchable by default. This property must be false for simple fields of other
+    non-string data
 
-    of other non-string data types, and it must be null for complex fields. Note:
-    searchable fields
+    types, and it must be null for complex fields. Note: searchable fields consume
+    extra space in your
 
-    consume extra space in your index since Azure Cognitive Search will store an additional
+    index to accommodate additional tokenized versions of the field value for full-text
+    searches. If
 
-    tokenized version of the field value for full-text searches. If you want to save
-    space in your
+    you want to save space in your index and you don''t need a field to be included
+    in searches, set
 
-    index and you don''t need a field to be included in searches, set searchable to
-    false.'
+    searchable to false.'
   name: searchable
   types:
   - <xref:bool>
@@ -108,75 +170,87 @@ variables:
     to "sunny day",
 
     $filter=f eq ''sunny'' will find no matches, but $filter=f eq ''sunny day'' will.
-    This property
+    This property must
 
-    must be null for complex fields. Default is true for simple fields and null for
-    complex fields.'
+    be null for complex fields. Default is true for simple fields and null for complex
+    fields.'
   name: filterable
   types:
   - <xref:bool>
 - description: 'A value indicating whether to enable the field to be referenced in
     $orderby
 
-    expressions. By default Azure Cognitive Search sorts results by score, but in
-    many experiences
+    expressions. By default, the search engine sorts results by score, but in many
+    experiences users
 
-    users will want to sort by fields in the documents. A simple field can be sortable
-    only if it
+    will want to sort by fields in the documents. A simple field can be sortable only
+    if it is
 
-    is single-valued (it has a single value in the scope of the parent document).
-    Simple collection
+    single-valued (it has a single value in the scope of the parent document). Simple
+    collection
 
     fields cannot be sortable, since they are multi-valued. Simple sub-fields of complex
+    collections
 
-    collections are also multi-valued, and therefore cannot be sortable. This is true
-    whether it''s
+    are also multi-valued, and therefore cannot be sortable. This is true whether
+    it''s an immediate
 
-    an immediate parent field, or an ancestor field, that''s the complex collection.
-    Complex fields
+    parent field, or an ancestor field, that''s the complex collection. Complex fields
+    cannot be
 
-    cannot be sortable and the sortable property must be null for such fields. The
-    default for
+    sortable and the sortable property must be null for such fields. The default for
+    sortable is true
 
-    sortable is true for single-valued simple fields, false for multi-valued simple
-    fields, and
-
-    null for complex fields.'
+    for single-valued simple fields, false for multi-valued simple fields, and null
+    for complex fields.'
   name: sortable
   types:
   - <xref:bool>
 - description: 'A value indicating whether to enable the field to be referenced in
-    facet
+    facet queries.
 
-    queries. Typically used in a presentation of search results that includes hit
-    count by category
+    Typically used in a presentation of search results that includes hit count by
+    category (for
 
-    (for example, search for digital cameras and see hits by brand, by megapixels,
-    by price, and so
+    example, search for digital cameras and see hits by brand, by megapixels, by price,
+    and so on).
 
-    on). This property must be null for complex fields. Fields of type Edm.GeographyPoint
+    This property must be null for complex fields. Fields of type Edm.GeographyPoint
     or
 
     Collection(Edm.GeographyPoint) cannot be facetable. Default is true for all other
-    simple
-
-    fields.'
+    simple fields.'
   name: facetable
   types:
   - <xref:bool>
+- description: 'A value indicating whether the field should be used as a permission
+    filter.
+
+    Known values are: "userIds", "groupIds", and "rbacScope".'
+  name: permission_filter
+  types:
+  - <xref:str>
+  - <xref:azure.search.documents.indexes.models.PermissionFilter>
+- description: 'A value indicating whether the field should be used for sensitivity
+    label
+
+    filtering. This enables document-level filtering based on Microsoft Purview sensitivity
+    labels.'
+  name: sensitivity_label
+  types:
+  - <xref:bool>
 - description: 'The name of the analyzer to use for the field. This option can be
-    used only
+    used only with
 
-    with searchable fields and it can''t be set together with either searchAnalyzer
-    or
+    searchable fields and it can''t be set together with either searchAnalyzer or
+    indexAnalyzer. Once
 
-    indexAnalyzer. Once the analyzer is chosen, it cannot be changed for the field.
-    Must be null
+    the analyzer is chosen, it cannot be changed for the field. Must be null for complex
+    fields. Known
 
-    for complex fields. Known values are: "ar.microsoft", "ar.lucene", "hy.lucene",
-    "bn.microsoft",
+    values are: "ar.microsoft", "ar.lucene", "hy.lucene", "bn.microsoft", "eu.lucene",
 
-    "eu.lucene", "bg.microsoft", "bg.lucene", "ca.microsoft", "ca.lucene", "zh-Hans.microsoft",
+    "bg.microsoft", "bg.lucene", "ca.microsoft", "ca.lucene", "zh-Hans.microsoft",
 
     "zh-Hans.lucene", "zh-Hant.microsoft", "zh-Hant.lucene", "hr.microsoft", "cs.microsoft",
 
@@ -217,18 +291,72 @@ variables:
 - description: 'The name of the analyzer used at search time for the field. This option
 
     can be used only with searchable fields. It must be set together with indexAnalyzer
-    and it
+    and it cannot
 
-    cannot be set together with the analyzer option. This property cannot be set to
-    the name of a
+    be set together with the analyzer option. This property cannot be set to the name
+    of a language
 
-    language analyzer; use the analyzer property instead if you need a language analyzer.
-    This
+    analyzer; use the analyzer property instead if you need a language analyzer. This
+    analyzer can be
 
-    analyzer can be updated on an existing field. Must be null for complex fields.
-    Known values
+    updated on an existing field. Must be null for complex fields. Known values are:
+    "ar.microsoft",
 
-    are: "ar.microsoft", "ar.lucene", "hy.lucene", "bn.microsoft", "eu.lucene", "bg.microsoft",
+    "ar.lucene", "hy.lucene", "bn.microsoft", "eu.lucene", "bg.microsoft", "bg.lucene",
+
+    "ca.microsoft", "ca.lucene", "zh-Hans.microsoft", "zh-Hans.lucene", "zh-Hant.microsoft",
+
+    "zh-Hant.lucene", "hr.microsoft", "cs.microsoft", "cs.lucene", "da.microsoft",
+    "da.lucene",
+
+    "nl.microsoft", "nl.lucene", "en.microsoft", "en.lucene", "et.microsoft", "fi.microsoft",
+
+    "fi.lucene", "fr.microsoft", "fr.lucene", "gl.lucene", "de.microsoft", "de.lucene",
+
+    "el.microsoft", "el.lucene", "gu.microsoft", "he.microsoft", "hi.microsoft", "hi.lucene",
+
+    "hu.microsoft", "hu.lucene", "is.microsoft", "id.microsoft", "id.lucene", "ga.lucene",
+
+    "it.microsoft", "it.lucene", "ja.microsoft", "ja.lucene", "kn.microsoft", "ko.microsoft",
+
+    "ko.lucene", "lv.microsoft", "lv.lucene", "lt.microsoft", "ml.microsoft", "ms.microsoft",
+
+    "mr.microsoft", "nb.microsoft", "no.lucene", "fa.lucene", "pl.microsoft", "pl.lucene",
+
+    "pt-BR.microsoft", "pt-BR.lucene", "pt-PT.microsoft", "pt-PT.lucene", "pa.microsoft",
+
+    "ro.microsoft", "ro.lucene", "ru.microsoft", "ru.lucene", "sr-cyrillic.microsoft",
+
+    "sr-latin.microsoft", "sk.microsoft", "sl.microsoft", "es.microsoft", "es.lucene",
+
+    "sv.microsoft", "sv.lucene", "ta.microsoft", "te.microsoft", "th.microsoft", "th.lucene",
+
+    "tr.microsoft", "tr.lucene", "uk.microsoft", "ur.microsoft", "vi.microsoft",
+
+    "standard.lucene", "standardasciifolding.lucene", "keyword", "pattern", "simple",
+    "stop", and
+
+    "whitespace".'
+  name: search_analyzer_name
+  types:
+  - <xref:str>
+  - <xref:azure.search.documents.indexes.models.LexicalAnalyzerName>
+- description: 'The name of the analyzer used at indexing time for the field. This
+    option
+
+    can be used only with searchable fields. It must be set together with searchAnalyzer
+    and it cannot
+
+    be set together with the analyzer option. This property cannot be set to the name
+    of a language
+
+    analyzer; use the analyzer property instead if you need a language analyzer. Once
+    the analyzer is
+
+    chosen, it cannot be changed for the field. Must be null for complex fields. Known
+    values are:
+
+    "ar.microsoft", "ar.lucene", "hy.lucene", "bn.microsoft", "eu.lucene", "bg.microsoft",
 
     "bg.lucene", "ca.microsoft", "ca.lucene", "zh-Hans.microsoft", "zh-Hans.lucene",
 
@@ -263,61 +391,6 @@ variables:
     "stop", and
 
     "whitespace".'
-  name: search_analyzer_name
-  types:
-  - <xref:str>
-  - <xref:azure.search.documents.indexes.models.LexicalAnalyzerName>
-- description: 'The name of the analyzer used at indexing time for the field. This
-    option
-
-    can be used only with searchable fields. It must be set together with searchAnalyzer
-    and it
-
-    cannot be set together with the analyzer option.  This property cannot be set
-    to the name of a
-
-    language analyzer; use the analyzer property instead if you need a language analyzer.
-    Once the
-
-    analyzer is chosen, it cannot be changed for the field. Must be null for complex
-    fields. Known
-
-    values are: "ar.microsoft", "ar.lucene", "hy.lucene", "bn.microsoft", "eu.lucene",
-
-    "bg.microsoft", "bg.lucene", "ca.microsoft", "ca.lucene", "zh-Hans.microsoft",
-
-    "zh-Hans.lucene", "zh-Hant.microsoft", "zh-Hant.lucene", "hr.microsoft", "cs.microsoft",
-
-    "cs.lucene", "da.microsoft", "da.lucene", "nl.microsoft", "nl.lucene", "en.microsoft",
-
-    "en.lucene", "et.microsoft", "fi.microsoft", "fi.lucene", "fr.microsoft", "fr.lucene",
-
-    "gl.lucene", "de.microsoft", "de.lucene", "el.microsoft", "el.lucene", "gu.microsoft",
-
-    "he.microsoft", "hi.microsoft", "hi.lucene", "hu.microsoft", "hu.lucene", "is.microsoft",
-
-    "id.microsoft", "id.lucene", "ga.lucene", "it.microsoft", "it.lucene", "ja.microsoft",
-
-    "ja.lucene", "kn.microsoft", "ko.microsoft", "ko.lucene", "lv.microsoft", "lv.lucene",
-
-    "lt.microsoft", "ml.microsoft", "ms.microsoft", "mr.microsoft", "nb.microsoft",
-    "no.lucene",
-
-    "fa.lucene", "pl.microsoft", "pl.lucene", "pt-BR.microsoft", "pt-BR.lucene", "pt-PT.microsoft",
-
-    "pt-PT.lucene", "pa.microsoft", "ro.microsoft", "ro.lucene", "ru.microsoft", "ru.lucene",
-
-    "sr-cyrillic.microsoft", "sr-latin.microsoft", "sk.microsoft", "sl.microsoft",
-    "es.microsoft",
-
-    "es.lucene", "sv.microsoft", "sv.lucene", "ta.microsoft", "te.microsoft", "th.microsoft",
-
-    "th.lucene", "tr.microsoft", "tr.lucene", "uk.microsoft", "ur.microsoft", "vi.microsoft",
-
-    "standard.lucene", "standardasciifolding.lucene", "keyword", "pattern", "simple",
-    "stop", and
-
-    "whitespace".'
   name: index_analyzer_name
   types:
   - <xref:str>
@@ -329,10 +402,10 @@ variables:
     is chosen, it
 
     cannot be changed for the field. Must be null for complex fields. Known values
-    are:
+    are: "asciifolding",
 
-    "asciifolding", "elision", "lowercase", "standard", and "uppercase".'
-  name: normalizer
+    "elision", "lowercase", "standard", and "uppercase".'
+  name: normalizer_name
   types:
   - <xref:str>
   - <xref:azure.search.documents.indexes.models.LexicalNormalizerName>
@@ -342,23 +415,28 @@ variables:
   - <xref:int>
 - description: 'The name of the vector search profile that specifies the algorithm
 
-    to use when searching the vector field.'
+    and vectorizer to use when searching the vector field.'
   name: vector_search_profile_name
   types:
   - <xref:str>
+- description: The encoding format to interpret the field contents. "packedBit"
+  name: vector_encoding_format
+  types:
+  - <xref:str>
+  - <xref:azure.search.documents.indexes.models.VectorEncodingFormat>
 - description: 'A list of the names of synonym maps to associate with this field.
-    This
+    This option
 
-    option can be used only with searchable fields. Currently only one synonym map
-    per field is
+    can be used only with searchable fields. Currently only one synonym map per field
+    is supported.
 
-    supported. Assigning a synonym map to a field ensures that query terms targeting
-    that field are
+    Assigning a synonym map to a field ensures that query terms targeting that field
+    are expanded at
 
-    expanded at query-time using the rules in the synonym map. This attribute can
-    be changed on
+    query-time using the rules in the synonym map. This attribute can be changed on
+    existing fields.
 
-    existing fields. Must be null or an empty collection for complex fields.'
+    Must be null or an empty collection for complex fields.'
   name: synonym_map_names
   types:
   - <xref:list>[<xref:str>]
@@ -368,23 +446,23 @@ variables:
   name: fields
   types:
   - <xref:list>[<xref:azure.search.documents.indexes.models.SearchField>]
-- description: The encoding format to interpret the field contents. "packedBit"
-  name: vector_encoding_format
-  types:
-  - <xref:str>
-  - <xref:azure.search.documents.indexes.models.VectorEncodingFormat>
 methods:
 - uid: azure.search.documents.indexes.models.SearchField.as_dict
   name: as_dict
   summary: Return a dict that can be serialized using json.dump.
-  signature: 'as_dict(keep_readonly: bool = True, **kwargs: Any) -> MutableMapping[str,
-    Any]'
+  signature: 'as_dict(keep_readonly: bool = True, key_transformer: ~typing.Callable[[str,
+    ~typing.Dict[str, ~typing.Any], ~typing.Any], ~typing.Any] = <function attribute_transformer>,
+    **kwargs: ~typing.Any) -> MutableMapping[str, Any]'
   parameters:
   - name: keep_readonly
     description: If you want to serialize the readonly attributes
     defaultValue: 'True'
     types:
     - <xref:bool>
+  - name: key_transformer
+    description: A callable that will transform the key of the dict
+    types:
+    - <xref:typing.Callable>
   return:
     description: A dict JSON compatible object
     types:
@@ -392,8 +470,7 @@ methods:
 - uid: azure.search.documents.indexes.models.SearchField.deserialize
   name: deserialize
   summary: Parse a str using the RestAPI syntax and return a SearchField instance.
-  signature: 'deserialize(data: Any, content_type: str | None = None) -> SearchField
-    | None'
+  signature: 'deserialize(data: Any, content_type: str | None = None) -> Self | None'
   parameters:
   - name: data
     description: A str using RestAPI structure. JSON by default.
@@ -408,18 +485,34 @@ methods:
   return:
     description: A SearchField instance
   exceptions:
-  - type: DeserializationError if something went wrong
+  - type: DeserializationError
+    description: if something went wrong
+- uid: azure.search.documents.indexes.models.SearchField.enable_additional_properties_sending
+  name: enable_additional_properties_sending
+  signature: enable_additional_properties_sending() -> None
 - uid: azure.search.documents.indexes.models.SearchField.from_dict
   name: from_dict
-  summary: Parse a dict using given key extractor return a model.
-  signature: 'from_dict(data: Any, content_type: str | None = None) -> SearchField
-    | None'
+  summary: 'Parse a dict using given key extractor return a model.
+
+
+    By default consider key
+
+    extractors (rest_key_case_insensitive_extractor, attribute_key_case_insensitive_extractor
+
+    and last_rest_key_case_insensitive_extractor)'
+  signature: 'from_dict(data: Any, key_extractors: Callable[[str, Dict[str, Any],
+    Any], Any] | None = None, content_type: str | None = None) -> Self | None'
   parameters:
   - name: data
     description: A dict using RestAPI structure
     isRequired: true
     types:
     - <xref:dict>
+  - name: key_extractors
+    description: A callable that will extract a key from a dict
+    defaultValue: None
+    types:
+    - <xref:typing.Callable>
   - name: content_type
     description: JSON by default, set application/xml if XML.
     defaultValue: None
@@ -430,18 +523,23 @@ methods:
     types:
     - <xref:azure.search.documents.indexes.models.SearchField>
   exceptions:
-  - type: DeserializationError if something went wrong
+  - type: DeserializationError
+    description: if something went wrong
+- uid: azure.search.documents.indexes.models.SearchField.is_xml_model
+  name: is_xml_model
+  signature: is_xml_model() -> bool
 - uid: azure.search.documents.indexes.models.SearchField.serialize
   name: serialize
-  summary: 'Return the JSON that would be sent to server from this model.
-
-    :param bool keep_readonly: If you want to serialize the readonly attributes
-
-    :returns: A dict JSON compatible object
-
-    :rtype: dict'
+  summary: Return the JSON that would be sent to server from this model.
   signature: 'serialize(keep_readonly: bool = False, **kwargs: Any) -> MutableMapping[str,
     Any]'
   parameters:
   - name: keep_readonly
+    description: If you want to serialize the readonly attributes
     defaultValue: 'False'
+    types:
+    - <xref:bool>
+  return:
+    description: A dict JSON compatible object
+    types:
+    - <xref:dict>

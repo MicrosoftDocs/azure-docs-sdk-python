@@ -420,7 +420,7 @@ For more information see the [Code of Conduct FAQ][coc_faq]
 or contact [opencode@microsoft.com][coc_contact] with any
 additional questions or comments.
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-net%2Fsdk%2Fsearch%2FAzure.Search.Documents%2FREADME.png)
+
 
 ## Related projects
 
@@ -428,7 +428,7 @@ additional questions or comments.
 
 <!-- LINKS -->
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fsdk%2Fsearch%2Fazure-search-documents%2FREADME.png)
+
 
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [azure_core]: https://github.com/Azure/azure-sdk-for-python/tree/7cd31ac01fed9c790cec71de438af9c45cb45821/sdk/core/azure-core/README.md

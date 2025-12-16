@@ -6,7 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: storage
 ms.subservice: blobs
-ms.technology: azure
 ---
 # Azure Storage Blobs client library for Python - version 12.6.0 
 

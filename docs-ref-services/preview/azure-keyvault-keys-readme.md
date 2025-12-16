@@ -5,7 +5,6 @@ ms.date: 10/05/2021
 ms.topic: reference
 ms.devlang: python
 ms.service: key-vault
-ms.technology: azure
 ---
 # Azure Key Vault Keys client library for Python - version 4.5.0a20211005001 
 
@@ -470,5 +469,5 @@ contact opencode@microsoft.com with any additional questions or comments.
 [key_samples]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/keyvault/azure-keyvault-keys/samples
 [soft_delete]: https://docs.microsoft.com/azure/key-vault/general/soft-delete-overview
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fsdk%2Fkeyvault%2Fazure-keyvault-keys%2FREADME.png)
+
 

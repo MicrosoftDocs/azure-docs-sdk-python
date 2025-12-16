@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-monitor-opentelemetry-exporter, monitor
-ms.date: 09/10/2024
+ms.date: 12/04/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: monitor
@@ -12,7 +12,7 @@ The exporter for Azure Monitor allows Python applications to export data from th
 
 Prior to using this SDK, please read and understand [Data Collection Basics](https://learn.microsoft.com/azure/azure-monitor/app/opentelemetry-overview?tabs=python), especially the section on [telemetry types](https://learn.microsoft.com/azure/azure-monitor/app/opentelemetry-overview?tabs=python#telemetry-types). OpenTelemetry terminology differs from Application Insights terminology so it is important to understand the way the telemetry types map to each other.
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry-exporter_1.0.0b29/sdk/monitor/azure-monitor-opentelemetry-exporter) | [Package (PyPi)][pypi] | [API reference documentation][api_docs] | [Product documentation][product_docs] | [Samples][exporter_samples] | [Changelog](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-opentelemetry-exporter_1.0.0b29/sdk/monitor/azure-monitor-opentelemetry-exporter/CHANGELOG.md)
+[Source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry-exporter_1.0.0b46/sdk/monitor/azure-monitor-opentelemetry-exporter) | [Package (PyPi)][pypi] | [API reference documentation][api_docs] | [Product documentation][product_docs] | [Samples][exporter_samples] | [Changelog](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-opentelemetry-exporter_1.0.0b46/sdk/monitor/azure-monitor-opentelemetry-exporter/CHANGELOG.md)
 
 ## Getting started
 
@@ -145,7 +145,7 @@ All configuration options can be passed through the constructors of exporters th
 * `connection_string`: The connection string used for your Application Insights resource.
 * `disable_offline_storage`: Boolean value to determine whether to disable storing failed telemetry records for retry. Defaults to `False`.
 * `storage_directory`: Storage directory in which to store retry files. Defaults to `<tempfile.gettempdir()>/Microsoft/AzureMonitor/opentelemetry-python-<your-instrumentation-key>`.
-* `credential`: Token credential, such as ManagedIdentityCredential or ClientSecretCredential, used for [Azure Active Directory (AAD) authentication][aad_for_ai_docs]. Defaults to None. See [samples][exporter_samples] for examples.
+* `credential`: Token credential, such as ManagedIdentityCredential or ClientSecretCredential, used for [Azure Active Directory (AAD) authentication][aad_for_ai_docs]. Defaults to None. See [samples][exporter_samples] for examples. The credential will be automatically created from the `APPLICATIONINSIGHTS_AUTHENTICATION_STRING` environment variable if not explicitly passed in. See [documentation][aad_env_var_docs] for more.
 
 ## Examples
 
@@ -645,7 +645,7 @@ For all applications set up with OpenTelemetry SDK and Azure Monitor exporters, 
 
 ## Troubleshooting
 
-The exporter raises exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-opentelemetry-exporter_1.0.0b29/sdk/core/azure-core/README.md#azure-core-library-exceptions).
+The exporter raises exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-opentelemetry-exporter_1.0.0b46/sdk/core/azure-core/README.md#azure-core-library-exceptions).
 
 ## Next steps
 
@@ -655,13 +655,13 @@ Please find further examples in the [samples][exporter_samples] directory demons
 
 ### Additional documentation
 
-For more extensive documentation on the Azure Monitor service, see the [Azure Monitor documentation][product_docs] on docs.microsoft.com.
+For more extensive documentation on the Azure Monitor service, see the [Azure Monitor documentation][product_docs] on learn.microsoft.com.
 
 For detailed overview of OpenTelemetry, visit their [overview](https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/overview.md) page.
 
 For the official OpenTelemetry Python documentation and how to enable other telemetry scenarios, visit the official OpenTelemetry [website](https://opentelemetry.io/docs/instrumentation/python/).
 
-For more information on the Azure Monitor OpenTelemetry Distro, which is a bundle of useful, pre-assembled components (one of them being this current package) that enable telemetry scenarios with Azure Monitor, visit the [README](https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry-exporter_1.0.0b29/sdk/monitor/azure-monitor-opentelemetry).
+For more information on the Azure Monitor OpenTelemetry Distro, which is a bundle of useful, pre-assembled components (one of them being this current package) that enable telemetry scenarios with Azure Monitor, visit the [README](https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry-exporter_1.0.0b46/sdk/monitor/azure-monitor-opentelemetry).
 
 ## Contributing
 
@@ -678,16 +678,18 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 <!-- LINKS -->
+[aad_env_var_docs]: https://learn.microsoft.com/azure/azure-monitor/app/azure-ad-authentication
+<!-- TODO: Update with documentation link to be python-specific after Python docs have been updated to be like Java: https://learn.microsoft.com/en-us/azure/azure-monitor/app/azure-ad-authentication?tabs=java#environment-variable-configuration-2 -->
 [aad_for_ai_docs]: https://learn.microsoft.com/azure/azure-monitor/app/azure-ad-authentication?tabs=python
 [api_docs]: https://azure.github.io/azure-sdk-for-python/monitor.html#azure-monitor-opentelemetry-exporter
-[exporter_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry-exporter_1.0.0b29/sdk/monitor/azure-monitor-opentelemetry-exporter/samples
-[product_docs]: /azure/azure-monitor/overview
+[exporter_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry-exporter_1.0.0b46/sdk/monitor/azure-monitor-opentelemetry-exporter/samples
+[product_docs]: https://learn.microsoft.com/azure/azure-monitor/overview
 [azure_sub]: https://azure.microsoft.com/free/
 [pip]: https://pypi.org/project/pip/
 [pypi]: https://pypi.org/project/azure-monitor-opentelemetry-exporter/
 [python]: https://www.python.org/downloads/
 [ot_sdk_python]: https://github.com/open-telemetry/opentelemetry-python
-[application_insights_namespace]: /azure/azure-monitor/app/app-insights-overview#how-do-i-use-application-insights
+[application_insights_namespace]: https://learn.microsoft.com/azure/azure-monitor/app/app-insights-overview#how-do-i-use-application-insights
 [opentelemetry_spec]: https://opentelemetry.io/
 [instrumentation_library]: https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/overview.md#instrumentation-libraries
 [log_concept]: https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/overview.md#log-signal
@@ -696,7 +698,7 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 [logger_provider]: https://opentelemetry-python.readthedocs.io/en/stable/sdk/_logs.html#opentelemetry.sdk._logs.LoggerProvider
 [log_record_processor]: https://opentelemetry-python.readthedocs.io/en/stable/sdk/_logs.html#opentelemetry.sdk._logs.LogRecordProcessor
 [logging_handler]: https://opentelemetry-python.readthedocs.io/en/stable/sdk/_logs.html#opentelemetry.sdk._logs.LoggingHandler
-[log_reference]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-opentelemetry-exporter_1.0.0b29/sdk/monitor/azure-monitor-opentelemetry-exporter/azure/monitor/opentelemetry/exporter/export/logs/_exporter.py
+[log_reference]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-opentelemetry-exporter_1.0.0b46/sdk/monitor/azure-monitor-opentelemetry-exporter/azure/monitor/opentelemetry/exporter/export/logs/_exporter.py
 [ot_logging_sdk]: https://opentelemetry-python.readthedocs.io/en/stable/sdk/_logs.html
 [metric_concept]: https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/overview.md#metric-signal
 [measurement]: https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/metrics/api.md#measurement
@@ -704,14 +706,14 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 [meter]: https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/metrics/api.md#meter
 [meter_provider]: https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/metrics/api.md#meterprovider
 [metric_reader]:https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/metrics/sdk.md#metricreader
-[metric_reference]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-opentelemetry-exporter_1.0.0b29/sdk/monitor/azure-monitor-opentelemetry-exporter/azure/monitor/opentelemetry/exporter/export/metrics/_exporter.py
+[metric_reference]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-opentelemetry-exporter_1.0.0b46/sdk/monitor/azure-monitor-opentelemetry-exporter/azure/monitor/opentelemetry/exporter/export/metrics/_exporter.py
 [ot_metrics_sdk]: https://opentelemetry-python.readthedocs.io/en/stable/sdk/metrics.html
 [trace_concept]: https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/overview.md#tracing-signal
 [span]: https://opentelemetry-python.readthedocs.io/en/stable/api/trace.html?highlight=TracerProvider#opentelemetry.trace.Span
 [tracer]: https://opentelemetry-python.readthedocs.io/en/stable/api/trace.html?highlight=TracerProvider#opentelemetry.trace.Tracer
 [tracer_provider]: https://opentelemetry-python.readthedocs.io/en/stable/api/trace.html?highlight=TracerProvider#opentelemetry.trace.TracerProvider
 [span_processor]: https://opentelemetry-python.readthedocs.io/en/stable/_modules/opentelemetry/sdk/trace.html?highlight=SpanProcessor#
-[trace_reference]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-opentelemetry-exporter_1.0.0b29/sdk/monitor/azure-monitor-opentelemetry-exporter/azure/monitor/opentelemetry/exporter/export/trace/_exporter.py
+[trace_reference]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-opentelemetry-exporter_1.0.0b46/sdk/monitor/azure-monitor-opentelemetry-exporter/azure/monitor/opentelemetry/exporter/export/trace/_exporter.py
 [ot_tracing_sdk]: https://opentelemetry-python.readthedocs.io/en/stable/sdk/trace.html
 [sampler_ref]: https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/trace/sdk.md#sampling
 

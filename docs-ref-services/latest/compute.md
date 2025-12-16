@@ -1,7 +1,7 @@
 ---
 title: Azure Compute SDK for Python
 description: Reference for Azure Compute SDK for Python
-ms.date: 09/18/2024
+ms.date: 12/15/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: compute
@@ -65,19 +65,15 @@ def create_vm()
 ## Samples
 
 * [Manage virtual machines][1]
-* [Authenticate with Managed Service Identity][2]
-* [Create a virtual machine with Managed Service Identity Extension][3]
-* [Manage a load balancer][4]
-* [Create and configure managed disks][5]
-* [List images][6] 
-* [Monitor virtual machines][7]
+* [Create a virtual machine with Managed Service Identity Extension][2]
+* [Manage a load balancer][3]
+* [Create and configure managed disks][4]
+* [Monitor virtual machines][5]
 
 View the [complete list](https://azure.microsoft.com/resources/samples/?platform=python&term=virtual-machines) of virtual machine samples.
 
-[1]: https://azure.microsoft.com/resources/samples/virtual-machines-python-manage/
-[2]: https://github.com/Azure-Samples/resource-manager-python-manage-resources-with-msi
-[3]: https://github.com/Azure-Samples/compute-python-msi-vm
-[4]: https://azure.microsoft.com/resources/samples/network-python-manage-loadbalancer
-[5]: /azure/python/python-sdk-azure-samples-managed-disks
-[6]: /azure/python/python-sdk-azure-samples-list-images
-[7]: /azure/python/python-sdk-azure-samples-monitor-vms
+[1]: https://github.com/Azure-Samples/virtual-machines-python-manage
+[2]: https://github.com/Azure-Samples/compute-python-msi-vm
+[3]: https://github.com/Azure-Samples/network-python-manage-loadbalancer
+[4]: /azure/python/python-sdk-azure-samples-managed-disks
+[5]: /azure/python/python-sdk-azure-samples-monitor-vms

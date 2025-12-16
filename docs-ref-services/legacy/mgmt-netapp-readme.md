@@ -5,7 +5,6 @@ ms.date: 11/16/2020
 ms.topic: reference
 ms.devlang: python
 ms.service: azure-netapp-files
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 
@@ -27,5 +26,5 @@ If you encounter any bugs or have suggestions, please file an issue in the
 section of the project.
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-netapp%2FREADME.png)
+
 

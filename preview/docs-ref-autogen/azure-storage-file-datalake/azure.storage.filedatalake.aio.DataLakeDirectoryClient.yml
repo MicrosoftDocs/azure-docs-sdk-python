@@ -3,9 +3,6 @@ uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient
 name: DataLakeDirectoryClient
 fullName: azure.storage.filedatalake.aio.DataLakeDirectoryClient
 module: azure.storage.filedatalake.aio
-inheritances:
-- azure.storage.filedatalake.aio._path_client_async.PathClient
-- azure.storage.filedatalake._data_lake_directory_client.DataLakeDirectoryClient
 summary: 'A client to interact with the DataLake directory, even if the directory
   may not yet exist.
 
@@ -64,7 +61,7 @@ constructor:
     - <xref:azure.core.credentials.AzureSasCredential>
     - <xref:azure.core.credentials_async.AsyncTokenCredential>
     - <xref:str>
-    - <xref:dict>[<xref:str>, <xref:str>]
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
     - <xref:None>
   keywordOnlyParameters:
   - name: api_version
@@ -78,34 +75,20 @@ constructor:
   - name: audience
     description: 'The audience to use when requesting tokens for Azure Active Directory
 
-      authentication. Only has an effect when credential is of type TokenCredential.
+      authentication. Only has an effect when credential is of type AsyncTokenCredential.
       The value could be
 
       [https://storage.azure.com/](https://storage.azure.com/) (default) or [https:/](https:/)/<account>.blob.core.windows.net.'
     types:
     - <xref:str>
-variables:
-- description: The full endpoint URL to the file system, including SAS token if used.
-  name: url
-  types:
-  - <xref:str>
-- description: The full primary endpoint URL.
-  name: primary_endpoint
-  types:
-  - <xref:str>
-- description: The hostname of the primary endpoint.
-  name: primary_hostname
-  types:
-  - <xref:str>
 examples:
 - "Creating the DataLakeServiceClient from connection string.<!--[!code-python[Main](les\\\
   datalake_samples_instantiate_client_async.py )]-->\n\n<!-- literal_block {\"ids\"\
   : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-  : \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
-  \\py2docfx\\\\dist_temp\\\\218\\\\azure-storage-file-datalake-12.17.0b1\\\\samples\\\
-  \\datalake_samples_instantiate_client_async.py\", \"xml:space\": \"preserve\", \"\
-  force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\":\
-  \ 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.storage.filedatalake.aio\
+  : \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\
+  \\dist_temp\\\\296\\\\azure_storage_file_datalake-12.23.0b1\\\\samples\\\\datalake_samples_instantiate_client_async.py\"\
+  , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.storage.filedatalake.aio\
   \ import DataLakeDirectoryClient\n   DataLakeDirectoryClient.from_connection_string(connection_string,\
   \ \"myfilesystem\", \"mydirectory\")\n\n   ````\n"
 methods:
@@ -117,8 +100,8 @@ methods:
     the DataLake service creates a lease on the file/directory and returns a new
 
     lease ID.'
-  signature: 'async acquire_lease(lease_duration: int | None = -1, lease_id: str |
-    None = None, **kwargs) -> DataLakeLeaseClient'
+  signature: 'async acquire_lease(lease_duration: int = -1, lease_id: str | None =
+    None, **kwargs: Any) -> DataLakeLeaseClient'
   parameters:
   - name: lease_duration
     description: 'Specifies the duration of the lease, in seconds, or negative one
@@ -128,7 +111,7 @@ methods:
       between 15 and 60 seconds. A lease duration cannot be changed
 
       using renew or change. Default is -1 (infinite lease).'
-    isRequired: true
+    defaultValue: '-1'
     types:
     - <xref:int>
   - name: lease_id
@@ -136,7 +119,7 @@ methods:
       returns
 
       400 (Invalid request) if the proposed lease ID is not in the correct format.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   keywordOnlyParameters:
@@ -197,6 +180,10 @@ methods:
 
     It need not be used when using with a context manager.'
   signature: async close() -> None
+  return:
+    description: None
+    types:
+    - <xref:None>
 - uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.create_directory
   name: create_directory
   summary: Create a new directory.
@@ -205,9 +192,9 @@ methods:
   parameters:
   - name: metadata
     description: Name-value pairs associated with the directory as metadata.
-    isRequired: true
+    defaultValue: None
     types:
-    - <xref:dict>(<xref:str>, <xref:str>)
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
   keywordOnlyParameters:
   - name: content_settings
     description: ContentSettings object used to set path properties.
@@ -348,21 +335,20 @@ methods:
   return:
     description: A dictionary of response headers.
     types:
-    - <xref:dict>[<xref:str>, <xref:str>]
-    - <xref:dict>[<xref:str>, <xref:datetime.datetime>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Union>[<xref:str>, <xref:datetime.datetime>]]
   examples:
   - "Create directory.<!--[!code-python[Main](les\\datalake_samples_directory_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    218\\\\azure-storage-file-datalake-12.17.0b1\\\\samples\\\\datalake_samples_directory_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   await directory_client.create_directory()\n\n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\296\\\\azure_storage_file_datalake-12.23.0b1\\\
+    \\samples\\\\datalake_samples_directory_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   await directory_client.create_directory()\n\
+    \n   ````\n"
 - uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.create_file
   name: create_file
   summary: Create a new file and return the file client to be interacted with.
-  signature: 'async create_file(file: FileProperties | str, **kwargs) -> DataLakeFileClient'
+  signature: 'async create_file(file: FileProperties | str, **kwargs: Any) -> DataLakeFileClient'
   parameters:
   - name: file
     description: 'The file with which to interact. This can either be the name of
@@ -536,7 +522,7 @@ methods:
   summary: Create a subdirectory and return the subdirectory client to be interacted
     with.
   signature: 'async create_sub_directory(sub_directory: DirectoryProperties | str,
-    metadata: Dict[str, str] | None = None, **kwargs) -> DataLakeDirectoryClient'
+    metadata: Dict[str, str] | None = None, **kwargs: Any) -> DataLakeDirectoryClient'
   parameters:
   - name: sub_directory
     description: 'The directory with which to interact. This can either be the name
@@ -549,9 +535,9 @@ methods:
     - <xref:azure.storage.filedatalake.DirectoryProperties>
   - name: metadata
     description: Name-value pairs associated with the file as metadata.
-    isRequired: true
+    defaultValue: None
     types:
-    - <xref:dict>(<xref:str>, <xref:str>)
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
   keywordOnlyParameters:
   - name: content_settings
     description: ContentSettings object used to set path properties.
@@ -696,7 +682,7 @@ methods:
 - uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.delete_directory
   name: delete_directory
   summary: Marks the specified directory for deletion.
-  signature: async delete_directory(**kwargs) -> None
+  signature: 'async delete_directory(**kwargs: Any) -> None'
   keywordOnlyParameters:
   - name: lease
     description: 'Required if the directory has an active lease. Value can be a LeaseClient
@@ -754,23 +740,23 @@ methods:
     types:
     - <xref:int>
   return:
-    description: None.
+    description: A dictionary of response headers.
     types:
-    - <xref:None>
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   examples:
   - "Delete directory.<!--[!code-python[Main](les\\datalake_samples_directory_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    218\\\\azure-storage-file-datalake-12.17.0b1\\\\samples\\\\datalake_samples_directory_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   await new_directory.delete_directory()\n\n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\296\\\\azure_storage_file_datalake-12.23.0b1\\\
+    \\samples\\\\datalake_samples_directory_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   await new_directory.delete_directory()\n\
+    \n   ````\n"
 - uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.delete_sub_directory
   name: delete_sub_directory
   summary: Marks the specified subdirectory for deletion.
   signature: 'async delete_sub_directory(sub_directory: DirectoryProperties | str,
-    **kwargs) -> DataLakeDirectoryClient'
+    **kwargs: Any) -> DataLakeDirectoryClient'
   parameters:
   - name: sub_directory
     description: 'The directory with which to interact. This can either be the name
@@ -867,7 +853,7 @@ methods:
   summary: Create DataLakeDirectoryClient from a Connection String.
   signature: 'from_connection_string(conn_str: str, file_system_name: str, directory_name:
     str, credential: str | Dict[str, str] | AzureNamedKeyCredential | AzureSasCredential
-    | TokenCredential | None = None, **kwargs: Any) -> Self'
+    | AsyncTokenCredential | None = None, **kwargs: Any) -> Self'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Storage account.
@@ -904,9 +890,9 @@ methods:
     types:
     - <xref:azure.core.credentials.AzureNamedKeyCredential>
     - <xref:azure.core.credentials.AzureSasCredential>
-    - <xref:azure.core.credentials.TokenCredential>
+    - <xref:azure.core.credentials_async.AsyncTokenCredential>
     - <xref:str>
-    - <xref:dict>[<xref:str>, <xref:str>]
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
     - <xref:None>
   - name: directory_name
     description: The name of directory to interact with. The directory is under file
@@ -915,10 +901,18 @@ methods:
     types:
     - <xref:str>
   keywordOnlyParameters:
+  - name: api_version
+    description: 'The Storage API version to use for requests. Default value is the
+      most recent service version that is
+
+      compatible with the current SDK. Setting to an older version may result in reduced
+      feature compatibility.'
+    types:
+    - <xref:str>
   - name: audience
     description: 'The audience to use when requesting tokens for Azure Active Directory
 
-      authentication. Only has an effect when credential is of type TokenCredential.
+      authentication. Only has an effect when credential is of type AsyncTokenCredential.
       The value could be
 
       [https://storage.azure.com/](https://storage.azure.com/) (default) or [https:/](https:/)/<account>.blob.core.windows.net.'
@@ -927,12 +921,12 @@ methods:
   return:
     description: A DataLakeDirectoryClient.
     types:
-    - <xref:azure.storage.filedatalake.DataLakeDirectoryClient>
+    - <xref:azure.storage.filedatalake.aio.DataLakeDirectoryClient>
 - uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.get_access_control
   name: get_access_control
   summary: Get the owner, group, permissions, or access control list for a path.
-  signature: 'async get_access_control(upn: bool | None = None, **kwargs) -> Dict[str,
-    Any]'
+  signature: 'async get_access_control(upn: bool | None = None, **kwargs: Any) ->
+    Dict[str, Any]'
   parameters:
   - name: upn
     description: 'Optional. Valid only when Hierarchical Namespace is
@@ -950,7 +944,7 @@ methods:
       application Object IDs are not translated because they do not have
 
       unique friendly names.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:bool>
   keywordOnlyParameters:
@@ -1010,10 +1004,9 @@ methods:
     types:
     - <xref:int>
   return:
-    description: response dict containing access control options (Etag and last modified).
+    description: A dictionary of response headers.
     types:
-    - <xref:dict>[<xref:str>, <xref:str>]
-    - <xref:dict>[<xref:str>, <xref:datetime.datetime>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
 - uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.get_directory_properties
   name: get_directory_properties
   summary: 'Returns all user-defined metadata, standard HTTP properties, and
@@ -1110,12 +1103,12 @@ methods:
   examples:
   - "Getting the properties for a file/directory.<!--[!code-python[Main](les\\datalake_samples_directory_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    218\\\\azure-storage-file-datalake-12.17.0b1\\\\samples\\\\datalake_samples_directory_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   props = await new_directory.get_directory_properties()\n\n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\296\\\\azure_storage_file_datalake-12.23.0b1\\\
+    \\samples\\\\datalake_samples_directory_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   props = await new_directory.get_directory_properties()\n\
+    \n   ````\n"
 - uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.get_file_client
   name: get_file_client
   summary: 'Get a client to interact with the specified file.
@@ -1137,6 +1130,84 @@ methods:
     description: A DataLakeFileClient.
     types:
     - <xref:azure.storage.filedatalake.aio.DataLakeFileClient>
+- uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.get_paths
+  name: get_paths
+  summary: 'Returns an async generator to list the paths under specified file system
+    and directory.
+
+    The generator will lazily follow the continuation tokens returned by the service.'
+  signature: 'get_paths(*, recursive: bool = True, max_results: int | None = None,
+    upn: bool | None = None, start_from: str | None = None, timeout: int | None =
+    None, **kwargs: Any) -> AsyncItemPaged[PathProperties]'
+  keywordOnlyParameters:
+  - name: recursive
+    description: Set True for recursive, False for iterative. The default value is
+      True.
+    defaultValue: 'True'
+    types:
+    - <xref:bool>
+  - name: max_results
+    description: 'An optional value that specifies the maximum
+
+      number of items to return per page. If omitted or greater than 5,000, the
+
+      response will include up to 5,000 items per page.'
+    defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:int>]
+  - name: upn
+    description: 'If True, the user identity values returned in the x-ms-owner, x-ms-group,
+
+      and x-ms-acl response headers will be transformed from Azure Active Directory
+      Object IDs to User
+
+      Principal Names in the owner, group, and acl fields of
+
+      <xref:azure.storage.filedatalake.PathProperties>. If False, the values will
+      be returned
+
+      as Azure Active Directory Object IDs. The default value is None. Note that group
+      and application
+
+      Object IDs are not translate because they do not have unique friendly names.'
+    defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:bool>]
+  - name: start_from
+    description: 'A relative path within the specified directory where the listing
+
+      will start from. For example, a recursive listing under directory folder1/folder2
+      with
+
+      beginFrom as folder3/readmefile.txt will start listing from folder1/folder2/folder3/readmefile.txt.
+
+      Multiple entity levels are supported for recursive listing.
+
+      Non-recursive listing supports only one entity level.
+
+      An error will appear if multiple entity levels are specified for non-recursive
+      listing.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-datalake#other-client--per-operation-configuration).
+      The default value is None.'
+    defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:int>]
+  return:
+    description: An iterable (auto-paging) response of PathProperties.
+    types:
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.storage.filedatalake.PathProperties>]
 - uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.get_sub_directory_client
   name: get_sub_directory_client
   summary: 'Get a client to interact with the specified subdirectory of the current
@@ -1182,7 +1253,8 @@ methods:
 
       as well as collect paths that failed to change Access Control.'
     types:
-    - <xref:func>(<xref:azure.storage.filedatalake.AccessControlChanges>)
+    - <xref:typing.Callable>[[<xref:azure.storage.filedatalake.AccessControlChanges>],
+      <xref:typing.Awaitable>[<xref:typing.Any>]]
   - name: continuation_token
     description: Optional continuation token that can be used to resume previously
       stopped operation.
@@ -1243,7 +1315,7 @@ methods:
 
       as well as a continuation token in case the operation was terminated prematurely.'
     types:
-    - :~<xref:azure.storage.filedatalake.AccessControlChangeResult>`
+    - <xref:azure.storage.filedatalake.AccessControlChangeResult>
   exceptions:
   - type: azure.core.exceptions.AzureError
     description: User can restart the operation using continuation_token field of
@@ -1251,7 +1323,7 @@ methods:
 - uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.rename_directory
   name: rename_directory
   summary: Rename the source directory.
-  signature: 'async rename_directory(new_name: str, **kwargs) -> DataLakeDirectoryClient'
+  signature: 'async rename_directory(new_name: str, **kwargs: Any) -> DataLakeDirectoryClient'
   parameters:
   - name: new_name
     description: 'the new directory name the user want to rename to.
@@ -1367,30 +1439,29 @@ methods:
   examples:
   - "Rename the source directory.<!--[!code-python[Main](les\\datalake_samples_directory_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    218\\\\azure-storage-file-datalake-12.17.0b1\\\\samples\\\\datalake_samples_directory_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   new_dir_name = \"testdir2\"\n   print(\"Renaming the directory named '{}'\
-    \ to '{}'.\".format(dir_name, new_dir_name))\n   new_directory = await directory_client\\\
-    \n       .rename_directory(new_name=directory_client.file_system_name + '/' +\
-    \ new_dir_name)\n\n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\296\\\\azure_storage_file_datalake-12.23.0b1\\\
+    \\samples\\\\datalake_samples_directory_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   new_dir_name = \"testdir2async\"\
+    \n   print(\"Renaming the directory named '{}' to '{}'.\".format(dir_name, new_dir_name))\n\
+    \   new_directory = await directory_client\\\n       .rename_directory(new_name=directory_client.file_system_name\
+    \ + '/' + new_dir_name)\n\n   ````\n"
 - uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.set_access_control
   name: set_access_control
   summary: Set the owner, group, permissions, or access control list for a path.
   signature: 'async set_access_control(owner: str | None = None, group: str | None
-    = None, permissions: str | None = None, acl: str | None = None, **kwargs) -> Dict[str,
-    str | datetime]'
+    = None, permissions: str | None = None, acl: str | None = None, **kwargs: Any)
+    -> Dict[str, str | datetime]'
   parameters:
   - name: owner
     description: Optional. The owner of the file or directory.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   - name: group
     description: Optional. The owning group of the file or directory.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   - name: permissions
@@ -1407,7 +1478,7 @@ methods:
       supported.
 
       permissions and acl are mutually exclusive.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   - name: acl
@@ -1422,7 +1493,7 @@ methods:
       "[scope:][type]:[id]:[permissions]".
 
       permissions and acl are mutually exclusive.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   keywordOnlyParameters:
@@ -1482,11 +1553,9 @@ methods:
     types:
     - <xref:int>
   return:
-    description: dict containing access control options after setting modifications
-      (Etag and last modified).
+    description: A dictionary of response headers.
     types:
-    - <xref:dict>[<xref:str>, <xref:str>]
-    - <xref:dict>[<xref:str>, <xref:datetime.datetime>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Union>[<xref:str>, <xref:datetime.datetime>]]
 - uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.set_access_control_recursive
   name: set_access_control_recursive
   summary: Sets the Access Control on a path and sub-paths.
@@ -1511,7 +1580,8 @@ methods:
 
       as well as collect paths that failed to change Access Control.'
     types:
-    - <xref:func>(<xref:azure.storage.filedatalake.AccessControlChanges>)
+    - <xref:typing.Callable>[[<xref:azure.storage.filedatalake.AccessControlChanges>],
+      <xref:typing.Awaitable>[<xref:typing.Any>]]
   - name: continuation_token
     description: Optional continuation token that can be used to resume previously
       stopped operation.
@@ -1572,7 +1642,7 @@ methods:
 
       as well as a continuation token in case the operation was terminated prematurely.'
     types:
-    - :~<xref:azure.storage.filedatalake.AccessControlChangeResult>`
+    - <xref:azure.storage.filedatalake.AccessControlChangeResult>
   exceptions:
   - type: azure.core.exceptions.AzureError
     description: User can restart the operation using continuation_token field of
@@ -1584,11 +1654,11 @@ methods:
 
     If one property is set for the content_settings, all properties will be overridden.'
   signature: 'async set_http_headers(content_settings: ContentSettings | None = None,
-    **kwargs) -> Dict[str, Any]'
+    **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: content_settings
     description: ContentSettings object used to set file/directory properties.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:azure.storage.filedatalake.ContentSettings>
   keywordOnlyParameters:
@@ -1647,9 +1717,9 @@ methods:
     types:
     - <xref:int>
   return:
-    description: file/directory-updated property dict (Etag and last modified)
+    description: A dictionary of response headers.
     types:
-    - <xref:dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
 - uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.set_metadata
   name: set_metadata
   summary: 'Sets one or more user-defined name-value pairs for the specified
@@ -1659,7 +1729,7 @@ methods:
     attached to the file system. To remove all metadata from the file system,
 
     call this operation with no metadata dict.'
-  signature: 'async set_metadata(metadata: Dict[str, str], **kwargs) -> Dict[str,
+  signature: 'async set_metadata(metadata: Dict[str, str], **kwargs: Any) -> Dict[str,
     str | datetime]'
   parameters:
   - name: metadata
@@ -1669,7 +1739,7 @@ methods:
       metadata. Example: {''category'':''test''}'
     isRequired: true
     types:
-    - <xref:dict>[<xref:str>, <xref:str>]
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
   keywordOnlyParameters:
   - name: lease
     description: 'If specified, set_file_system_metadata only succeeds if the
@@ -1732,10 +1802,9 @@ methods:
     types:
     - <xref:int>
   return:
-    description: file system-updated property dict (Etag and last modified).
+    description: A dictionary of response headers.
     types:
-    - <xref:dict>[<xref:str>, <xref:str>]
-    - <xref:dict>[<xref:str>, <xref:datetime.datetime>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Union>[<xref:str>, <xref:datetime.datetime>]]
 - uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.update_access_control_recursive
   name: update_access_control_recursive
   summary: Modifies the Access Control on a path and sub-paths.
@@ -1760,7 +1829,8 @@ methods:
 
       as well as collect paths that failed to change Access Control.'
     types:
-    - <xref:func>(<xref:azure.storage.filedatalake.AccessControlChanges>)
+    - <xref:typing.Callable>[[<xref:azure.storage.filedatalake.AccessControlChanges>],
+      <xref:typing.Awaitable>[<xref:typing.Any>]]
   - name: continuation_token
     description: Optional continuation token that can be used to resume previously
       stopped operation.
@@ -1822,7 +1892,7 @@ methods:
 
       as well as a continuation token in case the operation was terminated prematurely.'
     types:
-    - :~<xref:azure.storage.filedatalake.AccessControlChangeResult>`
+    - <xref:azure.storage.filedatalake.AccessControlChangeResult>
   exceptions:
   - type: azure.core.exceptions.AzureError
     description: User can restart the operation using continuation_token field of
@@ -1841,20 +1911,15 @@ attributes:
 
     By default this will be "primary". Options include "primary" and "secondary".'
   return:
+    description: The current location mode.
     types:
     - <xref:str>
 - uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.primary_endpoint
   name: primary_endpoint
   summary: The full primary endpoint URL.
-  return:
-    types:
-    - <xref:str>
 - uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.primary_hostname
   name: primary_hostname
   summary: The hostname of the primary endpoint.
-  return:
-    types:
-    - <xref:str>
 - uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.secondary_endpoint
   name: secondary_endpoint
   summary: 'The full secondary endpoint URL if configured.
@@ -1865,10 +1930,12 @@ attributes:
 
     *secondary_hostname* keyword argument on instantiation.'
   return:
+    description: The full secondary endpoint URL.
     types:
     - <xref:str>
   exceptions:
   - type: ValueError
+    description: If no secondary endpoint is configured.
 - uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.secondary_hostname
   name: secondary_hostname
   summary: 'The hostname of the secondary endpoint.
@@ -1879,17 +1946,9 @@ attributes:
 
     *secondary_hostname* keyword argument on instantiation.'
   return:
+    description: The hostname of the secondary endpoint, or None if not configured.
     types:
     - <xref:typing.Optional>[<xref:str>]
 - uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.url
   name: url
-  summary: 'The full endpoint URL to this entity, including SAS token if used.
-
-
-    This could be either the primary endpoint,
-
-    or the secondary endpoint depending on the current <xref:azure.storage.filedatalake.aio.DataLakeDirectoryClient.location_mode>.
-
-    :returns: The full endpoint URL to this entity, including SAS token if used.
-
-    :rtype: str'
+  summary: The full endpoint URL to the file system, including SAS token if used.

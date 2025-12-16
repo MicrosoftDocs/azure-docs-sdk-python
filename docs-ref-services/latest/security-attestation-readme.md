@@ -5,7 +5,6 @@ ms.date: 07/06/2021
 ms.topic: reference
 ms.devlang: python
 ms.service: attestation
-ms.technology: azure
 ---
 # Azure Attestation client library for Python - version 1.0.0 
 
@@ -356,5 +355,5 @@ section of the project.
 [contributing]: https://github.com/Azure/azure-sdk-for-python/blob/azure-security-attestation_1.0.0/CONTRIBUTING.md
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fsdk%2Fattestation%2Fazure-security-attestation%2FREADME.png)
+
 

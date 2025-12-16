@@ -5,7 +5,6 @@ ms.date: 04/24/2021
 ms.topic: reference
 ms.devlang: python
 ms.service: azure-python
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 
@@ -22,5 +21,5 @@ If you are looking to install the Azure client libraries, see the
 [azure sdk python release](https://aka.ms/azsdk/python/all).
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-messaging-nspkg%2FREADME.png)
+
 

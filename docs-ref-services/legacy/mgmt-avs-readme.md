@@ -5,7 +5,6 @@ ms.date: 11/11/2020
 ms.topic: reference
 ms.devlang: python
 ms.service: azure-vmware
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 
@@ -27,5 +26,5 @@ If you encounter any bugs or have suggestions, please file an issue in the
 section of the project.
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-avs%2FREADME.png)
+
 

@@ -24,7 +24,7 @@ functions:
     isRequired: true
     types:
     - <xref:str>
-    - <xref:<xref:writable stream.>>
+    - <xref:IO.>
   - name: credential
     description: 'The credentials with which to authenticate. This is optional if
       the
@@ -105,6 +105,7 @@ functions:
     types:
     - <xref:bool>
   return:
+    description: None
     types:
     - <xref:None>
 - uid: azure.storage.blob.generate_account_sas
@@ -206,6 +207,7 @@ functions:
       the string to sign
 
       that was used to generate the SAS.'
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:typing.Callable>[[<xref:str>], <xref:None>]]
   return:
@@ -215,17 +217,17 @@ functions:
   examples:
   - "Generating a shared access signature.<!--[!code-python[Main](les\\blob_samples_authentication.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    216\\\\azure-storage-blob-12.23.0b1\\\\samples\\\\blob_samples_authentication.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   # Create a SAS token to use to authenticate a new client\n   from datetime\
-    \ import datetime, timedelta\n   from azure.storage.blob import ResourceTypes,\
-    \ AccountSasPermissions, generate_account_sas\n\n   sas_token = generate_account_sas(\n\
-    \       blob_service_client.account_name,\n       account_key=blob_service_client.credential.account_key,\n\
-    \       resource_types=ResourceTypes(object=True),\n       permission=AccountSasPermissions(read=True),\n\
-    \       expiry=datetime.utcnow() + timedelta(hours=1)\n   )\n\n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\294\\\\azure_storage_blob-12.28.0b1\\\
+    \\samples\\\\blob_samples_authentication.py\", \"xml:space\": \"preserve\", \"\
+    force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   # Create a SAS token to use\
+    \ to authenticate a new client\n   from datetime import datetime, timedelta\n\
+    \   from azure.storage.blob import ResourceTypes, AccountSasPermissions, generate_account_sas\n\
+    \n   sas_token = generate_account_sas(\n       blob_service_client.account_name,\n\
+    \       account_key=blob_service_client.credential.account_key,\n       resource_types=ResourceTypes(object=True),\n\
+    \       permission=AccountSasPermissions(read=True),\n       expiry=datetime.utcnow()\
+    \ + timedelta(hours=1)\n   )\n\n   ````\n"
 - uid: azure.storage.blob.generate_blob_sas
   name: generate_blob_sas
   summary: 'Generates a shared access signature for a blob.
@@ -238,8 +240,9 @@ functions:
     str, snapshot: str | None = None, account_key: str | None = None, user_delegation_key:
     UserDelegationKey | None = None, permission: BlobSasPermissions | str | None =
     None, expiry: datetime | str | None = None, start: datetime | str | None = None,
-    policy_id: str | None = None, ip: str | None = None, *, sts_hook: Callable[[str],
-    None] | None = None, **kwargs: Any) -> str'
+    policy_id: str | None = None, ip: str | None = None, *, user_delegation_oid: str
+    | None = None, sts_hook: Callable[[str], None] | None = None, **kwargs: Any) ->
+    str'
   parameters:
   - name: account_name
     description: The storage account name used to generate the shared access signature.
@@ -416,11 +419,23 @@ functions:
       SAS with delegation key.'
     types:
     - <xref:str>
+  - name: user_delegation_oid
+    description: 'Specifies the Entra ID of the user that is authorized to use the
+      resulting SAS URL.
+
+      The resulting SAS URL must be used in conjunction with an Entra ID token that
+      has been
+
+      issued to the user specified in this value.'
+    defaultValue: None
+    types:
+    - <xref:str>
   - name: sts_hook
     description: 'For debugging purposes only. If provided, the hook is called with
       the string to sign
 
       that was used to generate the SAS.'
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:typing.Callable>[[<xref:str>], <xref:None>]]
   return:
@@ -439,7 +454,8 @@ functions:
     str | None = None, user_delegation_key: UserDelegationKey | None = None, permission:
     ContainerSasPermissions | str | None = None, expiry: datetime | str | None = None,
     start: datetime | str | None = None, policy_id: str | None = None, ip: str | None
-    = None, *, sts_hook: Callable[[str], None] | None = None, **kwargs: Any) -> str'
+    = None, *, user_delegation_oid: str | None = None, sts_hook: Callable[[str], None]
+    | None = None, **kwargs: Any) -> str'
   parameters:
   - name: account_name
     description: The storage account name used to generate the shared access signature.
@@ -589,11 +605,23 @@ functions:
       SAS with delegation key.'
     types:
     - <xref:str>
+  - name: user_delegation_oid
+    description: 'Specifies the Entra ID of the user that is authorized to use the
+      resulting SAS URL.
+
+      The resulting SAS URL must be used in conjunction with an Entra ID token that
+      has been
+
+      issued to the user specified in this value.'
+    defaultValue: None
+    types:
+    - <xref:str>
   - name: sts_hook
     description: 'For debugging purposes only. If provided, the hook is called with
       the string to sign
 
       that was used to generate the SAS.'
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:typing.Callable>[[<xref:str>], <xref:None>]]
   return:
@@ -603,15 +631,15 @@ functions:
   examples:
   - "Generating a sas token.<!--[!code-python[Main](les\\blob_samples_containers.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    216\\\\azure-storage-blob-12.23.0b1\\\\samples\\\\blob_samples_containers.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   # Use access policy to generate a sas token\n   from azure.storage.blob import\
-    \ generate_container_sas\n\n   sas_token = generate_container_sas(\n       container_client.account_name,\n\
-    \       container_client.container_name,\n       account_key=container_client.credential.account_key,\n\
-    \       policy_id='my-access-policy-id'\n   )\n\n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\294\\\\azure_storage_blob-12.28.0b1\\\
+    \\samples\\\\blob_samples_containers.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   # Use access policy to generate a sas\
+    \ token\n   from azure.storage.blob import generate_container_sas\n\n   sas_token\
+    \ = generate_container_sas(\n       container_client.account_name,\n       container_client.container_name,\n\
+    \       account_key=container_client.credential.account_key,\n       policy_id='my-access-policy-id'\n\
+    \   )\n\n   ````\n"
 - uid: azure.storage.blob.upload_blob_to_url
   name: upload_blob_to_url
   summary: 'Upload data to a given URL

@@ -3,14 +3,9 @@ uid: azure.ai.ml.entities.SparkComponent
 name: SparkComponent
 fullName: azure.ai.ml.entities.SparkComponent
 module: azure.ai.ml.entities
-inheritances:
-- azure.ai.ml.entities._component.component.Component
-- azure.ai.ml.entities._job.parameterized_spark.ParameterizedSpark
-- azure.ai.ml.entities._job.spark_job_entry_mixin.SparkJobEntryMixin
-- azure.ai.ml.entities._component.code.ComponentCodeMixin
 summary: Spark component version, used to define a Spark Component or Job.
 constructor:
-  syntax: 'SparkComponent(*, code: PathLike | str | None = ''.'', entry: Dict[str,
+  syntax: 'SparkComponent(*, code: str | PathLike | None = ''.'', entry: Dict[str,
     str] | SparkJobEntry | None = None, py_files: List[str] | None = None, jars: List[str]
     | None = None, files: List[str] | None = None, archives: List[str] | None = None,
     driver_cores: int | str | None = None, driver_memory: str | None = None, executor_cores:
@@ -19,7 +14,7 @@ constructor:
     dynamic_allocation_min_executors: int | str | None = None, dynamic_allocation_max_executors:
     int | str | None = None, conf: Dict[str, str] | None = None, environment: Environment
     | str | None = None, inputs: Dict | None = None, outputs: Dict | None = None,
-    args: str | None = None, **kwargs: Any)'
+    args: str | None = None, additional_includes: List | None = None, **kwargs: Any)'
   keywordOnlyParameters:
   - name: code
     description: 'The source code to run the job. Can be a local path or "http:",
@@ -29,22 +24,26 @@ constructor:
     defaultValue: .
   - name: entry
     description: The file or class entry point.
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:typing.Union>[<xref:dict>[<xref:str>, <xref:str>],
       <xref:azure.ai.ml.entities.SparkJobEntry>]]
   - name: py_files
     description: The list of .zip, .egg or .py files to place on the PYTHONPATH for
       Python apps. Defaults to None.
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:typing.List>[<xref:str>]]
   - name: jars
     description: The list of .JAR files to include on the driver and executor classpaths.
       Defaults to None.
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:typing.List>[<xref:str>]]
   - name: files
     description: The list of files to be placed in the working directory of each executor.
       Defaults to None.
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:typing.List>[<xref:str>]]
   - name: archives
@@ -52,11 +51,13 @@ constructor:
       of each executor.
 
       Defaults to None.'
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:typing.List>[<xref:str>]]
   - name: driver_cores
     description: The number of cores to use for the driver process, only in cluster
       mode.
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:int>]
   - name: driver_memory
@@ -64,10 +65,12 @@ constructor:
       strings with a size unit
 
       suffix ("k", "m", "g" or "t") (e.g. "512m", "2g").'
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:str>]
   - name: executor_cores
     description: The number of cores to use on each executor.
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:int>]
   - name: executor_memory
@@ -75,10 +78,12 @@ constructor:
       with a size unit
 
       suffix ("k", "m", "g" or "t") (e.g. "512m", "2g").'
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:str>]
   - name: executor_instances
     description: The initial number of executors.
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:int>]
   - name: dynamic_allocation_enabled
@@ -87,6 +92,7 @@ constructor:
 
       executors registered with this application up and down based on the workload.
       Defaults to False.'
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:bool>]
   - name: dynamic_allocation_min_executors
@@ -94,6 +100,7 @@ constructor:
       is
 
       enabled.'
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:int>]
   - name: dynamic_allocation_max_executors
@@ -101,20 +108,24 @@ constructor:
       is
 
       enabled.'
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:int>]
   - name: conf
     description: A dictionary with pre-defined Spark configurations key and values.
       Defaults to None.
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:dict>[<xref:str>, <xref:str>]]
   - name: environment
     description: The Azure ML environment to run the job in.
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:azure.ai.ml.entities.Environment>]]
   - name: inputs
     description: A mapping of input names to input data sources used in the job. Defaults
       to None.
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:dict>[<xref:str>, <xref:typing.Union>[ <xref:azure.ai.ml.entities._job.pipeline._io.NodeOutput>,
       <xref:azure.ai.ml.Input>, <xref:str>, <xref:bool>, <xref:int>, <xref:float>,
@@ -122,21 +133,29 @@ constructor:
   - name: outputs
     description: A mapping of output names to output data sources used in the job.
       Defaults to None.
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:dict>[<xref:str>, <xref:typing.Union>[<xref:str>,
       <xref:azure.ai.ml.Output>]]]
   - name: args
     description: The arguments for the job. Defaults to None.
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:str>]
+  - name: additional_includes
+    description: A list of shared additional files to be included in the component.
+      Defaults to None.
+    defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:typing.List>[<xref:str>]]
 examples:
 - "Creating SparkComponent.<!--[!code-python[Main](les\\ml_samples_spark_configurations.py\
   \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-  : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-  \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\7\\\\azure-ai-ml-1.20.0\\\
-  \\samples\\\\ml_samples_spark_configurations.py\", \"xml:space\": \"preserve\",\
-  \ \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
-  : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml.entities import\
+  : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\x64\\\
+  \\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\19\\\\azure_ai_ml-1.30.0\\\\\
+  samples\\\\ml_samples_spark_configurations.py\", \"xml:space\": \"preserve\", \"\
+  force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\":\
+  \ 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml.entities import\
   \ SparkComponent\n\n   component = SparkComponent(\n       name=\"add_greeting_column_spark_component\"\
   ,\n       display_name=\"Aml Spark add greeting column test module\",\n       description=\"\
   Aml Spark add greeting column test module\",\n       version=\"1\",\n       inputs={\n\

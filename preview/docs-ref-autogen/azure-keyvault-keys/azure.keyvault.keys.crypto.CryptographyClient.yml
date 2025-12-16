@@ -3,16 +3,14 @@ uid: azure.keyvault.keys.crypto.CryptographyClient
 name: CryptographyClient
 fullName: azure.keyvault.keys.crypto.CryptographyClient
 module: azure.keyvault.keys.crypto
-inheritances:
-- azure.keyvault.keys._shared.client_base.KeyVaultClientBase
 summary: "Performs cryptographic operations using Azure Key Vault keys.\n\nThis client\
   \ will perform operations locally when it's intialized with the necessary key material\
   \ or is able to get\nthat material from Key Vault. When the required key material\
   \ is unavailable, cryptographic operations are performed\nby the Key Vault service.\n\
   \nCreate a CryptographyClient<!--[!code-python[Main](s\\test_examples_crypto.py\
   \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-  : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-  \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\48\\\\azure-keyvault-keys-4.9.0b3\\\
+  : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\x64\\\
+  \\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\66\\\\azure_keyvault_keys-4.11.0b1\\\
   \\tests\\\\test_examples_crypto.py\", \"xml:space\": \"preserve\", \"force\": false,\
   \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
   : false} -->\n\n````python\n\n   # create a CryptographyClient using a KeyVaultKey\
@@ -22,11 +20,10 @@ summary: "Performs cryptographic operations using Azure Key Vault keys.\n\nThis 
   \n   crypto_client = CryptographyClient(key_id, credential)\n\n   ````"
 constructor:
   syntax: 'CryptographyClient(key: KeyVaultKey | str, credential: TokenCredential,
-    **kwargs)'
+    **kwargs: Any)'
   parameters:
   - name: key
-    description: 'Either a <xref:azure.keyvault.keys.KeyVaultKey> instance as returned
-      by
+    description: 'Either a azure.keyvault.keys.KeyVaultKey instance as returned by
 
       <xref:azure.keyvault.keys.KeyClient.get_key>, or a string.
 
@@ -34,6 +31,7 @@ constructor:
       a version is recommended.'
     isRequired: true
     types:
+    - <xref:str>
     - <xref:azure.keyvault.keys.KeyVaultKey>
   - name: credential
     description: 'An object which can provide an access token for the vault, such
@@ -99,15 +97,15 @@ methods:
     \ whose size depends on\nthe key and encryption algorithm.\n\nDecrypt bytes<!--[!code-python[Main](s\\\
     test_examples_crypto.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
-    hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\48\\\\azure-keyvault-keys-4.9.0b3\\\\tests\\\\test_examples_crypto.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   from azure.keyvault.keys.crypto import EncryptionAlgorithm\n\n   result =\
-    \ client.decrypt(EncryptionAlgorithm.rsa_oaep, ciphertext)\n   print(result.plaintext)\n\
-    \n   ````"
-  signature: 'decrypt(algorithm: EncryptionAlgorithm, ciphertext: bytes, **kwargs)
-    -> DecryptResult'
+    ToolCache\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
+    \\66\\\\azure_keyvault_keys-4.11.0b1\\\\tests\\\\test_examples_crypto.py\", \"\
+    xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.keyvault.keys.crypto\
+    \ import EncryptionAlgorithm\n\n   result = client.decrypt(EncryptionAlgorithm.rsa_oaep_256,\
+    \ ciphertext)\n   print(result.plaintext)\n\n   ````"
+  signature: 'decrypt(algorithm: EncryptionAlgorithm, ciphertext: bytes, *, iv: bytes
+    | None = None, authentication_tag: bytes | None = None, additional_authenticated_data:
+    bytes | None = None, **kwargs: Any) -> DecryptResult'
   parameters:
   - name: algorithm
     description: Encryption algorithm to use
@@ -120,7 +118,7 @@ methods:
 
       the integrity of the ciphertext using, for example, an HMAC. See
 
-      [https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode](https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode)
+      [https://learn.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode](https://learn.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode)
       for more information.'
     isRequired: true
     types:
@@ -129,6 +127,7 @@ methods:
   - name: iv
     description: The initialization vector used during encryption. Required for AES
       decryption.
+    defaultValue: None
     types:
     - <xref:bytes>
     - <xref:None>
@@ -137,6 +136,7 @@ methods:
       only AES-GCM
 
       decryption.'
+    defaultValue: None
     types:
     - <xref:bytes>
     - <xref:None>
@@ -144,6 +144,7 @@ methods:
     description: 'Optional data that is authenticated but not encrypted. For use
 
       with AES-GCM decryption.'
+    defaultValue: None
     types:
     - <xref:bytes>
     - <xref:None>
@@ -161,16 +162,17 @@ methods:
     \ This method encrypts only a single block of data, whose size depends on\nthe\
     \ key and encryption algorithm.\n\nEncrypt bytes<!--[!code-python[Main](s\\test_examples_crypto.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    48\\\\azure-keyvault-keys-4.9.0b3\\\\tests\\\\test_examples_crypto.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.keyvault.keys.crypto\
-    \ import EncryptionAlgorithm\n\n   # the result holds the ciphertext and identifies\
-    \ the encryption key and algorithm used\n   result = client.encrypt(EncryptionAlgorithm.rsa_oaep,\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\66\\\\azure_keyvault_keys-4.11.0b1\\\
+    \\tests\\\\test_examples_crypto.py\", \"xml:space\": \"preserve\", \"force\":\
+    \ false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   from azure.keyvault.keys.crypto import\
+    \ EncryptionAlgorithm\n\n   # the result holds the ciphertext and identifies the\
+    \ encryption key and algorithm used\n   result = client.encrypt(EncryptionAlgorithm.rsa_oaep_256,\
     \ b\"plaintext\")\n   ciphertext = result.ciphertext\n   print(result.key_id)\n\
     \   print(result.algorithm)\n\n   ````"
-  signature: 'encrypt(algorithm: EncryptionAlgorithm, plaintext: bytes, **kwargs)
+  signature: 'encrypt(algorithm: EncryptionAlgorithm, plaintext: bytes, *, iv: bytes
+    | None = None, additional_authenticated_data: bytes | None = None, **kwargs: Any)
     -> EncryptResult'
   parameters:
   - name: algorithm
@@ -195,6 +197,7 @@ methods:
       for local
 
       cryptography; for remote cryptography, Key Vault will generate an IV.'
+    defaultValue: None
     types:
     - <xref:bytes>
     - <xref:None>
@@ -202,6 +205,7 @@ methods:
     description: 'Optional data that is authenticated but not encrypted. For use
 
       with AES-GCM encryption.'
+    defaultValue: None
     types:
     - <xref:bytes>
     - <xref:None>
@@ -245,8 +249,8 @@ methods:
     information about how to send
 
     custom requests with this method, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request).'
-  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs)
-    -> HttpResponse'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> HttpResponse'
   parameters:
   - name: request
     description: The network request you want to make.
@@ -256,6 +260,7 @@ methods:
   keywordOnlyParameters:
   - name: stream
     description: Whether the response payload will be streamed. Defaults to False.
+    defaultValue: 'False'
     types:
     - <xref:bool>
   return:
@@ -268,17 +273,17 @@ methods:
   summary: "Create a signature from a digest using the client's key.\n\nRequires the\
     \ keys/sign permission.\n\nSign bytes<!--[!code-python[Main](s\\test_examples_crypto.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    48\\\\azure-keyvault-keys-4.9.0b3\\\\tests\\\\test_examples_crypto.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import hashlib\n\
-    \n   from azure.keyvault.keys.crypto import SignatureAlgorithm\n\n   digest =\
-    \ hashlib.sha256(b\"plaintext\").digest()\n\n   # sign returns the signature and\
-    \ the metadata required to verify it\n   result = client.sign(SignatureAlgorithm.rs256,\
-    \ digest)\n   print(result.key_id)\n   print(result.algorithm)\n   signature =\
-    \ result.signature\n\n   ````"
-  signature: 'sign(algorithm: SignatureAlgorithm, digest: bytes, **kwargs) -> SignResult'
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\66\\\\azure_keyvault_keys-4.11.0b1\\\
+    \\tests\\\\test_examples_crypto.py\", \"xml:space\": \"preserve\", \"force\":\
+    \ false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   import hashlib\n\n   from azure.keyvault.keys.crypto\
+    \ import SignatureAlgorithm\n\n   digest = hashlib.sha256(b\"plaintext\").digest()\n\
+    \n   # sign returns the signature and the metadata required to verify it\n   result\
+    \ = client.sign(SignatureAlgorithm.rs256, digest)\n   print(result.key_id)\n \
+    \  print(result.algorithm)\n   signature = result.signature\n\n   ````"
+  signature: 'sign(algorithm: SignatureAlgorithm, digest: bytes, **kwargs: Any) ->
+    SignResult'
   parameters:
   - name: algorithm
     description: signing algorithm
@@ -299,15 +304,15 @@ methods:
   summary: "Unwrap a key previously wrapped with the client's key.\n\nRequires the\
     \ keys/unwrapKey permission.\n\nUnwrap a key<!--[!code-python[Main](s\\test_examples_crypto.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    48\\\\azure-keyvault-keys-4.9.0b3\\\\tests\\\\test_examples_crypto.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.keyvault.keys.crypto\
-    \ import KeyWrapAlgorithm\n\n   result = client.unwrap_key(KeyWrapAlgorithm.rsa_oaep,\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\66\\\\azure_keyvault_keys-4.11.0b1\\\
+    \\tests\\\\test_examples_crypto.py\", \"xml:space\": \"preserve\", \"force\":\
+    \ false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   from azure.keyvault.keys.crypto import\
+    \ KeyWrapAlgorithm\n\n   result = client.unwrap_key(KeyWrapAlgorithm.rsa_oaep_256,\
     \ encrypted_key)\n   key = result.key\n\n   ````"
-  signature: 'unwrap_key(algorithm: KeyWrapAlgorithm, encrypted_key: bytes, **kwargs)
-    -> UnwrapResult'
+  signature: 'unwrap_key(algorithm: KeyWrapAlgorithm, encrypted_key: bytes, **kwargs:
+    Any) -> UnwrapResult'
   parameters:
   - name: algorithm
     description: wrapping algorithm to use
@@ -328,15 +333,15 @@ methods:
   summary: "Verify a signature using the client's key.\n\nRequires the keys/verify\
     \ permission.\n\nVerify a signature<!--[!code-python[Main](s\\test_examples_crypto.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    48\\\\azure-keyvault-keys-4.9.0b3\\\\tests\\\\test_examples_crypto.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.keyvault.keys.crypto\
-    \ import SignatureAlgorithm\n\n   result = client.verify(SignatureAlgorithm.rs256,\
-    \ digest, signature)\n   assert result.is_valid\n\n   ````"
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\66\\\\azure_keyvault_keys-4.11.0b1\\\
+    \\tests\\\\test_examples_crypto.py\", \"xml:space\": \"preserve\", \"force\":\
+    \ false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   from azure.keyvault.keys.crypto import\
+    \ SignatureAlgorithm\n\n   result = client.verify(SignatureAlgorithm.rs256, digest,\
+    \ signature)\n   assert result.is_valid\n\n   ````"
   signature: 'verify(algorithm: SignatureAlgorithm, digest: bytes, signature: bytes,
-    **kwargs) -> VerifyResult'
+    **kwargs: Any) -> VerifyResult'
   parameters:
   - name: algorithm
     description: verification algorithm
@@ -365,16 +370,17 @@ methods:
   summary: "Wrap a key with the client's key.\n\nRequires the keys/wrapKey permission.\n\
     \nWrap a key<!--[!code-python[Main](s\\test_examples_crypto.py )]-->\n\n<!-- literal_block\
     \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-    : [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\
-    \\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\48\\\\azure-keyvault-keys-4.9.0b3\\\
-    \\tests\\\\test_examples_crypto.py\", \"xml:space\": \"preserve\", \"force\":\
-    \ false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-    linenos\": false} -->\n\n````python\n\n   from azure.keyvault.keys.crypto import\
-    \ KeyWrapAlgorithm\n\n   # the result holds the encrypted key and identifies the\
-    \ encryption key and algorithm used\n   result = client.wrap_key(KeyWrapAlgorithm.rsa_oaep,\
-    \ key_bytes)\n   encrypted_key = result.encrypted_key\n   print(result.key_id)\n\
-    \   print(result.algorithm)\n\n   ````"
-  signature: 'wrap_key(algorithm: KeyWrapAlgorithm, key: bytes, **kwargs) -> WrapResult'
+    : [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
+    \\py2docfx\\\\dist_temp\\\\66\\\\azure_keyvault_keys-4.11.0b1\\\\tests\\\\test_examples_crypto.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   from azure.keyvault.keys.crypto import KeyWrapAlgorithm\n\n   # the result\
+    \ holds the encrypted key and identifies the encryption key and algorithm used\n\
+    \   result = client.wrap_key(KeyWrapAlgorithm.rsa_oaep_256, key_bytes)\n   encrypted_key\
+    \ = result.encrypted_key\n   print(result.key_id)\n   print(result.algorithm)\n\
+    \n   ````"
+  signature: 'wrap_key(algorithm: KeyWrapAlgorithm, key: bytes, **kwargs: Any) ->
+    WrapResult'
   parameters:
   - name: algorithm
     description: wrapping algorithm to use

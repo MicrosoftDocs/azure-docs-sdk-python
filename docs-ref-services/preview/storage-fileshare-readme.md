@@ -7,7 +7,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: storage
 ms.subservice: files
-ms.technology: azure
 manager: twolley
 ---
 # Azure Files for Python Readme - Version 12.1.1

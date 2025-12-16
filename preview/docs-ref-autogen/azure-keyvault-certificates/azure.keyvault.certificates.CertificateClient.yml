@@ -3,11 +3,10 @@ uid: azure.keyvault.certificates.CertificateClient
 name: CertificateClient
 fullName: azure.keyvault.certificates.CertificateClient
 module: azure.keyvault.certificates
-inheritances:
-- azure.keyvault.certificates._shared.client_base.KeyVaultClientBase
 summary: A high-level interface for managing a vault's certificates.
 constructor:
-  syntax: 'CertificateClient(vault_url: str, credential: TokenCredential, **kwargs)'
+  syntax: 'CertificateClient(vault_url: str, credential: TokenCredential, **kwargs:
+    Any)'
   parameters:
   - name: vault_url
     description: 'URL of the vault the client will access. This is also called the
@@ -44,8 +43,8 @@ constructor:
 examples:
 - "Create a new `CertificateClient`<!--[!code-python[Main](s\\test_examples_certificates.py\
   \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-  : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-  \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\47\\\\azure-keyvault-certificates-4.8.0b3\\\
+  : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\x64\\\
+  \\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\65\\\\azure_keyvault_certificates-4.10.0b1\\\
   \\tests\\\\test_examples_certificates.py\", \"xml:space\": \"preserve\", \"force\"\
   : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
   linenos\": false} -->\n\n````python\n\n   from azure.identity import DefaultAzureCredential\n\
@@ -69,7 +68,7 @@ methods:
     cannot be restored to a vault
 
     in an EU region.'
-  signature: 'backup_certificate(certificate_name: str, **kwargs) -> bytes'
+  signature: 'backup_certificate(certificate_name: str, **kwargs: Any) -> bytes'
   parameters:
   - name: certificate_name
     description: The name of the certificate.
@@ -82,20 +81,19 @@ methods:
     - <xref:bytes>
   exceptions:
   - type: azure.core.exceptions.ResourceNotFoundError
-    description: if the certificate doesn't exist,
   - type: azure.core.exceptions.HttpResponseError
-    description: for other errors
+    description: the former if the certificate doesn't exist; the latter for other
+      errors
   examples:
   - "Get a certificate backup<!--[!code-python[Main](s\\test_examples_certificates.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    47\\\\azure-keyvault-certificates-4.8.0b3\\\\tests\\\\test_examples_certificates.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   # backup certificate\n   certificate_backup = certificate_client.backup_certificate(cert_name)\n\
-    \n   # returns the raw bytes of the backed up certificate\n   print(certificate_backup)\n\
-    \n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\65\\\\azure_keyvault_certificates-4.10.0b1\\\
+    \\tests\\\\test_examples_certificates.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   # backup certificate\n   certificate_backup\
+    \ = certificate_client.backup_certificate(cert_name)\n\n   # returns the raw bytes\
+    \ of the backed up certificate\n   print(certificate_backup)\n\n   ````\n"
 - uid: azure.keyvault.certificates.CertificateClient.begin_create_certificate
   name: begin_create_certificate
   summary: "Creates a new certificate.\n\nIf this is the first version, the certificate\
@@ -104,7 +102,8 @@ methods:
     gives you the certificate if creation is successful, or the CertificateOperation\
     \ if not \u2013 otherwise, it raises\nan <xref:azure.core.exceptions.HttpResponseError>."
   signature: 'begin_create_certificate(certificate_name: str, policy: CertificatePolicy,
-    **kwargs) -> LROPoller[KeyVaultCertificate | CertificateOperation]'
+    *, enabled: bool | None = None, tags: Dict[str, str] | None = None, preserve_certificate_order:
+    bool | None = None, **kwargs: Any) -> LROPoller[KeyVaultCertificate | CertificateOperation]'
   parameters:
   - name: certificate_name
     description: The name of the certificate.
@@ -122,12 +121,19 @@ methods:
   keywordOnlyParameters:
   - name: enabled
     description: Whether the certificate is enabled for use.
+    defaultValue: None
     types:
     - <xref:bool>
   - name: tags
     description: Application specific metadata in the form of key-value pairs.
+    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
+  - name: preserve_certificate_order
+    description: Whether to preserve the order of the certificate chain.
+    defaultValue: None
+    types:
+    - <xref:bool>
   return:
     description: 'An LROPoller for the create certificate operation. Waiting on the
       poller gives you the certificate if
@@ -138,21 +144,19 @@ methods:
     - <xref:azure.keyvault.certificates.CertificateOperation>]
   exceptions:
   - type: ValueError
-    description: if the certificate policy is invalid,
   - type: azure.core.exceptions.HttpResponseError
-    description: for other errors.
+    description: the former if the certificate policy is invalid; the latter for other
+      errors
   examples:
   - "Create a certificate<!--[!code-python[Main](s\\test_examples_certificates.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    47\\\\azure-keyvault-certificates-4.8.0b3\\\\tests\\\\test_examples_certificates.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   from azure.keyvault.certificates import (CertificateContentType,\n      \
-    \                                      CertificatePolicy,\n                  \
-    \                          WellKnownIssuerNames)\n\n   # specify the certificate\
-    \ policy\n   cert_policy = CertificatePolicy(\n       issuer_name=WellKnownIssuerNames.self,\n\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\65\\\\azure_keyvault_certificates-4.10.0b1\\\
+    \\tests\\\\test_examples_certificates.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   from azure.keyvault.certificates import\
+    \ CertificateContentType, CertificatePolicy, WellKnownIssuerNames\n\n   # specify\
+    \ the certificate policy\n   cert_policy = CertificatePolicy(\n       issuer_name=WellKnownIssuerNames.self,\n\
     \       subject=\"CN=*.microsoft.com\",\n       san_dns_names=[\"sdk.azure-int.net\"\
     ],\n       exportable=True,\n       key_type=\"RSA\",\n       key_size=2048,\n\
     \       reuse_key=False,\n       content_type=CertificateContentType.pkcs12,\n\
@@ -176,7 +180,7 @@ methods:
     you to wait for deletion to
 
     complete.'
-  signature: 'begin_delete_certificate(certificate_name: str, **kwargs) -> LROPoller[DeletedCertificate]'
+  signature: 'begin_delete_certificate(certificate_name: str, **kwargs: Any) -> LROPoller[DeletedCertificate]'
   parameters:
   - name: certificate_name
     description: The name of the certificate to delete.
@@ -201,19 +205,19 @@ methods:
     - <xref:azure.core.polling.LROPoller>[<xref:azure.keyvault.certificates.DeletedCertificate>]
   exceptions:
   - type: azure.core.exceptions.ResourceNotFoundError
-    description: if the certificate doesn't exist,
   - type: azure.core.exceptions.HttpResponseError
-    description: for other errors
+    description: the former if the certificate doesn't exist; the latter for other
+      errors
   examples:
   - "Delete a certificate<!--[!code-python[Main](s\\test_examples_certificates.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    47\\\\azure-keyvault-certificates-4.8.0b3\\\\tests\\\\test_examples_certificates.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   # delete a certificate\n   deleted_certificate = certificate_client.begin_delete_certificate(certificate.name).result()\n\
-    \n   print(deleted_certificate.name)\n\n   # if the vault has soft-delete enabled,\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\65\\\\azure_keyvault_certificates-4.10.0b1\\\
+    \\tests\\\\test_examples_certificates.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   # delete a certificate\n   deleted_certificate\
+    \ = certificate_client.begin_delete_certificate(certificate.name).result()\n\n\
+    \   print(deleted_certificate.name)\n\n   # if the vault has soft-delete enabled,\
     \ the certificate's deleted date,\n   # scheduled purge date, and recovery id\
     \ are available\n   print(deleted_certificate.deleted_on)\n   print(deleted_certificate.scheduled_purge_date)\n\
     \   print(deleted_certificate.recovery_id)\n\n   ````\n"
@@ -233,8 +237,8 @@ methods:
     certificate in another
 
     operation immediately.'
-  signature: 'begin_recover_deleted_certificate(certificate_name: str, **kwargs) ->
-    LROPoller[KeyVaultCertificate]'
+  signature: 'begin_recover_deleted_certificate(certificate_name: str, **kwargs: Any)
+    -> LROPoller[KeyVaultCertificate]'
   parameters:
   - name: certificate_name
     description: The name of the deleted certificate to recover
@@ -259,20 +263,21 @@ methods:
   examples:
   - "Recover a deleted certificate<!--[!code-python[Main](s\\test_examples_certificates.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    47\\\\azure-keyvault-certificates-4.8.0b3\\\\tests\\\\test_examples_certificates.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   # recover a deleted certificate to its latest version (requires soft-delete\
-    \ enabled for the vault)\n   recovered_certificate = certificate_client.begin_recover_deleted_certificate(cert_name).result()\n\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\65\\\\azure_keyvault_certificates-4.10.0b1\\\
+    \\tests\\\\test_examples_certificates.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   # recover a deleted certificate to its\
+    \ latest version (requires soft-delete enabled for the vault)\n   recovered_certificate\
+    \ = certificate_client.begin_recover_deleted_certificate(cert_name).result()\n\
     \n   print(recovered_certificate.id)\n   print(recovered_certificate.name)\n\n\
     \   ````\n"
 - uid: azure.keyvault.certificates.CertificateClient.cancel_certificate_operation
   name: cancel_certificate_operation
   summary: Cancels an in-progress certificate operation. Requires the certificates/update
     permission.
-  signature: 'cancel_certificate_operation(certificate_name: str, **kwargs) -> CertificateOperation'
+  signature: 'cancel_certificate_operation(certificate_name: str, **kwargs: Any) ->
+    CertificateOperation'
   parameters:
   - name: certificate_name
     description: The name of the certificate.
@@ -296,7 +301,10 @@ methods:
   name: create_issuer
   summary: Sets the specified certificate issuer. Requires certificates/setissuers
     permission.
-  signature: 'create_issuer(issuer_name: str, provider: str, **kwargs) -> CertificateIssuer'
+  signature: 'create_issuer(issuer_name: str, provider: str, *, enabled: bool | None
+    = None, account_id: str | None = None, password: str | None = None, organization_id:
+    str | None = None, admin_contacts: List[AdministratorContact] | None = None, **kwargs:
+    Any) -> CertificateIssuer'
   parameters:
   - name: issuer_name
     description: The name of the issuer.
@@ -311,24 +319,29 @@ methods:
   keywordOnlyParameters:
   - name: enabled
     description: Whether the issuer is enabled for use.
+    defaultValue: None
     types:
     - <xref:bool>
   - name: account_id
     description: The user name/account name/account id.
+    defaultValue: None
     types:
     - <xref:str>
   - name: password
     description: The password/secret/account key.
+    defaultValue: None
     types:
     - <xref:str>
   - name: organization_id
     description: Id of the organization
+    defaultValue: None
     types:
     - <xref:str>
   - name: admin_contacts
     description: 'Contact details of the organization administrators of the
 
       certificate issuer.'
+    defaultValue: None
     types:
     - <xref:list>[<xref:azure.keyvault.certificates.AdministratorContact>]
   return:
@@ -340,8 +353,8 @@ methods:
   examples:
   - "Create an issuer<!--[!code-python[Main](s\\test_examples_certificates.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\47\\\\azure-keyvault-certificates-4.8.0b3\\\
+    : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\\
+    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\65\\\\azure_keyvault_certificates-4.10.0b1\\\
     \\tests\\\\test_examples_certificates.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   from azure.keyvault.certificates import\
@@ -360,7 +373,8 @@ methods:
 
 
     Requires the certificates/update permission.'
-  signature: 'delete_certificate_operation(certificate_name: str, **kwargs) -> CertificateOperation'
+  signature: 'delete_certificate_operation(certificate_name: str, **kwargs: Any) ->
+    CertificateOperation'
   parameters:
   - name: certificate_name
     description: The name of the certificate.
@@ -377,7 +391,7 @@ methods:
   name: delete_contacts
   summary: Deletes the certificate contacts for the key vault. Requires the certificates/managecontacts
     permission.
-  signature: delete_contacts(**kwargs) -> List[CertificateContact]
+  signature: 'delete_contacts(**kwargs: Any) -> List[CertificateContact]'
   return:
     description: The deleted contacts for the key vault.
     types:
@@ -387,8 +401,8 @@ methods:
   examples:
   - "Delete contacts<!--[!code-python[Main](s\\test_examples_certificates.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\47\\\\azure-keyvault-certificates-4.8.0b3\\\
+    : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\\
+    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\65\\\\azure_keyvault_certificates-4.10.0b1\\\
     \\tests\\\\test_examples_certificates.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   deleted_contacts = certificate_client.delete_contacts()\n\
@@ -401,7 +415,7 @@ methods:
 
 
     Requires certificates/manageissuers/deleteissuers permission.'
-  signature: 'delete_issuer(issuer_name: str, **kwargs) -> CertificateIssuer'
+  signature: 'delete_issuer(issuer_name: str, **kwargs: Any) -> CertificateIssuer'
   parameters:
   - name: issuer_name
     description: The name of the issuer.
@@ -417,8 +431,8 @@ methods:
   examples:
   - "Delete an issuer<!--[!code-python[Main](s\\test_examples_certificates.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\47\\\\azure-keyvault-certificates-4.8.0b3\\\
+    : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\\
+    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\65\\\\azure_keyvault_certificates-4.10.0b1\\\
     \\tests\\\\test_examples_certificates.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   deleted_issuer = certificate_client.delete_issuer(\"\
@@ -436,7 +450,7 @@ methods:
     version of the
 
     certificate, call <xref:azure.keyvault.certificates.CertificateClient.get_certificate_version>.'
-  signature: 'get_certificate(certificate_name: str, **kwargs) -> KeyVaultCertificate'
+  signature: 'get_certificate(certificate_name: str, **kwargs: Any) -> KeyVaultCertificate'
   parameters:
   - name: certificate_name
     description: The name of the certificate in the given vault.
@@ -449,14 +463,14 @@ methods:
     - <xref:azure.keyvault.certificates.KeyVaultCertificate>
   exceptions:
   - type: azure.core.exceptions.ResourceNotFoundError
-    description: if the certificate doesn't exist,
   - type: azure.core.exceptions.HttpResponseError
-    description: for other errors
+    description: the former if the certificate doesn't exist; the latter for other
+      errors
   examples:
   - "Get a certificate<!--[!code-python[Main](s\\test_examples_certificates.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\47\\\\azure-keyvault-certificates-4.8.0b3\\\
+    : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\\
+    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\65\\\\azure_keyvault_certificates-4.10.0b1\\\
     \\tests\\\\test_examples_certificates.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   # get the certificate\n   certificate\
@@ -466,7 +480,7 @@ methods:
   name: get_certificate_operation
   summary: Gets the creation operation of a certificate. Requires the certificates/get
     permission.
-  signature: 'get_certificate_operation(certificate_name: str, **kwargs) -> CertificateOperation'
+  signature: 'get_certificate_operation(certificate_name: str, **kwargs: Any) -> CertificateOperation'
   parameters:
   - name: certificate_name
     description: The name of the certificate.
@@ -479,16 +493,16 @@ methods:
     - <xref:azure.keyvault.certificates.CertificateOperation>
   exceptions:
   - type: azure.core.exceptions.ResourceNotFoundError
-    description: if the certificate doesn't exist,
   - type: azure.core.exceptions.HttpResponseError
-    description: for other errors
+    description: the former if the certificate doesn't exist; the latter for other
+      errors
 - uid: azure.keyvault.certificates.CertificateClient.get_certificate_policy
   name: get_certificate_policy
   summary: 'Gets the policy for a certificate. Requires certificates/get permission.
 
 
     Returns the specified certificate policy resources in the key vault.'
-  signature: 'get_certificate_policy(certificate_name: str, **kwargs) -> CertificatePolicy'
+  signature: 'get_certificate_policy(certificate_name: str, **kwargs: Any) -> CertificatePolicy'
   parameters:
   - name: certificate_name
     description: The name of the certificate in a given key vault.
@@ -511,8 +525,8 @@ methods:
     or to get the certificate''s
 
     policy as well, call <xref:azure.keyvault.certificates.CertificateClient.get_certificate>.'
-  signature: 'get_certificate_version(certificate_name: str, version: str, **kwargs)
-    -> KeyVaultCertificate'
+  signature: 'get_certificate_version(certificate_name: str, version: str, **kwargs:
+    Any) -> KeyVaultCertificate'
   parameters:
   - name: certificate_name
     description: The name of the certificate in the given vault.
@@ -530,24 +544,24 @@ methods:
     - <xref:azure.keyvault.certificates.KeyVaultCertificate>
   exceptions:
   - type: azure.core.exceptions.ResourceNotFoundError
-    description: if the certificate doesn't exist,
   - type: azure.core.exceptions.HttpResponseError
-    description: for other errors
+    description: the former if the certificate doesn't exist; the latter for other
+      errors
   examples:
   - "Get a certificate with a specific version<!--[!code-python[Main](s\\test_examples_certificates.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    47\\\\azure-keyvault-certificates-4.8.0b3\\\\tests\\\\test_examples_certificates.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   certificate = certificate_client.get_certificate_version(cert_name, version)\n\
-    \n   print(certificate.id)\n   print(certificate.properties.version)\n\n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\65\\\\azure_keyvault_certificates-4.10.0b1\\\
+    \\tests\\\\test_examples_certificates.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   certificate = certificate_client.get_certificate_version(cert_name,\
+    \ version)\n\n   print(certificate.id)\n   print(certificate.properties.version)\n\
+    \n   ````\n"
 - uid: azure.keyvault.certificates.CertificateClient.get_contacts
   name: get_contacts
   summary: Gets the certificate contacts for the key vault. Requires the certificates/managecontacts
     permission.
-  signature: get_contacts(**kwargs) -> List[CertificateContact]
+  signature: 'get_contacts(**kwargs: Any) -> List[CertificateContact]'
   return:
     description: The certificate contacts for the key vault.
     types:
@@ -557,8 +571,8 @@ methods:
   examples:
   - "Get contacts<!--[!code-python[Main](s\\test_examples_certificates.py )]-->\n\n\
     <!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\47\\\\azure-keyvault-certificates-4.8.0b3\\\
+    : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\\
+    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\65\\\\azure_keyvault_certificates-4.10.0b1\\\
     \\tests\\\\test_examples_certificates.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   contacts = certificate_client.get_contacts()\n\
@@ -575,7 +589,7 @@ methods:
 
     retention interval, scheduled permanent deletion, and the current deletion recovery
     level.'
-  signature: 'get_deleted_certificate(certificate_name: str, **kwargs) -> DeletedCertificate'
+  signature: 'get_deleted_certificate(certificate_name: str, **kwargs: Any) -> DeletedCertificate'
   parameters:
   - name: certificate_name
     description: The name of the certificate.
@@ -588,19 +602,18 @@ methods:
     - <xref:azure.keyvault.certificates.DeletedCertificate>
   exceptions:
   - type: azure.core.exceptions.ResourceNotFoundError
-    description: if the certificate doesn't exist,
   - type: azure.core.exceptions.HttpResponseError
-    description: for other errors
+    description: the former if the certificate doesn't exist; the latter for other
+      errors
   examples:
   - "Get a deleted certificate<!--[!code-python[Main](s\\test_examples_certificates.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    47\\\\azure-keyvault-certificates-4.8.0b3\\\\tests\\\\test_examples_certificates.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   # get a deleted certificate (requires soft-delete enabled for the vault)\n\
-    \   deleted_certificate = certificate_client.get_deleted_certificate(cert_name)\n\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\65\\\\azure_keyvault_certificates-4.10.0b1\\\
+    \\tests\\\\test_examples_certificates.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   # get a deleted certificate (requires\
+    \ soft-delete enabled for the vault)\n   deleted_certificate = certificate_client.get_deleted_certificate(cert_name)\n\
     \   print(deleted_certificate.name)\n\n   # if the vault has soft-delete enabled,\
     \ the certificate's deleted date,\n   # scheduled purge date, and recovery id\
     \ are available\n   print(deleted_certificate.deleted_on)\n   print(deleted_certificate.scheduled_purge_date)\n\
@@ -609,7 +622,7 @@ methods:
   name: get_issuer
   summary: Gets the specified certificate issuer. Requires certificates/manageissuers/getissuers
     permission.
-  signature: 'get_issuer(issuer_name: str, **kwargs) -> CertificateIssuer'
+  signature: 'get_issuer(issuer_name: str, **kwargs: Any) -> CertificateIssuer'
   parameters:
   - name: issuer_name
     description: The name of the issuer.
@@ -622,14 +635,13 @@ methods:
     - <xref:azure.keyvault.certificates.CertificateIssuer>
   exceptions:
   - type: azure.core.exceptions.ResourceNotFoundError
-    description: if the issuer doesn't exist,
   - type: azure.core.exceptions.HttpResponseError
-    description: for other errors
+    description: the former if the issuer doesn't exist; the latter for other errors
   examples:
   - "Get an issuer<!--[!code-python[Main](s\\test_examples_certificates.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\47\\\\azure-keyvault-certificates-4.8.0b3\\\
+    : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\\
+    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\65\\\\azure_keyvault_certificates-4.10.0b1\\\
     \\tests\\\\test_examples_certificates.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   issuer = certificate_client.get_issuer(\"\
@@ -655,7 +667,9 @@ methods:
 
     <xref:azure.keyvault.certificates.CertificateContentType.pem>.'
   signature: 'import_certificate(certificate_name: str, certificate_bytes: bytes,
-    **kwargs) -> KeyVaultCertificate'
+    *, enabled: bool | None = None, tags: Dict[str, str] | None = None, password:
+    str | None = None, policy: CertificatePolicy | None = None, preserve_certificate_order:
+    bool | None = None, **kwargs: Any) -> KeyVaultCertificate'
   parameters:
   - name: certificate_name
     description: The name of the certificate.
@@ -672,16 +686,19 @@ methods:
   keywordOnlyParameters:
   - name: enabled
     description: Whether the certificate is enabled for use.
+    defaultValue: None
     types:
     - <xref:bool>
   - name: tags
     description: Application specific metadata in the form of key-value pairs.
+    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: password
     description: 'If the private key in the passed in certificate is encrypted, it
 
       is the password used for encryption.'
+    defaultValue: None
     types:
     - <xref:str>
   - name: policy
@@ -691,8 +708,14 @@ methods:
       with <xref:azure.keyvault.certificates.CertificatePolicy.content_type> set to
 
       <xref:azure.keyvault.certificates.CertificateContentType.pem>.'
+    defaultValue: None
     types:
     - <xref:azure.keyvault.certificates.CertificatePolicy>
+  - name: preserve_certificate_order
+    description: Whether to preserve the order of the certificate chain.
+    defaultValue: None
+    types:
+    - <xref:bool>
   return:
     description: The imported KeyVaultCertificate
     types:
@@ -710,8 +733,8 @@ methods:
 
     deleted state and ready for recovery or purging. This operation includes deletion-specific
     information.'
-  signature: 'list_deleted_certificates(*, include_pending: bool | None = None, **kwargs)
-    -> ItemPaged[DeletedCertificate]'
+  signature: 'list_deleted_certificates(*, include_pending: bool | None = None, **kwargs:
+    Any) -> ItemPaged[DeletedCertificate]'
   keywordOnlyParameters:
   - name: include_pending
     description: 'Specifies whether to include certificates which are not completely
@@ -719,6 +742,7 @@ methods:
 
       Only available for API versions v7.0 and up. If not provided, Key Vault treats
       this as False.'
+    defaultValue: None
     types:
     - <xref:bool>
     - <xref:None>
@@ -731,13 +755,12 @@ methods:
   examples:
   - "List all the deleted certificates<!--[!code-python[Main](s\\test_examples_certificates.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    47\\\\azure-keyvault-certificates-4.8.0b3\\\\tests\\\\test_examples_certificates.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   # get an iterator of deleted certificates (requires soft-delete enabled for\
-    \ the vault)\n   deleted_certificates = certificate_client.list_deleted_certificates()\n\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\65\\\\azure_keyvault_certificates-4.10.0b1\\\
+    \\tests\\\\test_examples_certificates.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   # get an iterator of deleted certificates\
+    \ (requires soft-delete enabled for the vault)\n   deleted_certificates = certificate_client.list_deleted_certificates()\n\
     \n   for certificate in deleted_certificates:\n       print(certificate.id)\n\
     \       print(certificate.name)\n       print(certificate.deleted_on)\n      \
     \ print(certificate.scheduled_purge_date)\n       print(certificate.deleted_on)\n\
@@ -748,8 +771,8 @@ methods:
 
 
     Requires certificates/list permission.'
-  signature: 'list_properties_of_certificate_versions(certificate_name: str, **kwargs)
-    -> ItemPaged[CertificateProperties]'
+  signature: 'list_properties_of_certificate_versions(certificate_name: str, **kwargs:
+    Any) -> ItemPaged[CertificateProperties]'
   parameters:
   - name: certificate_name
     description: The name of the certificate.
@@ -765,13 +788,12 @@ methods:
   examples:
   - "List all versions of a certificate<!--[!code-python[Main](s\\test_examples_certificates.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    47\\\\azure-keyvault-certificates-4.8.0b3\\\\tests\\\\test_examples_certificates.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   # get an iterator of a certificate's versions\n   certificate_versions =\
-    \ certificate_client.list_properties_of_certificate_versions(certificate_name)\n\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\65\\\\azure_keyvault_certificates-4.10.0b1\\\
+    \\tests\\\\test_examples_certificates.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   # get an iterator of a certificate's\
+    \ versions\n   certificate_versions = certificate_client.list_properties_of_certificate_versions(certificate_name)\n\
     \n   for certificate in certificate_versions:\n       print(certificate.id)\n\
     \       print(certificate.updated_on)\n       print(certificate.version)\n\n \
     \  ````\n"
@@ -782,7 +804,7 @@ methods:
 
     Requires certificates/list permission.'
   signature: 'list_properties_of_certificates(*, include_pending: bool | None = None,
-    **kwargs) -> ItemPaged[CertificateProperties]'
+    **kwargs: Any) -> ItemPaged[CertificateProperties]'
   keywordOnlyParameters:
   - name: include_pending
     description: 'Specifies whether to include certificates which are not completely
@@ -790,6 +812,7 @@ methods:
 
       Only available for API versions v7.0 and up. If not provided, Key Vault treats
       this as False.'
+    defaultValue: None
     types:
     - <xref:bool>
     - <xref:None>
@@ -802,13 +825,13 @@ methods:
   examples:
   - "List all certificates<!--[!code-python[Main](s\\test_examples_certificates.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    47\\\\azure-keyvault-certificates-4.8.0b3\\\\tests\\\\test_examples_certificates.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   # get an iterator of certificates\n   certificates = certificate_client.list_properties_of_certificates()\n\
-    \n   for certificate in certificates:\n       print(certificate.id)\n       print(certificate.created_on)\n\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\65\\\\azure_keyvault_certificates-4.10.0b1\\\
+    \\tests\\\\test_examples_certificates.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   # get an iterator of certificates\n\
+    \   certificates = certificate_client.list_properties_of_certificates()\n\n  \
+    \ for certificate in certificates:\n       print(certificate.id)\n       print(certificate.created_on)\n\
     \       print(certificate.name)\n       print(certificate.updated_on)\n      \
     \ print(certificate.enabled)\n\n   ````\n"
 - uid: azure.keyvault.certificates.CertificateClient.list_properties_of_issuers
@@ -817,7 +840,7 @@ methods:
 
 
     Requires the certificates/manageissuers/getissuers permission.'
-  signature: list_properties_of_issuers(**kwargs) -> ItemPaged[IssuerProperties]
+  signature: 'list_properties_of_issuers(**kwargs: Any) -> ItemPaged[IssuerProperties]'
   return:
     description: An iterator-like instance of Issuers
     types:
@@ -827,14 +850,13 @@ methods:
   examples:
   - "List issuers of a vault<!--[!code-python[Main](s\\test_examples_certificates.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    47\\\\azure-keyvault-certificates-4.8.0b3\\\\tests\\\\test_examples_certificates.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   issuers = certificate_client.list_properties_of_issuers()\n\n   for issuer\
-    \ in issuers:\n       print(issuer.name)\n       print(issuer.provider)\n\n  \
-    \ ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\65\\\\azure_keyvault_certificates-4.10.0b1\\\
+    \\tests\\\\test_examples_certificates.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   issuers = certificate_client.list_properties_of_issuers()\n\
+    \n   for issuer in issuers:\n       print(issuer.name)\n       print(issuer.provider)\n\
+    \n   ````\n"
 - uid: azure.keyvault.certificates.CertificateClient.merge_certificate
   name: merge_certificate
   summary: 'Merges a certificate or a certificate chain with a key pair existing on
@@ -852,7 +874,8 @@ methods:
 
     certificate will not be signed by an issuer known to it.'
   signature: 'merge_certificate(certificate_name: str, x509_certificates: List[bytes],
-    **kwargs) -> KeyVaultCertificate'
+    *, enabled: bool | None = None, tags: Dict[str, str] | None = None, **kwargs:
+    Any) -> KeyVaultCertificate'
   parameters:
   - name: certificate_name
     description: The name of the certificate
@@ -867,11 +890,13 @@ methods:
   keywordOnlyParameters:
   - name: enabled
     description: Whether the certificate is enabled for use.
+    defaultValue: None
     types:
     - <xref:bool>
     - <xref:None>
   - name: tags
     description: Application specific metadata in the form of key-value pairs.
+    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
     - <xref:None>
@@ -898,7 +923,7 @@ methods:
     This method is only necessary for purging a certificate before its
 
     <xref:azure.keyvault.certificates.DeletedCertificate.scheduled_purge_date>.'
-  signature: 'purge_deleted_certificate(certificate_name: str, **kwargs) -> None'
+  signature: 'purge_deleted_certificate(certificate_name: str, **kwargs: Any) -> None'
   parameters:
   - name: certificate_name
     description: The name of the certificate
@@ -924,7 +949,7 @@ methods:
     vault must be owned by the same
 
     Microsoft Azure subscription as the source vault.'
-  signature: 'restore_certificate_backup(backup: bytes, **kwargs) -> KeyVaultCertificate'
+  signature: 'restore_certificate_backup(backup: bytes, **kwargs: Any) -> KeyVaultCertificate'
   parameters:
   - name: backup
     description: The backup blob associated with a certificate bundle.
@@ -940,13 +965,13 @@ methods:
   examples:
   - "Restore a certificate backup<!--[!code-python[Main](s\\test_examples_certificates.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    47\\\\azure-keyvault-certificates-4.8.0b3\\\\tests\\\\test_examples_certificates.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   # restore a certificate backup\n   restored_certificate = certificate_client.restore_certificate_backup(certificate_backup)\n\
-    \n   print(restored_certificate.id)\n   print(restored_certificate.name)\n   print(restored_certificate.properties.version)\n\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\65\\\\azure_keyvault_certificates-4.10.0b1\\\
+    \\tests\\\\test_examples_certificates.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   # restore a certificate backup\n   restored_certificate\
+    \ = certificate_client.restore_certificate_backup(certificate_backup)\n\n   print(restored_certificate.id)\n\
+    \   print(restored_certificate.name)\n   print(restored_certificate.properties.version)\n\
     \n   ````\n"
 - uid: azure.keyvault.certificates.CertificateClient.send_request
   name: send_request
@@ -963,8 +988,8 @@ methods:
     information about how to send
 
     custom requests with this method, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request).'
-  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs)
-    -> HttpResponse'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> HttpResponse'
   parameters:
   - name: request
     description: The network request you want to make.
@@ -974,6 +999,7 @@ methods:
   keywordOnlyParameters:
   - name: stream
     description: Whether the response payload will be streamed. Defaults to False.
+    defaultValue: 'False'
     types:
     - <xref:bool>
   return:
@@ -985,7 +1011,7 @@ methods:
   name: set_contacts
   summary: Sets the certificate contacts for the key vault. Requires certificates/managecontacts
     permission.
-  signature: 'set_contacts(contacts: List[CertificateContact], **kwargs) -> List[CertificateContact]'
+  signature: 'set_contacts(contacts: List[CertificateContact], **kwargs: Any) -> List[CertificateContact]'
   parameters:
   - name: contacts
     description: The contact list for the vault certificates.
@@ -1001,8 +1027,8 @@ methods:
   examples:
   - "Create contacts<!--[!code-python[Main](s\\test_examples_certificates.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\47\\\\azure-keyvault-certificates-4.8.0b3\\\
+    : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\\
+    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\65\\\\azure_keyvault_certificates-4.10.0b1\\\
     \\tests\\\\test_examples_certificates.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   from azure.keyvault.certificates import\
@@ -1020,7 +1046,7 @@ methods:
 
     Set specified members in the certificate policy. Leaves others as null.'
   signature: 'update_certificate_policy(certificate_name: str, policy: CertificatePolicy,
-    **kwargs) -> CertificatePolicy'
+    **kwargs: Any) -> CertificatePolicy'
   parameters:
   - name: certificate_name
     description: The name of the certificate in the given vault.
@@ -1042,7 +1068,8 @@ methods:
   name: update_certificate_properties
   summary: Change a certificate's properties. Requires certificates/update permission.
   signature: 'update_certificate_properties(certificate_name: str, version: str |
-    None = None, **kwargs) -> KeyVaultCertificate'
+    None = None, *, enabled: bool | None = None, tags: Dict[str, str] | None = None,
+    **kwargs: Any) -> KeyVaultCertificate'
   parameters:
   - name: certificate_name
     description: The name of the certificate in the given key vault.
@@ -1051,16 +1078,18 @@ methods:
     - <xref:str>
   - name: version
     description: The version of the certificate.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   keywordOnlyParameters:
   - name: enabled
     description: Whether the certificate is enabled for use.
+    defaultValue: None
     types:
     - <xref:bool>
   - name: tags
     description: Application specific metadata in the form of key-value pairs.
+    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   return:
@@ -1072,13 +1101,12 @@ methods:
   examples:
   - "Update a certificate's attributes<!--[!code-python[Main](s\\test_examples_certificates.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    47\\\\azure-keyvault-certificates-4.8.0b3\\\\tests\\\\test_examples_certificates.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   # update attributes of an existing certificate\n   tags = {\"foo\": \"updated\
-    \ tag\"}\n   updated_certificate = certificate_client.update_certificate_properties(\n\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\65\\\\azure_keyvault_certificates-4.10.0b1\\\
+    \\tests\\\\test_examples_certificates.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   # update attributes of an existing certificate\n\
+    \   tags = {\"foo\": \"updated tag\"}\n   updated_certificate = certificate_client.update_certificate_properties(\n\
     \       certificate_name=certificate.name, tags=tags\n   )\n\n   print(updated_certificate.properties.version)\n\
     \   print(updated_certificate.properties.updated_on)\n   print(updated_certificate.properties.tags)\n\
     \n   ````\n"
@@ -1086,7 +1114,10 @@ methods:
   name: update_issuer
   summary: Updates the specified certificate issuer. Requires certificates/setissuers
     permission.
-  signature: 'update_issuer(issuer_name: str, **kwargs) -> CertificateIssuer'
+  signature: 'update_issuer(issuer_name: str, *, enabled: bool | None = None, provider:
+    str | None = None, account_id: str | None = None, password: str | None = None,
+    organization_id: str | None = None, admin_contacts: List[AdministratorContact]
+    | None = None, **kwargs: Any) -> CertificateIssuer'
   parameters:
   - name: issuer_name
     description: The name of the issuer.
@@ -1096,27 +1127,33 @@ methods:
   keywordOnlyParameters:
   - name: enabled
     description: Whether the issuer is enabled for use.
+    defaultValue: None
     types:
     - <xref:bool>
   - name: provider
     description: The issuer provider
+    defaultValue: None
     types:
     - <xref:str>
   - name: account_id
     description: The user name/account name/account id.
+    defaultValue: None
     types:
     - <xref:str>
   - name: password
     description: The password/secret/account key.
+    defaultValue: None
     types:
     - <xref:str>
   - name: organization_id
     description: Id of the organization
+    defaultValue: None
     types:
     - <xref:str>
   - name: admin_contacts
     description: Contact details of the organization administrators of the certificate
       issuer
+    defaultValue: None
     types:
     - <xref:list>[<xref:azure.keyvault.certificates.AdministratorContact>]
   return:

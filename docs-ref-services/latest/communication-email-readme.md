@@ -1,12 +1,12 @@
 ---
 title: Azure Communication Email client library for Python
 keywords: Azure, python, SDK, API, azure-communication-email, communication
-ms.date: 03/31/2023
+ms.date: 10/17/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: communication
 ---
-# Azure Communication Email client library for Python - version 1.0.0 
+# Azure Communication Email client library for Python - version 1.1.0 
 
 
 This package contains a Python SDK for Azure Communication Services for Email.
@@ -77,7 +77,7 @@ message = {
     "content": {
         "subject": "This is the subject",
         "plainText": "This is the body",
-        "html": "<html><h1>This is the body</h1></html>"
+        "html": "html><h1>This is the body</h1></html>"
     },
     "recipients": {
         "to": [
@@ -90,7 +90,7 @@ message = {
     "senderAddress": "sender@contoso.com"
 }
 
-poller = email_client.begin_send(message)
+poller = client.begin_send(message)
 result = poller.result()
 ```
 
@@ -103,7 +103,7 @@ message = {
     "content": {
         "subject": "This is the subject",
         "plainText": "This is the body",
-        "html": "<html><h1>This is the body</h1></html>"
+        "html": "html><h1>This is the body</h1></html>"
     },
     "recipients": {
         "to": [
@@ -122,7 +122,7 @@ message = {
     "senderAddress": "sender@contoso.com"
 }
 
-poller = email_client.begin_send(message)
+poller = client.begin_send(message)
 result = poller.result()
 ```
 
@@ -142,7 +142,7 @@ message = {
     "content": {
         "subject": "This is the subject",
         "plainText": "This is the body",
-        "html": "<html><h1>This is the body</h1></html>"
+        "html": "html><h1>This is the body</h1></html>"
     },
     "recipients": {
         "to": [
@@ -156,25 +156,67 @@ message = {
     "attachments": [
         {
             "name": "attachment.txt",
-            "attachmentType": "text/plain",
+            "contentType": "text/plain",
             "contentInBase64": file_bytes_b64.decode()
         }
     ]
 }
 
-poller = email_client.begin_send(message)
+poller = client.begin_send(message)
+result = poller.result()
+```
+
+### Send Email with Inline Attachments
+
+Azure Communication Services support sending inline attachments.
+Adding an optional `contentId` parameter to an attachment will make it an inline attachment.
+
+```python
+import base64
+
+with open("C://inline_image.jpg", "r") as file:
+    file_contents = file.read()
+
+file_bytes_b64 = base64.b64encode(bytes(file_contents, 'utf-8'))
+
+message = {
+    "content": {
+        "subject": "This is the subject",
+        "plainText": "This is the body",
+        "html": "<html>This is the body<br /><img src=\"cid:my-inline-image\" /></html>"
+    },
+    "recipients": {
+        "to": [
+            {
+                "address": "customer@domain.com",
+                "displayName": "Customer Name"
+            }
+        ]
+    },
+    "senderAddress": "sender@contoso.com",
+    "attachments": [
+        {
+            "name": "inline_image.jpg",
+            "contentType": "image/jpeg",
+            "contentInBase64": file_bytes_b64.decode(),
+            "contentId": "my-inline-image"
+        }
+    ]
+}
+
+poller = client.begin_send(message)
 result = poller.result()
 ```
 
 ## Troubleshooting
 
-Email operations will throw an exception if the request to the server fails. The Email client will raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-email_1.0.0/sdk/core/azure-core/README.md).
+Email operations will throw an exception if the request to the server fails. The Email client will raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-email_1.1.0/sdk/core/azure-core/README.md).
 
 ```python
 from azure.core.exceptions import HttpResponseError
 
 try:
-    response = email_client.send(message)
+    response = client.send(message)
 except HttpResponseError as ex:
     print('Exception:')
     print(ex)
@@ -199,11 +241,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
-[communication_resource_docs]: /azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp
+[communication_resource_docs]: https://learn.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp
 [email_resource_docs]: https://aka.ms/acsemail/createemailresource
-[communication_resource_create_portal]: /azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp
-[communication_resource_create_power_shell]: /powershell/module/az.communication/new-azcommunicationservice
-[communication_resource_create_net]: /azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-net
+[communication_resource_create_portal]: https://learn.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp
+[communication_resource_create_power_shell]: https://learn.microsoft.com/powershell/module/az.communication/new-azcommunicationservice
+[communication_resource_create_net]: https://learn.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-net
 [package]: https://www.nuget.org/packages/Azure.Communication.Common/
 [product_docs]: https://aka.ms/acsemail/overview
 [nextsteps]: https://aka.ms/acsemail/overview

@@ -3,9 +3,6 @@ uid: azure.storage.blob.BlobServiceClient
 name: BlobServiceClient
 fullName: azure.storage.blob.BlobServiceClient
 module: azure.storage.blob
-inheritances:
-- azure.storage.blob._shared.base_client.StorageAccountHostsMixin
-- azure.storage.blob._encryption.StorageEncryptionMixin
 summary: 'A client to interact with the Blob Service at the account level.
 
 
@@ -133,7 +130,11 @@ methods:
   summary: 'This method is to close the sockets opened by the client.
 
     It need not be used when using with a context manager.'
-  signature: close()
+  signature: close() -> None
+  return:
+    description: None
+    types:
+    - <xref:None>
 - uid: azure.storage.blob.BlobServiceClient.create_container
   name: create_container
   summary: 'Creates a new container under the specified account.
@@ -156,12 +157,12 @@ methods:
     description: 'A dict with name-value pairs to associate with the
 
       container as metadata. Example: *{''Category'':''test''}*'
-    isRequired: true
+    defaultValue: None
     types:
-    - <xref:dict>(<xref:str>, <xref:str>)
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
   - name: public_access
     description: 'Possible values include: ''container'', ''blob''.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:azure.storage.blob.PublicAccess>
@@ -219,7 +220,7 @@ methods:
       container''s lease is active and matches this ID.
 
       Required if the container has an active lease.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:azure.storage.blob.BlobLeaseClient>
     - <xref:str>
@@ -271,6 +272,10 @@ methods:
       see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
+  return:
+    description: None
+    types:
+    - <xref:None>
 - uid: azure.storage.blob.BlobServiceClient.find_blobs_by_tags
   name: find_blobs_by_tags
   summary: 'The Filter Blobs operation enables callers to list blobs across all
@@ -353,6 +358,66 @@ methods:
     - <xref:dict>[<xref:str>, <xref:str>]
     - <xref:None>
   keywordOnlyParameters:
+  - name: api_version
+    description: 'The Storage API version to use for requests. Default value is the
+      most recent service version that is
+
+      compatible with the current SDK. Setting to an older version may result in reduced
+      feature compatibility.
+
+
+      *New in version 12.2.0.*'
+    types:
+    - <xref:str>
+  - name: secondary_hostname
+    description: The hostname of the secondary endpoint.
+    types:
+    - <xref:str>
+  - name: max_block_size
+    description: 'The maximum chunk size for uploading a block blob in chunks.
+
+      Defaults to 4*1024*1024, or 4MB.'
+    types:
+    - <xref:int>
+  - name: max_single_put_size
+    description: 'If the blob size is less than or equal max_single_put_size, then
+      the blob will
+
+      be uploaded with only one http PUT request. If the blob size is larger than
+      max_single_put_size,
+
+      the blob will be uploaded in chunks. Defaults to 64*1024*1024, or 64MB.'
+    types:
+    - <xref:int>
+  - name: min_large_block_upload_threshold
+    description: 'The minimum chunk size required to use the memory efficient
+
+      algorithm when uploading a block blob. Defaults to 4*1024*1024+1.'
+    types:
+    - <xref:int>
+  - name: use_byte_buffer
+    description: Use a byte buffer for block blob uploads. Defaults to False.
+    types:
+    - <xref:bool>
+  - name: max_page_size
+    description: The maximum chunk size for uploading a page blob. Defaults to 4*1024*1024,
+      or 4MB.
+    types:
+    - <xref:int>
+  - name: max_single_get_size
+    description: 'The maximum size for a blob to be downloaded in a single call,
+
+      the exceeded part will be downloaded in chunks (could be parallel). Defaults
+      to 32*1024*1024, or 32MB.'
+    types:
+    - <xref:int>
+  - name: max_chunk_get_size
+    description: 'The maximum chunk size used for downloading a blob. Defaults to
+      4*1024*1024,
+
+      or 4MB.'
+    types:
+    - <xref:int>
   - name: audience
     description: 'The audience to use when requesting tokens for Azure Active Directory
 
@@ -379,7 +444,7 @@ methods:
   return:
     description: A dict of account information (SKU and account type).
     types:
-    - <xref:dict>(<xref:str>, <xref:str>)
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
 - uid: azure.storage.blob.BlobServiceClient.get_blob_client
   name: get_blob_client
   summary: 'Get a client to interact with the specified blob.
@@ -411,13 +476,14 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
-    - <xref:dict>(<xref:str>, <xref:typing.Any>)
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   keywordOnlyParameters:
   - name: version_id
     description: 'The version id parameter is an opaque DateTime value that, when
       present,
 
       specifies the version of the blob to operate on.'
+    defaultValue: None
     types:
     - <xref:str>
   return:
@@ -570,14 +636,14 @@ methods:
     description: 'Filters the results to return only containers whose names
 
       begin with the specified prefix.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   - name: include_metadata
     description: 'Specifies that container metadata to be returned in the response.
 
       The default value is *False*.'
-    isRequired: true
+    defaultValue: 'False'
     types:
     - <xref:bool>
   keywordOnlyParameters:
@@ -636,21 +702,21 @@ methods:
   parameters:
   - name: analytics_logging
     description: Groups the Azure Analytics Logging settings.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:azure.storage.blob.BlobAnalyticsLogging>
   - name: hour_metrics
     description: 'The hour metrics settings provide a summary of request
 
       statistics grouped by API in hourly aggregates for blobs.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:azure.storage.blob.Metrics>
   - name: minute_metrics
     description: 'The minute metrics settings provide request statistics
 
       for each minute for blobs.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:azure.storage.blob.Metrics>
   - name: cors
@@ -659,14 +725,14 @@ methods:
       list. If an empty list is specified, all CORS rules will be deleted,
 
       and CORS will be disabled for the service.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:list>[<xref:azure.storage.blob.CorsRule>]
   - name: target_version
     description: 'Indicates the default version to use for requests if an incoming
 
       request''s version is not specified.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   - name: delete_retention_policy
@@ -674,14 +740,14 @@ methods:
       blobs.
 
       It also specifies the number of days and versions of blob to keep.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:azure.storage.blob.RetentionPolicy>
   - name: static_website
     description: 'Specifies whether the static website feature is enabled,
 
       and if yes, indicates the index document and 404 error document to use.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:azure.storage.blob.StaticWebsite>
   keywordOnlyParameters:
@@ -698,6 +764,7 @@ methods:
     types:
     - <xref:int>
   return:
+    description: None
     types:
     - <xref:None>
 - uid: azure.storage.blob.BlobServiceClient.undelete_container
@@ -755,18 +822,21 @@ attributes:
 
     By default this will be "primary". Options include "primary" and "secondary".'
   return:
+    description: The current location mode.
     types:
     - <xref:str>
 - uid: azure.storage.blob.BlobServiceClient.primary_endpoint
   name: primary_endpoint
   summary: The full primary endpoint URL.
   return:
+    description: The full primary endpoint URL.
     types:
     - <xref:str>
 - uid: azure.storage.blob.BlobServiceClient.primary_hostname
   name: primary_hostname
   summary: The hostname of the primary endpoint.
   return:
+    description: The hostname of the primary endpoint.
     types:
     - <xref:str>
 - uid: azure.storage.blob.BlobServiceClient.secondary_endpoint
@@ -779,10 +849,12 @@ attributes:
 
     *secondary_hostname* keyword argument on instantiation.'
   return:
+    description: The full secondary endpoint URL.
     types:
     - <xref:str>
   exceptions:
   - type: ValueError
+    description: If no secondary endpoint is configured.
 - uid: azure.storage.blob.BlobServiceClient.secondary_hostname
   name: secondary_hostname
   summary: 'The hostname of the secondary endpoint.
@@ -793,6 +865,7 @@ attributes:
 
     *secondary_hostname* keyword argument on instantiation.'
   return:
+    description: The hostname of the secondary endpoint, or None if not configured.
     types:
     - <xref:typing.Optional>[<xref:str>]
 - uid: azure.storage.blob.BlobServiceClient.url
@@ -802,8 +875,8 @@ attributes:
 
     This could be either the primary endpoint,
 
-    or the secondary endpoint depending on the current <xref:azure.storage.blob.BlobServiceClient.location_mode>.
-
-    :returns: The full endpoint URL to this entity, including SAS token if used.
-
-    :rtype: str'
+    or the secondary endpoint depending on the current <xref:azure.storage.blob.BlobServiceClient.location_mode>.'
+  return:
+    description: The full endpoint URL to this entity, including SAS token if used.
+    types:
+    - <xref:str>

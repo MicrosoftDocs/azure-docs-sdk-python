@@ -1,6 +1,7 @@
 ---
 title: Azure New Relic Observability SDK for Python
 description: Reference for Azure New Relic Observability SDK for Python
+ms.date: 12/15/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: newrelicobservability
@@ -8,4 +9,3 @@ ms.service: newrelicobservability
 # Azure New Relic Observability SDK for Python - preview
 ## Packages - preview
 [!INCLUDE [packages](new-relic-observability-index.md)]
-

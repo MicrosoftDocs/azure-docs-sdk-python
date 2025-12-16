@@ -3,8 +3,6 @@ uid: azure.mgmt.resource.resources.v2022_09_01.operations.ResourcesOperations
 name: ResourcesOperations
 fullName: azure.mgmt.resource.resources.v2022_09_01.operations.ResourcesOperations
 module: azure.mgmt.resource.resources.v2022_09_01.operations
-inheritances:
-- builtins.object
 summary: "> [!WARNING]\n> DO NOT instantiate this class directly.\n>\n> \n>\n> Instead,\
   \ you should access the following operations through\n>\n> <xref:azure.mgmt.resource.resources.v2022_09_01.ResourceManagementClient>'s\n\
   >\n> <xref:resources> attribute.\n>"
@@ -536,67 +534,62 @@ methods:
   name: list
   summary: Get all the resources in a subscription.
   signature: 'list(filter: str | None = None, expand: str | None = None, top: int
-    | None = None, **kwargs: Any) -> Iterable[GenericResourceExpanded]'
+    | None = None, **kwargs: Any) -> ItemPaged[GenericResourceExpanded]'
   parameters:
   - name: filter
-    description: 'The filter to apply on the operation.:code:*<br>*`<br>`Filter comparison
+    description: 'The filter to apply on the operation.`<br>``<br>`Filter
 
-      operators include ``eq`` (equals) and `ne` (not equals) and may be used with
-      the following
+      comparison operators include ``eq`` (equals) and `ne` (not equals) and may be
+      used with the
 
-      properties: `location`, `resourceType`, `name`, `resourceGroup`,
+      following properties: `location`, `resourceType`, `name`, `resourceGroup`,
 
       `identity`, `identity/principalId`, `plan`, `plan/publisher`,
 
-      `plan/product`, `plan/name`, `plan/version`, and
-
-      `plan/promotionCode`.:code:*<br>*`<br>`For example, to filter by a resource
-      type, use
+      `plan/product`, `plan/name`, `plan/version`, and `plan/promotionCode`.`<br>``<br>`For
+      example, to filter by a resource type, use
 
       ``$filter=resourceType eq ''Microsoft.Network/virtualNetworks''```<br>``<br>``<br>``substringof(value,
-      property)` can  be used to filter
+      property)` can  be used to filter for substrings of the
 
-      for substrings of the following currently-supported properties: `name` and
+      following currently-supported properties: `name` and `resourceGroup``<br>``<br>`For
+      example, to get all resources with ''demo'' anywhere in the resource name, use
 
-      `resourceGroup``<br>``<br>`For example, to get all resources with ''demo''
+      ``$filter=substringof(''demo'', name)```<br>``<br>`Multiple substring
 
-      anywhere in the resource name, use ``$filter=substringof(''demo'', name)```<br>``<br>`Multiple
-      substring operations can also be combined using ``and``/`or` operators.:code:*<br>*`<br>`Note
-      that any truncated number of results queried via
+      operations can also be combined using ``and``/`or` operators.`<br>``<br>`Note
+      that any truncated number of results queried via ``$top`` may also not be
 
-      ``$top`` may also not be compatible when using a
+      compatible when using a filter.`<br>``<br>``<br>`Resources can be
 
-      filter.:code:*<br>*`<br>``<br>`Resources can be filtered by tag names and values.
+      filtered by tag names and values. For example, to filter for a tag name and
+      value, use
 
-      For example, to filter for a tag name and value, use ``$filter=tagName eq ''tag1''
-      and tagValue
+      ``$filter=tagName eq ''tag1'' and tagValue eq ''Value1''``. Note that when resources
+      are filtered
 
-      eq ''Value1''``. Note that when resources are filtered by tag name and value,
-      `<b>the
+      by tag name and value, `<b>the original tags for each resource will not be returned
+      in
 
-      original tags for each resource will not be returned in the results.</b>` Any
-      list of
+      the results.</b>` Any list of additional properties queried via `$expand` may
+      also not be
 
-      additional properties queried via `$expand` may also not be compatible when
-      filtering by tag
+      compatible when filtering by tag names/values. `<br>``<br>`For tag names only,
 
-      names/values. `<br>``<br>`For tag names only, resources can be filtered by prefix
+      resources can be filtered by prefix using the following syntax: ``$filter=startswith(tagName,
 
-      using the following syntax: ``$filter=startswith(tagName, ''depart'')``. This
-      query will return
+      ''depart'')``. This query will return all resources with a tag name prefixed
+      by the phrase
 
-      all resources with a tag name prefixed by the phrase `depart` (i.e.`department`,
+      `depart` (i.e.`department`, `departureDate`, `departureTime`, etc.)`<br>``<br>``<br>`Note
+      that some properties can be combined when
 
-      `departureDate`, `departureTime`, etc.):code:*<br>*`<br>``<br>`Note that
+      filtering resources, which include the following: ``substringof() and/or resourceType``,
 
-      some properties can be combined when filtering resources, which include the
-      following:
+      `plan and plan/publisher and plan/name`, and `identity and identity/principalId`.
 
-      ``substringof() and/or resourceType``, `plan and plan/publisher and plan/name`,
-      and
-
-      `identity and identity/principalId`. Default value is None.'
-    isRequired: true
+      Default value is None.'
+    defaultValue: None
     types:
     - <xref:str>
   - name: expand
@@ -606,7 +599,7 @@ methods:
       Valid values include `createdTime`, `changedTime` and `provisioningState`. For
 
       example, `$expand=createdTime,changedTime`. Default value is None.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   - name: top
@@ -614,7 +607,7 @@ methods:
       API is being
 
       used. Default value is None.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int>
   return:
@@ -630,7 +623,7 @@ methods:
   name: list_by_resource_group
   summary: Get all the resources for a resource group.
   signature: 'list_by_resource_group(resource_group_name: str, filter: str | None
-    = None, expand: str | None = None, top: int | None = None, **kwargs: Any) -> Iterable[GenericResourceExpanded]'
+    = None, expand: str | None = None, top: int | None = None, **kwargs: Any) -> ItemPaged[GenericResourceExpanded]'
   parameters:
   - name: resource_group_name
     description: The resource group with the resources to get. Required.
@@ -638,48 +631,46 @@ methods:
     types:
     - <xref:str>
   - name: filter
-    description: 'The filter to apply on the operation.:code:*<br>*`<br>`The properties
-      you
+    description: 'The filter to apply on the operation.`<br>``<br>`The
 
-      can use for eq (equals) or ne (not equals) are: location, resourceType, name,
-      resourceGroup,
+      properties you can use for eq (equals) or ne (not equals) are: location, resourceType,
+      name,
 
-      identity, identity/principalId, plan, plan/publisher, plan/product, plan/name,
-      plan/version,
+      resourceGroup, identity, identity/principalId, plan, plan/publisher, plan/product,
+      plan/name,
 
-      and plan/promotionCode.:code:`<br>``<br>`For example, to filter by a resource
-      type, use:
+      plan/version, and plan/promotionCode.:code:`<br>``<br>`For example, to filter
+      by a
 
-      $filter=resourceType eq ''Microsoft.Network/virtualNetworks'':code:`<br>``<br>`You
-      can use
+      resource type, use: $filter=resourceType eq ''Microsoft.Network/virtualNetworks'':code:`<br>``<br>`You
+      can use substringof(value, property) in the filter. The
 
-      substringof(value, property) in the filter. The properties you can use for substring
-      are: name
+      properties you can use for substring are: name and resourceGroup.:code:`<br>``<br>`For
+      example, to get all resources with ''demo'' anywhere in the name, use:
 
-      and resourceGroup.:code:`<br>``<br>`For example, to get all resources with ''demo''
+      $filter=substringof(''demo'', name):code:`<br>``<br>`You can link more than
+      one
 
-      anywhere in the name, use: $filter=substringof(''demo'', name):code:`<br>``<br>`You
-      can
+      substringof together by adding and/or operators.:code:`<br>``<br>`You can filter
+      by
 
-      link more than one substringof together by adding and/or operators.:code:`<br>``<br>`You
+      tag names and values. For example, to filter for a tag name and value, use $filter=tagName
+      eq
 
-      can filter by tag names and values. For example, to filter for a tag name and
-      value, use
+      ''tag1'' and tagValue eq ''Value1''. When you filter by a tag name and value,
+      the tags for each
 
-      $filter=tagName eq ''tag1'' and tagValue eq ''Value1''. When you filter by a
-      tag name and value,
+      resource are not returned in the results.:code:`<br>`:code:>>`<<<br>`You can
+      use some
 
-      the tags for each resource are not returned in the results.:code:`<br>`:code:>>`<<<br>`You
-      can use
-
-      some properties together when filtering. The combinations you can use are: substringof
+      properties together when filtering. The combinations you can use are: substringof
       and/or
 
       resourceType, plan and plan/publisher and plan/name, identity and identity/principalId.
       Default
 
       value is None.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   - name: expand
@@ -689,7 +680,7 @@ methods:
       Valid values include `createdTime`, `changedTime` and `provisioningState`. For
 
       example, `$expand=createdTime,changedTime`. Default value is None.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   - name: top
@@ -697,7 +688,7 @@ methods:
       resources. Default
 
       value is None.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int>
   return:
@@ -713,4 +704,4 @@ attributes:
 - uid: azure.mgmt.resource.resources.v2022_09_01.operations.ResourcesOperations.models
   name: models
   signature: models = <module 'azure.mgmt.resource.resources.v2022_09_01.models' from
-    'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\azure\\mgmt\\resource\\resources\\v2022_09_01\\models\\__init__.py'>
+    'C:\\ToolCache\\Python\\3.11.9\\x64\\Lib\\site-packages\\py2docfx\\venv\\venv206\\Lib\\site-packages\\azure\\mgmt\\resource\\resources\\v2022_09_01\\models\\__init__.py'>

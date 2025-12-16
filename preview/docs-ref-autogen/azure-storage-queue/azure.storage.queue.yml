@@ -33,23 +33,23 @@ functions:
       SAS.
     isRequired: true
     types:
-    - <xref:azure.storage.queue.ResourceTypes>
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:azure.storage.queue.ResourceTypes>,
+      <xref:str>]]
   - name: permission
     description: 'The permissions associated with the shared access signature. The
 
       user is restricted to operations allowed by the permissions.'
     isRequired: true
     types:
-    - <xref:azure.storage.queue.AccountSasPermissions>
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:azure.storage.queue.AccountSasPermissions>,
+      <xref:str>]]
   - name: expiry
     description: 'The time at which the shared access signature becomes invalid.
 
       The provided datetime will always be interpreted as UTC.'
     isRequired: true
     types:
-    - <xref:datetime.datetime>
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:datetime.datetime>, <xref:str>]]
   - name: start
     description: 'The time at which the shared access signature becomes valid. If
 
@@ -60,8 +60,7 @@ functions:
       be interpreted as UTC.'
     defaultValue: None
     types:
-    - <xref:datetime.datetime>
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:datetime.datetime>, <xref:str>]]
   - name: ip
     description: 'Specifies an IP address or a range of IP addresses from which to
       accept requests.
@@ -75,7 +74,7 @@ functions:
       restricts the request to those IP addresses.'
     defaultValue: None
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
   keywordOnlyParameters:
   - name: services
     description: 'Specifies the services that the Shared Access Signature (sas) token
@@ -95,6 +94,7 @@ functions:
       the string to sign
 
       that was used to generate the SAS.'
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:typing.Callable>[[<xref:str>], <xref:None>]]
   return:
@@ -108,10 +108,11 @@ functions:
 
     Use the returned signature with the credential parameter of any Queue Service.'
   signature: 'generate_queue_sas(account_name: str, queue_name: str, account_key:
-    str, permission: QueueSasPermissions | str | None = None, expiry: datetime | str
-    | None = None, start: datetime | str | None = None, policy_id: str | None = None,
-    ip: str | None = None, *, sts_hook: Callable[[str], None] | None = None, **kwargs:
-    Any) -> str'
+    str | None = None, permission: QueueSasPermissions | str | None = None, expiry:
+    datetime | str | None = None, start: datetime | str | None = None, policy_id:
+    str | None = None, ip: str | None = None, *, user_delegation_key: UserDelegationKey
+    | None = None, user_delegation_oid: str | None = None, sts_hook: Callable[[str],
+    None] | None = None, **kwargs: Any) -> str'
   parameters:
   - name: account_name
     description: The storage account name used to generate the shared access signature.
@@ -126,9 +127,9 @@ functions:
   - name: account_key
     description: The account key, also called shared key or access key, to generate
       the shared access signature.
-    isRequired: true
+    defaultValue: None
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
   - name: permission
     description: 'The permissions associated with the shared access signature. The
 
@@ -141,8 +142,8 @@ functions:
       specified in an associated stored access policy.'
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.QueueSasPermissions>
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:azure.storage.queue.QueueSasPermissions>,
+      <xref:str>]]
   - name: expiry
     description: 'The time at which the shared access signature becomes invalid.
 
@@ -157,8 +158,7 @@ functions:
       is assumed to be UTC.'
     defaultValue: None
     types:
-    - <xref:datetime.datetime>
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:datetime.datetime>, <xref:str>]]
   - name: start
     description: 'The time at which the shared access signature becomes valid. If
 
@@ -169,8 +169,7 @@ functions:
       be interpreted as UTC.'
     defaultValue: None
     types:
-    - <xref:datetime.datetime>
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:datetime.datetime>, <xref:str>]]
   - name: policy_id
     description: 'A unique value up to 64 characters in length that correlates to
       a
@@ -180,7 +179,7 @@ functions:
       <xref:azure.storage.queue.QueueClient.set_queue_access_policy>.'
     defaultValue: None
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
   - name: ip
     description: 'Specifies an IP address or a range of IP addresses from which to
       accept requests.
@@ -195,11 +194,35 @@ functions:
       restricts the request to those IP addresses.'
     defaultValue: None
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
   keywordOnlyParameters:
   - name: protocol
     description: Specifies the protocol permitted for a request made. The default
       value is https.
+    types:
+    - <xref:str>
+  - name: user_delegation_key
+    description: 'Instead of an account shared key, the user could pass in a user
+      delegation key.
+
+      A user delegation key can be obtained from the service by authenticating with
+      an AAD identity;
+
+      this can be accomplished by calling <xref:azure.storage.queue.QueueServiceClient.get_user_delegation_key>.
+
+      When present, the SAS is signed with the user delegation key instead.'
+    defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:azure.storage.queue.UserDelegationKey>]
+  - name: user_delegation_oid
+    description: 'Specifies the Entra ID of the user that is authorized to use the
+      resulting SAS URL.
+
+      The resulting SAS URL must be used in conjunction with an Entra ID token that
+      has been
+
+      issued to the user specified in this value.'
+    defaultValue: None
     types:
     - <xref:str>
   - name: sts_hook
@@ -207,6 +230,7 @@ functions:
       the string to sign
 
       that was used to generate the SAS.'
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:typing.Callable>[[<xref:str>], <xref:None>]]
   return:
@@ -216,14 +240,14 @@ functions:
   examples:
   - "Generate a sas token.<!--[!code-python[Main](les\\queue_samples_message.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\220\\\\azure-storage-queue-12.12.0b1\\\
+    : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\\
+    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\298\\\\azure_storage_queue-12.15.0b1\\\
     \\samples\\\\queue_samples_message.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   from azure.storage.queue import generate_queue_sas\n\
-    \   sas_token = generate_queue_sas(\n       queue.account_name,\n       queue.queue_name,\n\
-    \       queue.credential.account_key,\n       policy_id='my-access-policy-id'\n\
-    \   )\n\n   ````\n"
+    \n   sas_token = generate_queue_sas(\n       queue.account_name, queue.queue_name,\
+    \ queue.credential.account_key, policy_id=\"my-access-policy-id\"\n   )\n\n  \
+    \ ````\n"
 classes:
 - azure.storage.queue.AccessPolicy
 - azure.storage.queue.AccountSasPermissions
@@ -245,6 +269,7 @@ classes:
 - azure.storage.queue.Services
 - azure.storage.queue.TextBase64DecodePolicy
 - azure.storage.queue.TextBase64EncodePolicy
+- azure.storage.queue.UserDelegationKey
 packages:
 - azure.storage.queue.aio
 enums:

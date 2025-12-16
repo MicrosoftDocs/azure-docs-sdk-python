@@ -3,10 +3,6 @@ uid: azure.ai.ml.sweep.SweepJob
 name: SweepJob
 fullName: azure.ai.ml.sweep.SweepJob
 module: azure.ai.ml.sweep
-inheritances:
-- azure.ai.ml.entities._job.job.Job
-- azure.ai.ml.entities._job.sweep.parameterized_sweep.ParameterizedSweep
-- azure.ai.ml.entities._job.job_io_mixin.JobIOMixin
 summary: 'Sweep job for hyperparameter tuning.
 
 
@@ -50,18 +46,22 @@ constructor:
   keywordOnlyParameters:
   - name: name
     description: Name of the job.
+    defaultValue: None
     types:
     - <xref:str>
   - name: display_name
     description: Display name of the job.
+    defaultValue: None
     types:
     - <xref:str>
   - name: description
     description: Description of the job.
+    defaultValue: None
     types:
     - <xref:str>
   - name: tags
     description: Tag dictionary. Tags can be added, removed, and updated.
+    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: properties
@@ -73,19 +73,23 @@ constructor:
       provided,
 
       job will be created under experiment ''Default''.'
+    defaultValue: None
     types:
     - <xref:str>
   - name: identity
     description: Identity that the training job will use while running on compute.
+    defaultValue: None
     types:
     - <xref:typing.Union>[ <xref:azure.ai.ml.ManagedIdentityConfiguration>, <xref:azure.ai.ml.AmlTokenConfiguration>,
       <xref:azure.ai.ml.UserIdentityConfiguration>
   - name: inputs
     description: Inputs to the command.
+    defaultValue: None
     types:
     - <xref:dict>
   - name: outputs
     description: Mapping of output data bindings used in the job.
+    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:azure.ai.ml.Output>]
   - name: sampling_algorithm
@@ -93,6 +97,7 @@ constructor:
       Defaults to
 
       "random".'
+    defaultValue: None
     types:
     - <xref:str>
   - name: search_space
@@ -100,14 +105,17 @@ constructor:
       of the hyperparameter
 
       and the value is the parameter expression.'
+    defaultValue: None
     types:
     - <xref:typing.Dict>
   - name: objective
     description: Metric to optimize for.
+    defaultValue: None
     types:
     - <xref:azure.ai.ml.sweep.Objective>
   - name: compute
     description: The compute target the job runs on.
+    defaultValue: None
     types:
     - <xref:str>
   - name: trial
@@ -115,6 +123,7 @@ constructor:
       with a different combination
 
       of hyperparameter values that the system samples from the search_space.'
+    defaultValue: None
     types:
     - <xref:typing.Union>[ <xref:azure.ai.ml.entities.CommandJob>, <xref:azure.ai.ml.entities.CommandComponent>
   - name: early_termination
@@ -122,33 +131,33 @@ constructor:
 
       when the criteria of the specified policy are met. If omitted, no early termination
       policy will be applied.'
+    defaultValue: None
     types:
     - <xref:typing.Union>[ <xref:azure.mgmt.machinelearningservices.models.BanditPolicy>,
       <xref:azure.mgmt.machinelearningservices.models.MedianStoppingPolicy>, <xref:azure.mgmt.machinelearningservices.models.TruncationSelectionPolicy>
   - name: limits
     description: Limits for the sweep job.
+    defaultValue: None
     types:
     - <xref:azure.ai.ml.entities.SweepJobLimits>
   - name: queue_settings
     description: Queue settings for the job.
+    defaultValue: None
     types:
     - <xref:azure.ai.ml.entities.QueueSettings>
   - name: resources
     description: Compute Resource configuration for the job.
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:typing.Union>[<xref:azure.ai.ml.entities.ResourceConfiguration>]
-  - name: kwargs
-    description: A dictionary of additional configuration parameters.
-    types:
-    - <xref:dict>
 examples:
 - "Creating a SweepJob<!--[!code-python[Main](les\\ml_samples_sweep_configurations.py\
   \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-  : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-  \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\7\\\\azure-ai-ml-1.20.0\\\
-  \\samples\\\\ml_samples_sweep_configurations.py\", \"xml:space\": \"preserve\",\
-  \ \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
-  : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml.entities import\
+  : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\x64\\\
+  \\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\19\\\\azure_ai_ml-1.30.0\\\\\
+  samples\\\\ml_samples_sweep_configurations.py\", \"xml:space\": \"preserve\", \"\
+  force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\":\
+  \ 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml.entities import\
   \ CommandJob\n   from azure.ai.ml.sweep import BayesianSamplingAlgorithm, Objective,\
   \ SweepJob, SweepJobLimits\n\n   command_job = CommandJob(\n       inputs=dict(kernel=\"\
   linear\", penalty=1.0),\n       compute=cpu_cluster,\n       environment=f\"{job_env.name}:{job_env.version}\"\
@@ -157,9 +166,10 @@ examples:
   ,\n   )\n\n   sweep = SweepJob(\n       sampling_algorithm=BayesianSamplingAlgorithm(),\n\
   \       trial=command_job,\n       search_space={\"ss\": Choice(type=\"choice\"\
   , values=[{\"space1\": True}, {\"space2\": True}])},\n       inputs={\"input1\"\
-  : {\"file\": \"top_level.csv\", \"mode\": \"ro_mount\"}},\n       compute=\"top_level\"\
-  ,\n       limits=SweepJobLimits(trial_timeout=600),\n       objective=Objective(goal=\"\
-  maximize\", primary_metric=\"accuracy\"),\n   )\n\n   ````\n"
+  : {\"file\": \"top_level.csv\", \"mode\": \"ro_mount\"}},  # type:ignore\n     \
+  \  compute=\"top_level\",\n       limits=SweepJobLimits(trial_timeout=600),\n  \
+  \     objective=Objective(goal=\"maximize\", primary_metric=\"accuracy\"),\n   )\n\
+  \n   ````\n"
 methods:
 - uid: azure.ai.ml.sweep.SweepJob.dump
   name: dump
@@ -190,18 +200,22 @@ methods:
   keywordOnlyParameters:
   - name: max_concurrent_trials
     description: maximum concurrent trial number.
+    defaultValue: None
     types:
     - <xref:int>
   - name: max_total_trials
     description: maximum total trial number.
+    defaultValue: None
     types:
     - <xref:int>
   - name: timeout
     description: total timeout in seconds for sweep node
+    defaultValue: None
     types:
     - <xref:int>
   - name: trial_timeout
     description: timeout in seconds for each trial
+    defaultValue: None
     types:
     - <xref:int>
 - uid: azure.ai.ml.sweep.SweepJob.set_objective
@@ -216,10 +230,12 @@ methods:
       values are:
 
       "minimize" and "maximize".'
+    defaultValue: None
     types:
     - <xref:str>
   - name: primary_metric
     description: Name of the metric to optimize.
+    defaultValue: None
     types:
     - <xref:str>
 - uid: azure.ai.ml.sweep.SweepJob.set_resources
@@ -231,26 +247,32 @@ methods:
   keywordOnlyParameters:
   - name: instance_type
     description: The instance type to use for the job.
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:typing.List>[<xref:str>]]]
   - name: instance_count
     description: The number of instances to use for the job.
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:int>]
   - name: locations
     description: The locations to use for the job.
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:typing.List>[<xref:str>]]
   - name: properties
     description: The properties for the job.
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:typing.Dict>]
   - name: docker_args
     description: The docker arguments for the job.
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:str>]
   - name: shm_size
     description: The shared memory size for the job.
+    defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:str>]
 attributes:

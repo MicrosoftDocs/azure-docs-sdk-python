@@ -1,5 +1,5 @@
 | Reference | Package | Source |
 |---|---|---|
-|[unknown](iot-modelsrepository-readme.md)|[azure-iot-modelsrepository](https://pypi.org/project/azure-iot-modelsrepository)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/modelsrepository/azure-iot-modelsrepository)|
-|[unknown](messaging-webpubsubclient-readme.md)|[azure-messaging-webpubsubclient](https://pypi.org/project/azure-messaging-webpubsubclient)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/webpubsub/azure-messaging-webpubsubclient)|
-|[unknown](purview-administration-readme.md)|[azure-purview-administration](https://pypi.org/project/azure-purview-administration)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/purview/azure-purview-administration)|
+|[unknown](ai-agentserver-core-readme.md)|[azure-ai-agentserver-core](https://pypi.org/project/azure-ai-agentserver-core)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/agentserver/azure-ai-agentserver-core)|
+|[unknown](ai-language-questionanswering-authoring-readme.md)|[azure-ai-language-questionanswering-authoring](https://pypi.org/project/azure-ai-language-questionanswering-authoring)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cognitivelanguage/azure-ai-language-questionanswering-authoring)|
+|[unknown](confidentialledger-certificate-readme.md)|[azure-confidentialledger-certificate](https://pypi.org/project/azure-confidentialledger-certificate)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/confidentialledger/azure-confidentialledger-certificate)|
