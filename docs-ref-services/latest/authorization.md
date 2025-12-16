@@ -8,7 +8,7 @@ ms.service: authorization
 ---
 # Azure Authorization libraries for python
 
-## [Management API](/python/api/overview/azure/authorization/mgmt-authorization-readme)
+## [Management API](/python/api/overview/azure/mgmt-authorization-readme)
 
 ```bash
 pip install azure-mgmt-authorization
@@ -41,7 +41,7 @@ authorization_client = AuthorizationManagementClient(
 
 ## Check permissions for a resource group
 
-The following code checks permissions in a given resource group. To create or manage resource groups, see [Resource Management](/python/api/overview/azure/azure.mgmt.resource).
+The following code checks permissions in a given resource group. To create or manage resource groups, see [Resource Management](/python/api/overview/azure/mgmt-resource-readme).
 
 ```python
 from azure.mgmt.redis.models import Sku, RedisCreateOrUpdateParameters
