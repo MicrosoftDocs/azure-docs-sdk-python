@@ -4,7 +4,7 @@ keywords: Azure, python, SDK, API, azure-mgmt-authorization, authorization
 ms.date: 11/25/2020
 ms.topic: reference
 ms.devlang: python
-ms.service: azure-python
+ms.service: azure-authorization
 ---
 ## Microsoft Azure SDK for Python
 
