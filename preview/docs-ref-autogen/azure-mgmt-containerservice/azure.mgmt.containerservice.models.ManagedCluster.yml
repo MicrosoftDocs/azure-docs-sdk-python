@@ -14,10 +14,9 @@ constructor:
   syntax: 'ManagedCluster(*, location: str, tags: dict[str, str] | None = None, sku:
     _models.ManagedClusterSKU | None = None, extended_location: _models.ExtendedLocation
     | None = None, identity: _models.ManagedClusterIdentity | None = None, kind: str
-    | None = None, creation_data: _models.CreationData | None = None, kubernetes_version:
-    str | None = None, dns_prefix: str | None = None, fqdn_subdomain: str | None =
-    None, agent_pool_profiles: list[''_models.ManagedClusterAgentPoolProfile''] |
-    None = None, linux_profile: _models.ContainerServiceLinuxProfile | None = None,
+    | None = None, kubernetes_version: str | None = None, dns_prefix: str | None =
+    None, fqdn_subdomain: str | None = None, agent_pool_profiles: list[''_models.ManagedClusterAgentPoolProfile'']
+    | None = None, linux_profile: _models.ContainerServiceLinuxProfile | None = None,
     windows_profile: _models.ManagedClusterWindowsProfile | None = None, service_principal_profile:
     _models.ManagedClusterServicePrincipalProfile | None = None, addon_profiles: dict[str,
     ''_models.ManagedClusterAddonProfile''] | None = None, pod_identity_profile: _models.ManagedClusterPodIdentityProfile
@@ -25,11 +24,11 @@ constructor:
     None = None, node_resource_group: str | None = None, node_resource_group_profile:
     _models.ManagedClusterNodeResourceGroupProfile | None = None, enable_rbac: bool
     | None = None, support_plan: str | _models.KubernetesSupportPlan | None = None,
-    enable_namespace_resources: bool | None = None, network_profile: _models.ContainerServiceNetworkProfile
-    | None = None, aad_profile: _models.ManagedClusterAADProfile | None = None, auto_upgrade_profile:
-    _models.ManagedClusterAutoUpgradeProfile | None = None, upgrade_settings: _models.ClusterUpgradeSettings
-    | None = None, auto_scaler_profile: _models.ManagedClusterPropertiesAutoScalerProfile
-    | None = None, api_server_access_profile: _models.ManagedClusterAPIServerAccessProfile
+    network_profile: _models.ContainerServiceNetworkProfile | None = None, aad_profile:
+    _models.ManagedClusterAADProfile | None = None, auto_upgrade_profile: _models.ManagedClusterAutoUpgradeProfile
+    | None = None, upgrade_settings: _models.ClusterUpgradeSettings | None = None,
+    auto_scaler_profile: _models.ManagedClusterPropertiesAutoScalerProfile | None
+    = None, api_server_access_profile: _models.ManagedClusterAPIServerAccessProfile
     | None = None, disk_encryption_set_id: str | None = None, identity_profile: dict[str,
     ''_models.UserAssignedIdentity''] | None = None, private_link_resources: list[''_models.PrivateLinkResource'']
     | None = None, disable_local_accounts: bool | None = None, http_proxy_config:
@@ -40,12 +39,10 @@ constructor:
     _models.ManagedClusterWorkloadAutoScalerProfile | None = None, azure_monitor_profile:
     _models.ManagedClusterAzureMonitorProfile | None = None, service_mesh_profile:
     _models.ServiceMeshProfile | None = None, metrics_profile: _models.ManagedClusterMetricsProfile
-    | None = None, ai_toolchain_operator_profile: _models.ManagedClusterAIToolchainOperatorProfile
     | None = None, node_provisioning_profile: _models.ManagedClusterNodeProvisioningProfile
     | None = None, bootstrap_profile: _models.ManagedClusterBootstrapProfile | None
-    = None, scheduler_profile: _models.SchedulerProfile | None = None, hosted_system_profile:
-    _models.ManagedClusterHostedSystemProfile | None = None, status: _models.ManagedClusterStatus
-    | None = None, **kwargs: Any)'
+    = None, ai_toolchain_operator_profile: _models.ManagedClusterAIToolchainOperatorProfile
+    | None = None, status: _models.ManagedClusterStatus | None = None, **kwargs: Any)'
   keywordOnlyParameters:
   - name: tags
     description: Resource tags.
@@ -79,29 +76,31 @@ constructor:
     defaultValue: None
     types:
     - <xref:str>
-  - name: creation_data
-    description: 'CreationData to be used to specify the source Snapshot ID if the
-
-      cluster will be created/upgraded using a snapshot.'
-    defaultValue: None
-    types:
-    - <xref:azure.mgmt.containerservice.models.CreationData>
   - name: kubernetes_version
-    description: 'The version of Kubernetes the Managed Cluster is requested to run.
+    description: 'The version of Kubernetes specified by the user. Both patch
 
-      When you upgrade a supported AKS cluster, Kubernetes minor versions cannot be
-      skipped. All
+      version <major.minor.patch> (e.g. 1.20.13) and <major.minor> (e.g. 1.20) are
+      supported. When
 
-      upgrades must be performed sequentially by major version number. For example,
-      upgrades between
+      <major.minor> is specified, the latest supported GA patch version is chosen
+      automatically.
 
-      1.14.x -> 1.15.x or 1.15.x -> 1.16.x are allowed, however 1.14.x -> 1.16.x is
-      not allowed. See
+      Updating the cluster with the same <major.minor> once it has been created (e.g.
+      1.14.x -> 1.14)
 
-      [upgrading an AKS cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster)
-      for more
+      will not trigger an upgrade, even if a newer patch version is available. When
+      you upgrade a
 
-      details.'
+      supported AKS cluster, Kubernetes minor versions cannot be skipped. All upgrades
+      must be
+
+      performed sequentially by major version number. For example, upgrades between
+      1.14.x -> 1.15.x
+
+      or 1.15.x -> 1.16.x are allowed, however 1.14.x -> 1.16.x is not allowed. See
+      [upgrading an AKS
+
+      cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more details.'
     defaultValue: None
     types:
     - <xref:str>
@@ -168,7 +167,7 @@ constructor:
     types:
     - <xref:str>
   - name: node_resource_group_profile
-    description: The node resource group configuration profile.
+    description: Profile of the node resource group configuration.
     defaultValue: None
     types:
     - <xref:azure.mgmt.containerservice.models.ManagedClusterNodeResourceGroupProfile>
@@ -186,19 +185,6 @@ constructor:
     types:
     - <xref:str>
     - <xref:azure.mgmt.containerservice.models.KubernetesSupportPlan>
-  - name: enable_namespace_resources
-    description: 'Enable namespace as Azure resource. The default value is
-
-      false. It can be enabled/disabled on creation and updating of the managed cluster.
-      See
-
-      [https://aka.ms/NamespaceARMResource](https://aka.ms/NamespaceARMResource) for
-      more details
-
-      on Namespace as a ARM Resource.'
-    defaultValue: None
-    types:
-    - <xref:bool>
   - name: network_profile
     description: The network configuration profile.
     defaultValue: None
@@ -291,7 +277,7 @@ constructor:
   - name: public_network_access
     description: 'PublicNetworkAccess of the managedCluster. Allow or deny public
 
-      network access for AKS. Known values are: "Enabled", "Disabled", and "SecuredByPerimeter".'
+      network access for AKS. Known values are: "Enabled" and "Disabled".'
     defaultValue: None
     types:
     - <xref:str>
@@ -302,7 +288,9 @@ constructor:
     types:
     - <xref:azure.mgmt.containerservice.models.ManagedClusterWorkloadAutoScalerProfile>
   - name: azure_monitor_profile
-    description: Prometheus addon profile for the container service cluster.
+    description: 'Azure Monitor addon profiles for monitoring the managed
+
+      cluster.'
     defaultValue: None
     types:
     - <xref:azure.mgmt.containerservice.models.ManagedClusterAzureMonitorProfile>
@@ -316,13 +304,6 @@ constructor:
     defaultValue: None
     types:
     - <xref:azure.mgmt.containerservice.models.ManagedClusterMetricsProfile>
-  - name: ai_toolchain_operator_profile
-    description: 'AI toolchain operator settings that apply to the whole
-
-      cluster.'
-    defaultValue: None
-    types:
-    - <xref:azure.mgmt.containerservice.models.ManagedClusterAIToolchainOperatorProfile>
   - name: node_provisioning_profile
     description: Node provisioning settings that apply to the whole cluster.
     defaultValue: None
@@ -333,18 +314,13 @@ constructor:
     defaultValue: None
     types:
     - <xref:azure.mgmt.containerservice.models.ManagedClusterBootstrapProfile>
-  - name: scheduler_profile
-    description: Profile of the pod scheduler configuration.
-    defaultValue: None
-    types:
-    - <xref:azure.mgmt.containerservice.models.SchedulerProfile>
-  - name: hosted_system_profile
-    description: 'Settings for hosted system addons. For more information, see
+  - name: ai_toolchain_operator_profile
+    description: 'AI toolchain operator settings that apply to the whole
 
-      [https://aka.ms/aks/automatic/systemcomponents](https://aka.ms/aks/automatic/systemcomponents).'
+      cluster.'
     defaultValue: None
     types:
-    - <xref:azure.mgmt.containerservice.models.ManagedClusterHostedSystemProfile>
+    - <xref:azure.mgmt.containerservice.models.ManagedClusterAIToolchainOperatorProfile>
   - name: status
     description: Contains read-only information about the Managed Cluster.
     defaultValue: None
@@ -422,35 +398,45 @@ variables:
   name: power_state
   types:
   - <xref:azure.mgmt.containerservice.models.PowerState>
-- description: 'CreationData to be used to specify the source Snapshot ID if the cluster
-
-    will be created/upgraded using a snapshot.'
-  name: creation_data
-  types:
-  - <xref:azure.mgmt.containerservice.models.CreationData>
 - description: The max number of agent pools for the managed cluster.
   name: max_agent_pools
   types:
   - <xref:int>
-- description: 'The version of Kubernetes the Managed Cluster is requested to run.
+- description: 'The version of Kubernetes specified by the user. Both patch version
 
-    When you upgrade a supported AKS cluster, Kubernetes minor versions cannot be
-    skipped. All
+    <major.minor.patch> (e.g. 1.20.13) and <major.minor> (e.g. 1.20) are supported.
+    When
 
-    upgrades must be performed sequentially by major version number. For example,
-    upgrades between
+    <major.minor> is specified, the latest supported GA patch version is chosen automatically.
 
-    1.14.x -> 1.15.x or 1.15.x -> 1.16.x are allowed, however 1.14.x -> 1.16.x is
-    not allowed. See
+    Updating the cluster with the same <major.minor> once it has been created (e.g.
+    1.14.x -> 1.14)
 
-    [upgrading an AKS cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster)
-    for more
+    will not trigger an upgrade, even if a newer patch version is available. When
+    you upgrade a
 
-    details.'
+    supported AKS cluster, Kubernetes minor versions cannot be skipped. All upgrades
+    must be
+
+    performed sequentially by major version number. For example, upgrades between
+    1.14.x -> 1.15.x
+
+    or 1.15.x -> 1.16.x are allowed, however 1.14.x -> 1.16.x is not allowed. See
+    [upgrading an AKS
+
+    cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more details.'
   name: kubernetes_version
   types:
   - <xref:str>
-- description: The version of Kubernetes the Managed Cluster is running.
+- description: 'The version of Kubernetes the Managed Cluster is running. If
+
+    kubernetesVersion was a fully specified version <major.minor.patch>, this field
+    will be exactly
+
+    equal to it. If kubernetesVersion was <major.minor>, this field will contain the
+    full
+
+    <major.minor.patch> version being used.'
   name: current_kubernetes_version
   types:
   - <xref:str>
@@ -530,7 +516,7 @@ variables:
   name: node_resource_group
   types:
   - <xref:str>
-- description: The node resource group configuration profile.
+- description: Profile of the node resource group configuration.
   name: node_resource_group_profile
   types:
   - <xref:azure.mgmt.containerservice.models.ManagedClusterNodeResourceGroupProfile>
@@ -546,18 +532,6 @@ variables:
   types:
   - <xref:str>
   - <xref:azure.mgmt.containerservice.models.KubernetesSupportPlan>
-- description: 'Enable namespace as Azure resource. The default value is
-
-    false. It can be enabled/disabled on creation and updating of the managed cluster.
-    See
-
-    [https://aka.ms/NamespaceARMResource](https://aka.ms/NamespaceARMResource) for
-    more details
-
-    on Namespace as a ARM Resource.'
-  name: enable_namespace_resources
-  types:
-  - <xref:bool>
 - description: The network configuration profile.
   name: network_profile
   types:
@@ -633,7 +607,7 @@ variables:
   - <xref:azure.mgmt.containerservice.models.ManagedClusterIngressProfile>
 - description: 'PublicNetworkAccess of the managedCluster. Allow or deny public
 
-    network access for AKS. Known values are: "Enabled", "Disabled", and "SecuredByPerimeter".'
+    network access for AKS. Known values are: "Enabled" and "Disabled".'
   name: public_network_access
   types:
   - <xref:str>
@@ -642,7 +616,7 @@ variables:
   name: workload_auto_scaler_profile
   types:
   - <xref:azure.mgmt.containerservice.models.ManagedClusterWorkloadAutoScalerProfile>
-- description: Prometheus addon profile for the container service cluster.
+- description: Azure Monitor addon profiles for monitoring the managed cluster.
   name: azure_monitor_profile
   types:
   - <xref:azure.mgmt.containerservice.models.ManagedClusterAzureMonitorProfile>
@@ -660,12 +634,6 @@ variables:
   name: metrics_profile
   types:
   - <xref:azure.mgmt.containerservice.models.ManagedClusterMetricsProfile>
-- description: 'AI toolchain operator settings that apply to the whole
-
-    cluster.'
-  name: ai_toolchain_operator_profile
-  types:
-  - <xref:azure.mgmt.containerservice.models.ManagedClusterAIToolchainOperatorProfile>
 - description: Node provisioning settings that apply to the whole cluster.
   name: node_provisioning_profile
   types:
@@ -674,16 +642,12 @@ variables:
   name: bootstrap_profile
   types:
   - <xref:azure.mgmt.containerservice.models.ManagedClusterBootstrapProfile>
-- description: Profile of the pod scheduler configuration.
-  name: scheduler_profile
-  types:
-  - <xref:azure.mgmt.containerservice.models.SchedulerProfile>
-- description: 'Settings for hosted system addons. For more information, see
+- description: 'AI toolchain operator settings that apply to the whole
 
-    [https://aka.ms/aks/automatic/systemcomponents](https://aka.ms/aks/automatic/systemcomponents).'
-  name: hosted_system_profile
+    cluster.'
+  name: ai_toolchain_operator_profile
   types:
-  - <xref:azure.mgmt.containerservice.models.ManagedClusterHostedSystemProfile>
+  - <xref:azure.mgmt.containerservice.models.ManagedClusterAIToolchainOperatorProfile>
 - description: Contains read-only information about the Managed Cluster.
   name: status
   types:
