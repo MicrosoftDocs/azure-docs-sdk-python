@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-portalservicescopilot, portalservices
-ms.date: 04/24/2025
+ms.date: 12/17/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: portalservices
