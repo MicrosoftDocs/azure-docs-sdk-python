@@ -6,10 +6,10 @@ module: azure.mgmt.avs.aio
 summary: Azure VMware Solution API.
 constructor:
   syntax: 'AVSClient(credential: AsyncTokenCredential, subscription_id: str, base_url:
-    str | None = None, **kwargs: Any)'
+    str | None = None, *, cloud_setting: AzureClouds | None = None, **kwargs: Any)'
   parameters:
   - name: credential
-    description: Credential needed for the client to connect to Azure. Required.
+    description: Credential used to authenticate requests to the service. Required.
     isRequired: true
     types:
     - <xref:azure.core.credentials_async.AsyncTokenCredential>
@@ -19,16 +19,23 @@ constructor:
     types:
     - <xref:str>
   - name: base_url
-    description: Service URL. Default value is None.
+    description: Service host. Default value is None.
     defaultValue: None
     types:
     - <xref:str>
   keywordOnlyParameters:
-  - name: api_version
-    description: 'Api Version. Default value is "2024-09-01". Note that overriding
-      this
+  - name: cloud_setting
+    description: 'The cloud setting for which to get the ARM endpoint. Default value
+      is
 
-      default value may result in unsupported behavior.'
+      None.'
+    defaultValue: None
+    types:
+    - <xref:azure.core.AzureClouds>
+  - name: api_version
+    description: 'The API version to use for this operation. Default value is "2025-09-01".
+
+      Note that overriding this default value may result in unsupported behavior.'
     types:
     - <xref:str>
   - name: polling_interval
@@ -42,18 +49,6 @@ variables:
   name: operations
   types:
   - <xref:azure.mgmt.avs.aio.operations.Operations>
-- description: LocationsOperations operations
-  name: locations
-  types:
-  - <xref:azure.mgmt.avs.aio.operations.LocationsOperations>
-- description: PrivateCloudsOperations operations
-  name: private_clouds
-  types:
-  - <xref:azure.mgmt.avs.aio.operations.PrivateCloudsOperations>
-- description: SkusOperations operations
-  name: skus
-  types:
-  - <xref:azure.mgmt.avs.aio.operations.SkusOperations>
 - description: AddonsOperations operations
   name: addons
   types:
@@ -74,18 +69,6 @@ variables:
   name: datastores
   types:
   - <xref:azure.mgmt.avs.aio.operations.DatastoresOperations>
-- description: HostsOperations operations
-  name: hosts
-  types:
-  - <xref:azure.mgmt.avs.aio.operations.HostsOperations>
-- description: PlacementPoliciesOperations operations
-  name: placement_policies
-  types:
-  - <xref:azure.mgmt.avs.aio.operations.PlacementPoliciesOperations>
-- description: VirtualMachinesOperations operations
-  name: virtual_machines
-  types:
-  - <xref:azure.mgmt.avs.aio.operations.VirtualMachinesOperations>
 - description: GlobalReachConnectionsOperations operations
   name: global_reach_connections
   types:
@@ -94,10 +77,34 @@ variables:
   name: hcx_enterprise_sites
   types:
   - <xref:azure.mgmt.avs.aio.operations.HcxEnterpriseSitesOperations>
+- description: HostsOperations operations
+  name: hosts
+  types:
+  - <xref:azure.mgmt.avs.aio.operations.HostsOperations>
 - description: IscsiPathsOperations operations
   name: iscsi_paths
   types:
   - <xref:azure.mgmt.avs.aio.operations.IscsiPathsOperations>
+- description: LicensesOperations operations
+  name: licenses
+  types:
+  - <xref:azure.mgmt.avs.aio.operations.LicensesOperations>
+- description: LocationsOperations operations
+  name: locations
+  types:
+  - <xref:azure.mgmt.avs.aio.operations.LocationsOperations>
+- description: MaintenancesOperations operations
+  name: maintenances
+  types:
+  - <xref:azure.mgmt.avs.aio.operations.MaintenancesOperations>
+- description: PlacementPoliciesOperations operations
+  name: placement_policies
+  types:
+  - <xref:azure.mgmt.avs.aio.operations.PlacementPoliciesOperations>
+- description: PrivateCloudsOperations operations
+  name: private_clouds
+  types:
+  - <xref:azure.mgmt.avs.aio.operations.PrivateCloudsOperations>
 - description: ProvisionedNetworksOperations operations
   name: provisioned_networks
   types:
@@ -106,6 +113,10 @@ variables:
   name: pure_storage_policies
   types:
   - <xref:azure.mgmt.avs.aio.operations.PureStoragePoliciesOperations>
+- description: ScriptCmdletsOperations operations
+  name: script_cmdlets
+  types:
+  - <xref:azure.mgmt.avs.aio.operations.ScriptCmdletsOperations>
 - description: ScriptExecutionsOperations operations
   name: script_executions
   types:
@@ -114,10 +125,14 @@ variables:
   name: script_packages
   types:
   - <xref:azure.mgmt.avs.aio.operations.ScriptPackagesOperations>
-- description: ScriptCmdletsOperations operations
-  name: script_cmdlets
+- description: SkusOperations operations
+  name: skus
   types:
-  - <xref:azure.mgmt.avs.aio.operations.ScriptCmdletsOperations>
+  - <xref:azure.mgmt.avs.aio.operations.SkusOperations>
+- description: VirtualMachinesOperations operations
+  name: virtual_machines
+  types:
+  - <xref:azure.mgmt.avs.aio.operations.VirtualMachinesOperations>
 - description: WorkloadNetworksOperations operations
   name: workload_networks
   types:
@@ -126,3 +141,44 @@ methods:
 - uid: azure.mgmt.avs.aio.AVSClient.close
   name: close
   signature: async close() -> None
+- uid: azure.mgmt.avs.aio.AVSClient.send_request
+  name: send_request
+  summary: 'Runs the network request through the client''s chained policies.
+
+
+    ```
+
+
+    >>> from azure.core.rest import HttpRequest
+
+    >>> request = HttpRequest("GET", "https://www.example.org/")
+
+    <HttpRequest [GET], url: ''https://www.example.org/''>
+
+    >>> response = await client.send_request(request)
+
+    <AsyncHttpResponse: 200 OK>
+
+    ```
+
+
+    For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> Awaitable[AsyncHttpResponse]'
+  parameters:
+  - name: request
+    description: The network request you want to make. Required.
+    isRequired: true
+    types:
+    - <xref:azure.core.rest.HttpRequest>
+  keywordOnlyParameters:
+  - name: stream
+    description: Whether the response payload will be streamed. Defaults to False.
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  return:
+    description: The response of your network call. Does not do error handling on
+      your response.
+    types:
+    - <xref:azure.core.rest.AsyncHttpResponse>
