@@ -1,7 +1,7 @@
 ---
 title: Azure Trusted Signing SDK for Python
 description: Reference for Azure Trusted Signing SDK for Python
-ms.date: 12/18/2025
+ms.date: 12/19/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: trustedsigning
