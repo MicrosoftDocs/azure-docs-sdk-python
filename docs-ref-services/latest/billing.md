@@ -1,7 +1,7 @@
 ---
 title: Azure Billing SDK for Python
 description: Reference for Azure Billing SDK for Python
-ms.date: 12/26/2025
+ms.date: 12/29/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: billing
