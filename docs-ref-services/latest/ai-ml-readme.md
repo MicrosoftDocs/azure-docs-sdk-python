@@ -1,12 +1,12 @@
 ---
 title: Azure ML Package client library for Python
 keywords: Azure, python, SDK, API, azure-ai-ml, ml
-ms.date: 10/30/2025
+ms.date: 12/30/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: ml
 ---
-# Azure ML Package client library for Python - version 1.30.0 
+# Azure ML Package client library for Python - version 1.31.0 
 
 
 We are excited to introduce the GA of Azure Machine Learning Python SDK v2. The Python SDK v2 introduces new SDK capabilities like standalone local jobs, reusable components for pipelines and managed online/batch inferencing. Python SDK v2 allows you to move from simple to complex tasks easily and incrementally. This is enabled by using a common object model which brings concept reuse and consistency of actions across various tasks. The SDK v2 shares its foundation with the CLI v2 which is also GA.
@@ -19,7 +19,7 @@ We are excited to introduce the GA of Azure Machine Learning Python SDK v2. The 
 | [Samples][ml_samples]
 
 
-This package has been tested with Python 3.8, 3.9, 3.10, 3.11, 3.12 and 3.13.
+This package has been tested with Python 3.8, 3.9, 3.10, 3.11, 3.12, 3.13 and 3.14.
 
 For a more complete set of Azure libraries, see https://aka.ms/azsdk/python/all
 
@@ -55,7 +55,7 @@ ml_client = MLClient(
 
 Refer the below high level sequence diagram illustrating the package's workflow:
 
-![azure-ai-ml sequence diagram](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-ml_1.30.0/sdk/ml/azure-ai-ml/azure_ai_ml_seq_diagram.png?raw=true)
+![azure-ai-ml sequence diagram](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-ml_1.31.0/sdk/ml/azure-ai-ml/azure_ai_ml_seq_diagram.png?raw=true)
 
 ## SDK Architecture Components
 
@@ -166,7 +166,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 
 <!-- LINKS -->
 
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-ml_1.30.0/sdk/ml/azure-ai-ml
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-ml_1.31.0/sdk/ml/azure-ai-ml
 [ml_pypi]: https://pypi.org/project/azure-ai-ml/
 [ml_conda]: https://anaconda.org/microsoft/azure-ai-ml/
 [ml_ref_docs]: https://learn.microsoft.com/python/api/azure-ai-ml/?view=azure-python
@@ -176,11 +176,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [workspace]: https://learn.microsoft.com/azure/machine-learning/concept-workspace
 [python_logging]: https://docs.python.org/3/library/logging.html
 [sdk_logging_docs]: https://learn.microsoft.com/azure/developer/python/azure-sdk-logging
-[azure_core_readme]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-ml_1.30.0/sdk/core/azure-core/README.md
+[azure_core_readme]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-ml_1.31.0/sdk/core/azure-core/README.md
 [pip_link]: https://pypi.org/project/pip/
 [azure_core_ref_docs]: https://aka.ms/azsdk-python-core-policies
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-ml_1.30.0/sdk/core/azure-core/README.md
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-ml_1.30.0/sdk/identity/azure-identity
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-ml_1.31.0/sdk/core/azure-core/README.md
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-ml_1.31.0/sdk/identity/azure-identity
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
