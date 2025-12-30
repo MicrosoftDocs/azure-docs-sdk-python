@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-dnsresolver, dnsresolver
-ms.date: 11/18/2025
+ms.date: 12/30/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: dnsresolver
