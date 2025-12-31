@@ -41,8 +41,7 @@ methods:
     int | None = None, operation_context: str | None = None, source_caller_id_number:
     PhoneNumberIdentifier | None = None, source_display_name: str | None = None, operation_callback_url:
     str | None = None, sip_headers: Mapping[str, str] | None = None, voip_headers:
-    Mapping[str, str] | None = None, teams_phone_call_details: TeamsPhoneCallDetails
-    | None = None, **kwargs) -> AddParticipantResult'
+    Mapping[str, str] | None = None, **kwargs) -> AddParticipantResult'
   parameters:
   - name: target_participant
     description: The participant being added.
@@ -103,12 +102,6 @@ methods:
     defaultValue: None
     types:
     - <xref:typing.Dict>[<xref:str>, <xref:str>]
-    - <xref:None>
-  - name: teams_phone_call_details
-    description: Teams phone call details for the participant being added.
-    defaultValue: None
-    types:
-    - <xref:azure.communication.callautomation.TeamsPhoneCallDetails>
     - <xref:None>
   return:
     description: AddParticipantResult
@@ -268,6 +261,38 @@ methods:
     - <xref:None>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+- uid: azure.communication.callautomation.CallConnectionClient.interrupt_audio_and_announce
+  name: interrupt_audio_and_announce
+  summary: Interrupt audio and announce to specific participant(s) in this call.
+  signature: 'interrupt_audio_and_announce(target_participant: CommunicationIdentifier,
+    play_sources: List[FileSource | TextSource | SsmlSource], *, operation_context:
+    str | None = None, **kwargs) -> None'
+  parameters:
+  - name: target_participant
+    description: The participant being added.
+    isRequired: true
+    types:
+    - <xref:azure.communication.callautomation.CommunicationIdentifier>
+  - name: play_sources
+    description: A PlaySource representing the source to play.
+    isRequired: true
+    types:
+    - <xref:list>[<xref:azure.communication.callautomation.FileSource>]
+    - <xref:list>[<xref:azure.communication.callautomation.TextSource>]
+    - <xref:list>[<xref:azure.communication.callautomation.SsmlSource>]
+  keywordOnlyParameters:
+  - name: operation_context
+    description: Value that can be used to track this call and its associated events.
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:None>
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.communication.callautomation.CallConnectionClient.list_participants
   name: list_participants
   summary: List all participants in this call.
@@ -281,7 +306,7 @@ methods:
 - uid: azure.communication.callautomation.CallConnectionClient.move_participants
   name: move_participants
   summary: Move participants from another call to this call.
-  signature: 'move_participants(target_participants: Sequence[CommunicationIdentifier],
+  signature: 'move_participants(target_participants: List[CommunicationIdentifier],
     from_call: str, *, operation_context: str | None = None, operation_callback_url:
     str | None = None, **kwargs) -> MoveParticipantsResult'
   parameters:
@@ -352,7 +377,7 @@ methods:
   signature: 'play_media(play_source: FileSource | TextSource | SsmlSource | Sequence[FileSource
     | TextSource | SsmlSource], play_to: Sequence[''CommunicationIdentifier''], *,
     loop: bool = False, operation_context: str | None = None, operation_callback_url:
-    str | None = None, **kwargs) -> None'
+    str | None = None, interrupt_hold_audio: bool = False, **kwargs) -> None'
   parameters:
   - name: play_source
     description: A PlaySource representing the source to play.
@@ -538,7 +563,8 @@ methods:
   name: start_continuous_dtmf_recognition
   summary: Start continuous Dtmf recognition by subscribing to tones.
   signature: 'start_continuous_dtmf_recognition(target_participant: CommunicationIdentifier,
-    *, operation_context: str | None = None, **kwargs) -> None'
+    *, operation_context: str | None = None, operation_callback_url: str | None =
+    None, **kwargs) -> None'
   parameters:
   - name: target_participant
     description: Target participant.
@@ -551,6 +577,18 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
+  - name: operation_callback_url
+    description: 'Set a callback URL that overrides the default callback URL set
+
+      by CreateCall/AnswerCall for this operation.
+
+      This setup is per-action. If this is not set, the default callback URL set by
+
+      CreateCall/AnswerCall will be used.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:None>
   return:
     description: None
     types:
@@ -598,11 +636,10 @@ methods:
     | None = None, interrupt_call_media_operation: bool = False, operation_context:
     str | None = None, interrupt_prompt: bool = False, dtmf_inter_tone_timeout: int
     | None = None, dtmf_max_tones_to_collect: int | None = None, dtmf_stop_tones:
-    Sequence[str | DtmfTone] | None = None, speech_language: str | Sequence[str] |
-    None = None, choices: Sequence[RecognitionChoice] | None = None, end_silence_timeout:
-    int | None = None, speech_recognition_model_endpoint_id: str | None = None, operation_callback_url:
-    str | None = None, enable_sentiment_analysis: bool | None = None, **kwargs) ->
-    None'
+    Sequence[str | DtmfTone] | None = None, speech_language: str | None = None, choices:
+    Sequence[RecognitionChoice] | None = None, end_silence_timeout: int | None = None,
+    speech_recognition_model_endpoint_id: str | None = None, operation_callback_url:
+    str | None = None, **kwargs) -> None'
   parameters:
   - name: input_type
     description: Determines the type of the recognition.
@@ -670,13 +707,10 @@ methods:
     - <xref:list>[<xref:str>
     - <xref:azure.communication.callautomation.DtmfTone>]
   - name: speech_language
-    description: 'Speech language to be recognized, If not set default is en-US
-
-      or list of languages for Language Identification.'
+    description: Speech language to be recognized, If not set default is en-US.
     defaultValue: None
     types:
     - <xref:str>
-    - <xref:list>[<xref:str>]
   - name: choices
     description: Defines Ivr choices for recognize. Will be ignored unless input_type
       is 'choices'.
@@ -707,13 +741,6 @@ methods:
     types:
     - <xref:str>
     - <xref:None>
-  - name: enable_sentiment_analysis
-    description: 'Gets or sets a value indicating if sentiment analysis should
-
-      be used.'
-    defaultValue: None
-    types:
-    - <xref:bool>
   return:
     description: None
     types:
@@ -723,20 +750,15 @@ methods:
 - uid: azure.communication.callautomation.CallConnectionClient.start_transcription
   name: start_transcription
   summary: Starts transcription in the call.
-  signature: 'start_transcription(*, locale: str | Sequence[str] | None = None, operation_context:
+  signature: 'start_transcription(*, locale: str | None = None, operation_context:
     str | None = None, speech_recognition_model_endpoint_id: str | None = None, operation_callback_url:
-    str | None = None, pii_redaction: PiiRedactionOptions | None = None, enable_sentiment_analysis:
-    bool | None = None, summarization: SummarizationOptions | None = None, **kwargs)
-    -> None'
+    str | None = None, **kwargs) -> None'
   keywordOnlyParameters:
   - name: locale
-    description: 'Defines Locale for the transcription e,g en-US.
-
-      List of languages for Language Identification.'
+    description: Defines Locale for the transcription e,g en-US.
     defaultValue: None
     types:
     - <xref:str>
-    - <xref:typing.List>[<xref:str>]
   - name: operation_context
     description: The value to identify context of the operation.
     defaultValue: None
@@ -759,21 +781,6 @@ methods:
     types:
     - <xref:str>
     - <xref:None>
-  - name: pii_redaction
-    description: PII redaction configuration options.
-    defaultValue: None
-    types:
-    - <xref:azure.communication.callautomation.models.PiiRedactionOptions>
-  - name: enable_sentiment_analysis
-    description: Indicating if sentiment analysis should be used.
-    defaultValue: None
-    types:
-    - <xref:bool>
-  - name: summarization
-    description: Summarization configuration options.
-    defaultValue: None
-    types:
-    - <xref:azure.communication.callautomation.models.SummarizationOptions>
   return:
     description: None
     types:
@@ -877,50 +884,14 @@ methods:
     - <xref:None>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-- uid: azure.communication.callautomation.CallConnectionClient.summarize_call
-  name: summarize_call
-  summary: Summary details of call.
-  signature: 'summarize_call(*, operation_context: str | None = None, operation_callback_url:
-    str | None = None, summarization: SummarizationOptions | None = None, **kwargs)
-    -> None'
-  keywordOnlyParameters:
-  - name: operation_context
-    description: The value to identify context of the operation.
-    defaultValue: None
-    types:
-    - <xref:str>
-  - name: operation_callback_url
-    description: 'Set a callback URL that overrides the default callback URL set
-
-      by CreateCall/AnswerCall for this operation.
-
-      This setup is per-action. If this is not set, the default callback URL set by
-
-      CreateCall/AnswerCall will be used.'
-    defaultValue: None
-    types:
-    - <xref:str>
-    - <xref:None>
-  - name: summarization
-    description: Summarization configuration options.
-    defaultValue: None
-    types:
-    - <xref:azure.communication.callautomation.models.SummarizationOptions>
-  return:
-    description: None
-    types:
-    - <xref:None>
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.communication.callautomation.CallConnectionClient.transfer_call_to_participant
   name: transfer_call_to_participant
   summary: Transfer this call to another participant.
   signature: 'transfer_call_to_participant(target_participant: CommunicationIdentifier,
     *, operation_context: str | None = None, operation_callback_url: str | None =
     None, transferee: CommunicationIdentifier | None = None, sip_headers: Mapping[str,
-    str] | None = None, voip_headers: Mapping[str, str] | None = None, teams_phone_call_details:
-    TeamsPhoneCallDetails | None = None, source_caller_id_number: PhoneNumberIdentifier
-    | None = None, **kwargs) -> TransferCallResult'
+    str] | None = None, voip_headers: Mapping[str, str] | None = None, source_caller_id_number:
+    PhoneNumberIdentifier | None = None, **kwargs) -> TransferCallResult'
   parameters:
   - name: target_participant
     description: The transfer target.
@@ -961,12 +932,6 @@ methods:
     defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
-  - name: teams_phone_call_details
-    description: Teams phone call details for the participant being added.
-    defaultValue: None
-    types:
-    - <xref:azure.communication.callautomation.TeamsPhoneCallDetails>
-    - <xref:None>
   - name: source_caller_id_number
     description: 'The source caller Id, a phone number, that''s will be used as the
 
@@ -1022,9 +987,7 @@ methods:
   summary: API to change transcription language.
   signature: 'update_transcription(*, locale: str, operation_context: str | None =
     None, speech_recognition_model_endpoint_id: str | None = None, operation_callback_url:
-    str | None = None, pii_redaction: PiiRedactionOptions | None = None, enable_sentiment_analysis:
-    bool | None = None, summarization: SummarizationOptions | None = None, **kwargs)
-    -> None'
+    str | None = None, **kwargs) -> None'
   keywordOnlyParameters:
   - name: locale
     description: Defines new locale for transcription.
@@ -1052,21 +1015,6 @@ methods:
     types:
     - <xref:str>
     - <xref:None>
-  - name: pii_redaction
-    description: PII redaction configuration options.
-    defaultValue: None
-    types:
-    - <xref:azure.communication.callautomation.models.PiiRedactionOptions>
-  - name: enable_sentiment_analysis
-    description: Indicating if sentiment analysis should be used.
-    defaultValue: None
-    types:
-    - <xref:bool>
-  - name: summarization
-    description: Summarization configuration options.
-    defaultValue: None
-    types:
-    - <xref:azure.communication.callautomation.models.SummarizationOptions>
   return:
     description: None
     types:
