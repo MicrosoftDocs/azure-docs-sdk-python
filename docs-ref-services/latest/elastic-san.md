@@ -1,7 +1,7 @@
 ---
 title: Azure Elastic SAN SDK for Python
 description: Reference for Azure Elastic SAN SDK for Python
-ms.date: 12/31/2025
+ms.date: 01/01/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: elasticsan
