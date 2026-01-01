@@ -1,7 +1,7 @@
 ---
 title: Azure Scvmm SDK for Python
 description: Reference for Azure Scvmm SDK for Python
-ms.date: 12/31/2025
+ms.date: 01/01/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: scvmm
