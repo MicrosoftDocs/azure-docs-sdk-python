@@ -1,7 +1,7 @@
 ---
 title: Azure Compute SDK for Python
 description: Reference for Azure Compute SDK for Python
-ms.date: 01/01/2026
+ms.date: 01/02/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: compute
