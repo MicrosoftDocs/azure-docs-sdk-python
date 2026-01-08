@@ -4,8 +4,7 @@ keywords: Azure, python, SDK, API, azure-mgmt-changeanalysis,
 ms.date: 04/08/2021
 ms.topic: reference
 ms.devlang: python
-ms.service: azure-monitor
-ms.subservice: change-analysis
+ms.service: azure-python
 ---
 # Microsoft Azure SDK for Python
 
