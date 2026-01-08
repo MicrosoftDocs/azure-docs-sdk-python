@@ -5,13 +5,43 @@ fullName: azure.appconfiguration.provider.SettingSelector
 module: azure.appconfiguration.provider
 summary: Selects a set of configuration settings from Azure App Configuration.
 constructor:
-  syntax: 'SettingSelector(*, key_filter: str, label_filter: str | None = ''\x00'')'
+  syntax: 'SettingSelector(*, key_filter: str | None = None, label_filter: str | None
+    = ''\x00'', tag_filters: List[str] | None = None, snapshot_name: str | None =
+    None)'
   keywordOnlyParameters:
   - name: key_filter
-    description: A filter to select configuration settings based on their keys.
-  - name: label_filter
-    description: 'A filter to select configuration settings based on their labels.
-      Default is value is
+    description: 'A filter to select configuration settings and feature flags based
+      on their keys.
 
-      EMPTY_LABEL i.e. (No Label) as seen in the portal.'
+      Cannot be used with snapshot_name.'
+    defaultValue: None
+  - name: label_filter
+    description: 'A filter to select configuration settings and feature flags based
+      on their labels. Default
+
+      value is i.e. (No Label) as seen in the portal. Cannot be used with snapshot_name.'
     defaultValue: "\0"
+  - name: tag_filters
+    description: 'A filter to select configuration settings and feature flags based
+      on their tags. This is a
+
+      list of strings that will be used to match tags on the configuration settings.
+      Reserved characters (*, , ,)
+
+      must be escaped with backslash if they are part of the value. Tag filters must
+      follow the format
+
+      "tagName=tagValue", for empty values use "tagName=" and for null values use
+      "tagName=0".
+
+      Cannot be used with snapshot_name.'
+    defaultValue: None
+  - name: snapshot_name
+    description: 'The name of the snapshot to load configuration settings from. When
+      specified,
+
+      all configuration settings from the snapshot will be loaded. Cannot be used
+      with key_filter, label_filter,
+
+      or tag_filters.'
+    defaultValue: None
