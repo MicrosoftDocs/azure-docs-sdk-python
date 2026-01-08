@@ -1,7 +1,7 @@
 ---
 title: Azure Test Base SDK for Python
 description: Reference for Azure Test Base SDK for Python
-ms.date: 01/07/2026
+ms.date: 01/08/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: testbase
