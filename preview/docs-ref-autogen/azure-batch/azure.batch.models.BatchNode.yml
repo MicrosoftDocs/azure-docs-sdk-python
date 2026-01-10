@@ -13,24 +13,18 @@ variables:
     unique ID. Whenever a Compute Node is removed from a Pool, all of its local files
     are deleted,
 
-    and the ID is reclaimed and could be reused for new Compute Nodes.'
+    and the ID is reclaimed and could be reused for new Compute Nodes. Required.'
   name: id
   types:
   - <xref:str>
-- description: The URL of the Compute Node.
+- description: The URL of the Compute Node. Required.
   name: url
   types:
   - <xref:str>
-- description: 'The current state of the Compute Node. The Spot/Low-priority Compute
-    Node has been
+- description: 'The current state of the Compute Node. Required. Known values are:
+    "idle",
 
-    preempted. Tasks which were running on the Compute Node when it was preempted
-    will be
-
-    rescheduled when another Compute Node becomes available. Known values are: "idle",
-    "rebooting",
-
-    "reimaging", "running", "unusable", "creating", "starting", "waitingforstarttask",
+    "rebooting", "reimaging", "running", "unusable", "creating", "starting", "waitingforstarttask",
 
     "starttaskfailed", "unknown", "leavingpool", "offline", "preempted", "upgradingos",
 
@@ -46,14 +40,16 @@ variables:
   types:
   - <xref:str>
   - <xref:azure.batch.models.SchedulingState>
-- description: The time at which the Compute Node entered its current state.
+- description: 'The time at which the Compute Node entered its current state.
+
+    Required.'
   name: state_transition_time
   types:
   - <xref:datetime.datetime>
 - description: 'The last time at which the Compute Node was started. This property
     may
 
-    not be present if the Compute Node state is unusable.'
+    not be present if the Compute Node state is unusable. Required.'
   name: last_boot_time
   types:
   - <xref:datetime.datetime>
@@ -63,7 +59,7 @@ variables:
     the time when the Compute Node was initially allocated and doesn''t change once
     set. It is not
 
-    updated when the Compute Node is service healed or preempted.'
+    updated when the Compute Node is service healed or preempted. Required.'
   name: allocation_time
   types:
   - <xref:datetime.datetime>
@@ -75,8 +71,24 @@ variables:
     Compute Node is removed from a Pool, all of its local files are deleted, and the
     IP address is
 
-    reclaimed and could be reused for new Compute Nodes.'
+    reclaimed and could be reused for new Compute Nodes. Required.'
   name: ip_address
+  types:
+  - <xref:str>
+- description: 'The IPv6 address that other Nodes can use to communicate with this
+    Compute
+
+    Node. Every Compute Node that is added to a Pool is assigned a unique IP address.
+    Whenever a
+
+    Compute Node is removed from a Pool, all of its local files are deleted, and the
+    IP address is
+
+    reclaimed and could be reused for new Compute Nodes. This property will not be
+    present if the
+
+    Pool is not configured for IPv6. Required.'
+  name: ipv6_address
   types:
   - <xref:str>
 - description: 'An identifier which can be passed when adding a Task to request that
@@ -88,7 +100,7 @@ variables:
     Compute Node is busy or unavailable at the time the Task is scheduled, then the
     Task will be
 
-    scheduled elsewhere.'
+    scheduled elsewhere. Required.'
   name: affinity_id
   types:
   - <xref:str>
@@ -98,7 +110,8 @@ variables:
     available sizes of virtual machines in Pools, see Choose a VM size for Compute
     Nodes in an
 
-    Azure Batch Pool ([https://learn.microsoft.com/azure/batch/batch-pool-vm-sizes](https://learn.microsoft.com/azure/batch/batch-pool-vm-sizes)).'
+    Azure Batch Pool ([https://learn.microsoft.com/azure/batch/batch-pool-vm-sizes](https://learn.microsoft.com/azure/batch/batch-pool-vm-sizes)).
+    Required.'
   name: vm_size
   types:
   - <xref:str>
@@ -107,7 +120,7 @@ variables:
     includes Job Manager Tasks and normal Tasks, but not Job Preparation, Job Release
     or Start
 
-    Tasks.'
+    Tasks. Required.'
   name: total_tasks_run
   types:
   - <xref:int>
@@ -156,32 +169,6 @@ variables:
   name: start_task_info
   types:
   - <xref:azure.batch.models.BatchStartTaskInfo>
-- description: 'For Windows Nodes, the Batch service installs the Certificates to
-
-    the specified Certificate store and location.
-
-    For Linux Compute Nodes, the Certificates are stored in a directory inside the
-    Task working
-
-    directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to
-    the Task to
-
-    query for this location.
-
-    For Certificates with visibility of ''remoteUser'', a ''certs'' directory is created
-    in the user''s
-
-    home directory (e.g., /home/{user-name}/certs) and Certificates are placed in
-    that directory.
-
-    Warning: This property is deprecated and will be removed after February, 2024.
-    Please use the
-
-    [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
-    instead.'
-  name: certificate_references
-  types:
-  - <xref:list>[<xref:azure.batch.models.BatchCertificateReference>]
 - description: The list of errors that are currently being encountered by the Compute
     Node.
   name: errors
@@ -199,11 +186,11 @@ variables:
   - <xref:azure.batch.models.BatchNodeEndpointConfiguration>
 - description: 'Information about the Compute Node agent version and the time the
 
-    Compute Node upgraded to a new version.'
+    Compute Node upgraded to a new version. Required.'
   name: node_agent_info
   types:
   - <xref:azure.batch.models.BatchNodeAgentInfo>
-- description: Info about the current state of the virtual machine.
+- description: Info about the current state of the virtual machine. Required.
   name: virtual_machine_info
   types:
   - <xref:azure.batch.models.VirtualMachineInfo>
@@ -328,8 +315,10 @@ attributes:
     Node is busy
 
     or unavailable at the time the Task is scheduled, then the Task will be scheduled
-    elsewhere.'
-  signature: 'affinity_id: str | None'
+    elsewhere.
+
+    Required.'
+  signature: 'affinity_id: str'
 - uid: azure.batch.models.BatchNode.allocation_time
   name: allocation_time
   summary: 'The time at which this Compute Node was allocated to the Pool. This is
@@ -338,36 +327,8 @@ attributes:
     Compute Node was initially allocated and doesn''t change once set. It is not updated
     when the
 
-    Compute Node is service healed or preempted.'
-  signature: 'allocation_time: datetime | None'
-- uid: azure.batch.models.BatchNode.certificate_references
-  name: certificate_references
-  summary: 'For Windows Nodes, the Batch service installs the Certificates to the
-    specified Certificate
-
-    store and location.
-
-    For Linux Compute Nodes, the Certificates are stored in a directory inside the
-    Task working
-
-    directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to
-    the Task to
-
-    query for this location.
-
-    For Certificates with visibility of ''remoteUser'', a ''certs'' directory is created
-    in the user''s
-
-    home directory (e.g., /home/{user-name}/certs) and Certificates are placed in
-    that directory.
-
-    Warning: This property is deprecated and will be removed after February, 2024.
-    Please use the
-
-    [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
-    instead.'
-  signature: 'certificate_references: list[''_models.BatchCertificateReference'']
-    | None'
+    Compute Node is service healed or preempted. Required.'
+  signature: 'allocation_time: datetime'
 - uid: azure.batch.models.BatchNode.endpoint_configuration
   name: endpoint_configuration
   summary: The endpoint configuration for the Compute Node.
@@ -385,8 +346,8 @@ attributes:
     Whenever a Compute Node is removed from a Pool, all of its local files are deleted,
     and the ID
 
-    is reclaimed and could be reused for new Compute Nodes.'
-  signature: 'id: str | None'
+    is reclaimed and could be reused for new Compute Nodes. Required.'
+  signature: 'id: str'
 - uid: azure.batch.models.BatchNode.ip_address
   name: ip_address
   summary: 'The IP address that other Nodes can use to communicate with this Compute
@@ -398,8 +359,24 @@ attributes:
     removed from a Pool, all of its local files are deleted, and the IP address is
     reclaimed and
 
-    could be reused for new Compute Nodes.'
-  signature: 'ip_address: str | None'
+    could be reused for new Compute Nodes. Required.'
+  signature: 'ip_address: str'
+- uid: azure.batch.models.BatchNode.ipv6_address
+  name: ipv6_address
+  summary: 'The IPv6 address that other Nodes can use to communicate with this Compute
+    Node. Every Compute
+
+    Node that is added to a Pool is assigned a unique IP address. Whenever a Compute
+    Node is
+
+    removed from a Pool, all of its local files are deleted, and the IP address is
+    reclaimed and
+
+    could be reused for new Compute Nodes. This property will not be present if the
+    Pool is not
+
+    configured for IPv6. Required.'
+  signature: 'ipv6_address: str'
 - uid: azure.batch.models.BatchNode.is_dedicated
   name: is_dedicated
   summary: 'Whether this Compute Node is a dedicated Compute Node. If false, the Compute
@@ -412,15 +389,15 @@ attributes:
   summary: 'The last time at which the Compute Node was started. This property may
     not be present if the
 
-    Compute Node state is unusable.'
-  signature: 'last_boot_time: datetime | None'
+    Compute Node state is unusable. Required.'
+  signature: 'last_boot_time: datetime'
 - uid: azure.batch.models.BatchNode.node_agent_info
   name: node_agent_info
   summary: 'Information about the Compute Node agent version and the time the Compute
     Node upgraded to a
 
-    new version.'
-  signature: 'node_agent_info: _models.BatchNodeAgentInfo | None'
+    new version. Required.'
+  signature: 'node_agent_info: _models.BatchNodeAgentInfo'
 - uid: azure.batch.models.BatchNode.recent_tasks
   name: recent_tasks
   summary: 'A list of Tasks whose state has recently changed. This property is present
@@ -462,31 +439,25 @@ attributes:
   signature: 'start_task_info: _models.BatchStartTaskInfo | None'
 - uid: azure.batch.models.BatchNode.state
   name: state
-  summary: 'The current state of the Compute Node. The Spot/Low-priority Compute Node
-    has been preempted.
-
-    Tasks which were running on the Compute Node when it was preempted will be rescheduled
-    when
-
-    another Compute Node becomes available. Known values are: "idle", "rebooting",
+  summary: '"idle", "rebooting",
 
     "reimaging", "running", "unusable", "creating", "starting", "waitingforstarttask",
 
     "starttaskfailed", "unknown", "leavingpool", "offline", "preempted", "upgradingos",
 
     "deallocated", and "deallocating".'
-  signature: 'state: str | _models.BatchNodeState | None'
+  signature: 'state: str | _models.BatchNodeState'
 - uid: azure.batch.models.BatchNode.state_transition_time
   name: state_transition_time
-  summary: The time at which the Compute Node entered its current state.
-  signature: 'state_transition_time: datetime | None'
+  summary: The time at which the Compute Node entered its current state. Required.
+  signature: 'state_transition_time: datetime'
 - uid: azure.batch.models.BatchNode.total_tasks_run
   name: total_tasks_run
   summary: 'The total number of Job Tasks completed on the Compute Node. This includes
     Job Manager Tasks
 
-    and normal Tasks, but not Job Preparation, Job Release or Start Tasks.'
-  signature: 'total_tasks_run: int | None'
+    and normal Tasks, but not Job Preparation, Job Release or Start Tasks. Required.'
+  signature: 'total_tasks_run: int'
 - uid: azure.batch.models.BatchNode.total_tasks_succeeded
   name: total_tasks_succeeded
   summary: 'The total number of Job Tasks which completed successfully (with exitCode
@@ -499,12 +470,12 @@ attributes:
   signature: 'total_tasks_succeeded: int | None'
 - uid: azure.batch.models.BatchNode.url
   name: url
-  summary: The URL of the Compute Node.
-  signature: 'url: str | None'
+  summary: The URL of the Compute Node. Required.
+  signature: 'url: str'
 - uid: azure.batch.models.BatchNode.virtual_machine_info
   name: virtual_machine_info
-  summary: Info about the current state of the virtual machine.
-  signature: 'virtual_machine_info: _models.VirtualMachineInfo | None'
+  summary: Info about the current state of the virtual machine. Required.
+  signature: 'virtual_machine_info: _models.VirtualMachineInfo'
 - uid: azure.batch.models.BatchNode.vm_size
   name: vm_size
   summary: 'The size of the virtual machine hosting the Compute Node. For information
@@ -513,5 +484,6 @@ attributes:
     of virtual machines in Pools, see Choose a VM size for Compute Nodes in an Azure
     Batch Pool
 
-    ([https://learn.microsoft.com/azure/batch/batch-pool-vm-sizes](https://learn.microsoft.com/azure/batch/batch-pool-vm-sizes)).'
-  signature: 'vm_size: str | None'
+    ([https://learn.microsoft.com/azure/batch/batch-pool-vm-sizes](https://learn.microsoft.com/azure/batch/batch-pool-vm-sizes)).
+    Required.'
+  signature: 'vm_size: str'

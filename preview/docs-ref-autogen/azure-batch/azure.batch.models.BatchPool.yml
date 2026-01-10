@@ -16,18 +16,17 @@ variables:
     more than 64 characters. The ID is case-preserving and case-insensitive (that
     is, you may not
 
-    have two IDs within an Account that differ only by case).'
+    have two IDs within an Account that differ only by case). Required.'
   name: id
   types:
   - <xref:str>
-- description: 'The display name for the Pool. The display name need not be unique
-    and can
+- description: 'The display name need not be unique and can contain any Unicode characters
 
-    contain any Unicode characters up to a maximum length of 1024.'
+    up to a maximum length of 1024.'
   name: display_name
   types:
   - <xref:str>
-- description: The URL of the Pool.
+- description: The URL of the Pool. Required.
   name: url
   types:
   - <xref:str>
@@ -40,7 +39,7 @@ variables:
     Pool to specify that your changes should take effect only if nobody else has modified
     the Pool
 
-    in the meantime.'
+    in the meantime. Required.'
   name: e_tag
   types:
   - <xref:str>
@@ -50,20 +49,23 @@ variables:
     Pool level data, such as the targetDedicatedNodes or enableAutoscale settings,
     changed. It does
 
-    not factor in node-level changes such as a Compute Node changing state.'
+    not factor in node-level changes such as a Compute Node changing state. Required.'
   name: last_modified
   types:
   - <xref:datetime.datetime>
-- description: The creation time of the Pool.
+- description: The creation time of the Pool. Required.
   name: creation_time
   types:
   - <xref:datetime.datetime>
-- description: 'The current state of the Pool. Known values are: "active" and "deleting".'
+- description: 'The current state of the Pool. Required. Known values are: "active"
+    and
+
+    "deleting".'
   name: state
   types:
   - <xref:str>
   - <xref:azure.batch.models.BatchPoolState>
-- description: The time at which the Pool entered its current state.
+- description: The time at which the Pool entered its current state. Required.
   name: state_transition_time
   types:
   - <xref:datetime.datetime>
@@ -83,16 +85,13 @@ variables:
 - description: 'The size of virtual machines in the Pool. All virtual machines in
     a Pool are the
 
-    same size. For information about available VM sizes, see Sizes for Virtual Machines
-    in Azure
+    same size. For information about available sizes of virtual machines in Pools,
+    see Choose a VM
 
-    ([https://learn.microsoft.com/azure/virtual-machines/sizes/overview](https://learn.microsoft.com/azure/virtual-machines/sizes/overview)).
-    Batch supports all
+    size for Compute Nodes in an Azure Batch Pool
 
-    Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS,
-    STANDARD_DS, and
-
-    STANDARD_DSV2 series).'
+    ([https://learn.microsoft.com/azure/batch/batch-pool-vm-sizes](https://learn.microsoft.com/azure/batch/batch-pool-vm-sizes)).
+    Required.'
   name: vm_size
   types:
   - <xref:str>
@@ -121,27 +120,18 @@ variables:
   name: resize_errors
   types:
   - <xref:list>[<xref:azure.batch.models.ResizeError>]
-- description: 'The user-specified tags associated with the pool. The user-defined
-    tags to
+- description: 'The number of dedicated Compute Nodes currently in the Pool.
 
-    be associated with the Azure Batch Pool. When specified, these tags are propagated
-    to the
-
-    backing Azure resources associated with the pool. This property can only be specified
-    when the
-
-    Batch account was created with the poolAllocationMode property set to ''UserSubscription''.'
-  name: resource_tags
-  types:
-  - <xref:dict>[<xref:str>, <xref:str>]
-- description: The number of dedicated Compute Nodes currently in the Pool.
+    Required.'
   name: current_dedicated_nodes
   types:
   - <xref:int>
 - description: 'The number of Spot/Low-priority Compute Nodes currently in
 
     the Pool. Spot/Low-priority Compute Nodes which have been preempted are included
-    in this count.'
+    in this count.
+
+    Required.'
   name: current_low_priority_nodes
   types:
   - <xref:int>
@@ -192,13 +182,13 @@ variables:
   - <xref:azure.batch.models.AutoScaleRun>
 - description: 'Whether the Pool permits direct communication between
 
-    Compute Nodes. This imposes restrictions on which Compute Nodes can be assigned
-    to the Pool.
+    Compute Nodes. Enabling inter-node communication limits the maximum size of the
+    Pool due to
 
-    Specifying this value can reduce the chance of the requested number of Compute
-    Nodes to be
+    deployment restrictions on the Compute Nodes of the Pool. This may result in the
+    Pool not
 
-    allocated in the Pool.'
+    reaching its desired size. The default value is false.'
   name: enable_inter_node_communication
   types:
   - <xref:bool>
@@ -210,32 +200,6 @@ variables:
   name: start_task
   types:
   - <xref:azure.batch.models.BatchStartTask>
-- description: 'For Windows Nodes, the Batch service installs the Certificates to
-
-    the specified Certificate store and location.
-
-    For Linux Compute Nodes, the Certificates are stored in a directory inside the
-    Task working
-
-    directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to
-    the Task to
-
-    query for this location.
-
-    For Certificates with visibility of ''remoteUser'', a ''certs'' directory is created
-    in the user''s
-
-    home directory (e.g., /home/{user-name}/certs) and Certificates are placed in
-    that directory.
-
-    Warning: This property is deprecated and will be removed after February, 2024.
-    Please use the
-
-    [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
-    instead.'
-  name: certificate_references
-  types:
-  - <xref:list>[<xref:azure.batch.models.BatchCertificateReference>]
 - description: 'The list of Packages to be installed on each Compute Node
 
     in the Pool. Changes to Package references affect all new Nodes joining the Pool,
@@ -289,9 +253,11 @@ variables:
   name: pool_statistics
   types:
   - <xref:azure.batch.models.BatchPoolStatistics>
-- description: 'A list of file systems to mount on each node in the pool. This
+- description: 'Mount storage using specified file system for the entire lifetime
+    of
 
-    supports Azure Files, NFS, CIFS/SMB, and Blobfuse.'
+    the pool. Mount the storage using Azure fileshare, NFS, CIFS or Blobfuse based
+    file system.'
   name: mount_configuration
   types:
   - <xref:list>[<xref:azure.batch.models.MountConfiguration>]
@@ -306,23 +272,6 @@ variables:
   name: identity
   types:
   - <xref:azure.batch.models.BatchPoolIdentity>
-- description: 'The desired node communication mode for the pool. If
-
-    omitted, the default value is Default. Known values are: "default", "classic",
-    and
-
-    "simplified".'
-  name: target_node_communication_mode
-  types:
-  - <xref:str>
-  - <xref:azure.batch.models.BatchNodeCommunicationMode>
-- description: 'The current state of the pool communication mode. Known
-
-    values are: "default", "classic", and "simplified".'
-  name: current_node_communication_mode
-  types:
-  - <xref:str>
-  - <xref:azure.batch.models.BatchNodeCommunicationMode>
 - description: 'The upgrade policy for the Pool. Describes an upgrade policy - automatic,
 
     manual, or rolling.'
@@ -487,62 +436,27 @@ attributes:
 
     only if the Pool automatically scales, i.e. enableAutoScale is true.'
   signature: 'auto_scale_run: _models.AutoScaleRun | None'
-- uid: azure.batch.models.BatchPool.certificate_references
-  name: certificate_references
-  summary: 'For Windows Nodes, the Batch service installs the Certificates to the
-    specified Certificate
-
-    store and location.
-
-    For Linux Compute Nodes, the Certificates are stored in a directory inside the
-    Task working
-
-    directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to
-    the Task to
-
-    query for this location.
-
-    For Certificates with visibility of ''remoteUser'', a ''certs'' directory is created
-    in the user''s
-
-    home directory (e.g., /home/{user-name}/certs) and Certificates are placed in
-    that directory.
-
-    Warning: This property is deprecated and will be removed after February, 2024.
-    Please use the
-
-    [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
-    instead.'
-  signature: 'certificate_references: list[''_models.BatchCertificateReference'']
-    | None'
 - uid: azure.batch.models.BatchPool.creation_time
   name: creation_time
-  summary: The creation time of the Pool.
-  signature: 'creation_time: datetime | None'
+  summary: The creation time of the Pool. Required.
+  signature: 'creation_time: datetime'
 - uid: azure.batch.models.BatchPool.current_dedicated_nodes
   name: current_dedicated_nodes
-  summary: The number of dedicated Compute Nodes currently in the Pool.
-  signature: 'current_dedicated_nodes: int | None'
+  summary: The number of dedicated Compute Nodes currently in the Pool. Required.
+  signature: 'current_dedicated_nodes: int'
 - uid: azure.batch.models.BatchPool.current_low_priority_nodes
   name: current_low_priority_nodes
   summary: 'The number of Spot/Low-priority Compute Nodes currently in the Pool. Spot/Low-priority
     Compute
 
-    Nodes which have been preempted are included in this count.'
-  signature: 'current_low_priority_nodes: int | None'
-- uid: azure.batch.models.BatchPool.current_node_communication_mode
-  name: current_node_communication_mode
-  summary: '"default", "classic",
-
-    and "simplified".'
-  signature: 'current_node_communication_mode: str | _models.BatchNodeCommunicationMode
-    | None'
+    Nodes which have been preempted are included in this count. Required.'
+  signature: 'current_low_priority_nodes: int'
 - uid: azure.batch.models.BatchPool.display_name
   name: display_name
-  summary: 'The display name for the Pool. The display name need not be unique and
-    can contain any Unicode
+  summary: 'The display name need not be unique and can contain any Unicode characters
+    up to a maximum
 
-    characters up to a maximum length of 1024.'
+    length of 1024.'
   signature: 'display_name: str | None'
 - uid: azure.batch.models.BatchPool.e_tag
   name: e_tag
@@ -555,8 +469,8 @@ attributes:
     specify that your changes should take effect only if nobody else has modified
     the Pool in the
 
-    meantime.'
-  signature: 'e_tag: str | None'
+    meantime. Required.'
+  signature: 'e_tag: str'
 - uid: azure.batch.models.BatchPool.enable_auto_scale
   name: enable_auto_scale
   summary: 'Whether the Pool size should automatically adjust over time. If false,
@@ -571,13 +485,16 @@ attributes:
   signature: 'enable_auto_scale: bool | None'
 - uid: azure.batch.models.BatchPool.enable_inter_node_communication
   name: enable_inter_node_communication
-  summary: 'Whether the Pool permits direct communication between Compute Nodes. This
-    imposes restrictions
+  summary: 'Whether the Pool permits direct communication between Compute Nodes. Enabling
+    inter-node
 
-    on which Compute Nodes can be assigned to the Pool. Specifying this value can
-    reduce the chance
+    communication limits the maximum size of the Pool due to deployment restrictions
+    on the Compute
 
-    of the requested number of Compute Nodes to be allocated in the Pool.'
+    Nodes of the Pool. This may result in the Pool not reaching its desired size.
+    The default value
+
+    is false.'
   signature: 'enable_inter_node_communication: bool | None'
 - uid: azure.batch.models.BatchPool.id
   name: id
@@ -590,8 +507,8 @@ attributes:
     more than 64 characters. The ID is case-preserving and case-insensitive (that
     is, you may not
 
-    have two IDs within an Account that differ only by case).'
-  signature: 'id: str | None'
+    have two IDs within an Account that differ only by case). Required.'
+  signature: 'id: str'
 - uid: azure.batch.models.BatchPool.identity
   name: identity
   summary: 'The identity of the Batch pool, if configured. The list of user identities
@@ -610,18 +527,18 @@ attributes:
     the targetDedicatedNodes or enableAutoscale settings, changed. It does not factor
     in node-level
 
-    changes such as a Compute Node changing state.'
-  signature: 'last_modified: datetime | None'
+    changes such as a Compute Node changing state. Required.'
+  signature: 'last_modified: datetime'
 - uid: azure.batch.models.BatchPool.metadata
   name: metadata
   summary: A list of name-value pairs associated with the Pool as metadata.
   signature: 'metadata: list[''_models.BatchMetadataItem''] | None'
 - uid: azure.batch.models.BatchPool.mount_configuration
   name: mount_configuration
-  summary: 'A list of file systems to mount on each node in the pool. This supports
-    Azure Files, NFS,
+  summary: 'Mount storage using specified file system for the entire lifetime of the
+    pool. Mount the
 
-    CIFS/SMB, and Blobfuse.'
+    storage using Azure fileshare, NFS, CIFS or Blobfuse based file system.'
   signature: 'mount_configuration: list[''_models.MountConfiguration''] | None'
 - uid: azure.batch.models.BatchPool.network_configuration
   name: network_configuration
@@ -661,19 +578,6 @@ attributes:
 
     default value is 15 minutes.'
   signature: 'resize_timeout: timedelta | None'
-- uid: azure.batch.models.BatchPool.resource_tags
-  name: resource_tags
-  summary: 'The user-specified tags associated with the pool. The user-defined tags
-    to be associated with
-
-    the Azure Batch Pool. When specified, these tags are propagated to the backing
-    Azure resources
-
-    associated with the pool. This property can only be specified when the Batch account
-    was
-
-    created with the poolAllocationMode property set to ''UserSubscription''.'
-  signature: 'resource_tags: dict[str, str] | None'
 - uid: azure.batch.models.BatchPool.start_task
   name: start_task
   summary: A Task specified to run on each Compute Node as it joins the Pool.
@@ -681,11 +585,11 @@ attributes:
 - uid: azure.batch.models.BatchPool.state
   name: state
   summary: '"active" and "deleting".'
-  signature: 'state: str | _models.BatchPoolState | None'
+  signature: 'state: str | _models.BatchPoolState'
 - uid: azure.batch.models.BatchPool.state_transition_time
   name: state_transition_time
-  summary: The time at which the Pool entered its current state.
-  signature: 'state_transition_time: datetime | None'
+  summary: The time at which the Pool entered its current state. Required.
+  signature: 'state_transition_time: datetime'
 - uid: azure.batch.models.BatchPool.target_dedicated_nodes
   name: target_dedicated_nodes
   summary: The desired number of dedicated Compute Nodes in the Pool.
@@ -694,14 +598,6 @@ attributes:
   name: target_low_priority_nodes
   summary: The desired number of Spot/Low-priority Compute Nodes in the Pool.
   signature: 'target_low_priority_nodes: int | None'
-- uid: azure.batch.models.BatchPool.target_node_communication_mode
-  name: target_node_communication_mode
-  summary: 'The desired node communication mode for the pool. If omitted, the default
-    value is Default.
-
-    Known values are: "default", "classic", and "simplified".'
-  signature: 'target_node_communication_mode: str | _models.BatchNodeCommunicationMode
-    | None'
 - uid: azure.batch.models.BatchPool.task_scheduling_policy
   name: task_scheduling_policy
   summary: 'How Tasks are distributed across Compute Nodes in a Pool. If not specified,
@@ -726,8 +622,8 @@ attributes:
   signature: 'upgrade_policy: _models.UpgradePolicy | None'
 - uid: azure.batch.models.BatchPool.url
   name: url
-  summary: The URL of the Pool.
-  signature: 'url: str | None'
+  summary: The URL of the Pool. Required.
+  signature: 'url: str'
 - uid: azure.batch.models.BatchPool.user_accounts
   name: user_accounts
   summary: The list of user Accounts to be created on each Compute Node in the Pool.
@@ -742,13 +638,11 @@ attributes:
   summary: 'The size of virtual machines in the Pool. All virtual machines in a Pool
     are the same size. For
 
-    information about available VM sizes, see Sizes for Virtual Machines in Azure
+    information about available sizes of virtual machines in Pools, see Choose a VM
+    size for
 
-    ([https://learn.microsoft.com/azure/virtual-machines/sizes/overview](https://learn.microsoft.com/azure/virtual-machines/sizes/overview)).
-    Batch supports all
+    Compute Nodes in an Azure Batch Pool
 
-    Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS,
-    STANDARD_DS, and
-
-    STANDARD_DSV2 series).'
-  signature: 'vm_size: str | None'
+    ([https://learn.microsoft.com/azure/batch/batch-pool-vm-sizes](https://learn.microsoft.com/azure/batch/batch-pool-vm-sizes)).
+    Required.'
+  signature: 'vm_size: str'
