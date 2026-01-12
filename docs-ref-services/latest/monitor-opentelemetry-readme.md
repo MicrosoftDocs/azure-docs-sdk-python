@@ -1,12 +1,12 @@
 ---
 title: Azure Monitor Opentelemetry Distro client library for Python
 keywords: Azure, python, SDK, API, azure-monitor-opentelemetry, monitor
-ms.date: 12/05/2025
+ms.date: 01/12/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: monitor
 ---
-# Azure Monitor Opentelemetry Distro client library for Python - version 1.8.3 
+# Azure Monitor Opentelemetry Distro client library for Python - version 1.8.4 
 
 
 The Azure Monitor Distro of [Opentelemetry Python][ot_sdk_python] is a "one-stop-shop" telemetry solution, requiring only one line of code to instrument your application. The distro captures telemetry via [OpenTelemetry instrumentations][azure_monitor_opentelemetry_exporters] and reports telemetry to Azure Monitor via the [Azure Monitor exporters][azure_monitor_opentelemetry_exporters].
@@ -77,6 +77,8 @@ You can use `configure_azure_monitor` to set up instrumentation for your app to 
 | `resource` | Specifies the OpenTelemetry [Resource][ot_spec_resource] associated with your application. Passed in [Resource Attributes][ot_spec_resource_attributes] take priority over default attributes and those from [Resource Detectors][ot_python_resource_detectors]. | [OTEL_SERVICE_NAME][ot_spec_service_name], [OTEL_RESOURCE_ATTRIBUTES][ot_spec_resource_attributes], [OTEL_EXPERIMENTAL_RESOURCE_DETECTORS][ot_python_resource_detectors] |
 | `span_processors` | A list of [span processors][ot_span_processor] that will perform processing on each of your spans before they are exported. Useful for filtering/modifying telemetry. | `N/A` |
 | `views` | A list of [views][ot_view] that will be used to customize metrics exported by the SDK. | `N/A` |
+| `log_record_processors` | A list of [log record processors][ot_log_record_processor] that will process log records before they are exported. | `N/A` |
+| `metric_readers` | A list of [metric reader][ot_metric_reader] that will process metric readers before they are exported | `N/A` |
 | `traces_per_second` | Configures the Rate Limited sampler by specifying the maximum number of traces to sample per second. When set, this automatically enables the rate-limited sampler. Alternatively, you can configure sampling using the `OTEL_TRACES_SAMPLER` and `OTEL_TRACES_SAMPLER_ARG` environment variables as described in the table below. Please note that the sampling configuration via environment variables will have precedence over the sampling exporter/distro options. | `N/A`
 
 You can configure further with [OpenTelemetry environment variables][ot_env_vars].
@@ -89,8 +91,8 @@ You can configure further with [OpenTelemetry environment variables][ot_env_vars
 | `OTEL_TRACES_EXPORTER` | If set to `None`, disables collection and export of distributed tracing telemetry. |
 | `OTEL_BLRP_SCHEDULE_DELAY` | Specifies the logging export interval in milliseconds. Defaults to 5000. |
 | `OTEL_BSP_SCHEDULE_DELAY` | Specifies the distributed tracing export interval in milliseconds. Defaults to 5000. |
-| `OTEL_TRACES_SAMPLER` | Specifies the sampler to be used for traces. Supports both [application_insights_sampling] and [rate_limited_sampling]. Use `microsoft.fixed.percentage` for the Application Insights sampler or `microsoft.rate_limited` for the Rate Limited sampler. |
-| `OTEL_TRACES_SAMPLER_ARG` | Specifies the sampling parameter for the configured sampler. For the Application Insights sampler, this sets the ratio of distributed tracing telemetry to be [sampled][application_insights_sampling] with accepted values in the range [0,1]. Defaults to 1.0 (no sampling). For the Rate Limited sampler, this sets the maximum traces per second to be [sampled][rate_limited_sampler]. For example, 0.5 means one trace every two seconds, while 5.0 means five traces per second. |
+| `OTEL_TRACES_SAMPLER` | Specifies the sampler to be used for traces. Supports `always_on`, `always_off`, `trace_id_ratio`, `parentbased_always_on`, `parentbased_always_off`, `parentbased_trace_id_ratio`, [application_insights_sampling] and [rate_limited_sampling]. Use `microsoft.fixed.percentage` for the Application Insights sampler or `microsoft.rate_limited` for the Rate Limited sampler. |
+| `OTEL_TRACES_SAMPLER_ARG` | Specifies the sampling parameter for the configured sampler. For the standard OpenTelemetry samplers `trace_id_ratio` and `parentbased_trace_id_ratio`, this is the sampling ratio in the range [0.0, 1.0]. Not needed to be specified for `always_on`, `always_off`, `parentbased_always_on`, or `parentbased_always_off` samplers. For the Application Insights sampler, this sets the ratio of distributed tracing telemetry to be [sampled][application_insights_sampling] with accepted values in the range [0,1]. Defaults to 1.0 (no sampling). For the Rate Limited sampler, this sets the maximum traces per second to be [sampled][rate_limited_sampler]. For example, 0.5 means one trace every two seconds, while 5.0 means five traces per second. |
 | `OTEL_PYTHON_DISABLED_INSTRUMENTATIONS` | Specifies which of the supported instrumentations to disable. Disabled instrumentations will not be instrumented as part of `configure_azure_monitor`. However, they can still be manually instrumented with `instrument()` directly. Accepts a comma-separated list of lowercase [Library Names](#officially-supported-instrumentations). For example, set to `"psycopg2,fastapi"` to disable the Psycopg2 and FastAPI instrumentations. Defaults to an empty list, enabling all supported instrumentations. |
 | `OTEL_EXPERIMENTAL_RESOURCE_DETECTORS` | An experimental OpenTelemetry environment variable used to specify Resource Detectors to be used to generate Resource Attributes. This is an experimental feature and the name of this variable and its behavior can change in a non-backwards compatible way. Defaults to "azure_app_service,azure_vm" to enable the [Azure Resource Detectors][ot_resource_detector_azure] for Azure App Service and Azure VM. To add or remove specific resource detectors, set the environment variable accordingly. See the [OpenTelemetry Python Resource Detector Documentation][ot_python_resource_detectors] for more. |
 
@@ -192,7 +194,7 @@ v1.x
 
 ## Troubleshooting
 
-The exporter raises exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-opentelemetry_1.8.3/sdk/core/azure-core/README.md#azure-core-library-exceptions).
+The exporter raises exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-opentelemetry_1.8.4/sdk/core/azure-core/README.md#azure-core-library-exceptions).
 
 ## Next steps
 
@@ -219,10 +221,10 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 * [OpenTelemetry Python Official Docs][ot_python_docs]
 
 <!-- LINKS -->
-[azure_core_tracing_opentelemetry_plugin]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry_1.8.3/sdk/core/azure-core-tracing-opentelemetry
-[azure_core_tracing_opentelemetry_plugin_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry_1.8.3/sdk/monitor/azure-monitor-opentelemetry/samples/tracing/azure_core.py
+[azure_core_tracing_opentelemetry_plugin]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry_1.8.4/sdk/core/azure-core-tracing-opentelemetry
+[azure_core_tracing_opentelemetry_plugin_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry_1.8.4/sdk/monitor/azure-monitor-opentelemetry/samples/tracing/azure_core.py
 [azure_monitor_enable_docs]: https://learn.microsoft.com/azure/azure-monitor/app/opentelemetry-enable?tabs=python
-[azure_monitor_opentelemetry_exporters]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry_1.8.3/sdk/monitor/azure-monitor-opentelemetry-exporter#microsoft-opentelemetry-exporter-for-azure-monitor
+[azure_monitor_opentelemetry_exporters]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry_1.8.4/sdk/monitor/azure-monitor-opentelemetry-exporter#microsoft-opentelemetry-exporter-for-azure-monitor
 [azure_portal]: https://portal.azure.com
 [azure_sub]: https://azure.microsoft.com/free/
 [application_insights_performance_counters]: https://learn.microsoft.com/azure/azure-monitor/app/metrics-overview?tabs=standard#performance-counters
@@ -232,7 +234,7 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 [rate_limited_sampling]: https://learn.microsoft.com/azure/azure-monitor/app/opentelemetry-configuration
 [connection_string_doc]: https://learn.microsoft.com/azure/azure-monitor/app/sdk-connection-string
 [distro_feature_request]: https://github.com/Azure/azure-sdk-for-python/issues/new
-[exporter_configuration_docs]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry_1.8.3/sdk/monitor/azure-monitor-opentelemetry-exporter#configuration
+[exporter_configuration_docs]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry_1.8.4/sdk/monitor/azure-monitor-opentelemetry-exporter#configuration
 [ot_env_vars]: https://opentelemetry.io/docs/reference/specification/sdk-environment-variables/
 [ot_instrumentations]: https://github.com/open-telemetry/opentelemetry-python-contrib/tree/main/instrumentation
 [ot_metric_reader]: https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/metrics/sdk.md#metricreader
@@ -240,6 +242,7 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 [ot_sdk_python]: https://github.com/open-telemetry/opentelemetry-python
 [ot_sdk_python_metric_reader]: https://opentelemetry-python.readthedocs.io/en/latest/sdk/metrics.export.html#opentelemetry.sdk.metrics.export.MetricReader
 [ot_span_processor]: https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/trace/sdk.md#span-processor
+[ot_log_record_processor]: https://github.com/open-telemetry/opentelemetry-specification/tree/main/specification/logs/sdk.md#log-record-processor
 [ot_view]: https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/metrics/sdk.md#view
 [ot_sdk_python_view_examples]: https://github.com/open-telemetry/opentelemetry-python/tree/main/docs/examples/metrics/views
 [ot_instrumentation_django]: https://github.com/open-telemetry/opentelemetry-python-contrib/tree/main/instrumentation/opentelemetry-instrumentation-django
@@ -273,6 +276,6 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 [python_logger]: https://docs.python.org/3/library/logging.html#logger-objects
 [python_logging_formatter]: https://docs.python.org/3/library/logging.html#formatter-objects
 [python_logging_level]: https://docs.python.org/3/library/logging.html#levels
-[samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry_1.8.3/sdk/monitor/azure-monitor-opentelemetry/samples
-[samples_manual]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry_1.8.3/sdk/monitor/azure-monitor-opentelemetry/samples/tracing/manually_instrumented.py
+[samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry_1.8.4/sdk/monitor/azure-monitor-opentelemetry/samples
+[samples_manual]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry_1.8.4/sdk/monitor/azure-monitor-opentelemetry/samples/tracing/manually_instrumented.py
 
