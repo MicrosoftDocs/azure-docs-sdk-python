@@ -1,7 +1,7 @@
 ---
 title: Azure Recoveryservicesbackup-Passivestamp SDK for Python
 description: Reference for Azure Recoveryservicesbackup-Passivestamp SDK for Python
-ms.date: 01/09/2026
+ms.date: 01/12/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: recoveryservicesbackup-passivestamp
