@@ -1,7 +1,7 @@
 ---
 title: Azure Recovery Services SDK for Python
 description: Reference for Azure Recovery Services SDK for Python
-ms.date: 01/13/2026
+ms.date: 01/14/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: recoveryservices
