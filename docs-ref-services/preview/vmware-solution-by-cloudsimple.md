@@ -1,7 +1,7 @@
 ---
 title: Azure VMware Solution by CloudSimple SDK for Python
 description: Reference for Azure VMware Solution by CloudSimple SDK for Python
-ms.date: 01/14/2026
+ms.date: 01/15/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: vmwaresolutionbycloudsimple
