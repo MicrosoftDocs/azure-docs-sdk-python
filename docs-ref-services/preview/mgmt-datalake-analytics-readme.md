@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-datalake-analytics, datalake
-ms.date: 12/16/2022
+ms.date: 01/18/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: datalake
