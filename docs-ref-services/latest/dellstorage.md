@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: dellstorage
 ---
-# Azure Dellstorage SDK for Python - preview
-## Packages - preview
+# Azure Dellstorage SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](dellstorage-index.md)]
