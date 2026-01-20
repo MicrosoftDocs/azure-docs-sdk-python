@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-healthdataaiservices, healthdataaiservices
-ms.date: 08/15/2024
+ms.date: 01/20/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: healthdataaiservices
