@@ -1,14 +1,14 @@
 ---
 title: Azure Text Authoring client library for Python
 keywords: Azure, python, SDK, API, azure-ai-textanalytics-authoring, cognitivelanguage
-ms.date: 09/19/2025
+ms.date: 01/20/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: cognitivelanguage
 ---
 [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/azure-sdk-for-python.client?branchName=main)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=46?branchName=main)
 
-# Azure Text Authoring client library for Python - version 1.0.0b1 
+# Azure Text Authoring client library for Python - version 1.0.0a20260120001 
 
 
 **Text Authoring** is part of Azure AI Language. It provides APIs and SDKs to **create, manage, train, evaluate, and deploy** text projects and models (for example, custom single/multi-label classification). With the `TextAuthoringClient`, you can automate much of what you’d otherwise do in Language Studio, including:
@@ -415,24 +415,23 @@ For more information, see the [Code of Conduct FAQ][coc_faq] or contact [opencod
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [cognitive_auth]: https://learn.microsoft.com/azure/cognitive-services/authentication/
-[contributing]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-textanalytics-authoring_1.0.0b1/CONTRIBUTING.md
+[contributing]: https://github.com/Azure/azure-sdk-for-python/blob/main/CONTRIBUTING.md
 [python_logging]: https://docs.python.org/3/library/logging.html
 [sdk_logging_docs]: https://learn.microsoft.com/azure/developer/python/azure-sdk-logging
 [azure_core_ref_docs]: https://azuresdkdocs.z19.web.core.windows.net/python/azure-core/latest/azure.core.html
-[azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-textanalytics-authoring_1.0.0b1/sdk/core/azure-core/README.md
+[azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md
 [pip_link]: https://pypi.org/project/pip/
-[text_authoring_client_src]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-textanalytics-authoring_1.0.0b1/sdk/cognitivelanguage/azure-ai-textanalytics-authoring
+[text_authoring_client_src]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/cognitivelanguage/azure-ai-textanalytics-authoring
 [text_authoring_pypi_package]: https://pypi.org/project/azure-ai-textanalytics-authoring/
-[text_authoring_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-textanalytics-authoring_1.0.0b1/sdk/cognitivelanguage/azure-ai-textanalytics-authoring/samples/README.md
+[text_authoring_samples]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/cognitivelanguage/azure-ai-textanalytics-authoring/samples/README.md
 [text_authoring_docs]: https://learn.microsoft.com/azure/ai-services/language-service/custom-text-classification/overview
-[api_reference_authoring]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-textanalytics-authoring_1.0.0b1/sdk/cognitivelanguage/azure-ai-textanalytics-authoring
-<!-- TODO: change api_reference_documentation to azuresdkdocs link after first publish -->
-[text_authoring_restdocs]: https://learn.microsoft.com/rest/api/language/text-authoring-project?view=rest-language-2023-04-01
+[api_reference_authoring]: https://azuresdkdocs.z19.web.core.windows.net/python/azure-ai-textanalytics-authoring/latest/azure.ai.textanalytics.authoring.html
+[text_authoring_restdocs]: https://learn.microsoft.com/rest/api/language/analyze-text-authoring/text-authoring-project?view=rest-language-analyze-text-authoring-2023-04-01
 [azure_language_portal]: https://language.cognitive.azure.com/home
 [cognitive_authentication_aad]: https://learn.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
-[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-textanalytics-authoring_1.0.0b1/sdk/identity/azure-identity#credentials
+[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#credentials
 [custom_subdomain]: https://learn.microsoft.com/azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
-[install_azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-textanalytics-authoring_1.0.0b1/sdk/identity/azure-identity#install-the-package
+[install_azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#install-the-package
 [register_aad_app]: https://learn.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [grant_role_access]: https://learn.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-textanalytics-authoring_1.0.0b1/sdk/identity/azure-identity#defaultazurecredential
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#defaultazurecredential

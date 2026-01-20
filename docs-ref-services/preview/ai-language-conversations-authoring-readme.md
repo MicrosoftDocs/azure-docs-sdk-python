@@ -1,14 +1,14 @@
 ---
 title: Azure Conversation Authoring client library for Python
 keywords: Azure, python, SDK, API, azure-ai-language-conversations-authoring, cognitivelanguage
-ms.date: 12/15/2025
+ms.date: 01/20/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: cognitivelanguage
 ---
 [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/azure-sdk-for-python.client?branchName=main)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=46?branchName=main)
 
-# Azure Conversation Authoring client library for Python - version 1.0.0b3 
+# Azure Conversation Authoring client library for Python - version 1.0.0a20260120001 
 
 
 **Conversation Authoring** is part of the Conversational Language Understanding (CLU) service. It provides APIs and SDKs to **create, manage, train, evaluate, and deploy** conversation projects and models. With the `ConversationAuthoringClient`, you can script everything you’d otherwise do in Language Studio, including:
@@ -444,23 +444,23 @@ For more information, see the [Code of Conduct FAQ][coc_faq] or contact [opencod
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [cognitive_auth]: https://learn.microsoft.com/azure/cognitive-services/authentication/
-[contributing]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-language-conversations-authoring_1.0.0b3/CONTRIBUTING.md
+[contributing]: https://github.com/Azure/azure-sdk-for-python/blob/main/CONTRIBUTING.md
 [python_logging]: https://docs.python.org/3/library/logging.html
 [sdk_logging_docs]: https://learn.microsoft.com/azure/developer/python/azure-sdk-logging
 [azure_core_ref_docs]: https://azuresdkdocs.z19.web.core.windows.net/python/azure-core/latest/azure.core.html
-[azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-language-conversations-authoring_1.0.0b3/sdk/core/azure-core/README.md
+[azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md
 [pip_link]: https://pypi.org/project/pip/
-[conversation_authoring_client_src]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-language-conversations-authoring_1.0.0b3/sdk/cognitivelanguage/azure-ai-language-conversations-authoring
+[conversation_authoring_client_src]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/cognitivelanguage/azure-ai-language-conversations-authoring
 [conversation_authoring_pypi_package]: https://pypi.org/project/azure-ai-language-conversations-authoring/
-[conversation_authoring_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-language-conversations-authoring_1.0.0b3/sdk/cognitivelanguage/azure-ai-language-conversations-authoring/samples/README.md
+[conversation_authoring_samples]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/cognitivelanguage/azure-ai-language-conversations-authoring/samples/README.md
 [conversation_authoring_docs]: https://learn.microsoft.com/azure/ai-services/language-service/conversational-language-understanding/overview
 [api_reference_authoring]: https://azuresdkdocs.z19.web.core.windows.net/python/azure-ai-language-conversations-authoring/latest/azure.ai.language.conversations.authoring.html
 [conversation_authoring_restdocs]: https://learn.microsoft.com/rest/api/language/analyze-conversations-authoring/conversation-authoring-project?view=rest-language-analyze-conversations-authoring-2025-11-01
 [azure_language_portal]: https://language.cognitive.azure.com/home
 [cognitive_authentication_aad]: https://learn.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
-[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-language-conversations-authoring_1.0.0b3/sdk/identity/azure-identity#credentials
+[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#credentials
 [custom_subdomain]: https://learn.microsoft.com/azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
-[install_azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-language-conversations-authoring_1.0.0b3/sdk/identity/azure-identity#install-the-package
+[install_azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#install-the-package
 [register_aad_app]: https://learn.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [grant_role_access]: https://learn.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-language-conversations-authoring_1.0.0b3/sdk/identity/azure-identity#defaultazurecredential
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#defaultazurecredential
