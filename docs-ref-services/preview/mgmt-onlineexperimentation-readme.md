@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-onlineexperimentation, onlineexperimentation
-ms.date: 06/11/2025
+ms.date: 01/20/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: onlineexperimentation
