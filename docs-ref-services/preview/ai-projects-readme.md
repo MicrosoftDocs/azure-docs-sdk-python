@@ -1,12 +1,12 @@
 ---
 title: Azure AI Projects client library for Python
 keywords: Azure, python, SDK, API, azure-ai-projects, ai
-ms.date: 01/06/2026
+ms.date: 01/20/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: ai
 ---
-# Azure AI Projects client library for Python - version 2.0.0b3 
+# Azure AI Projects client library for Python - version 2.0.0a20260120001 
 
 
 The AI Projects client library (in preview) is part of the Microsoft Foundry SDK, and provides easy access to
@@ -1002,6 +1002,8 @@ with tracer.start_as_current_span(scenario):
 <!-- END SNIPPET -->
 
 See the full sample in file `\agents\telemetry\sample_agent_basic_with_azure_monitor_tracing.py` in the [Samples][samples] folder.
+
+**Note:** In order to view the traces in the Microsoft Foundry portal, the agent ID should be passed in as part of the response generation request.
 
 In addition, you might find it helpful to see the tracing logs in the console. You can achieve this with the following code:
 
