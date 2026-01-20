@@ -1,7 +1,7 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-synapse-accesscontrol, synapse
-ms.date: 03/31/2022
+keywords: Azure, python, SDK, API, azure-synapse-accesscontrol, synapse-analytics
+ms.date: 01/20/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: synapse-analytics
@@ -18,7 +18,7 @@ _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For
 
 # Usage
 
-For code examples, see [Synapse AccessControl](https://docs.microsoft.com/python/api/overview/azure/) on docs.microsoft.com.
+For code examples, see [Synapse AccessControl](/python/api/overview/azure/) on docs.microsoft.com.
 
 # Provide Feedback
 
