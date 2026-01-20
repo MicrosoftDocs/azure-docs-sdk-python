@@ -1,6 +1,6 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-kubernetesconfiguration-extensions, kubernetesconfiguration
+keywords: Azure, python, SDK, API, azure-mgmt-kubernetesconfiguration, kubernetesconfiguration
 ms.date: 01/20/2026
 ms.topic: reference
 ms.devlang: python
@@ -8,8 +8,8 @@ ms.service: kubernetesconfiguration
 ---
 # Microsoft Azure SDK for Python
 
-This is the Microsoft Azure Kubernetesconfiguration-extensions Management Client Library.
-This package has been tested with Python 3.9+.
+This is the Microsoft Azure Kubernetes Configuration Management Client Library.
+This package has been tested with Python 3.7+.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
 ## _Disclaimer_
@@ -20,19 +20,19 @@ _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For
 
 ### Prerequisites
 
-- Python 3.9+ is required to use this package.
+- Python 3.7+ is required to use this package.
 - [Azure subscription](https://azure.microsoft.com/free/)
 
 ### Install the package
 
 ```bash
-pip install azure-mgmt-kubernetesconfiguration-extensions
+pip install azure-mgmt-kubernetesconfiguration
 pip install azure-identity
 ```
 
 ### Authentication
 
-By default, [Azure Active Directory](https://aka.ms/awps/aad) token authentication depends on correct configuration of the following environment variables.
+By default, [Azure Active Directory](https://aka.ms/awps/aad) token authentication depends on correct configure of following environment variables.
 
 - `AZURE_CLIENT_ID` for Azure client ID.
 - `AZURE_TENANT_ID` for Azure tenant ID.
@@ -44,17 +44,17 @@ With above configuration, client can be authenticated by following code:
 
 ```python
 from azure.identity import DefaultAzureCredential
-from azure.mgmt.kubernetesconfiguration.extensions import KubernetesConfigurationExtensionsMgmtClient
+from azure.mgmt.kubernetesconfiguration import SourceControlConfigurationClient
 import os
 
 sub_id = os.getenv("AZURE_SUBSCRIPTION_ID")
-client = KubernetesConfigurationExtensionsMgmtClient(credential=DefaultAzureCredential(), subscription_id=sub_id)
+client = SourceControlConfigurationClient(credential=DefaultAzureCredential(), subscription_id=sub_id)
 ```
 
 ## Examples
 
 Code samples for this package can be found at:
-- [Search Kubernetesconfiguration-extensions Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
+- [Search Kubernetes Configuration Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
 - [Azure Python Mgmt SDK Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
@@ -67,4 +67,7 @@ Code samples for this package can be found at:
 If you encounter any bugs or have suggestions, please file an issue in the
 [Issues](https://github.com/Azure/azure-sdk-for-python/issues)
 section of the project. 
+
+
+
 
