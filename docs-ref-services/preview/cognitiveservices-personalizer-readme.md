@@ -1,11 +1,10 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-cognitiveservices-personalizer, cognitiveservices
-ms.date: 03/31/2022
+ms.date: 01/21/2026
 ms.topic: reference
 ms.devlang: python
-ms.service: cognitive-services
-ms.subservice: personalizer
+ms.service: cognitiveservices
 ---
 # Microsoft Azure SDK for Python
 
@@ -19,7 +18,7 @@ For a more complete view of Azure libraries, see the [azure sdk python release](
 
 
 
-For code examples, see [Personalizer](https://docs.microsoft.com/python/api/overview/azure/) on docs.microsoft.com.
+For code examples, see [Personalizer](/python/api/overview/azure/) on docs.microsoft.com.
 
 
 # Provide Feedback
