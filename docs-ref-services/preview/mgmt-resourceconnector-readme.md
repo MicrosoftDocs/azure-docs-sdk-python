@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-resourceconnector, resourceconnector
-ms.date: 01/15/2026
+ms.date: 01/21/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: resourceconnector
