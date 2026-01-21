@@ -1,12 +1,12 @@
 ---
 title: Azure AI Language Question Answering Authoring client library for Python
 keywords: Azure, python, SDK, API, azure-ai-language-questionanswering-authoring, cognitivelanguage
-ms.date: 11/18/2025
+ms.date: 01/21/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: cognitivelanguage
 ---
-# Azure AI Language Question Answering Authoring client library for Python - version 1.0.0b1 
+# Azure AI Language Question Answering Authoring client library for Python - version 1.0.0a20260121002 
 
 
 The `azure-ai-language-questionanswering-authoring` package provides **authoring / management capabilities** for Azure AI Language Question Answering: create and configure projects, add knowledge sources, manage QnA pairs and synonyms, and deploy versions. Runtime (query) operations live in the separate `azure-ai-language-questionanswering` package.
@@ -217,7 +217,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 
 <!-- LINKS -->
 [product_docs]: https://learn.microsoft.com/azure/ai-services/language-service/question-answering/overview
-[contributing]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-language-questionanswering-authoring_1.0.0b1/CONTRIBUTING.md
+[contributing]: https://github.com/Azure/azure-sdk-for-python/blob/main/CONTRIBUTING.md
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 
