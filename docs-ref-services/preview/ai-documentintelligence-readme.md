@@ -131,11 +131,13 @@ credential = AzureKeyCredential("<api_key>")
 document_intelligence_client = DocumentIntelligenceClient(endpoint, credential)
 ```
 
-#### Create the client with an Azure Active Directory credential
+[!INCLUDE [Azure key vault](~/reusable-content/ce-skilling/azure/includes/ai-services/security/azure-key-vault.md)]
+
+#### Create the client with an managed identity credential
 
 `AzureKeyCredential` authentication is used in the examples in this getting started guide, but you can also
-authenticate with Azure Active Directory using the [azure-identity][azure_identity] library.
-Note that regional endpoints do not support AAD authentication. Create a [custom subdomain][custom_subdomain]
+authenticate with Entra ID using the [azure-identity][azure_identity] library.
+Note that regional endpoints do not support Entra managed identity authentication. Create a [custom subdomain][custom_subdomain]
 name for your resource in order to use this type of authentication.
 
 To use the [DefaultAzureCredential][default_azure_credential] type shown below, or other credential types provided
@@ -143,7 +145,7 @@ with the Azure SDK, please install the `azure-identity` package:
 
 ```pip install azure-identity```
 
-You will also need to [register a new AAD application and grant access][register_aad_app] to Document Intelligence by assigning the `"Cognitive Services User"` role to your service principal.
+You will also need to [register a new Entra application and grant access][register_aad_app] to Document Intelligence by assigning the `"Cognitive Services User"` role to your service principal.
 
 Once completed, set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables:
 `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_CLIENT_SECRET`.
