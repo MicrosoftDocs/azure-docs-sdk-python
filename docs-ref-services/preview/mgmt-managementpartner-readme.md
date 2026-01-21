@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-managementpartner, managementpartner
-ms.date: 11/02/2022
+ms.date: 01/21/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: managementpartner
