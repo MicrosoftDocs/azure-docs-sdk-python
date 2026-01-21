@@ -6,7 +6,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: communication
 ---
-# Azure Communication Chat Package client library for Python - version 1.3.0a20260121002 
+# Azure Communication Chat Package client library for Python - version 1.3.0a20260121003 
 
 
 This package contains a Python SDK for Azure Communication Services for Chat.
