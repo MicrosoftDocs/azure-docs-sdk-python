@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-servicebus, azure-service-bus
-ms.date: 07/16/2025
+ms.date: 01/21/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: azure-service-bus
