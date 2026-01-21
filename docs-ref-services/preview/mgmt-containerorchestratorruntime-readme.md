@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-containerorchestratorruntime, containerorchestratorruntime
-ms.date: 10/24/2024
+ms.date: 01/21/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: containerorchestratorruntime
