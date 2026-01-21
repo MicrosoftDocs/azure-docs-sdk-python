@@ -5,14 +5,9 @@ fullName: azure.servicebus.AutoLockRenewer
 module: azure.servicebus
 summary: 'Auto renew locks for messages and sessions using a background thread pool.
 
+  When handling multiple messages or sessions concurrently,
 
-  Auto renew locks for messages and sessions using a background thread pool. It is
-  recommended
-
-  setting max_worker to a large number or passing ThreadPoolExecutor of large max_workers
-  number when
-
-  AutoLockRenewer is supposed to deal with multiple messages or sessions simultaneously.'
+  set *max_workers* high or pass a ThreadPoolExecutor with sufficient *max_workers*.'
 constructor:
   syntax: 'AutoLockRenewer(max_lock_renewal_duration: float = 300, on_lock_renew_failure:
     LockRenewFailureCallback | None = None, executor: ThreadPoolExecutor | None =
@@ -49,46 +44,15 @@ constructor:
     defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:int>]
-  - name: max_lock_renewal_duration
-    description: 'A time in seconds that locks registered to this renewer
-
-      should be maintained for. Default value is 300 (5 minutes).'
-    isRequired: true
-    types:
-    - <xref:float>
-  - name: on_lock_renew_failure
-    description: 'A callback may be specified to be called when the lock is lost on
-      the renewable
-
-      that is being registered. Default value is None (no callback).'
-    isRequired: true
-    types:
-    - <xref:typing.Optional>[<xref:LockRenewFailureCallback>]
-  - name: executor
-    description: 'A user-specified thread pool. This cannot be combined with
-
-      setting *max_workers*.'
-    isRequired: true
-    types:
-    - <xref:typing.Optional>[<xref:concurrent.futures.ThreadPoolExecutor>]
-  - name: max_workers
-    description: 'Specify the maximum workers in the thread pool. If not
-
-      specified the number used will be derived from the core count of the environment.
-
-      This cannot be combined with *executor*.'
-    isRequired: true
-    types:
-    - <xref:typing.Optional>[<xref:int>]
 examples:
 - "Automatically renew a message lock<!--[!code-python[Main](les\\sync_samples\\sample_code_servicebus.py\
   \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
   : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\x64\\\
-  \\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\294\\\\azure-servicebus-7.13.0b1\\\
+  \\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\294\\\\azure_servicebus-7.14.3a20260120001\\\
   \\samples\\\\sync_samples\\\\sample_code_servicebus.py\", \"xml:space\": \"preserve\"\
   , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
   : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.servicebus import AutoLockRenewer\n\
-  \   lock_renewal = AutoLockRenewer(max_workers=4)\n   with servicebus_receiver:\n\
+  \n   lock_renewal = AutoLockRenewer(max_workers=4)\n   with servicebus_receiver:\n\
   \       for message in servicebus_receiver:\n           # Auto renew message for\
   \ 1 minute.\n           lock_renewal.register(servicebus_receiver, message, max_lock_renewal_duration=60)\n\
   \           process_message(message)\n           servicebus_receiver.complete_message(message)\n\
@@ -96,7 +60,7 @@ examples:
   sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
   : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\
   \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\294\\\
-  \\azure-servicebus-7.13.0b1\\\\samples\\\\sync_samples\\\\sample_code_servicebus.py\"\
+  \\azure_servicebus-7.14.3a20260120001\\\\samples\\\\sync_samples\\\\sample_code_servicebus.py\"\
   , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
   : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n       from azure.servicebus\
   \ import AutoLockRenewer\n\n       lock_renewal = AutoLockRenewer(max_workers=4)\n\
