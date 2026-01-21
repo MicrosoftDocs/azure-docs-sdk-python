@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-resource-bicep, resources
-ms.date: 07/15/2025
+ms.date: 01/21/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: resources
