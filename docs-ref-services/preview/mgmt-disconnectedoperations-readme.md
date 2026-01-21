@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-disconnectedoperations, disconnectedoperations
-ms.date: 10/09/2025
+ms.date: 01/21/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: disconnectedoperations
