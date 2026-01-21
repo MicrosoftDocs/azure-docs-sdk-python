@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-storagediscovery, storagediscovery
-ms.date: 09/03/2025
+ms.date: 01/21/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: storagediscovery
