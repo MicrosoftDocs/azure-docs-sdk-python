@@ -1,11 +1,10 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-synapse-spark, synapse
-ms.date: 03/31/2022
+keywords: Azure, python, SDK, API, azure-synapse-spark, synapse-analytics
+ms.date: 01/22/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: synapse-analytics
-ms.subservice: spark
 ---
 # Microsoft Azure SDK for Python
 
@@ -19,7 +18,7 @@ _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For
 
 # Usage
 
-For code examples, see [Synapse Spark](https://docs.microsoft.com/python/api/overview/azure/) on docs.microsoft.com.
+For code examples, see [Synapse Spark](/python/api/overview/azure/) on docs.microsoft.com.
 
 # Provide Feedback
 
