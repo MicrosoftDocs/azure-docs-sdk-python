@@ -44,8 +44,8 @@ examples:
 - "Creating the DocumentTranslationClient with an endpoint and API key.<!--[!code-python[Main](les\\\
   sample_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\":\
   \ [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\
-  \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\27\\\
-  \\azure-ai-translation-document-1.1.0b1\\\\samples\\\\sample_authentication.py\"\
+  \\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+  28\\\\azure_ai_translation_document-1.1.1a20260121001\\\\samples\\\\sample_authentication.py\"\
   , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
   : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
   \ import AzureKeyCredential\n   from azure.ai.translation.document import DocumentTranslationClient\n\
@@ -54,8 +54,8 @@ examples:
   \ AzureKeyCredential(key))\n\n   ````\n\nCreating the DocumentTranslationClient\
   \ with a token credential.<!--[!code-python[Main](les\\sample_authentication.py\
   \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-  : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\x64\\\
-  \\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\27\\\\azure-ai-translation-document-1.1.0b1\\\
+  : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.12.10\\\\x64\\\
+  \\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\28\\\\azure_ai_translation_document-1.1.1a20260121001\\\
   \\samples\\\\sample_authentication.py\", \"xml:space\": \"preserve\", \"force\"\
   : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
   linenos\": false} -->\n\n````python\n\n   \"\"\"DefaultAzureCredential will use\
@@ -71,20 +71,7 @@ methods:
   summary: 'Begin translating the document(s) in your source container to your target
     container
 
-    in the given language. There are two ways to call this method:
-
-
-    1) To perform translation on documents from a single source container to a single
-    target container, pass the
-
-    *source_url*, *target_url*, and *target_language* parameters including any optional
-    keyword arguments.
-
-
-    2) To pass multiple inputs for translation (multiple sources or targets), pass
-    the *inputs* parameter
-
-    as a list of <xref:azure.ai.translation.document.DocumentTranslationInput>.
+    in the given language.
 
 
     For supported languages and document formats, see the service documentation:
@@ -95,6 +82,89 @@ methods:
     str | None = None, storage_type: str | StorageInputType | None = None, category_id:
     str | None = None, glossaries: List[TranslationGlossary] | None = None, **kwargs:
     Any) -> DocumentTranslationLROPoller[ItemPaged[DocumentStatus]]'
+  parameters:
+  - name: inputs
+    description: 'The translation inputs. Each individual input has a single
+
+      source URL to documents and can contain multiple targets (one for each language)
+
+      for the destination to write translated documents.'
+    isRequired: true
+    types:
+    - <xref:typing.List>[<xref:azure.ai.translation.document.DocumentTranslationInput>]
+    - <xref:typing.IO>[<xref:bytes>]
+    - <xref:JSON>
+    - <xref:azure.ai.translation.document.models.StartTranslationDetails>
+  - name: source_url
+    description: 'The source SAS URL to the Azure Blob container containing the documents
+
+      to be translated. See the service documentation for the supported SAS permissions
+      for accessing
+
+      source storage containers/blobs: [https://aka.ms/azsdk/documenttranslation/sas-permissions](https://aka.ms/azsdk/documenttranslation/sas-permissions)'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: target_url
+    description: 'The target SAS URL to the Azure Blob container where the translated
+      documents
+
+      should be written. See the service documentation for the supported SAS permissions
+      for accessing
+
+      target storage containers/blobs: [https://aka.ms/azsdk/documenttranslation/sas-permissions](https://aka.ms/azsdk/documenttranslation/sas-permissions)'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: target_language
+    description: 'This is the language code you want your documents to be translated
+      to.
+
+      See supported language codes here:
+
+      [https://docs.microsoft.com/azure/cognitive-services/translator/language-support#translate](https://docs.microsoft.com/azure/cognitive-services/translator/language-support#translate)'
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: source_language
+    description: 'Language code for the source documents.
+
+      If none is specified, the source language will be auto-detected for each document.'
+    types:
+    - <xref:str>
+  - name: prefix
+    description: 'A case-sensitive prefix string to filter documents in the source
+      path for
+
+      translation. For example, when using a Azure storage blob Uri, use the prefix
+      to restrict
+
+      sub folders for translation.'
+    types:
+    - <xref:str>
+  - name: suffix
+    description: 'A case-sensitive suffix string to filter documents in the source
+      path for
+
+      translation. This is most often use for file extensions.'
+    types:
+    - <xref:str>
+  - name: storage_type
+    description: 'Storage type of the input documents source string. Possible values
+
+      include: "Folder", "File".'
+    types:
+    - <xref:str>
+    - <xref:azure.ai.translation.document.StorageInputType>
+  - name: category_id
+    description: Category / custom model ID for using custom translation.
+    types:
+    - <xref:str>
+  - name: glossaries
+    description: Glossaries to apply to translation.
+    types:
+    - <xref:list>[<xref:azure.ai.translation.document.TranslationGlossary>]
   return:
     description: 'An instance of a DocumentTranslationLROPoller. Call *result()* on
       the poller
@@ -110,17 +180,17 @@ methods:
   - "Translate the documents in your storage container.<!--[!code-python[Main](les\\\
     sample_begin_translation.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
-    ToolCache\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
-    \\27\\\\azure-ai-translation-document-1.1.0b1\\\\samples\\\\sample_begin_translation.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   import os\n   from azure.core.credentials import AzureKeyCredential\n   from\
-    \ azure.ai.translation.document import DocumentTranslationClient\n\n   endpoint\
-    \ = os.environ[\"AZURE_DOCUMENT_TRANSLATION_ENDPOINT\"]\n   key = os.environ[\"\
-    AZURE_DOCUMENT_TRANSLATION_KEY\"]\n   source_container_url = os.environ[\"AZURE_SOURCE_CONTAINER_URL\"\
-    ]\n   target_container_url = os.environ[\"AZURE_TARGET_CONTAINER_URL\"]\n\n  \
-    \ client = DocumentTranslationClient(endpoint, AzureKeyCredential(key))\n\n  \
-    \ poller = client.begin_translation(source_container_url, target_container_url,\
+    ToolCache\\\\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\\
+    dist_temp\\\\28\\\\azure_ai_translation_document-1.1.1a20260121001\\\\samples\\\
+    \\sample_begin_translation.py\", \"xml:space\": \"preserve\", \"force\": false,\
+    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+    : false} -->\n\n````python\n\n   import os\n   from azure.core.credentials import\
+    \ AzureKeyCredential\n   from azure.ai.translation.document import DocumentTranslationClient\n\
+    \n   endpoint = os.environ[\"AZURE_DOCUMENT_TRANSLATION_ENDPOINT\"]\n   key =\
+    \ os.environ[\"AZURE_DOCUMENT_TRANSLATION_KEY\"]\n   source_container_url = os.environ[\"\
+    AZURE_SOURCE_CONTAINER_URL\"]\n   target_container_url = os.environ[\"AZURE_TARGET_CONTAINER_URL\"\
+    ]\n\n   client = DocumentTranslationClient(endpoint, AzureKeyCredential(key))\n\
+    \n   poller = client.begin_translation(source_container_url, target_container_url,\
     \ \"fr\")\n   result = poller.result()\n\n   print(f\"Status: {poller.status()}\"\
     )\n   print(f\"Created on: {poller.details.created_on}\")\n   print(f\"Last updated\
     \ on: {poller.details.last_updated_on}\")\n   print(f\"Total number of translations\
@@ -138,27 +208,24 @@ methods:
   name: cancel_translation
   summary: 'Cancel a currently processing or queued translation operation.
 
-
     A translation will not be canceled if it is already completed, failed, or canceling.
 
     All documents that have completed translation will not be canceled and will be
     charged.
 
-    If possible, all pending documents will be canceled.'
+    If possible, all pending documents will be canceled.
+
+    :param str translation_id: The translation operation ID.
+
+    :return: None
+
+    :rtype: None
+
+    :raises ~azure.core.exceptions.HttpResponseError or ~azure.core.exceptions.ResourceNotFoundError:'
   signature: 'cancel_translation(translation_id: str, **kwargs: Any) -> None'
   parameters:
   - name: translation_id
-    description: The translation operation ID.
     isRequired: true
-    types:
-    - <xref:str>
-  return:
-    description: None
-    types:
-    - <xref:None>
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
-  - type: azure.core.exceptions.ResourceNotFoundError
 - uid: azure.ai.translation.document.DocumentTranslationClient.close
   name: close
   summary: Close the <xref:azure.ai.translation.document.DocumentTranslationClient>
@@ -166,27 +233,31 @@ methods:
   signature: close() -> None
 - uid: azure.ai.translation.document.DocumentTranslationClient.get_document_status
   name: get_document_status
-  summary: Get the status of an individual document within a translation operation.
+  summary: 'Returns the status for a specific document.
+
+
+    Returns the translation status for a specific document based on the request Id
+
+    and document Id.'
   signature: 'get_document_status(translation_id: str, document_id: str, **kwargs:
     Any) -> DocumentStatus'
   parameters:
   - name: translation_id
-    description: The translation operation ID.
+    description: Format - uuid.  The batch id. Required.
     isRequired: true
     types:
     - <xref:str>
   - name: document_id
-    description: The ID for the document.
+    description: Format - uuid.  The document id. Required.
     isRequired: true
     types:
     - <xref:str>
   return:
-    description: A DocumentStatus with information on the status of the document.
+    description: DocumentStatus. The DocumentStatus is compatible with MutableMapping
     types:
-    - <xref:azure.ai.translation.document.DocumentStatus>
+    - <xref:azure.ai.translation.document.models.DocumentStatus>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  - type: azure.core.exceptions.ResourceNotFoundError
 - uid: azure.ai.translation.document.DocumentTranslationClient.get_supported_document_formats
   name: get_supported_document_formats
   summary: Get the list of the document formats supported by the Document Translation
@@ -211,27 +282,29 @@ methods:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.ai.translation.document.DocumentTranslationClient.get_translation_status
   name: get_translation_status
-  summary: 'Gets the status of the translation operation.
+  summary: 'Returns the status for a document translation request.
 
 
-    Includes the overall status, as well as a summary of
+    Returns the status for a document translation request.
 
-    the documents that are being translated as part of that translation operation.'
+    The status includes the
+
+    overall request status, as well as the status for documents that are being
+
+    translated as part of that request.'
   signature: 'get_translation_status(translation_id: str, **kwargs: Any) -> TranslationStatus'
   parameters:
   - name: translation_id
-    description: The translation operation ID.
+    description: Format - uuid.  The operation id. Required.
     isRequired: true
     types:
     - <xref:str>
   return:
-    description: A TranslationStatus with information on the status of the translation
-      operation.
+    description: TranslationStatus. The TranslationStatus is compatible with MutableMapping
     types:
-    - <xref:azure.ai.translation.document.TranslationStatus>
+    - <xref:azure.ai.translation.document.models.TranslationStatus>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  - type: azure.core.exceptions.ResourceNotFoundError
 - uid: azure.ai.translation.document.DocumentTranslationClient.list_document_statuses
   name: list_document_statuses
   summary: List all the document statuses for a given translation operation.
@@ -306,17 +379,17 @@ methods:
   - "List all the document statuses as they are being translated.<!--[!code-python[Main](les\\\
     sample_check_document_statuses.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
     classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\":\
-    \ \"C:\\\\ToolCache\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\
-    \\dist_temp\\\\27\\\\azure-ai-translation-document-1.1.0b1\\\\samples\\\\sample_check_document_statuses.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   import os\n   import time\n   from azure.core.credentials import AzureKeyCredential\n\
-    \   from azure.ai.translation.document import DocumentTranslationClient\n\n  \
-    \ endpoint = os.environ[\"AZURE_DOCUMENT_TRANSLATION_ENDPOINT\"]\n   key = os.environ[\"\
-    AZURE_DOCUMENT_TRANSLATION_KEY\"]\n   source_container_url = os.environ[\"AZURE_SOURCE_CONTAINER_URL\"\
-    ]\n   target_container_url = os.environ[\"AZURE_TARGET_CONTAINER_URL\"]\n\n  \
-    \ client = DocumentTranslationClient(endpoint, AzureKeyCredential(key))\n\n  \
-    \ poller = client.begin_translation(source_container_url, target_container_url,\
+    \ \"C:\\\\ToolCache\\\\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\
+    \\dist_temp\\\\28\\\\azure_ai_translation_document-1.1.1a20260121001\\\\samples\\\
+    \\sample_check_document_statuses.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   import os\n   import time\n   from azure.core.credentials\
+    \ import AzureKeyCredential\n   from azure.ai.translation.document import DocumentTranslationClient\n\
+    \n   endpoint = os.environ[\"AZURE_DOCUMENT_TRANSLATION_ENDPOINT\"]\n   key =\
+    \ os.environ[\"AZURE_DOCUMENT_TRANSLATION_KEY\"]\n   source_container_url = os.environ[\"\
+    AZURE_SOURCE_CONTAINER_URL\"]\n   target_container_url = os.environ[\"AZURE_TARGET_CONTAINER_URL\"\
+    ]\n\n   client = DocumentTranslationClient(endpoint, AzureKeyCredential(key))\n\
+    \n   poller = client.begin_translation(source_container_url, target_container_url,\
     \ \"es\")\n\n   completed_docs = []\n   while not poller.done():\n       time.sleep(30)\n\
     \n       doc_statuses = client.list_document_statuses(poller.id)\n       for document\
     \ in doc_statuses:\n           if document.id not in completed_docs:\n       \
@@ -405,13 +478,14 @@ methods:
   - "List all submitted translations under the resource.<!--[!code-python[Main](les\\\
     sample_list_translations.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
-    ToolCache\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
-    \\27\\\\azure-ai-translation-document-1.1.0b1\\\\samples\\\\sample_list_translations.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   from azure.core.credentials import AzureKeyCredential\n   from azure.ai.translation.document\
-    \ import DocumentTranslationClient\n\n   endpoint = os.environ[\"AZURE_DOCUMENT_TRANSLATION_ENDPOINT\"\
-    ]\n   key = os.environ[\"AZURE_DOCUMENT_TRANSLATION_KEY\"]\n\n   client = DocumentTranslationClient(endpoint,\
+    ToolCache\\\\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\\
+    dist_temp\\\\28\\\\azure_ai_translation_document-1.1.1a20260121001\\\\samples\\\
+    \\sample_list_translations.py\", \"xml:space\": \"preserve\", \"force\": false,\
+    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+    : false} -->\n\n````python\n\n   from azure.core.credentials import AzureKeyCredential\n\
+    \   from azure.ai.translation.document import DocumentTranslationClient\n\n  \
+    \ endpoint = os.environ[\"AZURE_DOCUMENT_TRANSLATION_ENDPOINT\"]\n   key = os.environ[\"\
+    AZURE_DOCUMENT_TRANSLATION_KEY\"]\n\n   client = DocumentTranslationClient(endpoint,\
     \ AzureKeyCredential(key))\n   operations = client.list_translation_statuses()\n\
     \n   for operation in operations:\n       print(f\"ID: {operation.id}\")\n   \
     \    print(f\"Status: {operation.status}\")\n       print(f\"Created on: {operation.created_on}\"\
@@ -422,3 +496,44 @@ methods:
     \ failed\")\n       print(f\"{operation.documents_succeeded_count} succeeded\"\
     )\n       print(f\"{operation.documents_canceled_count} canceled\\n\")\n\n\n \
     \  ````\n"
+- uid: azure.ai.translation.document.DocumentTranslationClient.send_request
+  name: send_request
+  summary: 'Runs the network request through the client''s chained policies.
+
+
+    ```
+
+
+    >>> from azure.core.rest import HttpRequest
+
+    >>> request = HttpRequest("GET", "https://www.example.org/")
+
+    <HttpRequest [GET], url: ''https://www.example.org/''>
+
+    >>> response = client.send_request(request)
+
+    <HttpResponse: 200 OK>
+
+    ```
+
+
+    For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> HttpResponse'
+  parameters:
+  - name: request
+    description: The network request you want to make. Required.
+    isRequired: true
+    types:
+    - <xref:azure.core.rest.HttpRequest>
+  keywordOnlyParameters:
+  - name: stream
+    description: Whether the response payload will be streamed. Defaults to False.
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  return:
+    description: The response of your network call. Does not do error handling on
+      your response.
+    types:
+    - <xref:azure.core.rest.HttpResponse>
