@@ -1,10 +1,10 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-labservices, labservices
-ms.date: 12/27/2022
+keywords: Azure, python, SDK, API, azure-mgmt-labservices, lab-services
+ms.date: 01/22/2026
 ms.topic: reference
 ms.devlang: python
-ms.service: labservices
+ms.service: lab-services
 ---
 # Microsoft Azure SDK for Python
 
