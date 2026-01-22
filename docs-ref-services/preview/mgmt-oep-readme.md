@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-oep, oep
-ms.date: 11/17/2022
+ms.date: 01/22/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: oep
