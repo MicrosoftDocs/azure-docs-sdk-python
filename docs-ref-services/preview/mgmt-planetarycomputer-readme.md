@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-planetarycomputer, planetarycomputer
-ms.date: 06/13/2025
+ms.date: 01/22/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: planetarycomputer
