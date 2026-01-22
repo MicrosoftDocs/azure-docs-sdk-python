@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-neonpostgres, neonpostgres
-ms.date: 12/03/2024
+ms.date: 01/22/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: neonpostgres
@@ -32,7 +32,7 @@ pip install azure-identity
 
 ### Authentication
 
-By default, [Azure Active Directory](https://aka.ms/awps/aad) token authentication depends on correct configure of following environment variables.
+By default, [Azure Active Directory](https://aka.ms/awps/aad) token authentication depends on correct configuration of the following environment variables.
 
 - `AZURE_CLIENT_ID` for Azure client ID.
 - `AZURE_TENANT_ID` for Azure tenant ID.
