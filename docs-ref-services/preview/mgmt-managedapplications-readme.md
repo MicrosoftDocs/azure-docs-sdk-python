@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-managedapplications, managedapplications
-ms.date: 09/20/2023
+ms.date: 01/22/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: managedapplications
