@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-impactreporting, impactreporting
-ms.date: 02/27/2025
+ms.date: 01/23/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: impactreporting
