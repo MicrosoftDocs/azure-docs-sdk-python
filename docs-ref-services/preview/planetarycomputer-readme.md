@@ -1,12 +1,12 @@
 ---
 title: Azure Planetary Computer client library for Python
 keywords: Azure, python, SDK, API, azure-planetarycomputer, planetarycomputer
-ms.date: 11/05/2025
+ms.date: 01/23/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: planetarycomputer
 ---
-# Azure Planetary Computer client library for Python - version 1.0.0b1 
+# Azure Planetary Computer client library for Python - version 1.0.0a20260123001 
 
 
 The Azure Planetary Computer client library provides programmatic access to Microsoft Planetary Computer Pro, a geospatial data management service built on Azure's hyperscale infrastructure. Microsoft Planetary Computer Pro empowers organizations to unlock the full potential of geospatial data by providing foundational capabilities to ingest, manage, search, and distribute geospatial datasets using the SpatioTemporal Asset Catalog (STAC) open specification.
@@ -402,16 +402,16 @@ see the Code of Conduct FAQ or contact [opencode@microsoft.com][opencode_email] 
 additional questions or comments.
 
 <!-- LINKS -->
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-planetarycomputer_1.0.0b1/sdk/planetarycomputer/azure-planetarycomputer/azure/planetarycomputer
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/planetarycomputer/azure-planetarycomputer/azure/planetarycomputer
 [pc_pypi]: https://pypi.org/project/azure-planetarycomputer/
 [pc_ref_docs]: https://learn.microsoft.com/rest/api/planetarycomputer/
 [pc_product_docs]: https://learn.microsoft.com/azure/planetary-computer/
-[pc_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-planetarycomputer_1.0.0b1/sdk/planetarycomputer/azure-planetarycomputer/samples
+[pc_samples]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/planetarycomputer/azure-planetarycomputer/samples
 
 [azure_sub]: https://azure.microsoft.com
 [register_aad_app]: https://learn.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 
-[azure_sdk_python_default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-planetarycomputer_1.0.0b1/sdk/identity/azure-identity#defaultazurecredential
+[azure_sdk_python_default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#defaultazurecredential
 
 [python_azure_core_exceptions]: https://aka.ms/azsdk/python/core/docs#module-azure.core.exceptions
 [python_logging]: https://docs.python.org/3/library/logging.html
