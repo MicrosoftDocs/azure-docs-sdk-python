@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-kubernetesconfiguration-privatelinkscopes, kubernetesconfiguration
-ms.date: 06/17/2025
+ms.date: 01/23/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: kubernetesconfiguration
