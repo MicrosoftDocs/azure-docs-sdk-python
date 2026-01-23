@@ -3,7 +3,7 @@ uid: azure.mgmt.postgresqlflexibleservers.models.Server
 name: Server
 fullName: azure.mgmt.postgresqlflexibleservers.models.Server
 module: azure.mgmt.postgresqlflexibleservers.models
-summary: 'Represents a server.
+summary: 'Properties of a server.
 
 
   Variables are only populated by the server, and will be ignored when sending a request.
@@ -11,11 +11,11 @@ summary: 'Represents a server.
 
   All required parameters must be populated in order to send to server.'
 constructor:
-  syntax: 'Server(*, location: str, tags: Dict[str, str] | None = None, sku: _models.Sku
+  syntax: 'Server(*, location: str, tags: dict[str, str] | None = None, sku: _models.Sku
     | None = None, identity: _models.UserAssignedIdentity | None = None, administrator_login:
     str | None = None, administrator_login_password: str | None = None, version: str
-    | _models.ServerVersion | None = None, storage: _models.Storage | None = None,
-    auth_config: _models.AuthConfig | None = None, data_encryption: _models.DataEncryption
+    | _models.PostgresMajorVersion | None = None, storage: _models.Storage | None
+    = None, auth_config: _models.AuthConfig | None = None, data_encryption: _models.DataEncryption
     | None = None, backup: _models.Backup | None = None, network: _models.Network
     | None = None, high_availability: _models.HighAvailability | None = None, maintenance_window:
     _models.MaintenanceWindow | None = None, source_server_resource_id: str | None
@@ -34,45 +34,54 @@ constructor:
     types:
     - <xref:str>
   - name: sku
-    description: The SKU (pricing tier) of the server.
+    description: Compute tier and size of a server.
     defaultValue: None
     types:
     - <xref:azure.mgmt.postgresqlflexibleservers.models.Sku>
   - name: identity
-    description: Describes the identity of the application.
+    description: User assigned managed identities assigned to the server.
     defaultValue: None
     types:
     - <xref:azure.mgmt.postgresqlflexibleservers.models.UserAssignedIdentity>
   - name: administrator_login
-    description: 'The administrator''s login name of a server. Can only be specified
+    description: 'Name of the login designated as the first password based
 
-      when the server is being created (and is required for creation).'
+      administrator assigned to your instance of PostgreSQL. Must be specified the
+      first time that
+
+      you enable password based authentication on a server. Once set to a given value,
+      it cannot be
+
+      changed for the rest of the life of a server. If you disable password based
+      authentication on a
+
+      server which had it enabled, this password based role isn''t deleted.'
     defaultValue: None
     types:
     - <xref:str>
   - name: administrator_login_password
-    description: 'The administrator login password (required for server
+    description: 'Password assigned to the administrator login. As long as
 
-      creation).'
+      password authentication is enabled, this password can be changed at any time.'
     defaultValue: None
     types:
     - <xref:str>
   - name: version
-    description: 'PostgreSQL Server version. Known values are: "17", "16", "15", "14",
-      "13",
+    description: 'Major version of PostgreSQL database engine. Known values are: "18",
+      "17",
 
-      "12", and "11".'
+      "16", "15", "14", "13", "12", and "11".'
     defaultValue: None
     types:
     - <xref:str>
-    - <xref:azure.mgmt.postgresqlflexibleservers.models.ServerVersion>
+    - <xref:azure.mgmt.postgresqlflexibleservers.models.PostgresMajorVersion>
   - name: storage
     description: Storage properties of a server.
     defaultValue: None
     types:
     - <xref:azure.mgmt.postgresqlflexibleservers.models.Storage>
   - name: auth_config
-    description: AuthConfig properties of a server.
+    description: Authentication configuration properties of a server.
     defaultValue: None
     types:
     - <xref:azure.mgmt.postgresqlflexibleservers.models.AuthConfig>
@@ -87,10 +96,10 @@ constructor:
     types:
     - <xref:azure.mgmt.postgresqlflexibleservers.models.Backup>
   - name: network
-    description: 'Network properties of a server. This Network property is required
+    description: 'Network properties of a server. Only required if you want your server
       to be
 
-      passed only in case you want the server to be Private access server.'
+      integrated into a virtual network provided by customer.'
     defaultValue: None
     types:
     - <xref:azure.mgmt.postgresqlflexibleservers.models.Network>
@@ -105,49 +114,49 @@ constructor:
     types:
     - <xref:azure.mgmt.postgresqlflexibleservers.models.MaintenanceWindow>
   - name: source_server_resource_id
-    description: 'The source server resource ID to restore from. It''s
+    description: 'Identifier of the server to be used as the source of the
 
-      required when ''createMode'' is ''PointInTimeRestore'' or ''GeoRestore'' or
-      ''Replica'' or
+      new server. Required when ''createMode'' is ''PointInTimeRestore'', ''GeoRestore'',
+      ''Replica'', or
 
-      ''ReviveDropped''. This property is returned only for Replica server.'
+      ''ReviveDropped''. This property is returned only when the target server is
+      a read replica.'
     defaultValue: None
     types:
     - <xref:str>
   - name: point_in_time_utc
-    description: 'Restore point creation time (ISO8601 format), specifying the time
+    description: 'Creation time (in ISO8601 format) of the backup which you want to
 
-      to restore from. It''s required when ''createMode'' is ''PointInTimeRestore''
-      or ''GeoRestore'' or
+      restore in the new server. It''s required when ''createMode'' is ''PointInTimeRestore'',
 
-      ''ReviveDropped''.'
+      ''GeoRestore'', or ''ReviveDropped''.'
     defaultValue: None
     types:
     - <xref:datetime.datetime>
   - name: availability_zone
-    description: availability zone information of the server.
+    description: Availability zone of a server.
     types:
     - <xref:str>
   - name: replication_role
-    description: 'Replication role of the server. Known values are: "None", "Primary",
+    description: 'Role of the server in a replication set. Known values are: "None",
 
-      "AsyncReplica", and "GeoAsyncReplica".'
+      "Primary", "AsyncReplica", and "GeoAsyncReplica".'
     defaultValue: None
     types:
     - <xref:str>
     - <xref:azure.mgmt.postgresqlflexibleservers.models.ReplicationRole>
   - name: replica
-    description: 'Replica properties of a server. These Replica properties are required
-      to be
+    description: 'Read replica properties of a server. Required only in case that
+      you want to
 
-      passed only in case you want to Promote a server.'
+      promote a server.'
     defaultValue: None
     types:
     - <xref:azure.mgmt.postgresqlflexibleservers.models.Replica>
   - name: create_mode
-    description: 'The mode to create a new PostgreSQL server. Known values are: "Default",
+    description: 'Creation mode of a new server. Known values are: "Default", "Create",
 
-      "Create", "Update", "PointInTimeRestore", "GeoRestore", "Replica", and "ReviveDropped".'
+      "Update", "PointInTimeRestore", "GeoRestore", "Replica", and "ReviveDropped".'
     defaultValue: None
     types:
     - <xref:str>
@@ -189,48 +198,58 @@ variables:
   name: location
   types:
   - <xref:str>
-- description: The SKU (pricing tier) of the server.
+- description: Compute tier and size of a server.
   name: sku
   types:
   - <xref:azure.mgmt.postgresqlflexibleservers.models.Sku>
-- description: Describes the identity of the application.
+- description: User assigned managed identities assigned to the server.
   name: identity
   types:
   - <xref:azure.mgmt.postgresqlflexibleservers.models.UserAssignedIdentity>
-- description: 'The administrator''s login name of a server. Can only be specified
+- description: 'Name of the login designated as the first password based
 
-    when the server is being created (and is required for creation).'
+    administrator assigned to your instance of PostgreSQL. Must be specified the first
+    time that
+
+    you enable password based authentication on a server. Once set to a given value,
+    it cannot be
+
+    changed for the rest of the life of a server. If you disable password based authentication
+    on a
+
+    server which had it enabled, this password based role isn''t deleted.'
   name: administrator_login
   types:
   - <xref:str>
-- description: 'The administrator login password (required for server
+- description: 'Password assigned to the administrator login. As long as
 
-    creation).'
+    password authentication is enabled, this password can be changed at any time.'
   name: administrator_login_password
   types:
   - <xref:str>
-- description: 'PostgreSQL Server version. Known values are: "17", "16", "15", "14",
-    "13", "12",
+- description: 'Major version of PostgreSQL database engine. Known values are: "18",
+    "17", "16",
 
-    and "11".'
+    "15", "14", "13", "12", and "11".'
   name: version
   types:
   - <xref:str>
-  - <xref:azure.mgmt.postgresqlflexibleservers.models.ServerVersion>
-- description: The minor version of the server.
+  - <xref:azure.mgmt.postgresqlflexibleservers.models.PostgresMajorVersion>
+- description: Minor version of PostgreSQL database engine.
   name: minor_version
   types:
   - <xref:str>
-- description: 'A state of a server that is visible to user. Known values are: "Ready",
+- description: 'Possible states of a server. Known values are: "Ready", "Dropping",
+    "Disabled",
 
-    "Dropping", "Disabled", "Starting", "Stopping", "Stopped", "Updating", "Restarting",
+    "Starting", "Stopping", "Stopped", "Updating", "Restarting", "Inaccessible", and
 
-    "Inaccessible", and "Provisioning".'
+    "Provisioning".'
   name: state
   types:
   - <xref:str>
   - <xref:azure.mgmt.postgresqlflexibleservers.models.ServerState>
-- description: The fully qualified domain name of a server.
+- description: Fully qualified domain name of a server.
   name: fully_qualified_domain_name
   types:
   - <xref:str>
@@ -238,7 +257,7 @@ variables:
   name: storage
   types:
   - <xref:azure.mgmt.postgresqlflexibleservers.models.Storage>
-- description: AuthConfig properties of a server.
+- description: Authentication configuration properties of a server.
   name: auth_config
   types:
   - <xref:azure.mgmt.postgresqlflexibleservers.models.AuthConfig>
@@ -250,10 +269,10 @@ variables:
   name: backup
   types:
   - <xref:azure.mgmt.postgresqlflexibleservers.models.Backup>
-- description: 'Network properties of a server. This Network property is required
-    to be passed
+- description: 'Network properties of a server. Only required if you want your server
+    to be
 
-    only in case you want the server to be Private access server.'
+    integrated into a virtual network provided by customer.'
   name: network
   types:
   - <xref:azure.mgmt.postgresqlflexibleservers.models.Network>
@@ -265,57 +284,56 @@ variables:
   name: maintenance_window
   types:
   - <xref:azure.mgmt.postgresqlflexibleservers.models.MaintenanceWindow>
-- description: 'The source server resource ID to restore from. It''s required
+- description: 'Identifier of the server to be used as the source of the new
 
-    when ''createMode'' is ''PointInTimeRestore'' or ''GeoRestore'' or ''Replica''
-    or ''ReviveDropped''. This
+    server. Required when ''createMode'' is ''PointInTimeRestore'', ''GeoRestore'',
+    ''Replica'', or
 
-    property is returned only for Replica server.'
+    ''ReviveDropped''. This property is returned only when the target server is a
+    read replica.'
   name: source_server_resource_id
   types:
   - <xref:str>
-- description: 'Restore point creation time (ISO8601 format), specifying the time
-    to
+- description: 'Creation time (in ISO8601 format) of the backup which you want to
 
-    restore from. It''s required when ''createMode'' is ''PointInTimeRestore'' or
-    ''GeoRestore'' or
+    restore in the new server. It''s required when ''createMode'' is ''PointInTimeRestore'',
 
-    ''ReviveDropped''.'
+    ''GeoRestore'', or ''ReviveDropped''.'
   name: point_in_time_utc
   types:
   - <xref:datetime.datetime>
-- description: availability zone information of the server.
+- description: Availability zone of a server.
   name: availability_zone
   types:
   - <xref:str>
-- description: 'Replication role of the server. Known values are: "None", "Primary",
+- description: 'Role of the server in a replication set. Known values are: "None",
 
-    "AsyncReplica", and "GeoAsyncReplica".'
+    "Primary", "AsyncReplica", and "GeoAsyncReplica".'
   name: replication_role
   types:
   - <xref:str>
   - <xref:azure.mgmt.postgresqlflexibleservers.models.ReplicationRole>
-- description: Replicas allowed for a server.
+- description: Maximum number of read replicas allowed for a server.
   name: replica_capacity
   types:
   - <xref:int>
-- description: 'Replica properties of a server. These Replica properties are required
-    to be
+- description: 'Read replica properties of a server. Required only in case that you
+    want to
 
-    passed only in case you want to Promote a server.'
+    promote a server.'
   name: replica
   types:
   - <xref:azure.mgmt.postgresqlflexibleservers.models.Replica>
-- description: 'The mode to create a new PostgreSQL server. Known values are: "Default",
+- description: 'Creation mode of a new server. Known values are: "Default", "Create",
 
-    "Create", "Update", "PointInTimeRestore", "GeoRestore", "Replica", and "ReviveDropped".'
+    "Update", "PointInTimeRestore", "GeoRestore", "Replica", and "ReviveDropped".'
   name: create_mode
   types:
   - <xref:str>
   - <xref:azure.mgmt.postgresqlflexibleservers.models.CreateMode>
 - description: 'List of private endpoint connections associated with the
 
-    specified resource.'
+    specified server.'
   name: private_endpoint_connections
   types:
   - <xref:list>[<xref:azure.mgmt.postgresqlflexibleservers.models.PrivateEndpointConnection>]

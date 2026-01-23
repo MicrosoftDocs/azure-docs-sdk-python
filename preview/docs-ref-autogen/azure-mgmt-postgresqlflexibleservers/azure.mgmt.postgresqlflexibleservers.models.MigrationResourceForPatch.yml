@@ -3,20 +3,20 @@ uid: azure.mgmt.postgresqlflexibleservers.models.MigrationResourceForPatch
 name: MigrationResourceForPatch
 fullName: azure.mgmt.postgresqlflexibleservers.models.MigrationResourceForPatch
 module: azure.mgmt.postgresqlflexibleservers.models
-summary: Represents a migration resource for patch.
+summary: Migration.
 constructor:
-  syntax: 'MigrationResourceForPatch(*, tags: Dict[str, str] | None = None, source_db_server_resource_id:
+  syntax: 'MigrationResourceForPatch(*, tags: dict[str, str] | None = None, source_db_server_resource_id:
     str | None = None, source_db_server_fully_qualified_domain_name: str | None =
     None, target_db_server_fully_qualified_domain_name: str | None = None, secret_parameters:
-    _models.MigrationSecretParameters | None = None, dbs_to_migrate: List[str] | None
-    = None, setup_logical_replication_on_source_db_if_needed: str | _models.LogicalReplicationOnSourceDbEnum
-    | None = None, overwrite_dbs_in_target: str | _models.OverwriteDbsInTargetEnum
+    _models.MigrationSecretParametersForPatch | None = None, dbs_to_migrate: list[str]
+    | None = None, setup_logical_replication_on_source_db_if_needed: str | _models.LogicalReplicationOnSourceServer
+    | None = None, overwrite_dbs_in_target: str | _models.OverwriteDatabasesOnTargetServer
     | None = None, migration_window_start_time_in_utc: datetime | None = None, migrate_roles:
-    str | _models.MigrateRolesEnum | None = None, start_data_migration: str | _models.StartDataMigrationEnum
-    | None = None, trigger_cutover: str | _models.TriggerCutoverEnum | None = None,
-    dbs_to_trigger_cutover_on: List[str] | None = None, cancel: str | _models.CancelEnum
-    | None = None, dbs_to_cancel_migration_on: List[str] | None = None, migration_mode:
-    str | _models.MigrationMode | None = None, **kwargs: Any)'
+    str | _models.MigrateRolesAndPermissions | None = None, start_data_migration:
+    str | _models.StartDataMigration | None = None, trigger_cutover: str | _models.TriggerCutover
+    | None = None, dbs_to_trigger_cutover_on: list[str] | None = None, cancel: str
+    | _models.Cancel | None = None, dbs_to_cancel_migration_on: list[str] | None =
+    None, migration_mode: str | _models.MigrationMode | None = None, **kwargs: Any)'
   keywordOnlyParameters:
   - name: tags
     description: Application-specific metadata in the form of key-value pairs.
@@ -24,27 +24,32 @@ constructor:
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: source_db_server_resource_id
-    description: ResourceId of the source database server.
+    description: 'Identifier of the source database server resource, when
+
+      ''sourceType'' is ''PostgreSQLSingleServer''. For other source types this must
+      be set to
+
+      ipaddress:port@username or hostname:port@username.'
     defaultValue: None
     types:
     - <xref:str>
   - name: source_db_server_fully_qualified_domain_name
-    description: 'Source server fully qualified domain
+    description: 'Fully qualified domain name (FQDN) or IP
 
-      name (FQDN) or IP address. It is a optional value, if customer provide it, migration
-      service
+      address of the source server. This property is optional. When provided, the
+      migration service
 
-      will always use it for connection.'
+      will always use it to connect to the source server.'
     defaultValue: None
     types:
     - <xref:str>
   - name: target_db_server_fully_qualified_domain_name
-    description: 'Target server fully qualified domain
+    description: 'Fully qualified domain name (FQDN) or IP
 
-      name (FQDN) or IP address. It is a optional value, if customer provide it, migration
-      service
+      address of the target server. This property is optional. When provided, the
+      migration service
 
-      will always use it for connection.'
+      will always use it to connect to the target server.'
     defaultValue: None
     types:
     - <xref:str>
@@ -52,91 +57,93 @@ constructor:
     description: Migration secret parameters.
     defaultValue: None
     types:
-    - <xref:azure.mgmt.postgresqlflexibleservers.models.MigrationSecretParameters>
+    - <xref:azure.mgmt.postgresqlflexibleservers.models.MigrationSecretParametersForPatch>
   - name: dbs_to_migrate
-    description: Number of databases to migrate.
+    description: Names of databases to migrate.
     defaultValue: None
     types:
     - <xref:list>[<xref:str>]
   - name: setup_logical_replication_on_source_db_if_needed
-    description: 'Indicates whether to setup
+    description: 'Indicates whether to setup logical
 
-      LogicalReplicationOnSourceDb, if needed. Known values are: "True" and "False".'
+      replication on source server, if needed. Known values are: "True" and "False".'
     defaultValue: None
     types:
     - <xref:str>
-    - <xref:azure.mgmt.postgresqlflexibleservers.models.LogicalReplicationOnSourceDbEnum>
+    - <xref:azure.mgmt.postgresqlflexibleservers.models.LogicalReplicationOnSourceServer>
   - name: overwrite_dbs_in_target
-    description: 'Indicates whether the databases on the target server can be
+    description: 'Indicates if databases on the target server can be
 
-      overwritten, if already present. If set to False, the migration workflow will
-      wait for a
+      overwritten when already present. If set to ''False'', when the migration workflow
+      detects that
 
-      confirmation, if it detects that the database already exists. Known values are:
-      "True" and
+      the database already exists on the target server, it will wait for a confirmation.
+      Known values
 
-      "False".'
+      are: "True" and "False".'
     defaultValue: None
     types:
     - <xref:str>
-    - <xref:azure.mgmt.postgresqlflexibleservers.models.OverwriteDbsInTargetEnum>
+    - <xref:azure.mgmt.postgresqlflexibleservers.models.OverwriteDatabasesOnTargetServer>
   - name: migration_window_start_time_in_utc
-    description: Start time in UTC for migration window.
+    description: Start time (UTC) for migration window.
     defaultValue: None
     types:
     - <xref:datetime.datetime>
   - name: migrate_roles
-    description: 'To migrate roles and permissions we need to send this flag as True.
+    description: 'Indicates if roles and permissions must be migrated. Known values
+      are:
 
-      Known values are: "True" and "False".'
+      "True" and "False".'
     defaultValue: None
     types:
     - <xref:str>
-    - <xref:azure.mgmt.postgresqlflexibleservers.models.MigrateRolesEnum>
+    - <xref:azure.mgmt.postgresqlflexibleservers.models.MigrateRolesAndPermissions>
   - name: start_data_migration
-    description: 'Indicates whether the data migration should start right away.
+    description: 'Indicates if data migration must start right away. Known values
+
+      are: "True" and "False".'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.postgresqlflexibleservers.models.StartDataMigration>
+  - name: trigger_cutover
+    description: 'Indicates if cutover must be triggered for the entire migration.
 
       Known values are: "True" and "False".'
     defaultValue: None
     types:
     - <xref:str>
-    - <xref:azure.mgmt.postgresqlflexibleservers.models.StartDataMigrationEnum>
-  - name: trigger_cutover
-    description: 'To trigger cutover for entire migration we need to send this flag
-      as
-
-      True. Known values are: "True" and "False".'
-    defaultValue: None
-    types:
-    - <xref:str>
-    - <xref:azure.mgmt.postgresqlflexibleservers.models.TriggerCutoverEnum>
+    - <xref:azure.mgmt.postgresqlflexibleservers.models.TriggerCutover>
   - name: dbs_to_trigger_cutover_on
-    description: 'When you want to trigger cutover for specific databases
+    description: 'When you want to trigger cutover for specific databases set
 
-      send triggerCutover flag as True and database names in this array.'
+      ''triggerCutover'' to ''True'' and the names of the specific databases in this
+      array.'
     defaultValue: None
     types:
     - <xref:list>[<xref:str>]
   - name: cancel
-    description: 'To trigger cancel for entire migration we need to send this flag
-      as True.
+    description: 'Indicates if cancel must be triggered for the entire migration.
+      Known values
 
-      Known values are: "True" and "False".'
+      are: "True" and "False".'
     defaultValue: None
     types:
     - <xref:str>
-    - <xref:azure.mgmt.postgresqlflexibleservers.models.CancelEnum>
+    - <xref:azure.mgmt.postgresqlflexibleservers.models.Cancel>
   - name: dbs_to_cancel_migration_on
-    description: 'When you want to trigger cancel for specific databases
+    description: 'When you want to trigger cancel for specific databases set
 
-      send cancel flag as True and database names in this array.'
+      ''triggerCutover'' to ''True'' and the names of the specific databases in this
+      array.'
     defaultValue: None
     types:
     - <xref:list>[<xref:str>]
   - name: migration_mode
-    description: 'There are two types of migration modes Online and Offline. Known
+    description: 'Mode used to perform the migration: Online or Offline. Known values
 
-      values are: "Offline" and "Online".'
+      are: "Offline" and "Online".'
     defaultValue: None
     types:
     - <xref:str>
@@ -146,106 +153,113 @@ variables:
   name: tags
   types:
   - <xref:dict>[<xref:str>, <xref:str>]
-- description: ResourceId of the source database server.
+- description: 'Identifier of the source database server resource, when
+
+    ''sourceType'' is ''PostgreSQLSingleServer''. For other source types this must
+    be set to
+
+    ipaddress:port@username or hostname:port@username.'
   name: source_db_server_resource_id
   types:
   - <xref:str>
-- description: 'Source server fully qualified domain name
+- description: 'Fully qualified domain name (FQDN) or IP
 
-    (FQDN) or IP address. It is a optional value, if customer provide it, migration
-    service will
+    address of the source server. This property is optional. When provided, the migration
+    service
 
-    always use it for connection.'
+    will always use it to connect to the source server.'
   name: source_db_server_fully_qualified_domain_name
   types:
   - <xref:str>
-- description: 'Target server fully qualified domain name
+- description: 'Fully qualified domain name (FQDN) or IP
 
-    (FQDN) or IP address. It is a optional value, if customer provide it, migration
-    service will
+    address of the target server. This property is optional. When provided, the migration
+    service
 
-    always use it for connection.'
+    will always use it to connect to the target server.'
   name: target_db_server_fully_qualified_domain_name
   types:
   - <xref:str>
 - description: Migration secret parameters.
   name: secret_parameters
   types:
-  - <xref:azure.mgmt.postgresqlflexibleservers.models.MigrationSecretParameters>
-- description: Number of databases to migrate.
+  - <xref:azure.mgmt.postgresqlflexibleservers.models.MigrationSecretParametersForPatch>
+- description: Names of databases to migrate.
   name: dbs_to_migrate
   types:
   - <xref:list>[<xref:str>]
-- description: 'Indicates whether to setup
+- description: 'Indicates whether to setup logical
 
-    LogicalReplicationOnSourceDb, if needed. Known values are: "True" and "False".'
+    replication on source server, if needed. Known values are: "True" and "False".'
   name: setup_logical_replication_on_source_db_if_needed
   types:
   - <xref:str>
-  - <xref:azure.mgmt.postgresqlflexibleservers.models.LogicalReplicationOnSourceDbEnum>
-- description: 'Indicates whether the databases on the target server can be
+  - <xref:azure.mgmt.postgresqlflexibleservers.models.LogicalReplicationOnSourceServer>
+- description: 'Indicates if databases on the target server can be overwritten
 
-    overwritten, if already present. If set to False, the migration workflow will
-    wait for a
+    when already present. If set to ''False'', when the migration workflow detects
+    that the database
 
-    confirmation, if it detects that the database already exists. Known values are:
-    "True" and
+    already exists on the target server, it will wait for a confirmation. Known values
+    are: "True"
 
-    "False".'
+    and "False".'
   name: overwrite_dbs_in_target
   types:
   - <xref:str>
-  - <xref:azure.mgmt.postgresqlflexibleservers.models.OverwriteDbsInTargetEnum>
-- description: Start time in UTC for migration window.
+  - <xref:azure.mgmt.postgresqlflexibleservers.models.OverwriteDatabasesOnTargetServer>
+- description: Start time (UTC) for migration window.
   name: migration_window_start_time_in_utc
   types:
   - <xref:datetime.datetime>
-- description: 'To migrate roles and permissions we need to send this flag as True.
-    Known
+- description: 'Indicates if roles and permissions must be migrated. Known values
+    are:
 
-    values are: "True" and "False".'
+    "True" and "False".'
   name: migrate_roles
   types:
   - <xref:str>
-  - <xref:azure.mgmt.postgresqlflexibleservers.models.MigrateRolesEnum>
-- description: 'Indicates whether the data migration should start right away. Known
+  - <xref:azure.mgmt.postgresqlflexibleservers.models.MigrateRolesAndPermissions>
+- description: 'Indicates if data migration must start right away. Known values
 
-    values are: "True" and "False".'
+    are: "True" and "False".'
   name: start_data_migration
   types:
   - <xref:str>
-  - <xref:azure.mgmt.postgresqlflexibleservers.models.StartDataMigrationEnum>
-- description: 'To trigger cutover for entire migration we need to send this flag
-    as
+  - <xref:azure.mgmt.postgresqlflexibleservers.models.StartDataMigration>
+- description: 'Indicates if cutover must be triggered for the entire migration. Known
 
-    True. Known values are: "True" and "False".'
+    values are: "True" and "False".'
   name: trigger_cutover
   types:
   - <xref:str>
-  - <xref:azure.mgmt.postgresqlflexibleservers.models.TriggerCutoverEnum>
-- description: 'When you want to trigger cutover for specific databases send
+  - <xref:azure.mgmt.postgresqlflexibleservers.models.TriggerCutover>
+- description: 'When you want to trigger cutover for specific databases set
 
-    triggerCutover flag as True and database names in this array.'
+    ''triggerCutover'' to ''True'' and the names of the specific databases in this
+    array.'
   name: dbs_to_trigger_cutover_on
   types:
   - <xref:list>[<xref:str>]
-- description: 'To trigger cancel for entire migration we need to send this flag as
-    True. Known
+- description: 'Indicates if cancel must be triggered for the entire migration. Known
+    values are:
 
-    values are: "True" and "False".'
+    "True" and "False".'
   name: cancel
   types:
   - <xref:str>
-  - <xref:azure.mgmt.postgresqlflexibleservers.models.CancelEnum>
-- description: 'When you want to trigger cancel for specific databases send
+  - <xref:azure.mgmt.postgresqlflexibleservers.models.Cancel>
+- description: 'When you want to trigger cancel for specific databases set
 
-    cancel flag as True and database names in this array.'
+    ''triggerCutover'' to ''True'' and the names of the specific databases in this
+    array.'
   name: dbs_to_cancel_migration_on
   types:
   - <xref:list>[<xref:str>]
-- description: 'There are two types of migration modes Online and Offline. Known values
+- description: 'Mode used to perform the migration: Online or Offline. Known values
+    are:
 
-    are: "Offline" and "Online".'
+    "Offline" and "Online".'
   name: migration_mode
   types:
   - <xref:str>

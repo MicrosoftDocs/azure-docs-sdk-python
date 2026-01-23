@@ -6,25 +6,16 @@ module: azure.ai.agentserver.langgraph.langgraph
 summary: 'Adapter for LangGraph Agent.
 
 
-  Initialize the LangGraphAdapter with a CompiledStateGraph or a function that returns
-  one.'
+  Initialize the LangGraphAdapter with a CompiledStateGraph.'
 constructor:
-  syntax: 'LangGraphAdapter(graph: CompiledStateGraph | GraphFactory, credentials:
-    AsyncTokenCredential | None = None, state_converter: LanggraphStateConverter |
-    None = None, **kwargs: Any)'
+  syntax: 'LangGraphAdapter(graph: CompiledStateGraph, state_converter: LanggraphStateConverter
+    | None = None)'
   parameters:
   - name: graph
-    description: 'The LangGraph StateGraph to adapt, or a callable that takes ToolClient
-
-      and returns CompiledStateGraph (sync or async).'
+    description: The LangGraph StateGraph to adapt.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:CompiledStateGraph>, <xref:azure.ai.agentserver.langgraph.langgraph.GraphFactory>]
-  - name: credentials
-    description: Azure credentials for authentication.
-    defaultValue: None
-    types:
-    - <xref:typing.Optional>[<xref:AsyncTokenCredential>]
+    - <xref:CompiledStateGraph>
   - name: state_converter
     description: custom state converter. Required if graph state is not MessagesState.
     defaultValue: None
@@ -52,8 +43,7 @@ methods:
 - uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.agent_run_astream
   name: agent_run_astream
   summary: Run the agent with streaming response.
-  signature: 'async agent_run_astream(input_data: dict, context: AgentRunContext,
-    graph: CompiledStateGraph, tool_client: ToolClient | None = None)'
+  signature: 'async agent_run_astream(input_data: dict, context: AgentRunContext)'
   parameters:
   - name: input_data
     description: The input data to run the agent with.
@@ -65,16 +55,6 @@ methods:
     isRequired: true
     types:
     - <xref:AgentRunContext>
-  - name: graph
-    description: The compiled graph instance to use for this request.
-    isRequired: true
-    types:
-    - <xref:CompiledStateGraph>
-  - name: tool_client
-    description: Optional ToolClient to close after streaming completes.
-    defaultValue: None
-    types:
-    - <xref:typing.Optional>[<xref:ToolClient>]
   return:
     description: An async generator yielding the response stream events.
     types:
@@ -82,8 +62,7 @@ methods:
 - uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.agent_run_non_stream
   name: agent_run_non_stream
   summary: Run the agent with non-streaming response.
-  signature: 'async agent_run_non_stream(input_data: dict, context: AgentRunContext,
-    graph: CompiledStateGraph)'
+  signature: 'async agent_run_non_stream(input_data: dict, context: AgentRunContext)'
   parameters:
   - name: input_data
     description: The input data to run the agent with.
@@ -95,11 +74,6 @@ methods:
     isRequired: true
     types:
     - <xref:AgentRunContext>
-  - name: graph
-    description: The compiled graph instance to use for this request.
-    isRequired: true
-    types:
-    - <xref:CompiledStateGraph>
   return:
     description: The response of the agent run.
     types:
@@ -226,11 +200,3 @@ methods:
     isRequired: true
   - name: provider
     isRequired: true
-attributes:
-- uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.graph
-  name: graph
-  summary: Get the resolved graph. This property provides backward compatibility.
-  return:
-    description: The resolved CompiledStateGraph if available, None otherwise.
-    types:
-    - <xref:typing.Optional>[<xref:CompiledStateGraph>]
