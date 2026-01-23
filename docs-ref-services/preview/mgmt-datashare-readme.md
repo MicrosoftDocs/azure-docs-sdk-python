@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-datashare, datashare
-ms.date: 11/01/2022
+ms.date: 01/23/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: datashare
