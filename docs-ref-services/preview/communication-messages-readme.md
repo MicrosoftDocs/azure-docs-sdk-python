@@ -1,12 +1,12 @@
 ---
 title: Azure Communication Messages Package client library for Python
 keywords: Azure, python, SDK, API, azure-communication-messages, communication
-ms.date: 02/11/2025
+ms.date: 01/23/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: communication
 ---
-# Azure Communication Messages Package client library for Python - version 1.2.0b1 
+# Azure Communication Messages Package client library for Python - version 1.2.0a20260123001 
 
 
 This package contains a Python SDK for Azure Communication Services for Messages(Advanced Messaging).
@@ -128,13 +128,13 @@ additional questions or comments.
 <!-- LINKS -->
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [authenticate_with_token]: https://learn.microsoft.com/azure/cognitive-services/authentication?tabs=powershell#authenticate-with-an-authentication-token
-[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-messages_1.2.0b1/sdk/identity/azure-identity#credentials
+[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#credentials
 [azure_identity_pip]: https://pypi.org/project/azure-identity/
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-messages_1.2.0b1/sdk/identity/azure-identity#defaultazurecredential
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#defaultazurecredential
 [pip]: https://pypi.org/project/pip/
 [azure_sub]: https://azure.microsoft.com
 
-[source]: https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-messages_1.2.0b1/sdk/communication/azure-communication-messages
+[source]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/communication/azure-communication-messages
 [product_docs]: https://learn.microsoft.com/azure/communication-services/overview
 [pypi]: https://pypi.org
 [nextsteps]: https://learn.microsoft.com/azure/communication-services/quickstarts/advanced-messaging/whatsapp/get-started
