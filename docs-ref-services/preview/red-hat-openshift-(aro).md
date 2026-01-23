@@ -7,5 +7,5 @@ ms.service: redhatopenshift(aro)
 ---
 # Azure Red Hat OpenShift (ARO) SDK for Python - preview
 ## Packages - preview
-[!INCLUDE [packages](red-hat-openshift-(aro\)-index.md)]
+[!INCLUDE [packages](red-hat-openshift-(aro)-index.md)]
 
