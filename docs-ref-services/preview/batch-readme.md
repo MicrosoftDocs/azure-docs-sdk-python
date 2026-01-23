@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-batch, batch
-ms.date: 01/09/2026
+ms.date: 01/23/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: batch
@@ -557,4 +557,4 @@ section of the project.
 [azure_batch]: https://azure.microsoft.com/products/batch
 [azure_storage]: https://azure.microsoft.com/products/category/storage
 
-[batch_source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-batch_15.1.0b2/sdk/batch/azure-batch
+[batch_source_code]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/batch/azure-batch
