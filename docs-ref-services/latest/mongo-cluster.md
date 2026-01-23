@@ -1,7 +1,7 @@
 ---
 title: Azure Mongo Cluster SDK for Python
 description: Reference for Azure Mongo Cluster SDK for Python
-ms.date: 01/22/2026
+ms.date: 01/23/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: mongocluster
