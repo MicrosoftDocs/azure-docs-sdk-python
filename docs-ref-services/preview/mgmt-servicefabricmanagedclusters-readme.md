@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-servicefabricmanagedclusters, servicefabricmanagedclusters
-ms.date: 11/26/2025
+ms.date: 01/23/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: servicefabricmanagedclusters
