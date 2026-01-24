@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-hybridconnectivity, hybridconnectivity
-ms.date: 04/01/2025
+ms.date: 01/24/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: hybridconnectivity
