@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-signalr, signalr
-ms.date: 10/23/2023
+ms.date: 01/24/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: signalr
