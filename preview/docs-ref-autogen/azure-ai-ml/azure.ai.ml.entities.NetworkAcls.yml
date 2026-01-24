@@ -1,0 +1,47 @@
+### YamlMime:PythonClass
+uid: azure.ai.ml.entities.NetworkAcls
+name: NetworkAcls
+fullName: azure.ai.ml.entities.NetworkAcls
+module: azure.ai.ml.entities
+summary: Network Access Setting for Workspace
+constructor:
+  syntax: 'NetworkAcls(*, default_action: str = ''Allow'', ip_rules: List[IPRule]
+    | None = None)'
+  parameters:
+  - name: default_action
+    description: Specifies the default action when no IP rules are matched.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: ip_rules
+    description: Rules governing the accessibility of a resource from a specific IP
+      address or IP range.
+    isRequired: true
+    types:
+    - <xref:typing.Optional>[<xref:typing.List>[<xref:azure.ai.ml.entities.IPRule>]]
+  keywordOnlyParameters:
+  - name: default_action
+    defaultValue: Allow
+  - name: ip_rules
+    defaultValue: None
+examples:
+- "Configuring one of the three public network access settings.<!--[!code-python[Main](les\\\
+  ml_samples_workspace.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
+  \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\
+  \\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+  22\\\\azure_ai_ml-1.32.0a20260123001\\\\samples\\\\ml_samples_workspace.py\", \"\
+  xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml.entities\
+  \ import DefaultActionType, IPRule, NetworkAcls\n\n   # Get existing workspace\n\
+  \   ws = ml_client.workspaces.get(\"test-ws1\")\n\n   # 1. Enabled from all networks\n\
+  \   # Note: default_action should be set to 'Allow', allowing all access.\n   ws.public_network_access\
+  \ = \"Enabled\"\n   ws.network_acls = NetworkAcls(default_action=DefaultActionType.ALLOW,\
+  \ ip_rules=[])\n   updated_ws = ml_client.workspaces.begin_update(workspace=ws).result()\n\
+  \n   # 2. Enabled from selected IP addresses\n   # Note: default_action should be\
+  \ set to 'Deny', allowing only specified IPs/ranges\n   ws.public_network_access\
+  \ = \"Enabled\"\n   ws.network_acls = NetworkAcls(\n       default_action=DefaultActionType.DENY,\n\
+  \       ip_rules=[IPRule(value=\"103.248.19.87/32\"), IPRule(value=\"103.248.19.86/32\"\
+  )],\n   )\n   updated_ws = ml_client.workspaces.begin_update(workspace=ws).result()\n\
+  \n   # 3. Disabled\n   # NetworkAcls IP Rules will reset\n   ws.public_network_access\
+  \ = \"Disabled\"\n   updated_ws = ml_client.workspaces.begin_update(workspace=ws).result()\n\
+  \n   ````\n"
