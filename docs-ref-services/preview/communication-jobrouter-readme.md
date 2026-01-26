@@ -6,7 +6,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: communication
 ---
-# Azure Communication JobRouter Package client library for Python - version 1.1.0a20260126001 
+# Azure Communication JobRouter Package client library for Python - version 1.1.0a20260126002 
 
 
 This package contains a Python SDK for Azure Communication Services for JobRouter.
