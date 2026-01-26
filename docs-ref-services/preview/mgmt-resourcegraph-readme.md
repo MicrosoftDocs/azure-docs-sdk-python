@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-resourcegraph, resources
-ms.date: 12/27/2022
+ms.date: 01/26/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: resources
