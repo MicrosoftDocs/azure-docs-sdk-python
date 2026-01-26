@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-iothub, iothub
-ms.date: 10/20/2025
+ms.date: 01/26/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: iothub
