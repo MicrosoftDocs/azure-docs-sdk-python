@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-playwright, playwright
-ms.date: 07/15/2025
+ms.date: 01/26/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: playwright
