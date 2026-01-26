@@ -1,12 +1,12 @@
 ---
 title: Azure Communication JobRouter Package client library for Python
 keywords: Azure, python, SDK, API, azure-communication-jobrouter, communication
-ms.date: 04/17/2024
+ms.date: 01/26/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: communication
 ---
-# Azure Communication JobRouter Package client library for Python - version 1.1.0b1 
+# Azure Communication JobRouter Package client library for Python - version 1.1.0a20260126001 
 
 
 This package contains a Python SDK for Azure Communication Services for JobRouter.
@@ -204,7 +204,7 @@ from azure.eventgrid import EventGridEvent
 import json
 
 ## deserialize payload into a list of typed Events
-events = [EventGridEvent.from_json(json.loads(msg)) for msg in payload]
+events = [EventGridEvent.from_json(msg) for msg in payload]
 ```
 
 ```python
@@ -340,27 +340,28 @@ This project welcomes contributions and suggestions. Most contributions require 
 This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-jobrouter_1.1.0b1/sdk/core/azure-core/README.md
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md
 [azure_sub]: https://azure.microsoft.com/free/python/
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
-[communication_resource_docs]: /azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp
-[communication_resource_create_portal]:  /azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp
-[communication_resource_create_power_shell]: /powershell/module/az.communication/new-azcommunicationservice
-[communication_resource_create_net]: /azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-net
-[nextsteps]:/azure/communication-services/concepts/router/concepts
+[communication_resource_docs]: https://learn.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp
+[communication_resource_create_portal]:  https://learn.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp
+[communication_resource_create_power_shell]: https://learn.microsoft.com/powershell/module/az.communication/new-azcommunicationservice
+[communication_resource_create_net]: https://learn.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-net
+[nextsteps]:https://learn.microsoft.com/azure/communication-services/concepts/router/concepts
 
-[source]: https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-jobrouter_1.1.0b1/sdk/communication/azure-communication-jobrouter
-[product_docs]: /azure/communication-services/overview
-[classification_concepts]: /azure/communication-services/concepts/router/classification-concepts
-[subscribe_events]: /azure/communication-services/how-tos/router-sdk/subscribe-events
-[offer_issued_event_schema]: /azure/communication-services/how-tos/router-sdk/subscribe-events#microsoftcommunicationrouterworkerofferissued
-[deserialize_event_grid_event_data]: https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-jobrouter_1.1.0b1/sdk/eventgrid/azure-eventgrid#consume-from-servicebus
-[event_grid_event_handlers]: /azure/event-grid/event-handlers
-[webhook_event_grid_event_delivery]: /azure/event-grid/webhook-event-delivery
+[source]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/communication/azure-communication-jobrouter
+[product_docs]: https://learn.microsoft.com/azure/communication-services/overview
+[classification_concepts]: https://learn.microsoft.com/azure/communication-services/concepts/router/classification-concepts
+[subscribe_events]: https://learn.microsoft.com/azure/communication-services/how-tos/router-sdk/subscribe-events
+[offer_issued_event_schema]: https://learn.microsoft.com/azure/communication-services/how-tos/router-sdk/subscribe-events#microsoftcommunicationrouterworkerofferissued
+[deserialize_event_grid_event_data]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/eventgrid/azure-eventgrid#consume-from-servicebus
+[event_grid_event_handlers]: https://learn.microsoft.com/azure/event-grid/event-handlers
+[webhook_event_grid_event_delivery]: https://learn.microsoft.com/azure/event-grid/webhook-event-delivery
 [pypi]: https://pypi.org
 [pip]: https://pypi.org/project/pip/
 
-[job_router_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-jobrouter_1.1.0b1/sdk/communication/azure-communication-jobrouter/samples
+[job_router_samples]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/communication/azure-communication-jobrouter/samples
+
