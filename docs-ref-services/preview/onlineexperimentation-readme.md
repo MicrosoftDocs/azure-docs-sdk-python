@@ -1,12 +1,12 @@
 ---
 title: Azure Online Experimentation client library for Python
 keywords: Azure, python, SDK, API, azure-onlineexperimentation, onlineexperimentation
-ms.date: 06/11/2025
+ms.date: 01/26/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: onlineexperimentation
 ---
-# Azure Online Experimentation client library for Python - version 1.0.0b1 
+# Azure Online Experimentation client library for Python - version 1.0.0a20260126001 
 
 
 This package contains Azure Online Experimentation client library for interacting with `Microsoft.OnlineExperimentation/workspaces` resources.
@@ -203,12 +203,12 @@ additional questions or comments.
 
 <!-- LINKS -->
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
-[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-onlineexperimentation_1.0.0b1/sdk/identity/azure-identity#credentials
+[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#credentials
 
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-onlineexperimentation_1.0.0b1/sdk/identity/azure-identity#defaultazurecredential
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#defaultazurecredential
 [azure_sub]: https://azure.microsoft.com/free/
 [azure_exp_workspace]: https://learn.microsoft.com/azure/templates/microsoft.onlineexperimentation/workspaces
 [app_config]: https://learn.microsoft.com/azure/azure-app-configuration/overview
 [azure_monitor]: https://learn.microsoft.com/azure/azure-monitor/overview
-[azure_exp_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-onlineexperimentation_1.0.0b1/sdk/onlineexperimentation/azure-onlineexperimentation/samples/
+[azure_exp_samples]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/onlineexperimentation/azure-onlineexperimentation/samples/
 
