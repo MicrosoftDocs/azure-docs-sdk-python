@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-advisor, advisor
-ms.date: 10/31/2022
+ms.date: 01/27/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: advisor
