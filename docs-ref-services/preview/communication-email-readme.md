@@ -1,12 +1,12 @@
 ---
 title: Azure Communication Email client library for Python
 keywords: Azure, python, SDK, API, azure-communication-email, communication
-ms.date: 09/26/2024
+ms.date: 01/27/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: communication
 ---
-# Azure Communication Email client library for Python - version 1.0.1b1 
+# Azure Communication Email client library for Python - version 1.1.0a20260127001 
 
 
 This package contains a Python SDK for Azure Communication Services for Email.
@@ -90,7 +90,7 @@ message = {
     "senderAddress": "sender@contoso.com"
 }
 
-poller = email_client.begin_send(message)
+poller = client.begin_send(message)
 result = poller.result()
 ```
 
@@ -122,7 +122,7 @@ message = {
     "senderAddress": "sender@contoso.com"
 }
 
-poller = email_client.begin_send(message)
+poller = client.begin_send(message)
 result = poller.result()
 ```
 
@@ -162,7 +162,7 @@ message = {
     ]
 }
 
-poller = email_client.begin_send(message)
+poller = client.begin_send(message)
 result = poller.result()
 ```
 
@@ -204,19 +204,19 @@ message = {
     ]
 }
 
-poller = email_client.begin_send(message)
+poller = client.begin_send(message)
 result = poller.result()
 ```
 
 ## Troubleshooting
 
-Email operations will throw an exception if the request to the server fails. The Email client will raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-email_1.0.1b1/sdk/core/azure-core/README.md).
+Email operations will throw an exception if the request to the server fails. The Email client will raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md).
 
 ```python
 from azure.core.exceptions import HttpResponseError
 
 try:
-    response = email_client.send(message)
+    response = client.send(message)
 except HttpResponseError as ex:
     print('Exception:')
     print(ex)
@@ -241,11 +241,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
-[communication_resource_docs]: /azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp
+[communication_resource_docs]: https://learn.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp
 [email_resource_docs]: https://aka.ms/acsemail/createemailresource
-[communication_resource_create_portal]: /azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp
-[communication_resource_create_power_shell]: /powershell/module/az.communication/new-azcommunicationservice
-[communication_resource_create_net]: /azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-net
+[communication_resource_create_portal]: https://learn.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp
+[communication_resource_create_power_shell]: https://learn.microsoft.com/powershell/module/az.communication/new-azcommunicationservice
+[communication_resource_create_net]: https://learn.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-net
 [package]: https://www.nuget.org/packages/Azure.Communication.Common/
 [product_docs]: https://aka.ms/acsemail/overview
 [nextsteps]: https://aka.ms/acsemail/overview
