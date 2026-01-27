@@ -60,19 +60,23 @@ methods:
     - <xref:azure.search.documents.indexes.models.SearchIndexerDataSourceConnection>
   examples:
   - "Create a SearchIndexerDataSourceConnection<!--[!code-python[Main](les\\async_samples\\\
-    sample_data_source_operations_async.py )]-->\n\n<!-- literal_block {\"ids\": [],\
-    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    sample_indexer_datasource_crud_async.py )]-->\n\n<!-- literal_block {\"ids\":\
+    \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
     : \"C:\\\\ToolCache\\\\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\
-    \\dist_temp\\\\294\\\\azure_search_documents-11.7.0b2\\\\samples\\\\async_samples\\\
-    \\sample_data_source_operations_async.py\", \"xml:space\": \"preserve\", \"force\"\
-    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-    linenos\": false} -->\n\n````python\n\n   container = SearchIndexerDataContainer(name=\"\
-    searchcontainer\")\n   data_source = SearchIndexerDataSourceConnection(\n    \
-    \   name=\"async-sample-data-source-connection\",\n       type=\"azureblob\",\n\
-    \       connection_string=connection_string,\n       container=container,\n  \
-    \ )\n   result = await client.create_data_source_connection(data_source)\n   print(\"\
-    Create new Data Source Connection - async-sample-data-source-connection\")\n\n\
-    \   ````\n"
+    \\dist_temp\\\\294\\\\azure_search_documents-11.7.0a20260126001\\\\samples\\\\\
+    async_samples\\\\sample_indexer_datasource_crud_async.py\", \"xml:space\": \"\
+    preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
+    linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
+    \ import AzureKeyCredential\n   from azure.search.documents.indexes.aio import\
+    \ SearchIndexerClient\n   from azure.search.documents.indexes.models import (\n\
+    \       SearchIndexerDataContainer,\n       SearchIndexerDataSourceConnection,\n\
+    \   )\n\n   indexer_client = SearchIndexerClient(service_endpoint, AzureKeyCredential(key))\n\
+    \n   container = SearchIndexerDataContainer(name=container_name)\n   data_source_connection\
+    \ = SearchIndexerDataSourceConnection(\n       name=data_source_connection_name,\n\
+    \       type=\"azureblob\",\n       connection_string=connection_string,\n   \
+    \    container=container,\n   )\n   async with indexer_client:\n       result\
+    \ = await indexer_client.create_data_source_connection(\n           data_source_connection\n\
+    \       )\n   print(f\"Created: data source '{result.name}'\")\n\n   ````\n"
 - uid: azure.search.documents.indexes.aio.SearchIndexerClient.create_indexer
   name: create_indexer
   summary: Creates a new SearchIndexer.
@@ -88,21 +92,31 @@ methods:
     types:
     - <xref:azure.search.documents.indexes.models.SearchIndexer>
   examples:
-  - "Create a SearchIndexer<!--[!code-python[Main](les\\async_samples\\sample_indexers_operations_async.py\
+  - "Create a SearchIndexer<!--[!code-python[Main](les\\async_samples\\sample_indexer_crud_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\294\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\async_samples\\\\sample_indexers_operations_async.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   # create a\
-    \ datasource\n   container = SearchIndexerDataContainer(name=\"searchcontainer\"\
-    )\n   data_source_connection = SearchIndexerDataSourceConnection(\n       name=\"\
-    async-indexer-datasource\", type=\"azureblob\", connection_string=connection_string,\
-    \ container=container\n   )\n   data_source = await indexers_client.create_data_source_connection(data_source_connection)\n\
-    \n   # create an indexer\n   indexer = SearchIndexer(\n       name=\"async-sample-indexer\"\
-    ,\n       data_source_name=\"async-indexer-datasource\",\n       target_index_name=\"\
-    async-indexer-hotels\",\n   )\n   result = await indexers_client.create_indexer(indexer)\n\
-    \   print(\"Create new Indexer - async-sample-indexer\")\n\n   ````\n"
+    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\294\\\\azure_search_documents-11.7.0a20260126001\\\
+    \\samples\\\\async_samples\\\\sample_indexer_crud_async.py\", \"xml:space\": \"\
+    preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
+    linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
+    \ import AzureKeyCredential\n   from azure.search.documents.indexes.aio import\
+    \ (\n       SearchIndexClient,\n       SearchIndexerClient,\n   )\n   from azure.search.documents.indexes.models\
+    \ import (\n       SearchIndexerDataContainer,\n       SearchIndexerDataSourceConnection,\n\
+    \       SearchIndex,\n       SearchIndexer,\n       SimpleField,\n       SearchFieldDataType,\n\
+    \   )\n\n   indexer_client = SearchIndexerClient(service_endpoint, AzureKeyCredential(key))\n\
+    \   index_client = SearchIndexClient(service_endpoint, AzureKeyCredential(key))\n\
+    \n   # create an index\n   fields = [\n       SimpleField(name=\"HotelId\", type=SearchFieldDataType.String,\
+    \ key=True),\n       SimpleField(name=\"BaseRate\", type=SearchFieldDataType.Double),\n\
+    \   ]\n   index = SearchIndex(name=index_name, fields=fields)\n   async with index_client:\n\
+    \       await index_client.create_index(index)\n\n   # create a datasource\n \
+    \  container = SearchIndexerDataContainer(name=container_name)\n   data_source_connection\
+    \ = SearchIndexerDataSourceConnection(\n       name=data_source_name,\n      \
+    \ type=\"azureblob\",\n       connection_string=connection_string,\n       container=container,\n\
+    \   )\n   async with indexer_client:\n       await indexer_client.create_data_source_connection(data_source_connection)\n\
+    \n       # create an indexer\n       indexer = SearchIndexer(\n           name=indexer_name,\n\
+    \           data_source_name=data_source_name,\n           target_index_name=index_name,\n\
+    \       )\n       result = await indexer_client.create_indexer(indexer)\n    \
+    \   print(f\"Created: indexer '{result.name}'\")\n\n   ````\n"
 - uid: azure.search.documents.indexes.aio.SearchIndexerClient.create_or_update_data_source_connection
   name: create_or_update_data_source_connection
   summary: Creates a new data source connection or updates a data source connection
@@ -245,15 +259,17 @@ methods:
     - <xref:azure.core.MatchConditions>
   examples:
   - "Delete a SearchIndexerDataSourceConnection<!--[!code-python[Main](les\\async_samples\\\
-    sample_data_source_operations_async.py )]-->\n\n<!-- literal_block {\"ids\": [],\
-    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    sample_indexer_datasource_crud_async.py )]-->\n\n<!-- literal_block {\"ids\":\
+    \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
     : \"C:\\\\ToolCache\\\\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\
-    \\dist_temp\\\\294\\\\azure_search_documents-11.7.0b2\\\\samples\\\\async_samples\\\
-    \\sample_data_source_operations_async.py\", \"xml:space\": \"preserve\", \"force\"\
-    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-    linenos\": false} -->\n\n````python\n\n   await client.delete_data_source_connection(\"\
-    async-sample-data-source-connection\")\n   print(\"Data Source Connection 'async-sample-data-source-connection'\
-    \ successfully deleted\")\n\n   ````\n"
+    \\dist_temp\\\\294\\\\azure_search_documents-11.7.0a20260126001\\\\samples\\\\\
+    async_samples\\\\sample_indexer_datasource_crud_async.py\", \"xml:space\": \"\
+    preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
+    linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
+    \ import AzureKeyCredential\n   from azure.search.documents.indexes.aio import\
+    \ SearchIndexerClient\n\n   indexer_client = SearchIndexerClient(service_endpoint,\
+    \ AzureKeyCredential(key))\n\n   async with indexer_client:\n       await indexer_client.delete_data_source_connection(data_source_connection_name)\n\
+    \   print(f\"Deleted: data source '{data_source_connection_name}'\")\n\n   ````\n"
 - uid: azure.search.documents.indexes.aio.SearchIndexerClient.delete_indexer
   name: delete_indexer
   summary: 'Deletes an indexer. To use access conditions, the SearchIndexer model
@@ -277,15 +293,17 @@ methods:
     types:
     - <xref:azure.core.MatchConditions>
   examples:
-  - "Delete a SearchIndexer<!--[!code-python[Main](les\\async_samples\\sample_indexers_operations_async.py\
+  - "Delete a SearchIndexer<!--[!code-python[Main](les\\async_samples\\sample_indexer_crud_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\294\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\async_samples\\\\sample_indexers_operations_async.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   await indexers_client.delete_indexer(\"\
-    async-sample-indexer\")\n   print(\"Indexer 'async-sample-indexer' successfully\
-    \ deleted\")\n\n   ````\n"
+    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\294\\\\azure_search_documents-11.7.0a20260126001\\\
+    \\samples\\\\async_samples\\\\sample_indexer_crud_async.py\", \"xml:space\": \"\
+    preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
+    linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
+    \ import AzureKeyCredential\n   from azure.search.documents.indexes.aio import\
+    \ SearchIndexerClient\n\n   indexer_client = SearchIndexerClient(service_endpoint,\
+    \ AzureKeyCredential(key))\n   async with indexer_client:\n       await indexer_client.delete_indexer(indexer_name)\n\
+    \   print(f\"Deleted: indexer '{indexer_name}'\")\n\n   ````\n"
 - uid: azure.search.documents.indexes.aio.SearchIndexerClient.delete_skillset
   name: delete_skillset
   summary: 'Delete a named SearchIndexerSkillset in an Azure Search service. To use
@@ -338,15 +356,19 @@ methods:
     - <xref:azure.search.documents.indexes.models.SearchIndexerDataSourceConnection>
   examples:
   - "Retrieve a SearchIndexerDataSourceConnection<!--[!code-python[Main](les\\async_samples\\\
-    sample_data_source_operations_async.py )]-->\n\n<!-- literal_block {\"ids\": [],\
-    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    sample_indexer_datasource_crud_async.py )]-->\n\n<!-- literal_block {\"ids\":\
+    \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
     : \"C:\\\\ToolCache\\\\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\
-    \\dist_temp\\\\294\\\\azure_search_documents-11.7.0b2\\\\samples\\\\async_samples\\\
-    \\sample_data_source_operations_async.py\", \"xml:space\": \"preserve\", \"force\"\
-    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-    linenos\": false} -->\n\n````python\n\n   result = await client.get_data_source_connection(\"\
-    async-sample-data-source-connection\")\n   print(\"Retrived Data Source Connection\
-    \ 'async-sample-data-source-connection'\")\n   return result\n\n   ````\n"
+    \\dist_temp\\\\294\\\\azure_search_documents-11.7.0a20260126001\\\\samples\\\\\
+    async_samples\\\\sample_indexer_datasource_crud_async.py\", \"xml:space\": \"\
+    preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
+    linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
+    \ import AzureKeyCredential\n   from azure.search.documents.indexes.aio import\
+    \ SearchIndexerClient\n\n   indexer_client = SearchIndexerClient(service_endpoint,\
+    \ AzureKeyCredential(key))\n\n   async with indexer_client:\n       result = await\
+    \ indexer_client.get_data_source_connection(\n           data_source_connection_name\n\
+    \       )\n   print(f\"Retrieved: data source '{result.name}'\")\n   return result\n\
+    \n   ````\n"
 - uid: azure.search.documents.indexes.aio.SearchIndexerClient.get_data_source_connection_names
   name: get_data_source_connection_names
   summary: Lists all data source connection names available for a search service.
@@ -365,15 +387,19 @@ methods:
     - <xref:list>[<xref:azure.search.documents.indexes.models.SearchIndexerDataSourceConnection>]
   examples:
   - "List all SearchIndexerDataSourceConnections<!--[!code-python[Main](les\\async_samples\\\
-    sample_data_source_operations_async.py )]-->\n\n<!-- literal_block {\"ids\": [],\
-    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    sample_indexer_datasource_crud_async.py )]-->\n\n<!-- literal_block {\"ids\":\
+    \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
     : \"C:\\\\ToolCache\\\\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\
-    \\dist_temp\\\\294\\\\azure_search_documents-11.7.0b2\\\\samples\\\\async_samples\\\
-    \\sample_data_source_operations_async.py\", \"xml:space\": \"preserve\", \"force\"\
-    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-    linenos\": false} -->\n\n````python\n\n   result = await client.get_data_source_connections()\n\
-    \   names = [x.name for x in result]\n   print(\"Found {} Data Source Connections\
-    \ in the service: {}\".format(len(result), \", \".join(names)))\n\n   ````\n"
+    \\dist_temp\\\\294\\\\azure_search_documents-11.7.0a20260126001\\\\samples\\\\\
+    async_samples\\\\sample_indexer_datasource_crud_async.py\", \"xml:space\": \"\
+    preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
+    linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
+    \ import AzureKeyCredential\n   from azure.search.documents.indexes.aio import\
+    \ SearchIndexerClient\n\n   indexer_client = SearchIndexerClient(service_endpoint,\
+    \ AzureKeyCredential(key))\n\n   async with indexer_client:\n       result = await\
+    \ indexer_client.get_data_source_connections()\n   names = [ds.name for ds in\
+    \ result]\n   print(f\"Data sources ({len(result)}): {', '.join(names)}\")\n\n\
+    \   ````\n"
 - uid: azure.search.documents.indexes.aio.SearchIndexerClient.get_indexer
   name: get_indexer
   summary: Retrieves a indexer definition.
@@ -389,15 +415,18 @@ methods:
     types:
     - <xref:azure.search.documents.indexes.models.SearchIndexer>
   examples:
-  - "Retrieve a SearchIndexer<!--[!code-python[Main](les\\async_samples\\sample_indexers_operations_async.py\
+  - "Retrieve a SearchIndexer<!--[!code-python[Main](les\\async_samples\\sample_indexer_crud_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\294\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\async_samples\\\\sample_indexers_operations_async.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   result = await\
-    \ indexers_client.get_indexer(\"async-sample-indexer\")\n   print(\"Retrived Indexer\
-    \ 'async-sample-indexer'\")\n   return result\n\n   ````\n"
+    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\294\\\\azure_search_documents-11.7.0a20260126001\\\
+    \\samples\\\\async_samples\\\\sample_indexer_crud_async.py\", \"xml:space\": \"\
+    preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
+    linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
+    \ import AzureKeyCredential\n   from azure.search.documents.indexes.aio import\
+    \ SearchIndexerClient\n\n   indexer_client = SearchIndexerClient(service_endpoint,\
+    \ AzureKeyCredential(key))\n\n   async with indexer_client:\n       result = await\
+    \ indexer_client.get_indexer(indexer_name)\n   print(f\"Retrieved: indexer '{result.name}'\"\
+    )\n   return result\n\n   ````\n"
 - uid: azure.search.documents.indexes.aio.SearchIndexerClient.get_indexer_names
   name: get_indexer_names
   summary: Lists all indexer names available for a search service.
@@ -421,15 +450,18 @@ methods:
     types:
     - <xref:azure.search.documents.indexes.models.SearchIndexerStatus>
   examples:
-  - "Get a SearchIndexer's status<!--[!code-python[Main](les\\async_samples\\sample_indexers_operations_async.py\
+  - "Get a SearchIndexer's status<!--[!code-python[Main](les\\async_samples\\sample_indexer_crud_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\294\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\async_samples\\\\sample_indexers_operations_async.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   result = await\
-    \ indexers_client.get_indexer_status(\"async-sample-indexer\")\n   print(\"Retrived\
-    \ Indexer status for 'async-sample-indexer'\")\n   return result\n\n   ````\n"
+    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\294\\\\azure_search_documents-11.7.0a20260126001\\\
+    \\samples\\\\async_samples\\\\sample_indexer_crud_async.py\", \"xml:space\": \"\
+    preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
+    linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
+    \ import AzureKeyCredential\n   from azure.search.documents.indexes.aio import\
+    \ SearchIndexerClient\n\n   indexer_client = SearchIndexerClient(service_endpoint,\
+    \ AzureKeyCredential(key))\n\n   async with indexer_client:\n       result = await\
+    \ indexer_client.get_indexer_status(indexer_name)\n   print(f\"Status: indexer\
+    \ '{indexer_name}' is {result.status}\")\n   return result\n\n   ````\n"
 - uid: azure.search.documents.indexes.aio.SearchIndexerClient.get_indexers
   name: get_indexers
   summary: Lists all indexers available for a search service.
@@ -451,16 +483,18 @@ methods:
     types:
     - <xref:list>[<xref:azure.search.documents.indexes.models.SearchIndexer>]
   examples:
-  - "List all the SearchIndexers<!--[!code-python[Main](les\\async_samples\\sample_indexers_operations_async.py\
+  - "List all the SearchIndexers<!--[!code-python[Main](les\\async_samples\\sample_indexer_crud_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\294\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\async_samples\\\\sample_indexers_operations_async.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   result = await\
-    \ indexers_client.get_indexers()\n   names = [x.name for x in result]\n   print(\"\
-    Found {} Indexers in the service: {}\".format(len(result), \", \".join(names)))\n\
-    \n   ````\n"
+    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\294\\\\azure_search_documents-11.7.0a20260126001\\\
+    \\samples\\\\async_samples\\\\sample_indexer_crud_async.py\", \"xml:space\": \"\
+    preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
+    linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
+    \ import AzureKeyCredential\n   from azure.search.documents.indexes.aio import\
+    \ SearchIndexerClient\n\n   indexer_client = SearchIndexerClient(service_endpoint,\
+    \ AzureKeyCredential(key))\n\n   async with indexer_client:\n       result = await\
+    \ indexer_client.get_indexers()\n   names = [x.name for x in result]\n   print(f\"\
+    Indexers ({len(result)}): {', '.join(names)}\")\n\n   ````\n"
 - uid: azure.search.documents.indexes.aio.SearchIndexerClient.get_skillset
   name: get_skillset
   summary: Retrieve a named SearchIndexerSkillset in an Azure Search service
@@ -558,15 +592,17 @@ methods:
     - <xref:str>
   examples:
   - "Reset a SearchIndexer's change tracking state<!--[!code-python[Main](les\\async_samples\\\
-    sample_indexers_operations_async.py )]-->\n\n<!-- literal_block {\"ids\": [],\
-    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"C:\\\\ToolCache\\\\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\
-    \\dist_temp\\\\294\\\\azure_search_documents-11.7.0b2\\\\samples\\\\async_samples\\\
-    \\sample_indexers_operations_async.py\", \"xml:space\": \"preserve\", \"force\"\
-    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-    linenos\": false} -->\n\n````python\n\n   await indexers_client.reset_indexer(\"\
-    async-sample-indexer\")\n   print(\"Reset the Indexer 'async-sample-indexer'\"\
-    )\n   return\n\n   ````\n"
+    sample_indexer_crud_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
+    ToolCache\\\\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\\
+    dist_temp\\\\294\\\\azure_search_documents-11.7.0a20260126001\\\\samples\\\\async_samples\\\
+    \\sample_indexer_crud_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
+    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+    : false} -->\n\n````python\n\n   from azure.core.credentials import AzureKeyCredential\n\
+    \   from azure.search.documents.indexes.aio import SearchIndexerClient\n\n   indexer_client\
+    \ = SearchIndexerClient(service_endpoint, AzureKeyCredential(key))\n   async with\
+    \ indexer_client:\n       await indexer_client.reset_indexer(indexer_name)\n \
+    \  print(f\"Reset: indexer '{indexer_name}'\")\n   return\n\n   ````\n"
 - uid: azure.search.documents.indexes.aio.SearchIndexerClient.reset_skills
   name: reset_skills
   summary: Reset an existing skillset in a search service.
@@ -627,12 +663,14 @@ methods:
     types:
     - <xref:str>
   examples:
-  - "Run a SearchIndexer<!--[!code-python[Main](les\\async_samples\\sample_indexers_operations_async.py\
+  - "Run a SearchIndexer<!--[!code-python[Main](les\\async_samples\\sample_indexer_crud_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\294\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\async_samples\\\\sample_indexers_operations_async.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   await indexers_client.run_indexer(\"\
-    async-sample-indexer\")\n   print(\"Ran the Indexer 'async-sample-indexer'\")\n\
-    \   return\n\n   ````\n"
+    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\294\\\\azure_search_documents-11.7.0a20260126001\\\
+    \\samples\\\\async_samples\\\\sample_indexer_crud_async.py\", \"xml:space\": \"\
+    preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
+    linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
+    \ import AzureKeyCredential\n   from azure.search.documents.indexes.aio import\
+    \ SearchIndexerClient\n\n   indexer_client = SearchIndexerClient(service_endpoint,\
+    \ AzureKeyCredential(key))\n\n   async with indexer_client:\n       await indexer_client.run_indexer(indexer_name)\n\
+    \   print(f\"Ran: indexer '{indexer_name}'\")\n\n   ````\n"
