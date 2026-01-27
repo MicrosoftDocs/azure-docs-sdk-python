@@ -1,0 +1,2346 @@
+### YamlMime:PythonClass
+uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel
+name: FoundryToolLateBindingChatModel
+fullName: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel
+module: azure.ai.agentserver.langgraph.tools
+summary: 'A ChatModel that supports late binding of Foundry tools during invocation.
+
+
+  This ChatModel allows you to specify Foundry tools that will be resolved and bound
+
+  at the time of invocation, rather than at the time of model creation.'
+constructor:
+  syntax: 'FoundryToolLateBindingChatModel(delegate: BaseChatModel, runtime: Runtime
+    | None, foundry_tools: List[FoundryToolLike])'
+  parameters:
+  - name: delegate
+    description: The underlying chat model to delegate calls to.
+    isRequired: true
+    types:
+    - <xref:BaseChatModel>
+  - name: foundry_tools
+    description: A list of Foundry tools to be resolved and bound during invocation.
+    isRequired: true
+    types:
+    - <xref:typing.List>[<xref:FoundryToolLike>]
+  - name: runtime
+    isRequired: true
+methods:
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.abatch
+  name: abatch
+  summary: 'Default implementation runs *ainvoke* in parallel using *asyncio.gather*.
+
+
+    The default implementation of *batch* works well for IO bound runnables.
+
+
+    Subclasses must override this method if they can batch more efficiently;
+
+    e.g., if the underlying *Runnable* uses an API which supports a batch mode.'
+  signature: 'async abatch(inputs: list[-Input], config: RunnableConfig | list[langchain_core.runnables.config.RunnableConfig]
+    | None = None, *, return_exceptions: bool = False, **kwargs: Any | None) -> list[+Output]'
+  parameters:
+  - name: inputs
+    description: A list of inputs to the *Runnable*.
+    isRequired: true
+  - name: config
+    description: 'A config to use when invoking the *Runnable*.
+
+
+      The config supports standard keys like *''tags''*, *''metadata''* for
+
+      tracing purposes, *''max_concurrency''* for controlling how much work to
+
+      do in parallel, and other keys.
+
+
+      Please refer to *RunnableConfig* for more details.'
+    defaultValue: None
+  - name: return_exceptions
+    description: Whether to return exceptions instead of raising them.
+    isRequired: true
+  - name: '**kwargs'
+    description: Additional keyword arguments to pass to the *Runnable*.
+    isRequired: true
+  keywordOnlyParameters:
+  - name: return_exceptions
+    defaultValue: 'False'
+  return:
+    description: A list of outputs from the *Runnable*.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.abatch_as_completed
+  name: abatch_as_completed
+  summary: 'Run *ainvoke* in parallel on a list of inputs.
+
+
+    Yields results as they complete.'
+  signature: 'async abatch_as_completed(inputs: Sequence[Input], config: RunnableConfig
+    | Sequence[RunnableConfig] | None = None, *, return_exceptions: bool = False,
+    **kwargs: Any | None) -> Union[+Output, Exception]]]'
+  parameters:
+  - name: inputs
+    description: A list of inputs to the *Runnable*.
+    isRequired: true
+  - name: config
+    description: 'A config to use when invoking the *Runnable*.
+
+
+      The config supports standard keys like *''tags''*, *''metadata''* for
+
+      tracing purposes, *''max_concurrency''* for controlling how much work to
+
+      do in parallel, and other keys.
+
+
+      Please refer to *RunnableConfig* for more details.'
+    defaultValue: None
+  - name: return_exceptions
+    description: Whether to return exceptions instead of raising them.
+    isRequired: true
+  - name: '**kwargs'
+    description: Additional keyword arguments to pass to the *Runnable*.
+    isRequired: true
+  keywordOnlyParameters:
+  - name: return_exceptions
+    defaultValue: 'False'
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.agenerate
+  name: agenerate
+  summary: "Asynchronously pass a sequence of prompts to a model and return generations.\n\
+    \nThis method should make use of batched calls for models that expose a batched\n\
+    API.\n\nUse this method when you want to:\n\n1. Take advantage of batched calls,\
+    \ \n\n2. Need more output from the model than just the top generated value, \n\
+    \n3. Are building chains that are agnostic to the underlying language model\n\n\
+    \      type (e.g., pure text completion models vs chat models)."
+  signature: 'async agenerate(messages: list[list[BaseMessage]], stop: list[str] |
+    None = None, callbacks: Callbacks = None, *, tags: list[str] | None = None, metadata:
+    dict[str, Any] | None = None, run_name: str | None = None, run_id: uuid.UUID |
+    None = None, **kwargs: Any) -> LLMResult'
+  parameters:
+  - name: messages
+    description: List of list of messages.
+    isRequired: true
+  - name: stop
+    description: 'Stop words to use when generating.
+
+
+      Model output is cut off at the first occurrence of any of these
+
+      substrings.'
+    defaultValue: None
+  - name: callbacks
+    description: '*Callbacks* to pass through.
+
+
+      Used for executing additional functionality, such as logging or
+
+      streaming, throughout generation.'
+    defaultValue: None
+  - name: tags
+    description: The tags to apply.
+    isRequired: true
+  - name: metadata
+    description: The metadata to apply.
+    isRequired: true
+  - name: run_name
+    description: The name of the run.
+    isRequired: true
+  - name: run_id
+    description: The ID of the run.
+    isRequired: true
+  - name: '**kwargs'
+    description: 'Arbitrary additional keyword arguments.
+
+
+      These are usually passed to the model provider API call.'
+    isRequired: true
+  keywordOnlyParameters:
+  - name: tags
+    defaultValue: None
+  - name: metadata
+    defaultValue: None
+  - name: run_name
+    defaultValue: None
+  - name: run_id
+    defaultValue: None
+  return:
+    description: "An *LLMResult*, which contains a list of candidate *Generations*\
+      \ for each\n   input prompt and additional model provider-specific output."
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.agenerate_prompt
+  name: agenerate_prompt
+  signature: 'async agenerate_prompt(prompts: list[langchain_core.prompt_values.PromptValue],
+    stop: list[str] | None = None, callbacks: list[langchain_core.callbacks.base.BaseCallbackHandler]
+    | BaseCallbackManager | None = None, **kwargs: Any) -> LLMResult'
+  parameters:
+  - name: prompts
+    isRequired: true
+  - name: stop
+    defaultValue: None
+  - name: callbacks
+    defaultValue: None
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.ainvoke
+  name: ainvoke
+  signature: 'async ainvoke(input: Any, config: RunnableConfig | None = None, **kwargs:
+    Any) -> Any'
+  parameters:
+  - name: input
+    isRequired: true
+  - name: config
+    defaultValue: None
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.as_tool
+  name: as_tool
+  summary: "Create a *BaseTool* from a *Runnable*.\n\n*as_tool* will instantiate a\
+    \ *BaseTool* with a name, description, and\n*args_schema* from a *Runnable*. Where\
+    \ possible, schemas are inferred\nfrom *runnable.get_input_schema*.\n\nAlternatively\
+    \ (e.g., if the *Runnable* takes a dict as input and the specific\n*dict* keys\
+    \ are not typed), the schema can be specified directly with\n*args_schema*.\n\n\
+    You can also pass *arg_types* to just specify the required arguments and their\n\
+    types.\n\n!!! example \"*TypedDict* input\"\n\n   >>``<<>>`<<python\n   from typing_extensions\
+    \ import TypedDict\n   from langchain_core.runnables import RunnableLambda\n\n\
+    \   class Args(TypedDict):\n      a: int\n      b: list[int]\n\n   def f(x: Args)\
+    \ -> str:\n      return str(x[\"a\"] * max(x[\"b\"]))\n\n   runnable = RunnableLambda(f)\n\
+    \   as_tool = runnable.as_tool()\n   as_tool.invoke({\"a\": 3, \"b\": [1, 2]})\n\
+    \   >>``<<>>`<<\n\n!!! example \"*dict* input, specifying schema via *args_schema*\"\
+    \n\n   >>``<<>>`<<python\n   from typing import Any\n   from pydantic import BaseModel,\
+    \ Field\n   from langchain_core.runnables import RunnableLambda\n\n   def f(x:\
+    \ dict[str, Any]) -> str:\n      return str(x[\"a\"] * max(x[\"b\"]))\n\n   class\
+    \ FSchema(BaseModel):\n      \"\"\"Apply a function to an integer and list of\
+    \ integers.\"\"\"\n\n      a: int = Field(..., description=\"Integer\")\n    \
+    \  b: list[int] = Field(..., description=\"List of ints\")\n\n   runnable = RunnableLambda(f)\n\
+    \   as_tool = runnable.as_tool(FSchema)\n   as_tool.invoke({\"a\": 3, \"b\": [1,\
+    \ 2]})\n   >>``<<>>`<<\n\n!!! example \"*dict* input, specifying schema via *arg_types*\"\
+    \n\n   >>``<<>>`<<python\n   from typing import Any\n   from langchain_core.runnables\
+    \ import RunnableLambda\n\n   def f(x: dict[str, Any]) -> str:\n      return str(x[\"\
+    a\"] * max(x[\"b\"]))\n\n   runnable = RunnableLambda(f)\n   as_tool = runnable.as_tool(arg_types={\"\
+    a\": int, \"b\": list[int]})\n   as_tool.invoke({\"a\": 3, \"b\": [1, 2]})\n \
+    \  >>``<<>>`<<\n\n!!! example \"*str* input\"\n\n   >>``<<>>`<<python\n   from\
+    \ langchain_core.runnables import RunnableLambda\n\n   def f(x: str) -> str:\n\
+    \      return x + \"a\"\n\n   def g(x: str) -> str:\n      return x + \"z\"\n\n\
+    \   runnable = RunnableLambda(f) | g\n   as_tool = runnable.as_tool()\n   as_tool.invoke(\"\
+    b\")\n   >>``<<>>`<<"
+  signature: 'as_tool(args_schema: type[BaseModel] | None = None, *, name: str | None
+    = None, description: str | None = None, arg_types: dict[str, type] | None = None)
+    -> BaseTool'
+  parameters:
+  - name: args_schema
+    description: The schema for the tool.
+    defaultValue: None
+  - name: name
+    description: The name of the tool.
+    isRequired: true
+  - name: description
+    description: The description of the tool.
+    isRequired: true
+  - name: arg_types
+    description: A dictionary of argument names to types.
+    isRequired: true
+  keywordOnlyParameters:
+  - name: name
+    defaultValue: None
+  - name: description
+    defaultValue: None
+  - name: arg_types
+    defaultValue: None
+  return:
+    description: A *BaseTool* instance.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.assign
+  name: assign
+  summary: "Assigns new fields to the *dict* output of this *Runnable*.\n\n>>``<<>>`<<python\n\
+    from langchain_core.language_models.fake import FakeStreamingListLLM\nfrom langchain_core.output_parsers\
+    \ import StrOutputParser\nfrom langchain_core.prompts import SystemMessagePromptTemplate\n\
+    from langchain_core.runnables import Runnable\nfrom operator import itemgetter\n\
+    \nprompt = (\n   SystemMessagePromptTemplate.from_template(\"You are a nice assistant.\"\
+    )\n   + \"{question}\"\n\n)\nmodel = FakeStreamingListLLM(responses=[\"foo-lish\"\
+    ])\n\nchain: Runnable = prompt | model | {\"str\": StrOutputParser()}\n\nchain_with_assign\
+    \ = chain.assign(hello=itemgetter(\"str\") | model)\n\nprint(chain_with_assign.input_schema.model_json_schema())\n\
+    # {'title': 'PromptInput', 'type': 'object', 'properties':\n{'question': {'title':\
+    \ 'Question', 'type': 'string'}}}\nprint(chain_with_assign.output_schema.model_json_schema())\n\
+    # {'title': 'RunnableSequenceOutput', 'type': 'object', 'properties':\n{'str':\
+    \ {'title': 'Str',\n'type': 'string'}, 'hello': {'title': 'Hello', 'type': 'string'}}}\n\
+    >>``<<>>`<<"
+  signature: 'assign(**kwargs: Runnable[dict[str, Any], Any] | Callable[[dict[str,
+    Any]], Any] | Mapping[str, Runnable[dict[str, Any], Any] | Callable[[dict[str,
+    Any]], Any]]) -> RunnableSerializable[Any, Any]'
+  parameters:
+  - name: '**kwargs'
+    description: 'A mapping of keys to *Runnable* or *Runnable*-like objects
+
+      that will be invoked with the entire output dict of this *Runnable*.'
+    isRequired: true
+  return:
+    description: A new *Runnable*.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.astream
+  name: astream
+  signature: 'async astream(input: Any, config: RunnableConfig | None = None, **kwargs:
+    Any)'
+  parameters:
+  - name: input
+    isRequired: true
+  - name: config
+    defaultValue: None
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.astream_events
+  name: astream_events
+  summary: "Generate a stream of events.\n\nUse to create an iterator over *StreamEvent*\
+    \ that provide real-time information\nabout the progress of the *Runnable*, including\
+    \ *StreamEvent* from intermediate\nresults.\n\nA *StreamEvent* is a dictionary\
+    \ with the following schema:\n\n* *event*: Event names are of the format:\n\n\
+    \     *on_[runnable_type]_(start|stream|end)*.\n\n* *name*: The name of the *Runnable*\
+    \ that generated the event. \n\n* *run_id*: Randomly generated ID associated with\
+    \ the given execution of the\n\n     *Runnable* that emitted the event. A child\
+    \ *Runnable* that gets invoked as\n     part of the execution of a parent *Runnable*\
+    \ is assigned its own unique ID.\n\n* *parent_ids*: The IDs of the parent runnables\
+    \ that generated the event. The\n\n     root *Runnable* will have an empty list.\
+    \ The order of the parent IDs is from\n     the root to the immediate parent.\
+    \ Only available for v2 version of the API.\n     The v1 version of the API will\
+    \ return an empty list.\n\n* *tags*: The tags of the *Runnable* that generated\
+    \ the event. \n\n* *metadata*: The metadata of the *Runnable* that generated the\
+    \ event. \n\n* *data*: The data associated with the event. The contents of this\
+    \ field\n\n     depend on the type of event. See the table below for more details.\n\
+    \nBelow is a table that illustrates some events that might be emitted by various\n\
+    chains. Metadata fields have been omitted from the table for brevity.\nChain definitions\
+    \ have been included after the table.\n\n!!! note\n   This reference table is\
+    \ for the v2 version of the schema.\n\n   event                  | name      \
+    \           | chunk                               | input                    \
+    \                         | output                                           \
+    \   |\n   \u2014\u2014\u2014\u2014\u2014\u2014\u2014- | \u2014\u2014\u2014\u2014\
+    \u2014\u2014\u2013 | \u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\
+    \u2014\u2013 | \u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\
+    \u2014\u2014\u2014\u2014\u2014- | \u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\
+    \u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014 |\n   *on_chat_model_start*\
+    \  | *'[model name]'*     |                                     | *{\"messages\"\
+    : [[SystemMessage, HumanMessage]]}*   |                                      \
+    \               |\n   *on_chat_model_stream* | *'[model name]'*     | *AIMessageChunk(content=\"\
+    hello\")*   |                                                   |            \
+    \                                         |\n   *on_chat_model_end*    | *'[model\
+    \ name]'*     |                                     | *{\"messages\": [[SystemMessage,\
+    \ HumanMessage]]}*   | *AIMessageChunk(content=\"hello world\")*             |\n\
+    \   *on_llm_start*         | *'[model name]'*     |                          \
+    \           | *{'input': 'hello'}*                              |            \
+    \                                         |\n   *on_llm_stream*        | *'[model\
+    \ name]'*     | >>`<<'Hello' `                          |                    \
+    \                               |                                            \
+    \         |\n   *on_llm_end*           | *'[model name]'*     |              \
+    \                       | *'Hello human!'*                                  |\
+    \                                                     |\n   *on_chain_start* \
+    \      | *'format_docs'*      |                                     |        \
+    \                                           |                                \
+    \                     |\n   *on_chain_stream*      | *'format_docs'*      | *'hello\
+    \ world!, goodbye world!'*    |                                              \
+    \     |                                                     |\n   *on_chain_end*\
+    \         | *'format_docs'*      |                                     | *[Document(...)]*\
+    \                                 | *'hello world!, goodbye world!'*         \
+    \           |\n   *on_tool_start*        | *'some_tool'*        |            \
+    \                         | *{\"x\": 1, \"y\": \"2\"}*                       \
+    \       |                                                     |\n   *on_tool_end*\
+    \          | *'some_tool'*        |                                     |    \
+    \                                               | *{\"x\": 1, \"y\": \"2\"}* \
+    \                               |\n   *on_retriever_start*   | *'[retriever name]'*\
+    \ |                                     | *{\"query\": \"hello\"}*           \
+    \                   |                                                     |\n\
+    \   *on_retriever_end*     | *'[retriever name]'* |                          \
+    \           | *{\"query\": \"hello\"}*                              | *[Document(...),\
+    \ ..]*                               |\n   *on_prompt_start*      | *'[template_name]'*\
+    \  |                                     | *{\"question\": \"hello\"}*       \
+    \                    |                                                     |\n\
+    \   *on_prompt_end*        | *'[template_name]'*  |                          \
+    \           | *{\"question\": \"hello\"}*                           | *ChatPromptValue(messages:\
+    \ [SystemMessage, ...])*   |\n\nIn addition to the standard events, users can\
+    \ also dispatch custom events (see example below).\n\nCustom events will be only\
+    \ be surfaced with in the v2 version of the API!\n\nA custom event has following\
+    \ format:\n\n   Attribute   | Type   | Description                           \
+    \                                                                    |\n   \u2014\
+    \u2014\u2014\u2013 | \u2014\u2014 | \u2014\u2014\u2014\u2014\u2014\u2014\u2014\
+    \u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\
+    \u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\
+    \u2014\u2014 |\n   *name*      | *str*  | A user defined name for the event. \
+    \                                                                       |\n  \
+    \ *data*      | *Any*  | The data associated with the event. This can be anything,\
+    \ though we suggest making it JSON serializable.  |\n\nHere are declarations associated\
+    \ with the standard events shown above:\n\n*format_docs*:\n\n>>``<<>>`<<python\n\
+    def format_docs(docs: list[Document]) -> str:\n\n   '''Format the docs.'''\n \
+    \  return \", \".join([doc.page_content for doc in docs])\n\nformat_docs = RunnableLambda(format_docs)\n\
+    >>``<<>>`<<\n\n*some_tool*:\n\n>>``<<>>`<<python\n@tool\ndef some_tool(x: int,\
+    \ y: str) -> dict:\n\n   '''Some_tool.'''\n   return {\"x\": x, \"y\": y}\n\n\
+    >>``<<>>`<<\n\n*prompt*:\n\n>>``<<>>`<<python\ntemplate = ChatPromptTemplate.from_messages(\n\
+    \n   [\n      (\"system\", \"You are Cat Agent 007\"),\n      (\"human\", \"{question}\"\
+    ),\n\n   ]\n\n).with_config({\"run_name\": \"my_template\", \"tags\": [\"my_template\"\
+    ]})\n>>``<<>>`<<\n\n!!! example\n\n   >>``<<>>`<<python\n   from langchain_core.runnables\
+    \ import RunnableLambda\n\n   async def reverse(s: str) -> str:\n      return\
+    \ s[::-1]\n\n   chain = RunnableLambda(func=reverse)\n\n   events = [\n      event\
+    \ async for event in chain.astream_events(\"hello\", version=\"v2\")\n\n   ]\n\
+    \n   # Will produce the following events\n   # (run_id, and parent_ids has been\
+    \ omitted for brevity):\n   [\n\n      {\n         \"data\": {\"input\": \"hello\"\
+    },\n         \"event\": \"on_chain_start\",\n         \"metadata\": {},\n    \
+    \     \"name\": \"reverse\",\n         \"tags\": [],\n\n      },\n      {\n\n\
+    \         \"data\": {\"chunk\": \"olleh\"},\n         \"event\": \"on_chain_stream\"\
+    ,\n         \"metadata\": {},\n         \"name\": \"reverse\",\n         \"tags\"\
+    : [],\n\n      },\n      {\n\n         \"data\": {\"output\": \"olleh\"},\n  \
+    \       \"event\": \"on_chain_end\",\n         \"metadata\": {},\n         \"\
+    name\": \"reverse\",\n         \"tags\": [],\n\n      },\n\n>>``<<>>`<<python\
+    \ title=\"Dispatch custom event\"\nfrom langchain_core.callbacks.manager import\
+    \ (\n\n   adispatch_custom_event,\n\n)\nfrom langchain_core.runnables import RunnableLambda,\
+    \ RunnableConfig\nimport asyncio\n\nasync def slow_thing(some_input: str, config:\
+    \ RunnableConfig) -> str:\n   \"\"\"Do something that takes a long time.\"\"\"\
+    \n   await asyncio.sleep(1) # Placeholder for some slow operation\n   await adispatch_custom_event(\n\
+    \n      \"progress_event\",\n      {\"message\": \"Finished step 1 of 3\"},\n\
+    \      config=config # Must be included for python < 3.10\n\n   )\n   await asyncio.sleep(1)\
+    \ # Placeholder for some slow operation\n   await adispatch_custom_event(\n\n\
+    \      \"progress_event\",\n      {\"message\": \"Finished step 2 of 3\"},\n \
+    \     config=config # Must be included for python < 3.10\n\n   )\n   await asyncio.sleep(1)\
+    \ # Placeholder for some slow operation\n   return \"Done\"\n\nslow_thing = RunnableLambda(slow_thing)\n\
+    \nasync for event in slow_thing.astream_events(\"some_input\", version=\"v2\"\
+    ):\n   print(event)\n\n>>``<<>>`<<"
+  signature: 'async astream_events(input: Any, config: RunnableConfig | None = None,
+    *, version: Literal[''v1'', ''v2''] = ''v2'', include_names: Sequence[str] | None
+    = None, include_types: Sequence[str] | None = None, include_tags: Sequence[str]
+    | None = None, exclude_names: Sequence[str] | None = None, exclude_types: Sequence[str]
+    | None = None, exclude_tags: Sequence[str] | None = None, **kwargs: Any) -> AsyncIterator[StreamEvent]'
+  parameters:
+  - name: input
+    description: The input to the *Runnable*.
+    isRequired: true
+  - name: config
+    description: The config to use for the *Runnable*.
+    defaultValue: None
+  - name: version
+    description: 'The version of the schema to use, either *''v2''* or *''v1''*.
+
+
+      Users should use *''v2''*.
+
+
+      *''v1''* is for backwards compatibility and will be deprecated
+
+      in *0.4.0*.
+
+
+      No default will be assigned until the API is stabilized.
+
+      custom events will only be surfaced in *''v2''*.'
+    isRequired: true
+  - name: include_names
+    description: Only include events from *Runnable* objects with matching names.
+    isRequired: true
+  - name: include_types
+    description: Only include events from *Runnable* objects with matching types.
+    isRequired: true
+  - name: include_tags
+    description: Only include events from *Runnable* objects with matching tags.
+    isRequired: true
+  - name: exclude_names
+    description: Exclude events from *Runnable* objects with matching names.
+    isRequired: true
+  - name: exclude_types
+    description: Exclude events from *Runnable* objects with matching types.
+    isRequired: true
+  - name: exclude_tags
+    description: Exclude events from *Runnable* objects with matching tags.
+    isRequired: true
+  - name: '**kwargs'
+    description: 'Additional keyword arguments to pass to the *Runnable*.
+
+
+      These will be passed to *astream_log* as this implementation
+
+      of *astream_events* is built on top of *astream_log*.'
+    isRequired: true
+  keywordOnlyParameters:
+  - name: version
+    defaultValue: v2
+  - name: include_names
+    defaultValue: None
+  - name: include_types
+    defaultValue: None
+  - name: include_tags
+    defaultValue: None
+  - name: exclude_names
+    defaultValue: None
+  - name: exclude_types
+    defaultValue: None
+  - name: exclude_tags
+    defaultValue: None
+  exceptions:
+  - type: NotImplementedError
+    description: If the version is not *'v1'* or *'v2'*
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.astream_log
+  name: astream_log
+  summary: 'Stream all output from a *Runnable*, as reported to the callback system.
+
+
+    This includes all inner runs of LLMs, Retrievers, Tools, etc.
+
+
+    Output is streamed as Log objects, which include a list of
+
+    Jsonpatch ops that describe how the state of the run has changed in each
+
+    step, and the final state of the run.
+
+
+    The Jsonpatch ops can be applied in order to construct state.'
+  signature: 'async astream_log(input: Any, config: RunnableConfig | None = None,
+    *, diff: bool = True, with_streamed_output_list: bool = True, include_names: Sequence[str]
+    | None = None, include_types: Sequence[str] | None = None, include_tags: Sequence[str]
+    | None = None, exclude_names: Sequence[str] | None = None, exclude_types: Sequence[str]
+    | None = None, exclude_tags: Sequence[str] | None = None, **kwargs: Any) -> AsyncIterator[RunLogPatch]
+    | AsyncIterator[RunLog]'
+  parameters:
+  - name: input
+    description: The input to the *Runnable*.
+    isRequired: true
+  - name: config
+    description: The config to use for the *Runnable*.
+    defaultValue: None
+  - name: diff
+    description: Whether to yield diffs between each step or the current state.
+    isRequired: true
+  - name: with_streamed_output_list
+    description: Whether to yield the *streamed_output* list.
+    isRequired: true
+  - name: include_names
+    description: Only include logs with these names.
+    isRequired: true
+  - name: include_types
+    description: Only include logs with these types.
+    isRequired: true
+  - name: include_tags
+    description: Only include logs with these tags.
+    isRequired: true
+  - name: exclude_names
+    description: Exclude logs with these names.
+    isRequired: true
+  - name: exclude_types
+    description: Exclude logs with these types.
+    isRequired: true
+  - name: exclude_tags
+    description: Exclude logs with these tags.
+    isRequired: true
+  - name: '**kwargs'
+    description: Additional keyword arguments to pass to the *Runnable*.
+    isRequired: true
+  keywordOnlyParameters:
+  - name: diff
+    defaultValue: 'True'
+  - name: with_streamed_output_list
+    defaultValue: 'True'
+  - name: include_names
+    defaultValue: None
+  - name: include_types
+    defaultValue: None
+  - name: include_tags
+    defaultValue: None
+  - name: exclude_names
+    defaultValue: None
+  - name: exclude_types
+    defaultValue: None
+  - name: exclude_tags
+    defaultValue: None
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.atransform
+  name: atransform
+  summary: 'Transform inputs to outputs.
+
+
+    Default implementation of atransform, which buffers input and calls *astream*.
+
+
+    Subclasses must override this method if they can start producing output while
+
+    input is still being generated.'
+  signature: 'async atransform(input: AsyncIterator[Input], config: RunnableConfig
+    | None = None, **kwargs: Any | None) -> AsyncIterator[Output]'
+  parameters:
+  - name: input
+    description: An async iterator of inputs to the *Runnable*.
+    isRequired: true
+  - name: config
+    description: The config to use for the *Runnable*.
+    defaultValue: None
+  - name: '**kwargs'
+    description: Additional keyword arguments to pass to the *Runnable*.
+    isRequired: true
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.batch
+  name: batch
+  summary: 'Default implementation runs invoke in parallel using a thread pool executor.
+
+
+    The default implementation of batch works well for IO bound runnables.
+
+
+    Subclasses must override this method if they can batch more efficiently;
+
+    e.g., if the underlying *Runnable* uses an API which supports a batch mode.'
+  signature: 'batch(inputs: list[-Input], config: RunnableConfig | list[langchain_core.runnables.config.RunnableConfig]
+    | None = None, *, return_exceptions: bool = False, **kwargs: Any | None) -> list[+Output]'
+  parameters:
+  - name: inputs
+    description: A list of inputs to the *Runnable*.
+    isRequired: true
+  - name: config
+    description: 'A config to use when invoking the *Runnable*. The config supports
+
+      standard keys like *''tags''*, *''metadata''* for
+
+      tracing purposes, *''max_concurrency''* for controlling how much work
+
+      to do in parallel, and other keys.
+
+
+      Please refer to *RunnableConfig* for more details.'
+    defaultValue: None
+  - name: return_exceptions
+    description: Whether to return exceptions instead of raising them.
+    isRequired: true
+  - name: '**kwargs'
+    description: Additional keyword arguments to pass to the *Runnable*.
+    isRequired: true
+  keywordOnlyParameters:
+  - name: return_exceptions
+    defaultValue: 'False'
+  return:
+    description: A list of outputs from the *Runnable*.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.batch_as_completed
+  name: batch_as_completed
+  summary: 'Run *invoke* in parallel on a list of inputs.
+
+
+    Yields results as they complete.'
+  signature: 'batch_as_completed(inputs: Sequence[Input], config: RunnableConfig |
+    Sequence[RunnableConfig] | None = None, *, return_exceptions: bool = False, **kwargs:
+    Any | None) -> Union[+Output, Exception]]]'
+  parameters:
+  - name: inputs
+    description: A list of inputs to the *Runnable*.
+    isRequired: true
+  - name: config
+    description: 'A config to use when invoking the *Runnable*.
+
+
+      The config supports standard keys like *''tags''*, *''metadata''* for
+
+      tracing purposes, *''max_concurrency''* for controlling how much work to
+
+      do in parallel, and other keys.
+
+
+      Please refer to *RunnableConfig* for more details.'
+    defaultValue: None
+  - name: return_exceptions
+    description: Whether to return exceptions instead of raising them.
+    isRequired: true
+  - name: '**kwargs'
+    description: Additional keyword arguments to pass to the *Runnable*.
+    isRequired: true
+  keywordOnlyParameters:
+  - name: return_exceptions
+    defaultValue: 'False'
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.bind
+  name: bind
+  summary: 'Bind arguments to a *Runnable*, returning a new *Runnable*.
+
+
+    Useful when a *Runnable* in a chain requires an argument that is not
+
+    in the output of the previous *Runnable* or included in the user input.'
+  signature: 'bind(**kwargs: Any) -> Runnable[Input, Output]'
+  parameters:
+  - name: '**kwargs'
+    description: The arguments to bind to the *Runnable*.
+    isRequired: true
+  return:
+    description: A new *Runnable* with the arguments bound.
+  examples:
+  - '>>``<<>>`<<python
+
+    from langchain_ollama import ChatOllama
+
+    from langchain_core.output_parsers import StrOutputParsermodel = ChatOllama(model="llama3.1")#
+    Without bind
+
+    chain = model | StrOutputParser()chain.invoke("Repeat quoted words exactly: ''One
+    two three four five.''")
+
+    # Output is ''One two three four five.''# With bind
+
+    chain = model.bind(stop=["three"]) | StrOutputParser()chain.invoke("Repeat quoted
+    words exactly: ''One two three four five.''")
+
+    # Output is ''One two''
+
+    >>``<<>>`<<
+
+    '
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.bind_tools
+  name: bind_tools
+  summary: Record tools to be bound later during invocation.
+  signature: 'bind_tools(tools: Sequence[Dict[str, Any] | type | Callable | BaseTool],
+    *, tool_choice: str | None = None, **kwargs: Any) -> Runnable[PromptValue | str
+    | Sequence[BaseMessage | list[str] | tuple[str, str] | str | dict[str, Any]],
+    AIMessage]'
+  parameters:
+  - name: tools
+    description: A sequence of tools to bind.
+    isRequired: true
+    types:
+    - <xref:typing.Sequence>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>] | <xref:type>
+      | <xref:typing.Callable> | <xref:BaseTool>]
+  keywordOnlyParameters:
+  - name: tool_choice
+    description: Optional tool choice strategy.
+    defaultValue: None
+  - name: kwargs
+    description: Additional keyword arguments for tool binding.
+  return:
+    description: A Runnable with the tools bound for later invocation.
+    types:
+    - <xref:Runnable>[<xref:LanguageModelInput>, <xref:AIMessage>]
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.config_schema
+  name: config_schema
+  summary: 'The type of config this *Runnable* accepts specified as a Pydantic model.
+
+
+    To mark a field as configurable, see the *configurable_fields*
+
+    and *configurable_alternatives* methods.'
+  signature: 'config_schema(*, include: Sequence[str] | None = None) -> type[pydantic.main.BaseModel]'
+  parameters:
+  - name: include
+    description: A list of fields to include in the config schema.
+    isRequired: true
+  keywordOnlyParameters:
+  - name: include
+    defaultValue: None
+  return:
+    description: A Pydantic model that can be used to validate config.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.configurable_alternatives
+  name: configurable_alternatives
+  summary: "Configure alternatives for *Runnable* objects that can be set at runtime.\n\
+    \n!!! example\n\n   >>``<<>>`<<python\n   from langchain_anthropic import ChatAnthropic\n\
+    \   from langchain_core.runnables.utils import ConfigurableField\n   from langchain_openai\
+    \ import ChatOpenAI\n\n   model = ChatAnthropic(\n      model_name=\"claude-sonnet-4-5-20250929\"\
+    \n\n   ).configurable_alternatives(\n      ConfigurableField(id=\"llm\"),\n  \
+    \    default_key=\"anthropic\",\n      openai=ChatOpenAI(),\n\n   )\n\n   # uses\
+    \ the default model ChatAnthropic\n   print(model.invoke(\"which organization\
+    \ created you?\").content)\n\n   # uses ChatOpenAI\n   print(\n\n      model.with_config(configurable={\"\
+    llm\": \"openai\"})\n      .invoke(\"which organization created you?\")\n    \
+    \  .content"
+  signature: 'configurable_alternatives(which: ConfigurableField, *, default_key:
+    str = ''default'', prefix_keys: bool = False, **kwargs: Runnable[Input, Output]
+    | Callable[[], Runnable[Input, Output]]) -> RunnableSerializable'
+  parameters:
+  - name: which
+    description: 'The *ConfigurableField* instance that will be used to select the
+
+      alternative.'
+    isRequired: true
+  - name: default_key
+    description: The default key to use if no alternative is selected.
+    isRequired: true
+  - name: prefix_keys
+    description: Whether to prefix the keys with the *ConfigurableField* id.
+    isRequired: true
+  - name: '**kwargs'
+    description: 'A dictionary of keys to *Runnable* instances or callables that
+
+      return *Runnable* instances.'
+    isRequired: true
+  keywordOnlyParameters:
+  - name: default_key
+    defaultValue: default
+  - name: prefix_keys
+    defaultValue: 'False'
+  return:
+    description: A new *Runnable* with the alternatives configured.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.configurable_fields
+  name: configurable_fields
+  summary: "Configure particular *Runnable* fields at runtime.\n\n!!! example\n\n\
+    \   >>``<<>>`<<python\n   from langchain_core.runnables import ConfigurableField\n\
+    \   from langchain_openai import ChatOpenAI\n\n   model = ChatOpenAI(max_tokens=20).configurable_fields(\n\
+    \      max_tokens=ConfigurableField(\n         id=\"output_token_number\",\n \
+    \        name=\"Max tokens in the output\",\n         description=\"The maximum\
+    \ number of tokens in the output\",\n\n      )\n\n   )\n\n   # max_tokens = 20\n\
+    \   print(\n\n      \"max_tokens_20: \", model.invoke(\"tell me something about\
+    \ chess\").content\n\n   )\n\n   # max_tokens = 200\n   print(\n\n      \"max_tokens_200:\
+    \ \",\n      model.with_config(configurable={\"output_token_number\": 200})\n\
+    \      .invoke(\"tell me something about chess\")\n      .content,"
+  signature: 'configurable_fields(**kwargs: ConfigurableField | ConfigurableFieldSingleOption
+    | ConfigurableFieldMultiOption) -> RunnableSerializable'
+  parameters:
+  - name: '**kwargs'
+    description: A dictionary of *ConfigurableField* instances to configure.
+    isRequired: true
+  return:
+    description: A new *Runnable* with the fields configured.
+  exceptions:
+  - type: ValueError
+    description: If a configuration key is not found in the *Runnable*
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.construct
+  name: construct
+  signature: 'construct(_fields_set: set[str] | None = None, **values: Any) -> Self'
+  parameters:
+  - name: _fields_set
+    defaultValue: None
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.copy
+  name: copy
+  summary: "Returns a copy of the model.\n\n!!! warning \"Deprecated\"\n   This method\
+    \ is now deprecated; use *model_copy* instead.\n\nIf you need *include* or *exclude*,\
+    \ use:\n\n``python {test=\"skip\" lint=\"skip\"}\ndata = self.model_dump(include=include,\
+    \ exclude=exclude, round_trip=True)\ndata = {**data, **(update or {})}\ncopied\
+    \ = self.model_validate(data)\n``"
+  signature: 'copy(*, include: AbstractSetIntStr | MappingIntStrAny | None = None,
+    exclude: AbstractSetIntStr | MappingIntStrAny | None = None, update: Dict[str,
+    Any] | None = None, deep: bool = False) -> Self'
+  parameters:
+  - name: include
+    description: Optional set or mapping specifying which fields to include in the
+      copied model.
+    isRequired: true
+  - name: exclude
+    description: Optional set or mapping specifying which fields to exclude in the
+      copied model.
+    isRequired: true
+  - name: update
+    description: Optional dictionary of field-value pairs to override field values
+      in the copied model.
+    isRequired: true
+  - name: deep
+    description: If True, the values of fields that are Pydantic models will be deep-copied.
+    isRequired: true
+  keywordOnlyParameters:
+  - name: include
+    defaultValue: None
+  - name: exclude
+    defaultValue: None
+  - name: update
+    defaultValue: None
+  - name: deep
+    defaultValue: 'False'
+  return:
+    description: A copy of the model with included, excluded and updated fields as
+      specified.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.dict
+  name: dict
+  summary: Return a dictionary of the LLM.
+  signature: 'dict(**kwargs: Any) -> dict'
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.from_orm
+  name: from_orm
+  signature: 'from_orm(obj: Any) -> Self'
+  parameters:
+  - name: obj
+    isRequired: true
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.generate
+  name: generate
+  summary: "Pass a sequence of prompts to the model and return model generations.\n\
+    \nThis method should make use of batched calls for models that expose a batched\n\
+    API.\n\nUse this method when you want to:\n\n1. Take advantage of batched calls,\
+    \ \n\n2. Need more output from the model than just the top generated value, \n\
+    \n3. Are building chains that are agnostic to the underlying language model\n\n\
+    \      type (e.g., pure text completion models vs chat models)."
+  signature: 'generate(messages: list[list[BaseMessage]], stop: list[str] | None =
+    None, callbacks: Callbacks = None, *, tags: list[str] | None = None, metadata:
+    dict[str, Any] | None = None, run_name: str | None = None, run_id: uuid.UUID |
+    None = None, **kwargs: Any) -> LLMResult'
+  parameters:
+  - name: messages
+    description: List of list of messages.
+    isRequired: true
+  - name: stop
+    description: 'Stop words to use when generating.
+
+
+      Model output is cut off at the first occurrence of any of these
+
+      substrings.'
+    defaultValue: None
+  - name: callbacks
+    description: '*Callbacks* to pass through.
+
+
+      Used for executing additional functionality, such as logging or
+
+      streaming, throughout generation.'
+    defaultValue: None
+  - name: tags
+    description: The tags to apply.
+    isRequired: true
+  - name: metadata
+    description: The metadata to apply.
+    isRequired: true
+  - name: run_name
+    description: The name of the run.
+    isRequired: true
+  - name: run_id
+    description: The ID of the run.
+    isRequired: true
+  - name: '**kwargs'
+    description: 'Arbitrary additional keyword arguments.
+
+
+      These are usually passed to the model provider API call.'
+    isRequired: true
+  keywordOnlyParameters:
+  - name: tags
+    defaultValue: None
+  - name: metadata
+    defaultValue: None
+  - name: run_name
+    defaultValue: None
+  - name: run_id
+    defaultValue: None
+  return:
+    description: "An *LLMResult*, which contains a list of candidate *Generations*\
+      \ for each\n   input prompt and additional model provider-specific output."
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.generate_prompt
+  name: generate_prompt
+  signature: 'generate_prompt(prompts: list[langchain_core.prompt_values.PromptValue],
+    stop: list[str] | None = None, callbacks: list[langchain_core.callbacks.base.BaseCallbackHandler]
+    | BaseCallbackManager | None = None, **kwargs: Any) -> LLMResult'
+  parameters:
+  - name: prompts
+    isRequired: true
+  - name: stop
+    defaultValue: None
+  - name: callbacks
+    defaultValue: None
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.get_config_jsonschema
+  name: get_config_jsonschema
+  summary: 'Get a JSON schema that represents the config of the *Runnable*.
+
+
+    !!! version-added "Added in *langchain-core* 0.3.0"'
+  signature: 'get_config_jsonschema(*, include: Sequence[str] | None = None) -> dict[str,
+    Any]'
+  parameters:
+  - name: include
+    description: A list of fields to include in the config schema.
+    isRequired: true
+  keywordOnlyParameters:
+  - name: include
+    defaultValue: None
+  return:
+    description: A JSON schema that represents the config of the *Runnable*.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.get_graph
+  name: get_graph
+  summary: Return a graph representation of this *Runnable*.
+  signature: 'get_graph(config: RunnableConfig | None = None) -> Graph'
+  parameters:
+  - name: config
+    defaultValue: None
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.get_input_jsonschema
+  name: get_input_jsonschema
+  summary: 'Get a JSON schema that represents the input to the *Runnable*.
+
+
+    !!! version-added "Added in *langchain-core* 0.3.0"'
+  signature: 'get_input_jsonschema(config: RunnableConfig | None = None) -> dict[str,
+    Any]'
+  parameters:
+  - name: config
+    description: A config to use when generating the schema.
+    defaultValue: None
+  return:
+    description: A JSON schema that represents the input to the *Runnable*.
+  examples:
+  - ">>``<<>>`<<python\nfrom langchain_core.runnables import RunnableLambda\n\ndef\
+    \ add_one(x: int) -> int:\n   return x + 1\n\nrunnable = RunnableLambda(add_one)print(runnable.get_input_jsonschema())\n\
+    >>``<<>>`<<\n"
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.get_input_schema
+  name: get_input_schema
+  summary: 'Get a Pydantic model that can be used to validate input to the *Runnable*.
+
+
+    *Runnable* objects that leverage the *configurable_fields* and
+
+    *configurable_alternatives* methods will have a dynamic input schema that
+
+    depends on which configuration the *Runnable* is invoked with.
+
+
+    This method allows to get an input schema for a specific configuration.'
+  signature: 'get_input_schema(config: RunnableConfig | None = None) -> type[pydantic.main.BaseModel]'
+  parameters:
+  - name: config
+    description: A config to use when generating the schema.
+    defaultValue: None
+  return:
+    description: A Pydantic model that can be used to validate input.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.get_lc_namespace
+  name: get_lc_namespace
+  summary: 'Get the namespace of the LangChain object.
+
+
+    For example, if the class is [*langchain.llms.openai.OpenAI*][langchain_openai.OpenAI],
+
+    then the namespace is *["langchain", "llms", "openai"]*'
+  signature: get_lc_namespace() -> list[str]
+  return:
+    description: The namespace.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.get_name
+  name: get_name
+  summary: Get the name of the *Runnable*.
+  signature: 'get_name(suffix: str | None = None, *, name: str | None = None) -> str'
+  parameters:
+  - name: suffix
+    description: An optional suffix to append to the name.
+    defaultValue: None
+  - name: name
+    description: An optional name to use instead of the *Runnable*'s name.
+    isRequired: true
+  keywordOnlyParameters:
+  - name: name
+    defaultValue: None
+  return:
+    description: The name of the *Runnable*.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.get_num_tokens
+  name: get_num_tokens
+  summary: 'Get the number of tokens present in the text.
+
+
+    Useful for checking if an input fits in a model''s context window.
+
+
+    This should be overridden by model-specific implementations to provide accurate
+
+    token counts via model-specific tokenizers.'
+  signature: 'get_num_tokens(text: str) -> int'
+  parameters:
+  - name: text
+    description: The string input to tokenize.
+    isRequired: true
+  return:
+    description: The integer number of tokens in the text.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.get_num_tokens_from_messages
+  name: get_num_tokens_from_messages
+  summary: "Get the number of tokens in the messages.\n\nUseful for checking if an\
+    \ input fits in a model's context window.\n\nThis should be overridden by model-specific\
+    \ implementations to provide accurate\ntoken counts via model-specific tokenizers.\n\
+    \n!!! note\n\n   * The base implementation of *get_num_tokens_from_messages* ignores\
+    \ tool\n\n        schemas.\n\n   * The base implementation of *get_num_tokens_from_messages*\
+    \ adds additional\n\n        prefixes to messages in represent user roles, which\
+    \ will add to the\n        overall token count. Model-specific implementations\
+    \ may choose to\n        handle this differently."
+  signature: 'get_num_tokens_from_messages(messages: list[langchain_core.messages.base.BaseMessage],
+    tools: Sequence | None = None) -> int'
+  parameters:
+  - name: messages
+    description: The message inputs to tokenize.
+    isRequired: true
+  - name: tools
+    description: 'If provided, sequence of dict, *BaseModel*, function, or
+
+      *BaseTool* objects to be converted to tool schemas.'
+    defaultValue: None
+  return:
+    description: The sum of the number of tokens across the messages.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.get_output_jsonschema
+  name: get_output_jsonschema
+  summary: 'Get a JSON schema that represents the output of the *Runnable*.
+
+
+    !!! version-added "Added in *langchain-core* 0.3.0"'
+  signature: 'get_output_jsonschema(config: RunnableConfig | None = None) -> dict[str,
+    Any]'
+  parameters:
+  - name: config
+    description: A config to use when generating the schema.
+    defaultValue: None
+  return:
+    description: A JSON schema that represents the output of the *Runnable*.
+  examples:
+  - ">>``<<>>`<<python\nfrom langchain_core.runnables import RunnableLambda\n\ndef\
+    \ add_one(x: int) -> int:\n   return x + 1\n\nrunnable = RunnableLambda(add_one)print(runnable.get_output_jsonschema())\n\
+    >>``<<>>`<<\n"
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.get_output_schema
+  name: get_output_schema
+  summary: 'Get a Pydantic model that can be used to validate output to the *Runnable*.
+
+
+    *Runnable* objects that leverage the *configurable_fields* and
+
+    *configurable_alternatives* methods will have a dynamic output schema that
+
+    depends on which configuration the *Runnable* is invoked with.
+
+
+    This method allows to get an output schema for a specific configuration.'
+  signature: 'get_output_schema(config: RunnableConfig | None = None) -> type[pydantic.main.BaseModel]'
+  parameters:
+  - name: config
+    description: A config to use when generating the schema.
+    defaultValue: None
+  return:
+    description: A Pydantic model that can be used to validate output.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.get_prompts
+  name: get_prompts
+  summary: Return a list of prompts used by this *Runnable*.
+  signature: 'get_prompts(config: RunnableConfig | None = None) -> list[BasePromptTemplate]'
+  parameters:
+  - name: config
+    defaultValue: None
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.get_token_ids
+  name: get_token_ids
+  summary: Return the ordered IDs of the tokens in a text.
+  signature: 'get_token_ids(text: str) -> list[int]'
+  parameters:
+  - name: text
+    description: The string input to tokenize.
+    isRequired: true
+  return:
+    description: "A list of IDs corresponding to the tokens in the text, in order\
+      \ they occur\n   in the text."
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.invoke
+  name: invoke
+  signature: 'invoke(input: Any, config: RunnableConfig | None = None, **kwargs: Any)
+    -> Any'
+  parameters:
+  - name: input
+    isRequired: true
+  - name: config
+    defaultValue: None
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.is_lc_serializable
+  name: is_lc_serializable
+  summary: 'Is this class serializable?
+
+
+    By design, even if a class inherits from *Serializable*, it is not serializable
+
+    by default. This is to prevent accidental serialization of objects that should
+
+    not be serialized.'
+  signature: is_lc_serializable() -> bool
+  return:
+    description: Whether the class is serializable. Default is *False*.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.json
+  name: json
+  signature: 'json(*, include: set[int] | set[str] | Mapping[int, set[int] | set[str]
+    | Mapping[int, IncEx | bool] | Mapping[str, IncEx | bool] | bool] | Mapping[str,
+    set[int] | set[str] | Mapping[int, IncEx | bool] | Mapping[str, IncEx | bool]
+    | bool] | None = None, exclude: set[int] | set[str] | Mapping[int, set[int] |
+    set[str] | Mapping[int, IncEx | bool] | Mapping[str, IncEx | bool] | bool] | Mapping[str,
+    set[int] | set[str] | Mapping[int, IncEx | bool] | Mapping[str, IncEx | bool]
+    | bool] | None = None, by_alias: bool = False, exclude_unset: bool = False, exclude_defaults:
+    bool = False, exclude_none: bool = False, encoder: Callable[[Any], Any] | None
+    = PydanticUndefined, models_as_dict: bool = PydanticUndefined, **dumps_kwargs:
+    Any) -> str'
+  keywordOnlyParameters:
+  - name: include
+    defaultValue: None
+  - name: exclude
+    defaultValue: None
+  - name: by_alias
+    defaultValue: 'False'
+  - name: exclude_unset
+    defaultValue: 'False'
+  - name: exclude_defaults
+    defaultValue: 'False'
+  - name: exclude_none
+    defaultValue: 'False'
+  - name: encoder
+    defaultValue: PydanticUndefined
+  - name: models_as_dict
+    defaultValue: PydanticUndefined
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.lc_id
+  name: lc_id
+  summary: 'Return a unique identifier for this class for serialization purposes.
+
+
+    The unique identifier is a list of strings that describes the path
+
+    to the object.
+
+
+    For example, for the class *langchain.llms.openai.OpenAI*, the id is
+
+    *["langchain", "llms", "openai", "OpenAI"]*.'
+  signature: lc_id() -> list[str]
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.map
+  name: map
+  summary: 'Return a new *Runnable* that maps a list of inputs to a list of outputs.
+
+
+    Calls *invoke* with each input.'
+  signature: map() -> Runnable[list[-Input], list[+Output]]
+  return:
+    description: A new *Runnable* that maps a list of inputs to a list of outputs.
+  examples:
+  - ">>``<<>>`<<python\nfrom langchain_core.runnables import RunnableLambda\n\ndef\
+    \ _lambda(x: int) -> int:\n   return x + 1\n\nrunnable = RunnableLambda(_lambda)\n\
+    print(runnable.map().invoke([1, 2, 3]))  # [2, 3, 4]\n>>``<<>>`<<\n"
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.model_construct
+  name: model_construct
+  summary: "Creates a new instance of the *Model* class with validated data.\n\nCreates\
+    \ a new model setting *__dict__* and *__pydantic_fields_set__* from trusted or\
+    \ pre-validated data.\nDefault values are respected, but no other validation is\
+    \ performed.\n\n!!! note\n   *model_construct()* generally respects the *model_config.extra*\
+    \ setting on the provided model.\n   That is, if *model_config.extra == 'allow'*,\
+    \ then all extra passed values are added to the model instance's *__dict__*\n\
+    \   and *__pydantic_extra__* fields. If *model_config.extra == 'ignore'* (the\
+    \ default), then all extra passed values are ignored.\n   Because no validation\
+    \ is performed with a call to *model_construct()*, having *model_config.extra\
+    \ == 'forbid'* does not result in\n   an error if extra values are passed, but\
+    \ they will be ignored."
+  signature: 'model_construct(_fields_set: set[str] | None = None, **values: Any)
+    -> Self'
+  parameters:
+  - name: _fields_set
+    description: 'A set of field names that were originally explicitly set during
+      instantiation. If provided,
+
+      this is directly used for the [*model_fields_set*][pydantic.BaseModel.model_fields_set]
+      attribute.
+
+      Otherwise, the field names from the *values* argument will be used.'
+    defaultValue: None
+  - name: values
+    description: Trusted or pre-validated data dictionary.
+    isRequired: true
+  return:
+    description: A new instance of the *Model* class with validated data.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.model_copy
+  name: model_copy
+  summary: "!!! abstract \"Usage Documentation\"\n   [*model_copy*](../concepts/models.md#model-copy)\n\
+    \nReturns a copy of the model.\n\n!!! note\n   The underlying instance's [*__dict__*][object.__dict__]\
+    \ attribute is copied. This\n   might have unexpected side effects if you store\
+    \ anything in it, on top of the model\n   fields (e.g. the value of [cached properties][functools.cached_property])."
+  signature: 'model_copy(*, update: Mapping[str, Any] | None = None, deep: bool =
+    False) -> Self'
+  parameters:
+  - name: update
+    description: 'Values to change/add in the new model. Note: the data is not validated
+
+      before creating the new model. You should trust this data.'
+    isRequired: true
+  - name: deep
+    description: Set to *True* to make a deep copy of the model.
+    isRequired: true
+  keywordOnlyParameters:
+  - name: update
+    defaultValue: None
+  - name: deep
+    defaultValue: 'False'
+  return:
+    description: New model instance.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.model_dump
+  name: model_dump
+  summary: "!!! abstract \"Usage Documentation\"\n   [*model_dump*](../concepts/serialization.md#python-mode)\n\
+    \nGenerate a dictionary representation of the model, optionally specifying which\
+    \ fields to include or exclude."
+  signature: 'model_dump(*, mode: Literal[''json'', ''python''] | str = ''python'',
+    include: set[int] | set[str] | Mapping[int, set[int] | set[str] | Mapping[int,
+    IncEx | bool] | Mapping[str, IncEx | bool] | bool] | Mapping[str, set[int] | set[str]
+    | Mapping[int, IncEx | bool] | Mapping[str, IncEx | bool] | bool] | None = None,
+    exclude: set[int] | set[str] | Mapping[int, set[int] | set[str] | Mapping[int,
+    IncEx | bool] | Mapping[str, IncEx | bool] | bool] | Mapping[str, set[int] | set[str]
+    | Mapping[int, IncEx | bool] | Mapping[str, IncEx | bool] | bool] | None = None,
+    context: Any | None = None, by_alias: bool | None = None, exclude_unset: bool
+    = False, exclude_defaults: bool = False, exclude_none: bool = False, exclude_computed_fields:
+    bool = False, round_trip: bool = False, warnings: bool | Literal[''none'', ''warn'',
+    ''error''] = True, fallback: Callable[[Any], Any] | None = None, serialize_as_any:
+    bool = False) -> dict[str, Any]'
+  parameters:
+  - name: mode
+    description: 'The mode in which *to_python* should run.
+
+      If mode is ''json'', the output will only contain JSON serializable types.
+
+      If mode is ''python'', the output may contain non-JSON-serializable Python objects.'
+    isRequired: true
+  - name: include
+    description: A set of fields to include in the output.
+    isRequired: true
+  - name: exclude
+    description: A set of fields to exclude from the output.
+    isRequired: true
+  - name: context
+    description: Additional context to pass to the serializer.
+    isRequired: true
+  - name: by_alias
+    description: Whether to use the field's alias in the dictionary key if defined.
+    isRequired: true
+  - name: exclude_unset
+    description: Whether to exclude fields that have not been explicitly set.
+    isRequired: true
+  - name: exclude_defaults
+    description: Whether to exclude fields that are set to their default value.
+    isRequired: true
+  - name: exclude_none
+    description: Whether to exclude fields that have a value of *None*.
+    isRequired: true
+  - name: exclude_computed_fields
+    description: 'Whether to exclude computed fields.
+
+      While this can be useful for round-tripping, it is usually recommended to use
+      the dedicated
+
+      *round_trip* parameter instead.'
+    isRequired: true
+  - name: round_trip
+    description: If True, dumped values should be valid as input for non-idempotent
+      types such as Json[T].
+    isRequired: true
+  - name: warnings
+    description: 'How to handle serialization errors. False/"none" ignores them, True/"warn"
+      logs errors,
+
+      "error" raises a [*PydanticSerializationError*][pydantic_core.PydanticSerializationError].'
+    isRequired: true
+  - name: fallback
+    description: 'A function to call when an unknown value is encountered. If not
+      provided,
+
+      a [*PydanticSerializationError*][pydantic_core.PydanticSerializationError] error
+      is raised.'
+    isRequired: true
+  - name: serialize_as_any
+    description: Whether to serialize fields with duck-typing serialization behavior.
+    isRequired: true
+  keywordOnlyParameters:
+  - name: mode
+    defaultValue: python
+  - name: include
+    defaultValue: None
+  - name: exclude
+    defaultValue: None
+  - name: context
+    defaultValue: None
+  - name: by_alias
+    defaultValue: None
+  - name: exclude_unset
+    defaultValue: 'False'
+  - name: exclude_defaults
+    defaultValue: 'False'
+  - name: exclude_none
+    defaultValue: 'False'
+  - name: exclude_computed_fields
+    defaultValue: 'False'
+  - name: round_trip
+    defaultValue: 'False'
+  - name: warnings
+    defaultValue: 'True'
+  - name: fallback
+    defaultValue: None
+  - name: serialize_as_any
+    defaultValue: 'False'
+  return:
+    description: A dictionary representation of the model.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.model_dump_json
+  name: model_dump_json
+  summary: "!!! abstract \"Usage Documentation\"\n   [*model_dump_json*](../concepts/serialization.md#json-mode)\n\
+    \nGenerates a JSON representation of the model using Pydantic's *to_json* method."
+  signature: 'model_dump_json(*, indent: int | None = None, ensure_ascii: bool = False,
+    include: set[int] | set[str] | Mapping[int, set[int] | set[str] | Mapping[int,
+    IncEx | bool] | Mapping[str, IncEx | bool] | bool] | Mapping[str, set[int] | set[str]
+    | Mapping[int, IncEx | bool] | Mapping[str, IncEx | bool] | bool] | None = None,
+    exclude: set[int] | set[str] | Mapping[int, set[int] | set[str] | Mapping[int,
+    IncEx | bool] | Mapping[str, IncEx | bool] | bool] | Mapping[str, set[int] | set[str]
+    | Mapping[int, IncEx | bool] | Mapping[str, IncEx | bool] | bool] | None = None,
+    context: Any | None = None, by_alias: bool | None = None, exclude_unset: bool
+    = False, exclude_defaults: bool = False, exclude_none: bool = False, exclude_computed_fields:
+    bool = False, round_trip: bool = False, warnings: bool | Literal[''none'', ''warn'',
+    ''error''] = True, fallback: Callable[[Any], Any] | None = None, serialize_as_any:
+    bool = False) -> str'
+  parameters:
+  - name: indent
+    description: Indentation to use in the JSON output. If None is passed, the output
+      will be compact.
+    isRequired: true
+  - name: ensure_ascii
+    description: 'If *True*, the output is guaranteed to have all incoming non-ASCII
+      characters escaped.
+
+      If *False* (the default), these characters will be output as-is.'
+    isRequired: true
+  - name: include
+    description: Field(s) to include in the JSON output.
+    isRequired: true
+  - name: exclude
+    description: Field(s) to exclude from the JSON output.
+    isRequired: true
+  - name: context
+    description: Additional context to pass to the serializer.
+    isRequired: true
+  - name: by_alias
+    description: Whether to serialize using field aliases.
+    isRequired: true
+  - name: exclude_unset
+    description: Whether to exclude fields that have not been explicitly set.
+    isRequired: true
+  - name: exclude_defaults
+    description: Whether to exclude fields that are set to their default value.
+    isRequired: true
+  - name: exclude_none
+    description: Whether to exclude fields that have a value of *None*.
+    isRequired: true
+  - name: exclude_computed_fields
+    description: 'Whether to exclude computed fields.
+
+      While this can be useful for round-tripping, it is usually recommended to use
+      the dedicated
+
+      *round_trip* parameter instead.'
+    isRequired: true
+  - name: round_trip
+    description: If True, dumped values should be valid as input for non-idempotent
+      types such as Json[T].
+    isRequired: true
+  - name: warnings
+    description: 'How to handle serialization errors. False/"none" ignores them, True/"warn"
+      logs errors,
+
+      "error" raises a [*PydanticSerializationError*][pydantic_core.PydanticSerializationError].'
+    isRequired: true
+  - name: fallback
+    description: 'A function to call when an unknown value is encountered. If not
+      provided,
+
+      a [*PydanticSerializationError*][pydantic_core.PydanticSerializationError] error
+      is raised.'
+    isRequired: true
+  - name: serialize_as_any
+    description: Whether to serialize fields with duck-typing serialization behavior.
+    isRequired: true
+  keywordOnlyParameters:
+  - name: indent
+    defaultValue: None
+  - name: ensure_ascii
+    defaultValue: 'False'
+  - name: include
+    defaultValue: None
+  - name: exclude
+    defaultValue: None
+  - name: context
+    defaultValue: None
+  - name: by_alias
+    defaultValue: None
+  - name: exclude_unset
+    defaultValue: 'False'
+  - name: exclude_defaults
+    defaultValue: 'False'
+  - name: exclude_none
+    defaultValue: 'False'
+  - name: exclude_computed_fields
+    defaultValue: 'False'
+  - name: round_trip
+    defaultValue: 'False'
+  - name: warnings
+    defaultValue: 'True'
+  - name: fallback
+    defaultValue: None
+  - name: serialize_as_any
+    defaultValue: 'False'
+  return:
+    description: A JSON string representation of the model.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.model_json_schema
+  name: model_json_schema
+  summary: Generates a JSON schema for a model class.
+  signature: 'model_json_schema(by_alias: bool = True, ref_template: str = ''#/$defs/{model}'',
+    schema_generator: type[pydantic.json_schema.GenerateJsonSchema] = <class ''pydantic.json_schema.GenerateJsonSchema''>,
+    mode: ~typing.Literal[''validation'', ''serialization''] = ''validation'', *,
+    union_format: ~typing.Literal[''any_of'', ''primitive_type_array''] = ''any_of'')
+    -> dict[str, Any]'
+  parameters:
+  - name: by_alias
+    description: Whether to use attribute aliases or not.
+    defaultValue: 'True'
+  - name: ref_template
+    description: The reference template.
+    defaultValue: '#/$defs/{model}'
+  - name: union_format
+    description: "The format to use when combining schemas from unions together. Can\
+      \ be one of:\n\n* *'any_of'*: Use the [*anyOf*](https://json-schema.org/understanding-json-schema/reference/combining#anyOf)\
+      \ \n\nkeyword to combine schemas (the default).\n- *'primitive_type_array'*:\
+      \ Use the [*type*](https://json-schema.org/understanding-json-schema/reference/type)\n\
+      keyword as an array of strings, containing each type of the combination. If\
+      \ any of the schemas is not a primitive\ntype (*string*, *boolean*, *null*,\
+      \ *integer* or *number*) or contains constraints/metadata, falls back to\n*any_of*."
+    isRequired: true
+  - name: schema_generator
+    description: 'To override the logic used to generate the JSON schema, as a subclass
+      of
+
+      *GenerateJsonSchema* with your desired modifications'
+    defaultValue: <class 'pydantic.json_schema.GenerateJsonSchema'>
+  - name: mode
+    description: The mode in which to generate the schema.
+    defaultValue: validation
+  keywordOnlyParameters:
+  - name: union_format
+    defaultValue: any_of
+  return:
+    description: The JSON schema for the given model class.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.model_parametrized_name
+  name: model_parametrized_name
+  summary: 'Compute the class name for parametrizations of generic classes.
+
+
+    This method can be overridden to achieve a custom naming scheme for generic BaseModels.'
+  signature: 'model_parametrized_name(params: tuple[type[Any], ...]) -> str'
+  parameters:
+  - name: params
+    description: 'Tuple of types of the class. Given a generic class
+
+      *Model* with 2 type variables and a concrete model *Model[str, int]*,
+
+      the value *(str, int)* would be passed to *params*.'
+    isRequired: true
+  return:
+    description: String representing the new class where *params* are passed to *cls*
+      as type variables.
+  exceptions:
+  - type: TypeError
+    description: Raised when trying to generate concrete names for non-generic models.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.model_post_init
+  name: model_post_init
+  summary: 'Override this method to perform additional initialization after *__init__*
+    and *model_construct*.
+
+    This is useful if you want to do some validation that requires the entire model
+    to be initialized.'
+  signature: 'model_post_init(context: Any, /) -> None'
+  positionalOnlyParameters:
+  - name: context
+    isRequired: true
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.model_rebuild
+  name: model_rebuild
+  summary: 'Try to rebuild the pydantic-core schema for the model.
+
+
+    This may be necessary when one of the annotations is a ForwardRef which could
+    not be resolved during
+
+    the initial attempt to build the schema, and automatic rebuilding fails.'
+  signature: 'model_rebuild(*, force: bool = False, raise_errors: bool = True, _parent_namespace_depth:
+    int = 2, _types_namespace: MappingNamespace | None = None) -> bool | None'
+  parameters:
+  - name: force
+    description: Whether to force the rebuilding of the model schema, defaults to
+      *False*.
+    isRequired: true
+  - name: raise_errors
+    description: Whether to raise errors, defaults to *True*.
+    isRequired: true
+  - name: _parent_namespace_depth
+    description: The depth level of the parent namespace, defaults to 2.
+    isRequired: true
+  - name: _types_namespace
+    description: The types namespace, defaults to *None*.
+    isRequired: true
+  keywordOnlyParameters:
+  - name: force
+    defaultValue: 'False'
+  - name: raise_errors
+    defaultValue: 'True'
+  - name: _parent_namespace_depth
+    defaultValue: '2'
+  - name: _types_namespace
+    defaultValue: None
+  return:
+    description: 'Returns *None* if the schema is already "complete" and rebuilding
+      was not required.
+
+      If rebuilding _was_ required, returns *True* if rebuilding was successful, otherwise
+      *False*.'
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.model_validate
+  name: model_validate
+  summary: Validate a pydantic model instance.
+  signature: 'model_validate(obj: Any, *, strict: bool | None = None, extra: Literal[''allow'',
+    ''ignore'', ''forbid''] | None = None, from_attributes: bool | None = None, context:
+    Any | None = None, by_alias: bool | None = None, by_name: bool | None = None)
+    -> Self'
+  parameters:
+  - name: obj
+    description: The object to validate.
+    isRequired: true
+  - name: strict
+    description: Whether to enforce types strictly.
+    isRequired: true
+  - name: extra
+    description: 'Whether to ignore, allow, or forbid extra data during model validation.
+
+      See the [*extra* configuration value][pydantic.ConfigDict.extra] for details.'
+    isRequired: true
+  - name: from_attributes
+    description: Whether to extract data from object attributes.
+    isRequired: true
+  - name: context
+    description: Additional context to pass to the validator.
+    isRequired: true
+  - name: by_alias
+    description: Whether to use the field's alias when validating against the provided
+      input data.
+    isRequired: true
+  - name: by_name
+    description: Whether to use the field's name when validating against the provided
+      input data.
+    isRequired: true
+  keywordOnlyParameters:
+  - name: strict
+    defaultValue: None
+  - name: extra
+    defaultValue: None
+  - name: from_attributes
+    defaultValue: None
+  - name: context
+    defaultValue: None
+  - name: by_alias
+    defaultValue: None
+  - name: by_name
+    defaultValue: None
+  return:
+    description: The validated model instance.
+  exceptions:
+  - type: ValidationError
+    description: If the object could not be validated.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.model_validate_json
+  name: model_validate_json
+  summary: "!!! abstract \"Usage Documentation\"\n   [JSON Parsing](../concepts/json.md#json-parsing)\n\
+    \nValidate the given JSON data against the Pydantic model."
+  signature: 'model_validate_json(json_data: str | bytes | bytearray, *, strict: bool
+    | None = None, extra: Literal[''allow'', ''ignore'', ''forbid''] | None = None,
+    context: Any | None = None, by_alias: bool | None = None, by_name: bool | None
+    = None) -> Self'
+  parameters:
+  - name: json_data
+    description: The JSON data to validate.
+    isRequired: true
+  - name: strict
+    description: Whether to enforce types strictly.
+    isRequired: true
+  - name: extra
+    description: 'Whether to ignore, allow, or forbid extra data during model validation.
+
+      See the [*extra* configuration value][pydantic.ConfigDict.extra] for details.'
+    isRequired: true
+  - name: context
+    description: Extra variables to pass to the validator.
+    isRequired: true
+  - name: by_alias
+    description: Whether to use the field's alias when validating against the provided
+      input data.
+    isRequired: true
+  - name: by_name
+    description: Whether to use the field's name when validating against the provided
+      input data.
+    isRequired: true
+  keywordOnlyParameters:
+  - name: strict
+    defaultValue: None
+  - name: extra
+    defaultValue: None
+  - name: context
+    defaultValue: None
+  - name: by_alias
+    defaultValue: None
+  - name: by_name
+    defaultValue: None
+  return:
+    description: The validated Pydantic model.
+  exceptions:
+  - type: ValidationError
+    description: If *json_data* is not a JSON string or the object could not be validated.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.model_validate_strings
+  name: model_validate_strings
+  summary: Validate the given object with string data against the Pydantic model.
+  signature: 'model_validate_strings(obj: Any, *, strict: bool | None = None, extra:
+    Literal[''allow'', ''ignore'', ''forbid''] | None = None, context: Any | None
+    = None, by_alias: bool | None = None, by_name: bool | None = None) -> Self'
+  parameters:
+  - name: obj
+    description: The object containing string data to validate.
+    isRequired: true
+  - name: strict
+    description: Whether to enforce types strictly.
+    isRequired: true
+  - name: extra
+    description: 'Whether to ignore, allow, or forbid extra data during model validation.
+
+      See the [*extra* configuration value][pydantic.ConfigDict.extra] for details.'
+    isRequired: true
+  - name: context
+    description: Extra variables to pass to the validator.
+    isRequired: true
+  - name: by_alias
+    description: Whether to use the field's alias when validating against the provided
+      input data.
+    isRequired: true
+  - name: by_name
+    description: Whether to use the field's name when validating against the provided
+      input data.
+    isRequired: true
+  keywordOnlyParameters:
+  - name: strict
+    defaultValue: None
+  - name: extra
+    defaultValue: None
+  - name: context
+    defaultValue: None
+  - name: by_alias
+    defaultValue: None
+  - name: by_name
+    defaultValue: None
+  return:
+    description: The validated Pydantic model.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.parse_file
+  name: parse_file
+  signature: 'parse_file(path: str | Path, *, content_type: str | None = None, encoding:
+    str = ''utf8'', proto: DeprecatedParseProtocol | None = None, allow_pickle: bool
+    = False) -> Self'
+  parameters:
+  - name: path
+    isRequired: true
+  keywordOnlyParameters:
+  - name: content_type
+    defaultValue: None
+  - name: encoding
+    defaultValue: utf8
+  - name: proto
+    defaultValue: None
+  - name: allow_pickle
+    defaultValue: 'False'
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.parse_obj
+  name: parse_obj
+  signature: 'parse_obj(obj: Any) -> Self'
+  parameters:
+  - name: obj
+    isRequired: true
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.parse_raw
+  name: parse_raw
+  signature: 'parse_raw(b: str | bytes, *, content_type: str | None = None, encoding:
+    str = ''utf8'', proto: DeprecatedParseProtocol | None = None, allow_pickle: bool
+    = False) -> Self'
+  parameters:
+  - name: b
+    isRequired: true
+  keywordOnlyParameters:
+  - name: content_type
+    defaultValue: None
+  - name: encoding
+    defaultValue: utf8
+  - name: proto
+    defaultValue: None
+  - name: allow_pickle
+    defaultValue: 'False'
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.pick
+  name: pick
+  summary: "Pick keys from the output *dict* of this *Runnable*.\n\n!!! example \"\
+    Pick a single key\"\n\n   >>``<<>>`<<python\n   import json\n\n   from langchain_core.runnables\
+    \ import RunnableLambda, RunnableMap\n\n   as_str = RunnableLambda(str)\n   as_json\
+    \ = RunnableLambda(json.loads)\n   chain = RunnableMap(str=as_str, json=as_json)\n\
+    \n   chain.invoke(\"[1, 2, 3]\")\n   # -> {\"str\": \"[1, 2, 3]\", \"json\": [1,\
+    \ 2, 3]}\n\n   json_only_chain = chain.pick(\"json\")\n   json_only_chain.invoke(\"\
+    [1, 2, 3]\")\n   # -> [1, 2, 3]\n   >>``<<>>`<<\n\n!!! example \"Pick a list of\
+    \ keys\"\n\n   >>``<<>>`<<python\n   from typing import Any\n\n   import json\n\
+    \n   from langchain_core.runnables import RunnableLambda, RunnableMap\n\n   as_str\
+    \ = RunnableLambda(str)\n   as_json = RunnableLambda(json.loads)\n\n   def as_bytes(x:\
+    \ Any) -> bytes:\n      return bytes(x, \"utf-8\")\n\n   chain = RunnableMap(\n\
+    \      str=as_str, json=as_json, bytes=RunnableLambda(as_bytes)\n\n   )\n\n  \
+    \ chain.invoke(\"[1, 2, 3]\")\n   # -> {\"str\": \"[1, 2, 3]\", \"json\": [1,\
+    \ 2, 3], \"bytes\": b\"[1, 2, 3]\"}\n\n   json_and_bytes_chain = chain.pick([\"\
+    json\", \"bytes\"])\n   json_and_bytes_chain.invoke(\"[1, 2, 3]\")\n   # -> {\"\
+    json\": [1, 2, 3], \"bytes\": b\"[1, 2, 3]\"}\n   >>``<<>>`<<"
+  signature: 'pick(keys: str | list[str]) -> RunnableSerializable[Any, Any]'
+  parameters:
+  - name: keys
+    description: A key or list of keys to pick from the output dict.
+    isRequired: true
+  return:
+    description: a new *Runnable*.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.pipe
+  name: pipe
+  summary: 'Pipe *Runnable* objects.
+
+
+    Compose this *Runnable* with *Runnable*-like objects to make a
+
+    *RunnableSequence*.
+
+
+    Equivalent to *RunnableSequence(self, *others)* or *self | others[0] | ...*'
+  signature: 'pipe(*others: Runnable[Any, Other] | Callable[[Any], Other], name: str
+    | None = None) -> RunnableSerializable[TypeVar, TypeVar]'
+  parameters:
+  - name: '*others'
+    description: Other *Runnable* or *Runnable*-like objects to compose
+    isRequired: true
+  - name: name
+    description: An optional name for the resulting *RunnableSequence*.
+    isRequired: true
+  keywordOnlyParameters:
+  - name: name
+    defaultValue: None
+  return:
+    description: A new *Runnable*.
+  examples:
+  - ">>``<<>>`<<python\nfrom langchain_core.runnables import RunnableLambda\n\ndef\
+    \ add_one(x: int) -> int:\n   return x + 1\n\ndef mul_two(x: int) -> int:\n  \
+    \ return x * 2\n\nrunnable_1 = RunnableLambda(add_one)\nrunnable_2 = RunnableLambda(mul_two)\n\
+    sequence = runnable_1.pipe(runnable_2)\n# Or equivalently:\n# sequence = runnable_1\
+    \ | runnable_2\n# sequence = RunnableSequence(first=runnable_1, last=runnable_2)\n\
+    sequence.invoke(1)\nawait sequence.ainvoke(1)\n# -> 4sequence.batch([1, 2, 3])\n\
+    await sequence.abatch([1, 2, 3])\n# -> [4, 6, 8]\n>>``<<>>`<<\n"
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.schema
+  name: schema
+  signature: 'schema(by_alias: bool = True, ref_template: str = ''#/$defs/{model}'')
+    -> Dict[str, Any]'
+  parameters:
+  - name: by_alias
+    defaultValue: 'True'
+  - name: ref_template
+    defaultValue: '#/$defs/{model}'
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.schema_json
+  name: schema_json
+  signature: 'schema_json(*, by_alias: bool = True, ref_template: str = ''#/$defs/{model}'',
+    **dumps_kwargs: Any) -> str'
+  keywordOnlyParameters:
+  - name: by_alias
+    defaultValue: 'True'
+  - name: ref_template
+    defaultValue: '#/$defs/{model}'
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.set_verbose
+  name: set_verbose
+  summary: 'If verbose is *None*, set it.
+
+
+    This allows users to pass in *None* as verbose to access the global setting.'
+  signature: 'set_verbose(verbose: bool | None) -> bool'
+  parameters:
+  - name: verbose
+    description: The verbosity setting to use.
+    isRequired: true
+  return:
+    description: The verbosity setting to use.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.stream
+  name: stream
+  signature: 'stream(input: Any, config: RunnableConfig | None = None, **kwargs: Any)'
+  parameters:
+  - name: input
+    isRequired: true
+  - name: config
+    defaultValue: None
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.to_json
+  name: to_json
+  summary: Serialize the *Runnable* to JSON.
+  signature: to_json() -> SerializedConstructor | SerializedNotImplemented
+  return:
+    description: A JSON-serializable representation of the *Runnable*.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.to_json_not_implemented
+  name: to_json_not_implemented
+  summary: Serialize a "not implemented" object.
+  signature: to_json_not_implemented() -> SerializedNotImplemented
+  return:
+    description: '*SerializedNotImplemented*.'
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.transform
+  name: transform
+  summary: 'Transform inputs to outputs.
+
+
+    Default implementation of transform, which buffers input and calls *astream*.
+
+
+    Subclasses must override this method if they can start producing output while
+
+    input is still being generated.'
+  signature: 'transform(input: Iterator[Input], config: RunnableConfig | None = None,
+    **kwargs: Any | None) -> Iterator[Output]'
+  parameters:
+  - name: input
+    description: An iterator of inputs to the *Runnable*.
+    isRequired: true
+  - name: config
+    description: The config to use for the *Runnable*.
+    defaultValue: None
+  - name: '**kwargs'
+    description: Additional keyword arguments to pass to the *Runnable*.
+    isRequired: true
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.update_forward_refs
+  name: update_forward_refs
+  signature: 'update_forward_refs(**localns: Any) -> None'
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.validate
+  name: validate
+  signature: 'validate(value: Any) -> Self'
+  parameters:
+  - name: value
+    isRequired: true
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.with_alisteners
+  name: with_alisteners
+  summary: 'Bind async lifecycle listeners to a *Runnable*.
+
+
+    Returns a new *Runnable*.
+
+
+    The Run object contains information about the run, including its *id*,
+
+    *type*, *input*, *output*, *error*, *start_time*, *end_time*, and
+
+    any tags or metadata added to the run.'
+  signature: 'with_alisteners(*, on_start: AsyncListener | None = None, on_end: AsyncListener
+    | None = None, on_error: AsyncListener | None = None) -> Runnable[Input, Output]'
+  parameters:
+  - name: on_start
+    description: 'Called asynchronously before the *Runnable* starts running,
+
+      with the *Run* object.'
+    isRequired: true
+  - name: on_end
+    description: 'Called asynchronously after the *Runnable* finishes running,
+
+      with the *Run* object.'
+    isRequired: true
+  - name: on_error
+    description: 'Called asynchronously if the *Runnable* throws an error,
+
+      with the *Run* object.'
+    isRequired: true
+  keywordOnlyParameters:
+  - name: on_start
+    defaultValue: None
+  - name: on_end
+    defaultValue: None
+  - name: on_error
+    defaultValue: None
+  return:
+    description: A new *Runnable* with the listeners bound.
+  examples:
+  - ">>``<<>>`<<python\nfrom langchain_core.runnables import RunnableLambda, Runnable\n\
+    from datetime import datetime, timezone\nimport time\nimport asyncio\n\ndef format_t(timestamp:\
+    \ float) -> str:\n   return datetime.fromtimestamp(timestamp, tz=timezone.utc).isoformat()\n\
+    \nasync def test_runnable(time_to_sleep: int):\n   print(f\"Runnable[{time_to_sleep}s]:\
+    \ starts at {format_t(time.time())}\")\n   await asyncio.sleep(time_to_sleep)\n\
+    \   print(f\"Runnable[{time_to_sleep}s]: ends at {format_t(time.time())}\")\n\n\
+    async def fn_start(run_obj: Runnable):\n   print(f\"on start callback starts at\
+    \ {format_t(time.time())}\")\n   await asyncio.sleep(3)\n   print(f\"on start\
+    \ callback ends at {format_t(time.time())}\")\n\nasync def fn_end(run_obj: Runnable):\n\
+    \   print(f\"on end callback starts at {format_t(time.time())}\")\n   await asyncio.sleep(2)\n\
+    \   print(f\"on end callback ends at {format_t(time.time())}\")\n\nrunnable =\
+    \ RunnableLambda(test_runnable).with_alisteners(\n   on_start=fn_start, on_end=fn_end\n\
+    \n)\n\nasync def concurrent_runs():\n   await asyncio.gather(runnable.ainvoke(2),\
+    \ runnable.ainvoke(3))\n\nasyncio.run(concurrent_runs())\n# Result:\n# on start\
+    \ callback starts at 2025-03-01T07:05:22.875378+00:00\n# on start callback starts\
+    \ at 2025-03-01T07:05:22.875495+00:00\n# on start callback ends at 2025-03-01T07:05:25.878862+00:00\n\
+    # on start callback ends at 2025-03-01T07:05:25.878947+00:00\n# Runnable[2s]:\
+    \ starts at 2025-03-01T07:05:25.879392+00:00\n# Runnable[3s]: starts at 2025-03-01T07:05:25.879804+00:00\n\
+    # Runnable[2s]: ends at 2025-03-01T07:05:27.881998+00:00\n# on end callback starts\
+    \ at 2025-03-01T07:05:27.882360+00:00\n# Runnable[3s]: ends at 2025-03-01T07:05:28.881737+00:00\n\
+    # on end callback starts at 2025-03-01T07:05:28.882428+00:00\n# on end callback\
+    \ ends at 2025-03-01T07:05:29.883893+00:00\n# on end callback ends at 2025-03-01T07:05:30.884831+00:00\n\
+    >>``<<>>`<<\n"
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.with_config
+  name: with_config
+  summary: Bind config to a *Runnable*, returning a new *Runnable*.
+  signature: 'with_config(config: RunnableConfig | None = None, **kwargs: Any) ->
+    Runnable[Input, Output]'
+  parameters:
+  - name: config
+    description: The config to bind to the *Runnable*.
+    defaultValue: None
+  - name: '**kwargs'
+    description: Additional keyword arguments to pass to the *Runnable*.
+    isRequired: true
+  return:
+    description: A new *Runnable* with the config bound.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.with_fallbacks
+  name: with_fallbacks
+  summary: 'Add fallbacks to a *Runnable*, returning a new *Runnable*.
+
+
+    The new *Runnable* will try the original *Runnable*, and then each fallback
+
+    in order, upon failures.'
+  signature: 'with_fallbacks(fallbacks: Sequence[Runnable[Input, Output]], *, exceptions_to_handle:
+    tuple[type[BaseException], ...] = (<class ''Exception''>,), exception_key: str
+    | None = None) -> RunnableWithFallbacksT[Input, Output]'
+  parameters:
+  - name: fallbacks
+    description: 'A sequence of runnables to try if the original *Runnable*
+
+      fails.'
+    isRequired: true
+  - name: exceptions_to_handle
+    description: A tuple of exception types to handle.
+    isRequired: true
+  - name: exception_key
+    description: 'If *string* is specified then handled exceptions will be
+
+      passed to fallbacks as part of the input under the specified key.
+
+
+      If *None*, exceptions will not be passed to fallbacks.
+
+
+      If used, the base *Runnable* and its fallbacks must accept a
+
+      dictionary as input.'
+    isRequired: true
+  keywordOnlyParameters:
+  - name: exceptions_to_handle
+    defaultValue: (<class 'Exception'>,)
+  - name: exception_key
+    defaultValue: None
+  return:
+    description: "A new *Runnable* that will try the original *Runnable*, and then\
+      \ each\n   Fallback in order, upon failures."
+  examples:
+  - ">>``<<>>`<<python\nfrom typing import Iteratorfrom langchain_core.runnables import\
+    \ RunnableGenerator\n\ndef _generate_immediate_error(input: Iterator) -> Iterator[str]:\n\
+    \   raise ValueError()\n   yield \"\"\n\ndef _generate(input: Iterator) -> Iterator[str]:\n\
+    \   yield from \"foo bar\"\n\nrunnable = RunnableGenerator(_generate_immediate_error).with_fallbacks(\n\
+    \   [RunnableGenerator(_generate)]\n\n)\nprint(\"\".join(runnable.stream({})))\
+    \  # foo bar\n>>``<<>>`<<\n"
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.with_listeners
+  name: with_listeners
+  summary: 'Bind lifecycle listeners to a *Runnable*, returning a new *Runnable*.
+
+
+    The Run object contains information about the run, including its *id*,
+
+    *type*, *input*, *output*, *error*, *start_time*, *end_time*, and
+
+    any tags or metadata added to the run.'
+  signature: 'with_listeners(*, on_start: Callable[[Run], None] | Callable[[Run, RunnableConfig],
+    None] | None = None, on_end: Callable[[Run], None] | Callable[[Run, RunnableConfig],
+    None] | None = None, on_error: Callable[[Run], None] | Callable[[Run, RunnableConfig],
+    None] | None = None) -> Runnable[Input, Output]'
+  parameters:
+  - name: on_start
+    description: 'Called before the *Runnable* starts running, with the *Run*
+
+      object.'
+    isRequired: true
+  - name: on_end
+    description: 'Called after the *Runnable* finishes running, with the *Run*
+
+      object.'
+    isRequired: true
+  - name: on_error
+    description: 'Called if the *Runnable* throws an error, with the *Run*
+
+      object.'
+    isRequired: true
+  keywordOnlyParameters:
+  - name: on_start
+    defaultValue: None
+  - name: on_end
+    defaultValue: None
+  - name: on_error
+    defaultValue: None
+  return:
+    description: A new *Runnable* with the listeners bound.
+  examples:
+  - ">>``<<>>`<<python\nfrom langchain_core.runnables import RunnableLambda\nfrom\
+    \ langchain_core.tracers.schemas import Runimport time\n\ndef test_runnable(time_to_sleep:\
+    \ int):\n   time.sleep(time_to_sleep)\n\ndef fn_start(run_obj: Run):\n   print(\"\
+    start_time:\", run_obj.start_time)\n\ndef fn_end(run_obj: Run):\n   print(\"end_time:\"\
+    , run_obj.end_time)\n\nchain = RunnableLambda(test_runnable).with_listeners(\n\
+    \   on_start=fn_start, on_end=fn_end\n\n)\nchain.invoke(2)\n>>``<<>>`<<\n"
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.with_retry
+  name: with_retry
+  summary: Create a new *Runnable* that retries the original *Runnable* on exceptions.
+  signature: 'with_retry(*, retry_if_exception_type: tuple[type[BaseException], ...]
+    = (<class ''Exception''>,), wait_exponential_jitter: bool = True, exponential_jitter_params:
+    ExponentialJitterParams | None = None, stop_after_attempt: int = 3) -> Runnable[Input,
+    Output]'
+  parameters:
+  - name: retry_if_exception_type
+    description: A tuple of exception types to retry on.
+    isRequired: true
+  - name: wait_exponential_jitter
+    description: 'Whether to add jitter to the wait
+
+      time between retries.'
+    isRequired: true
+  - name: stop_after_attempt
+    description: 'The maximum number of attempts to make before
+
+      giving up.'
+    isRequired: true
+  - name: exponential_jitter_params
+    description: 'Parameters for
+
+      *tenacity.wait_exponential_jitter*. Namely: *initial*, *max*,
+
+      *exp_base*, and *jitter* (all *float* values).'
+    isRequired: true
+  keywordOnlyParameters:
+  - name: retry_if_exception_type
+    defaultValue: (<class 'Exception'>,)
+  - name: wait_exponential_jitter
+    defaultValue: 'True'
+  - name: exponential_jitter_params
+    defaultValue: None
+  - name: stop_after_attempt
+    defaultValue: '3'
+  return:
+    description: A new *Runnable* that retries the original *Runnable* on exceptions.
+  examples:
+  - ">>``<<>>`<<python\nfrom langchain_core.runnables import RunnableLambdacount =\
+    \ 0\n\ndef _lambda(x: int) -> None:\n   global count\n   count = count + 1\n \
+    \  if x == 1:\n\n      raise ValueError(\"x is 1\")\n\n   else:\n      pass\n\n\
+    runnable = RunnableLambda(_lambda)\ntry:\n\n   runnable.with_retry(\n      stop_after_attempt=2,\n\
+    \      retry_if_exception_type=(ValueError,),\n\n   ).invoke(1)\n\nexcept ValueError:\n\
+    \   pass\n\nassert count == 2\n>>``<<>>`<<\n"
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.with_structured_output
+  name: with_structured_output
+  summary: "Model wrapper that returns outputs formatted to match the given schema.\n\
+    \n???+ example \"Pydantic schema (*include_raw=False*)\"\n\n   >>``<<>>`<<python\n\
+    \   from pydantic import BaseModel\n\n   class AnswerWithJustification(BaseModel):\n\
+    \      '''An answer to the user question along with justification for the answer.'''\n\
+    \n      answer: str\n      justification: str\n\n   model = ChatModel(model=\"\
+    model-name\", temperature=0)\n   structured_model = model.with_structured_output(AnswerWithJustification)\n\
+    \n   structured_model.invoke(\n      \"What weighs more a pound of bricks or a\
+    \ pound of feathers\"\n\n   )\n\n   # -> AnswerWithJustification(\n   #     answer='They\
+    \ weigh the same',\n   #     justification='Both a pound of bricks and a pound\
+    \ of feathers weigh one pound. The weight is the same, but the volume or density\
+    \ of the objects may differ.'\n   # )\n   >>``<<>>`<<\n\n??? example \"Pydantic\
+    \ schema (*include_raw=True*)\"\n\n   >>``<<>>`<<python\n   from pydantic import\
+    \ BaseModel\n\n   class AnswerWithJustification(BaseModel):\n      '''An answer\
+    \ to the user question along with justification for the answer.'''\n\n      answer:\
+    \ str\n      justification: str\n\n   model = ChatModel(model=\"model-name\",\
+    \ temperature=0)\n   structured_model = model.with_structured_output(\n\n    \
+    \  AnswerWithJustification, include_raw=True\n\n   )\n\n   structured_model.invoke(\n\
+    \      \"What weighs more a pound of bricks or a pound of feathers\"\n\n   )\n\
+    \   # -> {\n   #     'raw': AIMessage(content='', additional_kwargs={'tool_calls':\
+    \ [{'id': 'call_Ao02pnFYXD6GN1yzc0uXPsvF', 'function': {'arguments': '{\"answer\"\
+    :\"They weigh the same.\",\"justification\":\"Both a pound of bricks and a pound\
+    \ of feathers weigh one pound. The weight is the same, but the volume or density\
+    \ of the objects may differ.\"}', 'name': 'AnswerWithJustification'}, 'type':\
+    \ 'function'}]}),\n   #     'parsed': AnswerWithJustification(answer='They weigh\
+    \ the same.', justification='Both a pound of bricks and a pound of feathers weigh\
+    \ one pound. The weight is the same, but the volume or density of the objects\
+    \ may differ.'),\n   #     'parsing_error': None\n   # }\n   >>``<<>>`<<\n\n???\
+    \ example \"Dictionary schema (*include_raw=False*)\"\n\n   >>``<<>>`<<python\n\
+    \   from pydantic import BaseModel\n   from langchain_core.utils.function_calling\
+    \ import convert_to_openai_tool\n\n   class AnswerWithJustification(BaseModel):\n\
+    \      '''An answer to the user question along with justification for the answer.'''\n\
+    \n      answer: str\n      justification: str\n\n   dict_schema = convert_to_openai_tool(AnswerWithJustification)\n\
+    \   model = ChatModel(model=\"model-name\", temperature=0)\n   structured_model\
+    \ = model.with_structured_output(dict_schema)\n\n   structured_model.invoke(\n\
+    \      \"What weighs more a pound of bricks or a pound of feathers\"\n\n   )\n\
+    \   # -> {\n   #     'answer': 'They weigh the same',\n   #     'justification':\
+    \ 'Both a pound of bricks and a pound of feathers weigh one pound. The weight\
+    \ is the same, but the volume and density of the two substances differ.'\n   #\
+    \ }\n   >>``<<>>`<<\n\n!!! warning \"Behavior changed in *langchain-core* 0.2.26\"\
+    \n\n   Added support for *TypedDict* class."
+  signature: 'with_structured_output(schema: Dict | type, *, include_raw: bool = False,
+    **kwargs: Any) -> Runnable[LanguageModelInput, Dict | BaseModel]'
+  parameters:
+  - name: schema
+    description: "The output schema. Can be passed in as:\n\n* An OpenAI function/tool\
+      \ schema, \n\n* A JSON Schema, \n\n* A *TypedDict* class, \n\n* Or a Pydantic\
+      \ class. \n\nIf *schema* is a Pydantic class then the model output will be a\n\
+      Pydantic instance of that class, and the model-generated fields will be\nvalidated\
+      \ by the Pydantic class. Otherwise the model output will be a\ndict and will\
+      \ not be validated.\n\nSee *langchain_core.utils.function_calling.convert_to_openai_tool*\
+      \ for\nmore on how to properly specify types and descriptions of schema fields\n\
+      when specifying a Pydantic or *TypedDict* class."
+    isRequired: true
+  - name: include_raw
+    description: 'If *False* then only the parsed structured output is returned.
+
+
+      If an error occurs during model output parsing it will be raised.
+
+
+      If *True* then both the raw model response (a *BaseMessage*) and the
+
+      parsed model response will be returned.
+
+
+      If an error occurs during output parsing it will be caught and returned
+
+      as well.
+
+
+      The final output is always a *dict* with keys *''raw''*, *''parsed''*, and
+
+      *''parsing_error''*.'
+    isRequired: true
+  keywordOnlyParameters:
+  - name: include_raw
+    defaultValue: 'False'
+  return:
+    description: "A *Runnable* that takes same inputs as a\n   *langchain_core.language_models.chat.BaseChatModel*.\
+      \ If *include_raw* is\n   *False* and *schema* is a Pydantic class, *Runnable*\
+      \ outputs an instance\n   of *schema* (i.e., a Pydantic object). Otherwise,\
+      \ if *include_raw* is\n   *False* then *Runnable* outputs a *dict*.\n\n   If\
+      \ *include_raw* is *True*, then *Runnable* outputs a *dict* with keys:\n\n \
+      \  * *'raw'*: *BaseMessage* \n\n   * *'parsed'*: *None* if there was a parsing\
+      \ error, otherwise the type\n\n        depends on the *schema* as described\
+      \ above.\n\n   * *'parsing_error'*: *BaseException | None*"
+  exceptions:
+  - type: ValueError
+    description: If there are any unsupported *kwargs*
+  - type: NotImplementedError
+    description: If the model does not implement *with_structured_output()*
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.with_types
+  name: with_types
+  summary: Bind input and output types to a *Runnable*, returning a new *Runnable*.
+  signature: 'with_types(*, input_type: type[-Input] | None = None, output_type: type[+Output]
+    | None = None) -> Runnable[Input, Output]'
+  parameters:
+  - name: input_type
+    description: The input type to bind to the *Runnable*.
+    isRequired: true
+  - name: output_type
+    description: The output type to bind to the *Runnable*.
+    isRequired: true
+  keywordOnlyParameters:
+  - name: input_type
+    defaultValue: None
+  - name: output_type
+    defaultValue: None
+  return:
+    description: A new *Runnable* with the types bound.
+attributes:
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.InputType
+  name: InputType
+  summary: Get the input type for this *Runnable*.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.OutputType
+  name: OutputType
+  summary: Get the output type for this *Runnable*.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.cache
+  name: cache
+  summary: "Whether to cache the response.\n\n* If *True*, will use the global cache.\
+    \ \n\n* If *False*, will not use a cache \n\n* If *None*, will use the global\
+    \ cache if it's set, otherwise no cache. \n\n* If instance of *BaseCache*, will\
+    \ use the provided cache. \n\nCaching is not currently supported for streaming\
+    \ methods of models."
+  signature: 'cache: BaseCache | bool | None'
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.callbacks
+  name: callbacks
+  summary: Callbacks to add to the run trace.
+  signature: 'callbacks: Callbacks'
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.config_specs
+  name: config_specs
+  summary: List configurable fields for this *Runnable*.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.custom_get_token_ids
+  name: custom_get_token_ids
+  summary: Optional encoder to use for counting tokens.
+  signature: 'custom_get_token_ids: Callable[[str], list[int]] | None'
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.disable_streaming
+  name: disable_streaming
+  summary: "Whether to disable streaming for this model.\n\nIf streaming is bypassed,\
+    \ then *stream*/*astream*/*astream_events* will\ndefer to *invoke*/*ainvoke*.\n\
+    \n* If *True*, will always bypass streaming case. \n\n* If *'tool_calling'*, will\
+    \ bypass streaming case only when the model is called\n\n     with a *tools* keyword\
+    \ argument. In other words, LangChain will automatically\n     switch to non-streaming\
+    \ behavior (*invoke*) only when the tools argument is\n     provided. This offers\
+    \ the best of both worlds.\n\n* If *False* (Default), will always use streaming\
+    \ case if available. \n\nThe main reason for this flag is that code might be written\
+    \ using *stream* and\na user may want to swap out a given model for another model\
+    \ whose the implementation\ndoes not properly support streaming."
+  signature: 'disable_streaming: bool | Literal[''tool_calling'']'
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.input_schema
+  name: input_schema
+  summary: The type of input this *Runnable* accepts specified as a Pydantic model.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.lc_attributes
+  name: lc_attributes
+  summary: 'List of attribute names that should be included in the serialized kwargs.
+
+
+    These attributes must be accepted by the constructor.
+
+
+    Default is an empty dictionary.'
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.lc_secrets
+  name: lc_secrets
+  summary: 'A map of constructor argument names to secret ids.
+
+
+    For example, *{"openai_api_key": "OPENAI_API_KEY"}*'
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.metadata
+  name: metadata
+  summary: Metadata to add to the run trace.
+  signature: 'metadata: dict[str, Any] | None'
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.model_config
+  name: model_config
+  summary: Configuration for the model, should be a dictionary conforming to [*ConfigDict*][pydantic.config.ConfigDict].
+  signature: 'model_config: ClassVar[ConfigDict] = {''arbitrary_types_allowed'': True,
+    ''extra'': ''ignore'', ''protected_namespaces'': ()}'
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.model_extra
+  name: model_extra
+  summary: Get extra fields set during validation.
+  return:
+    description: A dictionary of extra fields, or *None* if *config.extra* is not
+      set to *"allow"*.
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.model_fields_set
+  name: model_fields_set
+  summary: Returns the set of fields that have been explicitly set on this model instance.
+  return:
+    description: "A set of strings representing the fields that have been set,\n \
+      \  i.e. that were not filled from defaults."
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.name
+  name: name
+  summary: The name of the *Runnable*. Used for debugging and tracing.
+  signature: 'name: str | None'
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.output_schema
+  name: output_schema
+  summary: 'Output schema.
+
+
+    The type of output this *Runnable* produces specified as a Pydantic model.'
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.output_version
+  name: output_version
+  summary: "Version of *AIMessage* output format to store in message content.\n\n\
+    *AIMessage.content_blocks* will lazily parse the contents of *content* into a\n\
+    standard format. This flag can be used to additionally store the standard format\n\
+    in message content, e.g., for serialization purposes.\n\nSupported values:\n\n\
+    * *'v0'*: provider-specific format in content (can lazily-parse with\n\n     *content_blocks*)\n\
+    \n* *'v1'*: standardized format in content (consistent with *content_blocks*)\
+    \ \n\nPartner packages (e.g.,\n[*langchain-openai*](https://pypi.org/project/langchain-openai))\
+    \ can also use this\nfield to roll out new content formats in a backward-compatible\
+    \ way.\n\n!!! version-added \"Added in *langchain-core* 1.0.0\""
+  signature: 'output_version: str | None'
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.profile
+  name: profile
+  summary: "Profile detailing model capabilities.\n\n!!! warning \"Beta feature\"\n\
+    \n   This is a beta feature. The format of model profiles is subject to change.\n\
+    \nIf not specified, automatically loaded from the provider package on initialization\n\
+    if data is available.\n\nExample profile data includes context window sizes, supported\
+    \ modalities, or support\nfor tool calling, structured output, and other features.\n\
+    \n!!! version-added \"Added in *langchain-core* 1.1.0\""
+  signature: 'profile: ModelProfile | None'
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.rate_limiter
+  name: rate_limiter
+  summary: An optional rate limiter to use for limiting the number of requests.
+  signature: 'rate_limiter: BaseRateLimiter | None'
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.tags
+  name: tags
+  summary: Tags to add to the run trace.
+  signature: 'tags: list[str] | None'
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.tool_node
+  name: tool_node
+  summary: Get a ToolNode that uses this chat model's Foundry tool call wrappers.
+  return:
+    description: A ToolNode with Foundry tool call wrappers.
+    types:
+    - <xref:ToolNode>
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.tool_node_wrapper
+  name: tool_node_wrapper
+  summary: "Get the Foundry tool call wrappers for this chat model.\n\nExample::\n\
+    \n   ```\n\n   >>> from langgraph.prebuilt import ToolNode\n   >>> foundry_tool_bound_chat_model\
+    \ = FoundryToolLateBindingChatModel(...)\n   >>> ToolNode([...], **foundry_tool_bound_chat_model.as_wrappers())\n\
+    \   ```"
+  return:
+    description: The Foundry tool call wrappers.
+    types:
+    - <xref:azure.ai.agentserver.langgraph.tools.FoundryToolNodeWrappers>
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.verbose
+  name: verbose
+  summary: Whether to print out response text.
+  signature: 'verbose: bool'
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.model_computed_fields
+  name: model_computed_fields
+  signature: model_computed_fields = {}
+- uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.model_fields
+  name: model_fields
+  signature: 'model_fields = {''cache'': FieldInfo(annotation=Union[BaseCache, bool,
+    NoneType], required=False, default=None, exclude=True), ''callbacks'': FieldInfo(annotation=Union[list[BaseCallbackHandler],
+    BaseCallbackManager, NoneType], required=False, default=None, exclude=True), ''custom_get_token_ids'':
+    FieldInfo(annotation=Union[Callable[list, list[int]], NoneType], required=False,
+    default=None, exclude=True), ''disable_streaming'': FieldInfo(annotation=Union[bool,
+    Literal[''tool_calling'']], required=False, default=False), ''metadata'': FieldInfo(annotation=Union[dict[str,
+    Any], NoneType], required=False, default=None, exclude=True), ''name'': FieldInfo(annotation=Union[str,
+    NoneType], required=False, default=None), ''output_version'': FieldInfo(annotation=Union[str,
+    NoneType], required=False, default_factory=get_from_env_fn), ''profile'': FieldInfo(annotation=Union[ModelProfile,
+    NoneType], required=False, default=None, exclude=True), ''rate_limiter'': FieldInfo(annotation=Union[BaseRateLimiter,
+    NoneType], required=False, default=None, exclude=True), ''tags'': FieldInfo(annotation=Union[list[str],
+    NoneType], required=False, default=None, exclude=True), ''verbose'': FieldInfo(annotation=bool,
+    required=False, default_factory=_get_verbosity, exclude=True, repr=False)}'

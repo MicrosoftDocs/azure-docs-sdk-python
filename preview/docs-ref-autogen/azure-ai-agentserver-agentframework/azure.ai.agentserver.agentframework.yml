@@ -6,15 +6,50 @@ type: rootImport
 functions:
 - uid: azure.ai.agentserver.agentframework.from_agent_framework
   name: from_agent_framework
-  signature: 'from_agent_framework(agent, credentials: AsyncTokenCredential | None
-    = None, **kwargs: Any) -> AgentFrameworkCBAgent'
-  parameters:
-  - name: agent
+  summary: 'Create an Agent Framework Adapter from either an AgentProtocol/BaseAgent
+    or a
+
+    WorkflowAgent.
+
+    One of agent or workflow must be provided.'
+  signature: 'from_agent_framework(agent: BaseAgent | AgentProtocol, /, credentials:
+    AsyncTokenCredential | TokenCredential | None = None, thread_repository: AgentThreadRepository
+    | None = None) -> AgentFrameworkAIAgentAdapter'
+  positionalOnlyParameters:
+  - name: agent_or_workflow
     isRequired: true
+  parameters:
+  - name: agent_or_workflow
+    description: The agent to adapt.
+    isRequired: true
+    types:
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:BaseAgent>, <xref:AgentProtocol>]]
   - name: credentials
+    description: Optional asynchronous token credential for authentication.
     defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:AsyncTokenCredential>, <xref:TokenCredential>]]
+  - name: thread_repository
+    description: Optional thread repository for agent thread management.
+    defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:AgentThreadRepository>]
+  - name: checkpoint_repository
+    description: Optional checkpoint repository for workflow checkpointing.
+    defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:CheckpointRepository>]
+  return:
+    description: An instance of AgentFrameworkAgent.
+    types:
+    - <xref:AgentFrameworkAgent>
+  exceptions:
+  - type: TypeError
+    description: 'If neither or both of agent and workflow are provided, or if
+
+      the provided types are incorrect.'
+classes:
+- azure.ai.agentserver.agentframework.FoundryToolsChatMiddleware
 packages:
 - azure.ai.agentserver.agentframework.models
-modules:
-- azure.ai.agentserver.agentframework.agent_framework
-- azure.ai.agentserver.agentframework.tool_client
+- azure.ai.agentserver.agentframework.persistence

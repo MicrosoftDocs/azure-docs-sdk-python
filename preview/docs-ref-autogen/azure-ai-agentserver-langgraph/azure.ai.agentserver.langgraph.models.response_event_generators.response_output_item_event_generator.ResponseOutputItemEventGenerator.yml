@@ -5,7 +5,8 @@ fullName: azure.ai.agentserver.langgraph.models.response_event_generators.respon
 module: azure.ai.agentserver.langgraph.models.response_event_generators.response_output_item_event_generator
 constructor:
   syntax: 'ResponseOutputItemEventGenerator(logger, parent: ResponseEventGenerator,
-    output_index: int, message_id: str = None)'
+    output_index: int, message_id: str = None, *, hitl_helper: HumanInTheLoopHelper
+    = None)'
   parameters:
   - name: logger
     isRequired: true
@@ -14,6 +15,9 @@ constructor:
   - name: output_index
     isRequired: true
   - name: message_id
+    defaultValue: None
+  keywordOnlyParameters:
+  - name: hitl_helper
     defaultValue: None
 methods:
 - uid: azure.ai.agentserver.langgraph.models.response_event_generators.response_output_item_event_generator.ResponseOutputItemEventGenerator.aggregate_content
@@ -26,7 +30,8 @@ methods:
   name: create_child_processor
   signature: 'create_child_processor(message: AIMessage | HumanMessage | ChatMessage
     | SystemMessage | FunctionMessage | ToolMessage | AIMessageChunk | HumanMessageChunk
-    | ChatMessageChunk | SystemMessageChunk | FunctionMessageChunk | ToolMessageChunk)'
+    | ChatMessageChunk | SystemMessageChunk | FunctionMessageChunk | ToolMessageChunk
+    | Interrupt)'
   parameters:
   - name: message
     isRequired: true
@@ -34,8 +39,8 @@ methods:
   name: on_end
   signature: 'on_end(message: AIMessage | HumanMessage | ChatMessage | SystemMessage
     | FunctionMessage | ToolMessage | AIMessageChunk | HumanMessageChunk | ChatMessageChunk
-    | SystemMessageChunk | FunctionMessageChunk | ToolMessageChunk, context: AgentRunContext,
-    stream_state: StreamEventState) -> tuple[bool, List[azure.ai.agentserver.core.models.projects._models.ResponseStreamEvent]]'
+    | SystemMessageChunk | FunctionMessageChunk | ToolMessageChunk | Interrupt, context:
+    LanggraphRunContext, stream_state: StreamEventState) -> tuple[bool, List[azure.ai.agentserver.core.models.projects._models.ResponseStreamEvent]]'
   parameters:
   - name: message
     isRequired: true
@@ -47,8 +52,8 @@ methods:
   name: on_start
   signature: 'on_start(event: AIMessage | HumanMessage | ChatMessage | SystemMessage
     | FunctionMessage | ToolMessage | AIMessageChunk | HumanMessageChunk | ChatMessageChunk
-    | SystemMessageChunk | FunctionMessageChunk | ToolMessageChunk, context: AgentRunContext,
-    stream_state: StreamEventState) -> tuple[bool, List[azure.ai.agentserver.core.models.projects._models.ResponseStreamEvent]]'
+    | SystemMessageChunk | FunctionMessageChunk | ToolMessageChunk | Interrupt, context:
+    LanggraphRunContext, stream_state: StreamEventState) -> tuple[bool, List[azure.ai.agentserver.core.models.projects._models.ResponseStreamEvent]]'
   parameters:
   - name: event
     isRequired: true
@@ -60,7 +65,8 @@ methods:
   name: should_end
   signature: 'should_end(event: AIMessage | HumanMessage | ChatMessage | SystemMessage
     | FunctionMessage | ToolMessage | AIMessageChunk | HumanMessageChunk | ChatMessageChunk
-    | SystemMessageChunk | FunctionMessageChunk | ToolMessageChunk) -> bool'
+    | SystemMessageChunk | FunctionMessageChunk | ToolMessageChunk | Interrupt) ->
+    bool'
   parameters:
   - name: event
     isRequired: true
@@ -68,8 +74,8 @@ methods:
   name: try_create_item_resource_helper
   signature: 'try_create_item_resource_helper(event: AIMessage | HumanMessage | ChatMessage
     | SystemMessage | FunctionMessage | ToolMessage | AIMessageChunk | HumanMessageChunk
-    | ChatMessageChunk | SystemMessageChunk | FunctionMessageChunk | ToolMessageChunk,
-    id_generator: IdGenerator)'
+    | ChatMessageChunk | SystemMessageChunk | FunctionMessageChunk | ToolMessageChunk
+    | Interrupt, id_generator: IdGenerator)'
   parameters:
   - name: event
     isRequired: true
@@ -79,8 +85,9 @@ methods:
   name: try_process_message
   signature: 'try_process_message(message: AIMessage | HumanMessage | ChatMessage
     | SystemMessage | FunctionMessage | ToolMessage | AIMessageChunk | HumanMessageChunk
-    | ChatMessageChunk | SystemMessageChunk | FunctionMessageChunk | ToolMessageChunk,
-    context: AgentRunContext, stream_state: StreamEventState) -> tuple[bool, azure.ai.agentserver.langgraph.models.response_event_generators.response_event_generator.ResponseEventGenerator,
+    | ChatMessageChunk | SystemMessageChunk | FunctionMessageChunk | ToolMessageChunk
+    | Interrupt | None, context: LanggraphRunContext, stream_state: StreamEventState)
+    -> tuple[bool, azure.ai.agentserver.langgraph.models.response_event_generators.response_event_generator.ResponseEventGenerator,
     List[azure.ai.agentserver.core.models.projects._models.ResponseStreamEvent]]'
   parameters:
   - name: message

@@ -9,9 +9,8 @@ summary: 'Adapter for LangGraph Agent.
   Initialize the LangGraphAdapter with a CompiledStateGraph or a function that returns
   one.'
 constructor:
-  syntax: 'LangGraphAdapter(graph: CompiledStateGraph | GraphFactory, credentials:
-    AsyncTokenCredential | None = None, state_converter: LanggraphStateConverter |
-    None = None, **kwargs: Any)'
+  syntax: 'LangGraphAdapter(graph: CompiledStateGraph, credentials: AsyncTokenCredential
+    | None = None, converter: ResponseAPIConverter | None = None)'
   parameters:
   - name: graph
     description: 'The LangGraph StateGraph to adapt, or a callable that takes ToolClient
@@ -19,17 +18,17 @@ constructor:
       and returns CompiledStateGraph (sync or async).'
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:CompiledStateGraph>, <xref:azure.ai.agentserver.langgraph.langgraph.GraphFactory>]
+    - <xref:typing.Union>[<xref:CompiledStateGraph>, <xref:GraphFactory>]
   - name: credentials
     description: Azure credentials for authentication.
     defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:AsyncTokenCredential>]
-  - name: state_converter
-    description: custom state converter. Required if graph state is not MessagesState.
+  - name: converter
+    description: custom response converter.
     defaultValue: None
     types:
-    - <xref:typing.Optional>[<xref:LanggraphStateConverter>]
+    - <xref:typing.Optional>[<xref:ResponseAPIConverter>]
 methods:
 - uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.agent_liveness
   name: agent_liveness
@@ -52,29 +51,13 @@ methods:
 - uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.agent_run_astream
   name: agent_run_astream
   summary: Run the agent with streaming response.
-  signature: 'async agent_run_astream(input_data: dict, context: AgentRunContext,
-    graph: CompiledStateGraph, tool_client: ToolClient | None = None)'
+  signature: 'async agent_run_astream(input_arguments: GraphInputArguments)'
   parameters:
-  - name: input_data
+  - name: input_arguments
     description: The input data to run the agent with.
     isRequired: true
     types:
-    - <xref:dict>
-  - name: context
-    description: The context for the agent run.
-    isRequired: true
-    types:
-    - <xref:AgentRunContext>
-  - name: graph
-    description: The compiled graph instance to use for this request.
-    isRequired: true
-    types:
-    - <xref:CompiledStateGraph>
-  - name: tool_client
-    description: Optional ToolClient to close after streaming completes.
-    defaultValue: None
-    types:
-    - <xref:typing.Optional>[<xref:ToolClient>]
+    - <xref:azure.ai.agentserver.langgraph.models.response_api_converter.GraphInputArguments>
   return:
     description: An async generator yielding the response stream events.
     types:
@@ -82,42 +65,33 @@ methods:
 - uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.agent_run_non_stream
   name: agent_run_non_stream
   summary: Run the agent with non-streaming response.
-  signature: 'async agent_run_non_stream(input_data: dict, context: AgentRunContext,
-    graph: CompiledStateGraph)'
+  signature: 'async agent_run_non_stream(input_arguments: GraphInputArguments)'
   parameters:
-  - name: input_data
+  - name: input_arguments
     description: The input data to run the agent with.
     isRequired: true
     types:
-    - <xref:dict>
-  - name: context
-    description: The context for the agent run.
-    isRequired: true
-    types:
-    - <xref:AgentRunContext>
-  - name: graph
-    description: The compiled graph instance to use for this request.
-    isRequired: true
-    types:
-    - <xref:CompiledStateGraph>
+    - <xref:azure.ai.agentserver.langgraph.models.response_api_converter.GraphInputArguments>
   return:
     description: The response of the agent run.
     types:
     - <xref:dict>
-- uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.create_runnable_config
-  name: create_runnable_config
-  summary: Create a RunnableConfig from the converted request data.
-  signature: 'create_runnable_config(context: AgentRunContext) -> RunnableConfig'
+- uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.ensure_runnable_config
+  name: ensure_runnable_config
+  summary: Ensure the RunnableConfig is set in the input arguments.
+  signature: 'ensure_runnable_config(input_arguments: GraphInputArguments, context:
+    LanggraphRunContext)'
   parameters:
-  - name: context
-    description: The context for the agent run.
+  - name: input_arguments
+    description: The input arguments for the agent run.
     isRequired: true
     types:
-    - <xref:AgentRunContext>
-  return:
-    description: The RunnableConfig for the agent run.
+    - <xref:azure.ai.agentserver.langgraph.models.response_api_converter.GraphInputArguments>
+  - name: context
+    description: The Langgraph run context.
+    isRequired: true
     types:
-    - <xref:RunnableConfig>
+    - <xref:azure.ai.agentserver.langgraph.LanggraphRunContext>
 - uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.format_otlp_endpoint
   name: format_otlp_endpoint
   signature: 'format_otlp_endpoint(endpoint: str) -> str'
@@ -127,15 +101,6 @@ methods:
 - uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.get_agent_identifier
   name: get_agent_identifier
   signature: get_agent_identifier() -> str
-- uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.get_tool_client
-  name: get_tool_client
-  signature: 'get_tool_client(tools: list[azure.ai.agentserver.core.client.tools._model_base.ToolDefinition]
-    | None, user_info: UserInfo | None) -> AzureAIToolClient'
-  parameters:
-  - name: tools
-    isRequired: true
-  - name: user_info
-    isRequired: true
 - uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.get_trace_attributes
   name: get_trace_attributes
   signature: get_trace_attributes()
@@ -218,6 +183,12 @@ methods:
     isRequired: true
   - name: provider
     isRequired: true
+- uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.setup_lg_run_context
+  name: setup_lg_run_context
+  signature: 'async setup_lg_run_context(agent_run_context: AgentRunContext) -> LanggraphRunContext'
+  parameters:
+  - name: agent_run_context
+    isRequired: true
 - uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.setup_otlp_exporter
   name: setup_otlp_exporter
   signature: setup_otlp_exporter(endpoint, provider)
@@ -226,11 +197,3 @@ methods:
     isRequired: true
   - name: provider
     isRequired: true
-attributes:
-- uid: azure.ai.agentserver.langgraph.langgraph.LangGraphAdapter.graph
-  name: graph
-  summary: Get the resolved graph. This property provides backward compatibility.
-  return:
-    description: The resolved CompiledStateGraph if available, None otherwise.
-    types:
-    - <xref:typing.Optional>[<xref:CompiledStateGraph>]
