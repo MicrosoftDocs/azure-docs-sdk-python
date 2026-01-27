@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-springappdiscovery, springappdiscovery
-ms.date: 01/31/2024
+ms.date: 01/27/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: springappdiscovery
