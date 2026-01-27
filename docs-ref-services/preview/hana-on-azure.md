@@ -1,7 +1,7 @@
 ---
 title: Azure HANA on Azure SDK for Python
 description: Reference for Azure HANA on Azure SDK for Python
-ms.date: 01/26/2026
+ms.date: 01/27/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: hanaonazure
