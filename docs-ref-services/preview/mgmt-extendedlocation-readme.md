@@ -1,15 +1,15 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-extendedlocation, extendedlocation
-ms.date: 02/14/2023
+ms.date: 01/27/2026
 ms.topic: reference
 ms.devlang: python
-ms.service: azure-python
+ms.service: extendedlocation
 ---
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Extended Location Management Client Library.
-This package has been tested with Python 3.7+.
+This package has been tested with Python 3.8+.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
 ## _Disclaimer_
@@ -20,7 +20,7 @@ _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For
 
 ### Prerequisites
 
-- Python 3.7+ is required to use this package.
+- Python 3.8+ is required to use this package.
 - [Azure subscription](https://azure.microsoft.com/free/)
 
 ### Install the package
@@ -53,8 +53,9 @@ client = CustomLocations(credential=DefaultAzureCredential(), subscription_id=su
 
 ## Examples
 
-
-Code samples for this package can be found at [Extended Location Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com and [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
+Code samples for this package can be found at:
+- [Search Extended Location Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
+- [Azure Python Mgmt SDK Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
 ## Troubleshooting
@@ -66,7 +67,4 @@ Code samples for this package can be found at [Extended Location Management](/sa
 If you encounter any bugs or have suggestions, please file an issue in the
 [Issues](https://github.com/Azure/azure-sdk-for-python/issues)
 section of the project. 
-
-
-
 
