@@ -16,11 +16,11 @@ constructor:
     | None = None, exclude_from_latest: bool | None = None, end_of_life_date: datetime
     | None = None, storage_account_type: str | _models.StorageAccountType | None =
     None, replication_mode: str | _models.ReplicationMode | None = None, target_extended_locations:
-    list[''_models.GalleryTargetExtendedLocation''] | None = None, manage_actions:
-    _models.UserArtifactManage | None = None, settings: _models.UserArtifactSettings
-    | None = None, advanced_settings: dict[str, str] | None = None, enable_health_check:
-    bool | None = None, custom_actions: list[''_models.GalleryApplicationCustomAction'']
-    | None = None, **kwargs: Any)'
+    list[''_models.GalleryTargetExtendedLocation''] | None = None, storage_account_strategy:
+    str | _models.StorageAccountStrategy | None = None, manage_actions: _models.UserArtifactManage
+    | None = None, settings: _models.UserArtifactSettings | None = None, advanced_settings:
+    dict[str, str] | None = None, enable_health_check: bool | None = None, custom_actions:
+    list[''_models.GalleryApplicationCustomAction''] | None = None, **kwargs: Any)'
   keywordOnlyParameters:
   - name: target_regions
     description: 'The target regions where the Image Version is going to be replicated
@@ -57,9 +57,10 @@ constructor:
   - name: storage_account_type
     description: 'Specifies the storage account type to be used to store the
 
-      image. This property is not updatable. Known values are: "Standard_LRS", "Standard_ZRS",
+      image. Cannot be specified along with storageAccountStrategy. This property
+      is not updatable.
 
-      "Premium_LRS", and "PremiumV2_LRS".'
+      Known values are: "Standard_LRS", "Standard_ZRS", "Premium_LRS", and "PremiumV2_LRS".'
     defaultValue: None
     types:
     - <xref:str>
@@ -79,6 +80,20 @@ constructor:
     defaultValue: None
     types:
     - <xref:list>[<xref:azure.mgmt.compute.models.GalleryTargetExtendedLocation>]
+  - name: storage_account_strategy
+    description: 'Specifies the strategy to be used when selecting the storage
+
+      account type. Cannot be specified along with storageAccountType, but can be
+      overridden per
+
+      region by specifying targetRegions[].storageAccountType. This property is not
+      updatable. Known
+
+      values are: "PreferStandard_ZRS" and "DefaultStandard_LRS".'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.compute.models.StorageAccountStrategy>
   - name: source
     description: 'The source image from which the Image Version is going to be created.
 
@@ -154,9 +169,10 @@ variables:
   - <xref:datetime.datetime>
 - description: 'Specifies the storage account type to be used to store the image.
 
-    This property is not updatable. Known values are: "Standard_LRS", "Standard_ZRS",
+    Cannot be specified along with storageAccountStrategy. This property is not updatable.
+    Known
 
-    "Premium_LRS", and "PremiumV2_LRS".'
+    values are: "Standard_LRS", "Standard_ZRS", "Premium_LRS", and "PremiumV2_LRS".'
   name: storage_account_type
   types:
   - <xref:str>
@@ -174,6 +190,19 @@ variables:
   name: target_extended_locations
   types:
   - <xref:list>[<xref:azure.mgmt.compute.models.GalleryTargetExtendedLocation>]
+- description: 'Specifies the strategy to be used when selecting the storage
+
+    account type. Cannot be specified along with storageAccountType, but can be overridden
+    per
+
+    region by specifying targetRegions[].storageAccountType. This property is not
+    updatable. Known
+
+    values are: "PreferStandard_ZRS" and "DefaultStandard_LRS".'
+  name: storage_account_strategy
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.compute.models.StorageAccountStrategy>
 - description: The source image from which the Image Version is going to be created.
     Required.
   name: source
