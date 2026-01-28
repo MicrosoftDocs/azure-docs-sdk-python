@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-servicefabric, servicefabric
-ms.date: 02/22/2024
+ms.date: 01/28/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: servicefabric
