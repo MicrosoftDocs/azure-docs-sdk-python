@@ -1,27 +1,27 @@
 ---
 title: Azure Key Vault Security Domain client library for Python
 keywords: Azure, python, SDK, API, azure-keyvault-securitydomain, keyvault
-ms.date: 05/08/2025
+ms.date: 01/28/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: keyvault
 ---
-# Azure Key Vault Security Domain client library for Python - version 1.0.0b1 
+# Azure Key Vault Security Domain client library for Python - version 1.0.0a20260128001 
 
 
 Azure Key Vault helps solve the following problems:
 
 - Managed HSM security domain management (this library) - securely download and restore a managed HSM's security domain
-- Cryptographic key management ([azure-keyvault-keys](https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-securitydomain_1.0.0b1/sdk/keyvault/azure-keyvault-keys))- create, store, and control
+- Cryptographic key management ([azure-keyvault-keys](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/keyvault/azure-keyvault-keys))- create, store, and control
 access to the keys used to encrypt your data
 - Secrets management
-([azure-keyvault-secrets](https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-securitydomain_1.0.0b1/sdk/keyvault/azure-keyvault-secrets)) -
+([azure-keyvault-secrets](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/keyvault/azure-keyvault-secrets)) -
 securely store and control access to tokens, passwords, certificates, API keys,
 and other secrets
 - Certificate management
-([azure-keyvault-certificates](https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-securitydomain_1.0.0b1/sdk/keyvault/azure-keyvault-certificates)) -
+([azure-keyvault-certificates](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/keyvault/azure-keyvault-certificates)) -
 create, manage, and deploy public and private SSL/TLS certificates
-- Vault administration ([azure-keyvault-administration](https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-securitydomain_1.0.0b1/sdk/keyvault/azure-keyvault-administration)) - role-based access control (RBAC), and vault-level backup and restore options
+- Vault administration ([azure-keyvault-administration](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/keyvault/azure-keyvault-administration)) - role-based access control (RBAC), and vault-level backup and restore options
 
 [Source code][library_src]
 | [Package (PyPI)][pypi_package]
@@ -140,7 +140,7 @@ NEW_VAULT_URL = os.environ["NEW_VAULT_URL"]
 upload_client = SecurityDomainClient(vault_url=NEW_VAULT_URL, credential=credential)
 
 transfer_key: TransferKey = upload_client.get_transfer_key()
-assert transfer_key.transfer_key_jwk
+assert transfer_key.transfer_key
 ```
 
 ### Upload a security domain
@@ -150,16 +150,14 @@ example for disaster recovery. Like the download operation this will activate a 
 will return None if successful (and an error if unsuccessful) instead of the security domain object.
 
 ```python
-from azure.keyvault.securitydomain.models import SecurityDomainOperationStatus
-
-result: SecurityDomainOperationStatus = upload_client.begin_upload(security_domain=result).result()
+upload_client.begin_upload(security_domain=result).wait()
 print("The managed HSM has been successfully restored with the security domain.")
 ```
 
 ## Troubleshooting
 
 See the Azure Key Vault SDK's
-[troubleshooting guide](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-securitydomain_1.0.0b1/sdk/keyvault/TROUBLESHOOTING.md) for
+[troubleshooting guide](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/TROUBLESHOOTING.md) for
 details on how to diagnose various failure scenarios.
 
 ## Next steps
@@ -186,7 +184,7 @@ see the Code of Conduct FAQ or contact opencode@microsoft.com with any
 additional questions or comments.
 
 <!-- LINKS -->
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-securitydomain_1.0.0b1/sdk/identity/azure-identity
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity
 [azure_identity_pypi]: https://pypi.org/project/azure-identity/
 [azure_keyvault]: https://learn.microsoft.com/azure/key-vault/
 [azure_managedhsm]: https://learn.microsoft.com/azure/key-vault/managed-hsm/
@@ -197,10 +195,10 @@ additional questions or comments.
 [default_cred_ref]: https://aka.ms/azsdk/python/identity/docs#azure.identity.DefaultAzureCredential
 [disaster_recovery]: https://learn.microsoft.com/azure/key-vault/managed-hsm/disaster-recovery-guide
 
-[hello_world_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-securitydomain_1.0.0b1/sdk/keyvault/azure-keyvault-securitydomain/samples/hello_world.py
-[hello_world_async_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-securitydomain_1.0.0b1/sdk/keyvault/azure-keyvault-securitydomain/samples/hello_world_async.py
+[hello_world_sample]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/keyvault/azure-keyvault-securitydomain/samples/hello_world.py
+[hello_world_async_sample]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/keyvault/azure-keyvault-securitydomain/samples/hello_world_async.py
 
-[library_src]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-securitydomain_1.0.0b1/sdk/keyvault/azure-keyvault-securitydomain/azure/keyvault/securitydomain
+[library_src]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/keyvault/azure-keyvault-securitydomain/azure/keyvault/securitydomain
 
 [managed_hsm_cli]: https://learn.microsoft.com/azure/key-vault/managed-hsm/quick-create-cli
 [managed_identity]: https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/overview
@@ -208,9 +206,9 @@ additional questions or comments.
 [pip]: https://pypi.org/project/pip/
 [pypi_package]: https://pypi.org/project/azure-keyvault-securitydomain/
 
-[reference_docs]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-securitydomain_1.0.0b1/sdk/keyvault/azure-keyvault-securitydomain/azure/keyvault/securitydomain
+[reference_docs]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/keyvault/azure-keyvault-securitydomain/azure/keyvault/securitydomain
 
-[samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-securitydomain_1.0.0b1/sdk/keyvault/azure-keyvault-securitydomain/samples
-[securitydomain_client_docs]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-securitydomain_1.0.0b1/sdk/keyvault/azure-keyvault-securitydomain/azure/keyvault/securitydomain/_patch.py
+[samples]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/keyvault/azure-keyvault-securitydomain/samples
+[securitydomain_client_docs]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/keyvault/azure-keyvault-securitydomain/azure/keyvault/securitydomain/_patch.py
 [securitydomain_docs]: https://learn.microsoft.com/azure/key-vault/managed-hsm/security-domain
 
