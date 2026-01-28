@@ -1,12 +1,12 @@
 ---
 title: Azure ML Package client library for Python
 keywords: Azure, python, SDK, API, azure-ai-ml, ml
-ms.date: 05/08/2024
+ms.date: 01/28/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: ml
 ---
-# Azure ML Package client library for Python - version 1.16.0b1 
+# Azure ML Package client library for Python - version 1.32.0a20260128001 
 
 
 We are excited to introduce the GA of Azure Machine Learning Python SDK v2. The Python SDK v2 introduces new SDK capabilities like standalone local jobs, reusable components for pipelines and managed online/batch inferencing. Python SDK v2 allows you to move from simple to complex tasks easily and incrementally. This is enabled by using a common object model which brings concept reuse and consistency of actions across various tasks. The SDK v2 shares its foundation with the CLI v2 which is also GA.
@@ -19,7 +19,7 @@ We are excited to introduce the GA of Azure Machine Learning Python SDK v2. The 
 | [Samples][ml_samples]
 
 
-This package has been tested with Python 3.8, 3.9, 3.10, 3.11 and 3.12.
+This package has been tested with Python 3.8, 3.9, 3.10, 3.11, 3.12, 3.13 and 3.14.
 
 For a more complete set of Azure libraries, see https://aka.ms/azsdk/python/all
 
@@ -52,6 +52,43 @@ ml_client = MLClient(
 ```
 
 ## Key concepts
+
+Refer the below high level sequence diagram illustrating the package's workflow:
+
+![azure-ai-ml sequence diagram](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/ml/azure-ai-ml/azure_ai_ml_seq_diagram.png?raw=true)
+
+## SDK Architecture Components
+
+The sequence diagram above illustrates the architecture and workflow of the Azure ML Python SDK v2. Here's an explanation of the key components:
+
+- **User**: You, the developer using the SDK to interact with Azure ML.
+- **Entity**: Python classes representing Azure ML resources like Jobs, Models, Components, etc.
+- **Schema**: Validation classes that ensure entities conform to expected structures and requirements.
+- **MLClient**: The main entry point for all operations, providing access to various services.
+- **Operations**: Specialized classes handling specific resource types (jobs, models, endpoints, etc.).
+- **Telemetry**: Internal component for monitoring and collecting usage data (opt-out available).
+- **Serialization**: Converts between Python objects and REST API formats.
+- **REST Client**: Manages HTTP communications with Azure ML services.
+- **Authentication**: Handles identity and access tokens via Azure Identity libraries.
+- **AzureML Service**: The backend Azure Machine Learning service.
+
+## Workflow Description
+
+The diagram depicts two main workflows:
+
+1. **Entity Creation and Validation**:
+   - Create entities directly using Python classes or load from YAML files
+   - YAML files are validated against schemas to ensure correctness
+   - Validation errors are reported immediately if found
+
+2. **Operation Execution**:
+   - Initialize MLClient with proper credentials
+   - Request operations through the client (create, get, list, delete, etc.)
+   - Operations are routed to specialized classes for handling
+   - Entities are serialized into REST API format
+   - Authenticated HTTP requests are sent to Azure ML services
+   - Responses are deserialized back into entity objects
+   - Results are returned to the user
 
 Azure Machine Learning Python SDK v2 comes with many new features like standalone local jobs, reusable components for pipelines and managed online/batch inferencing. The SDK v2 brings consistency and ease of use across all assets of the platform. The Python SDK v2 offers the following capabilities:
 * Run **Standalone Jobs** - run a discrete ML activity as Job. This job can be run locally or on the cloud. We currently support the following types of jobs:
@@ -129,21 +166,21 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 
 <!-- LINKS -->
 
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-ml_1.16.0b1/sdk/ml/azure-ai-ml
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/ml/azure-ai-ml
 [ml_pypi]: https://pypi.org/project/azure-ai-ml/
 [ml_conda]: https://anaconda.org/microsoft/azure-ai-ml/
 [ml_ref_docs]: https://learn.microsoft.com/python/api/azure-ai-ml/?view=azure-python
 [ml_samples]: https://github.com/Azure/azureml-examples/tree/main/sdk/python
-[product_documentation]: /azure/machine-learning/
+[product_documentation]: https://learn.microsoft.com/azure/machine-learning/
 [azure_subscription]: https://azure.microsoft.com/free/
-[workspace]: /azure/machine-learning/concept-workspace
+[workspace]: https://learn.microsoft.com/azure/machine-learning/concept-workspace
 [python_logging]: https://docs.python.org/3/library/logging.html
-[sdk_logging_docs]: /azure/developer/python/azure-sdk-logging
-[azure_core_readme]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-ml_1.16.0b1/sdk/core/azure-core/README.md
+[sdk_logging_docs]: https://learn.microsoft.com/azure/developer/python/azure-sdk-logging
+[azure_core_readme]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md
 [pip_link]: https://pypi.org/project/pip/
 [azure_core_ref_docs]: https://aka.ms/azsdk-python-core-policies
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-ml_1.16.0b1/sdk/core/azure-core/README.md
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-ml_1.16.0b1/sdk/identity/azure-identity
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
