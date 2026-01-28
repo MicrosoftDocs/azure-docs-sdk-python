@@ -1,14 +1,14 @@
 ---
 title: Azure Core Tracing OpenTelemetry client library for Python
 keywords: Azure, python, SDK, API, azure-core-tracing-opentelemetry, core
-ms.date: 03/21/2025
+ms.date: 01/28/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: core
 ---
 
 
-# Azure Core Tracing OpenTelemetry client library for Python - version 1.0.0b12 
+# Azure Core Tracing OpenTelemetry client library for Python - version 1.0.0a20260127004 
 
 
 ## Getting started
@@ -124,7 +124,7 @@ with tracer.start_as_current_span(name="MyApplication"):
 
 ## HTTP instrumentation
 
-With the Azure Core OpenTelemetry Tracing plugin enabled, HTTP requests made by Azure SDK clients are typically instrumented via the [`DistributedTracingPolicy`](https://github.com/Azure/azure-sdk-for-python/blob/azure-core-tracing-opentelemetry_1.0.0b12/sdk/core/azure-core/azure/core/pipeline/policies/_distributed_tracing.py) automatically. Since Azure Core handles HTTP instrumentation for Azure service calls, automatic HTTP instrumentation from other libraries such as `opentelemetry-requests-instrumentation` are suppressed to avoid duplicate spans from being created.
+With the Azure Core OpenTelemetry Tracing plugin enabled, HTTP requests made by Azure SDK clients are typically instrumented via the [`DistributedTracingPolicy`](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/azure/core/pipeline/policies/_distributed_tracing.py) automatically. Since Azure Core handles HTTP instrumentation for Azure service calls, automatic HTTP instrumentation from other libraries such as `opentelemetry-requests-instrumentation` are suppressed to avoid duplicate spans from being created.
 
 ## Troubleshooting
 
