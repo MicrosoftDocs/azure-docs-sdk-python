@@ -1,12 +1,12 @@
 ---
 title: Azure Communication Phone Numbers Package client library for Python
 keywords: Azure, python, SDK, API, azure-communication-phonenumbers, communication
-ms.date: 07/31/2025
+ms.date: 01/28/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: communication
 ---
-# Azure Communication Phone Numbers Package client library for Python - version 1.4.0b2 
+# Azure Communication Phone Numbers Package client library for Python - version 1.5.0a20260128001 
 
 
 Azure Communication Phone Numbers client package is used to administer Phone Numbers.
@@ -312,7 +312,7 @@ The Phone Numbers Administration client will raise exceptions defined in [Azure 
 # Next steps
 ## More sample code
 
-Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-phonenumbers_1.4.0b2/sdk/communication/azure-communication-phonenumbers/samples) directory for detailed examples of how to use this library.
+Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/communication/azure-communication-phonenumbers/samples) directory for detailed examples of how to use this library.
 
 ## Provide Feedback
 
@@ -329,5 +329,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 <!-- LINKS -->
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-phonenumbers_1.4.0b2/sdk/core/azure-core/README.md
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md
 
