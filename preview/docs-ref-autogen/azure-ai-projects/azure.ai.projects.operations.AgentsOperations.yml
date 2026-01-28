@@ -27,7 +27,7 @@ methods:
       retrieve/update/delete the agent.\n\n* Must start and end with alphanumeric\
       \ characters, \n\n* Can contain hyphens in the middle \n\n* Must not exceed\
       \ 63 characters. Required."
-    defaultValue: <object object at 0x000002492D2073B0>
+    defaultValue: <object object at 0x0000027E01EB76A0>
     types:
     - <xref:str>
   - name: definition
@@ -35,7 +35,7 @@ methods:
       simple
 
       agent definition. Required.'
-    defaultValue: <object object at 0x000002492D2073B0>
+    defaultValue: <object object at 0x0000027E01EB76A0>
     types:
     - <xref:azure.ai.projects.models.AgentDefinition>
   - name: metadata
@@ -82,19 +82,19 @@ methods:
       retrieve/update/delete the agent.\n\n* Must start and end with alphanumeric\
       \ characters, \n\n* Can contain hyphens in the middle \n\n* Must not exceed\
       \ 63 characters. Required."
-    defaultValue: <object object at 0x000002492D2073B0>
+    defaultValue: <object object at 0x0000027E01EB76A0>
     types:
     - <xref:str>
   - name: manifest_id
     description: The manifest ID to import the agent version from. Required.
-    defaultValue: <object object at 0x000002492D2073B0>
+    defaultValue: <object object at 0x0000027E01EB76A0>
     types:
     - <xref:str>
   - name: parameter_values
     description: 'The inputs to the manifest that will result in a fully materialized
 
       Agent. Required.'
-    defaultValue: <object object at 0x000002492D2073B0>
+    defaultValue: <object object at 0x0000027E01EB76A0>
     types:
     - <xref:dict>[<xref:str>, <xref:any>]
   - name: metadata
@@ -149,7 +149,7 @@ methods:
       simple
 
       agent definition. Required.'
-    defaultValue: <object object at 0x000002492D2073B0>
+    defaultValue: <object object at 0x0000027E01EB76A0>
     types:
     - <xref:azure.ai.projects.models.AgentDefinition>
   - name: metadata
@@ -201,14 +201,14 @@ methods:
   keywordOnlyParameters:
   - name: manifest_id
     description: The manifest ID to import the agent version from. Required.
-    defaultValue: <object object at 0x000002492D2073B0>
+    defaultValue: <object object at 0x0000027E01EB76A0>
     types:
     - <xref:str>
   - name: parameter_values
     description: 'The inputs to the manifest that will result in a fully materialized
 
       Agent. Required.'
-    defaultValue: <object object at 0x000002492D2073B0>
+    defaultValue: <object object at 0x0000027E01EB76A0>
     types:
     - <xref:dict>[<xref:str>, <xref:any>]
   - name: metadata
@@ -319,8 +319,8 @@ methods:
   name: list
   summary: Returns the list of all agents.
   signature: 'list(*, kind: str | AgentKind | None = None, limit: int | None = None,
-    order: Literal[''asc'', ''desc''] | None = None, before: str | None = None, **kwargs:
-    Any) -> ItemPaged[AgentDetails]'
+    order: str | PageOrder | None = None, before: str | None = None, **kwargs: Any)
+    -> ItemPaged[AgentDetails]'
   keywordOnlyParameters:
   - name: kind
     description: 'Filter agents by kind. If not provided, all agents are returned.
@@ -346,14 +346,11 @@ methods:
 
       ascending order and``desc``
 
-      for descending order. Is either a Literal["asc"] type or a Literal["desc"] type.
-      Default value
-
-      is None.'
+      for descending order. Known values are: "asc" and "desc". Default value is None.'
     defaultValue: None
     types:
     - <xref:str>
-    - <xref:str>
+    - <xref:azure.ai.projects.models.PageOrder>
   - name: before
     description: 'A cursor for use in pagination. `before` is an object ID that defines
       your
@@ -379,8 +376,8 @@ methods:
 - uid: azure.ai.projects.operations.AgentsOperations.list_versions
   name: list_versions
   summary: Returns the list of versions of an agent.
-  signature: 'list_versions(agent_name: str, *, limit: int | None = None, order: Literal[''asc'',
-    ''desc''] | None = None, before: str | None = None, **kwargs: Any) -> ItemPaged[AgentVersionDetails]'
+  signature: 'list_versions(agent_name: str, *, limit: int | None = None, order: str
+    | PageOrder | None = None, before: str | None = None, **kwargs: Any) -> ItemPaged[AgentVersionDetails]'
   parameters:
   - name: agent_name
     description: The name of the agent to retrieve versions for. Required.
@@ -403,14 +400,11 @@ methods:
 
       ascending order and``desc``
 
-      for descending order. Is either a Literal["asc"] type or a Literal["desc"] type.
-      Default value
-
-      is None.'
+      for descending order. Known values are: "asc" and "desc". Default value is None.'
     defaultValue: None
     types:
     - <xref:str>
-    - <xref:str>
+    - <xref:azure.ai.projects.models.PageOrder>
   - name: before
     description: 'A cursor for use in pagination. `before` is an object ID that defines
       your
@@ -431,6 +425,74 @@ methods:
     description: An iterator like instance of AgentVersionDetails
     types:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.ai.projects.models.AgentVersionDetails>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.AgentsOperations.stream_agent_container_logs
+  name: stream_agent_container_logs
+  summary: "Container log entry streamed from the container as text chunks.\nEach\
+    \ chunk is a UTF-8 string that may be either a plain text log line\nor a JSON-formatted\
+    \ log entry, depending on the type of container log being streamed.\nClients should\
+    \ treat each chunk as opaque text and, if needed, attempt\nto parse it as JSON\
+    \ based on their logging requirements.\n\nFor system logs, the format is JSON\
+    \ with the following structure:\n{\"TimeStamp\":\"2025-12-15T16:51:33Z\",\"Type\"\
+    :\"Normal\",\"ContainerAppName\":null,\"RevisionName\":null,\"ReplicaName\":null,\"\
+    Msg\":\"Connecting\nto the events\ncollector...\",\"Reason\":\"StartingGettingEvents\"\
+    ,\"EventSource\":\"ContainerAppController\",\"Count\":1}\n{\"TimeStamp\":\"2025-12-15T16:51:34Z\"\
+    ,\"Type\":\"Normal\",\"ContainerAppName\":null,\"RevisionName\":null,\"ReplicaName\"\
+    :null,\"Msg\":\"Successfully\nconnected to events\nserver\",\"Reason\":\"ConnectedToEventsServer\"\
+    ,\"EventSource\":\"ContainerAppController\",\"Count\":1}\n\nFor console logs,\
+    \ the format is plain text as emitted by the container's stdout/stderr.\n2025-12-15T08:43:48.72656\
+    \  Connecting to the container 'agent-container'...\n2025-12-15T08:43:48.75451\
+    \  Successfully Connected to container: 'agent-container' [Revision:\n'je90fe655aa742ef9a188b9fd14d6764\u2013\
+    7tca06b', Replica:\n'je90fe655aa742ef9a188b9fd14d6764\u20137tca06b-6898b9c89f-mpkjc']\n\
+    2025-12-15T08:33:59.0671054Z stdout F INFO:     127.0.0.1:42588 - \"GET /readiness\
+    \ HTTP/1.1\" 200\nOK\n2025-12-15T08:34:29.0649033Z stdout F INFO:     127.0.0.1:60246\
+    \ - \"GET /readiness HTTP/1.1\" 200\nOK\n2025-12-15T08:34:59.0644467Z stdout F\
+    \ INFO:     127.0.0.1:43994 - \"GET /readiness HTTP/1.1\" 200\nOK."
+  signature: 'stream_agent_container_logs(agent_name: str, agent_version: str, *,
+    kind: str | ContainerLogKind | None = None, replica_name: str | None = None, tail:
+    int | None = None, **kwargs: Any) -> None'
+  parameters:
+  - name: agent_name
+    description: The name of the agent. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: agent_version
+    description: The version of the agent. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: kind
+    description: 'console returns container stdout/stderr, system returns container
+      app event
+
+      stream. defaults to console. Known values are: "console" and "system". Default
+      value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.ai.projects.models.ContainerLogKind>
+  - name: replica_name
+    description: 'When omitted, the server chooses the first replica for console logs.
+
+      Required to target a specific replica. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: tail
+    description: 'Number of trailing lines returned. Enforced to 1-300. Defaults to
+      20. Default
+
+      value is None.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  return:
+    description: None
+    types:
+    - <xref:None>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.ai.projects.operations.AgentsOperations.update
@@ -459,7 +521,7 @@ methods:
       simple
 
       agent definition. Required.'
-    defaultValue: <object object at 0x000002492D2073B0>
+    defaultValue: <object object at 0x0000027E01EB76A0>
     types:
     - <xref:azure.ai.projects.models.AgentDefinition>
   - name: metadata
@@ -513,14 +575,14 @@ methods:
   keywordOnlyParameters:
   - name: manifest_id
     description: The manifest ID to import the agent version from. Required.
-    defaultValue: <object object at 0x000002492D2073B0>
+    defaultValue: <object object at 0x0000027E01EB76A0>
     types:
     - <xref:str>
   - name: parameter_values
     description: 'The inputs to the manifest that will result in a fully materialized
 
       Agent. Required.'
-    defaultValue: <object object at 0x000002492D2073B0>
+    defaultValue: <object object at 0x0000027E01EB76A0>
     types:
     - <xref:dict>[<xref:str>, <xref:any>]
   - name: metadata

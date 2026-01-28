@@ -26,6 +26,154 @@ constructor:
       in unsupported behavior.'
     types:
     - <xref:str>
+examples:
+- "<!--[!code-python[Main](les\\identity_samples_async.py )]-->\n\n<!-- literal_block\
+  \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\":\
+  \ [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\
+  \\py2docfx\\\\dist_temp\\\\41\\\\azure_communication_identity-1.6.0a20260127002\\\
+  \\samples\\\\identity_samples_async.py\", \"xml:space\": \"preserve\", \"force\"\
+  : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+  linenos\": false} -->\n\n````python\n\n   # coding: utf-8\n\n   # -------------------------------------------------------------------------\n\
+  \   # Copyright (c) Microsoft Corporation. All rights reserved.\n   # Licensed under\
+  \ the MIT License. See License.txt in the project root for\n   # license information.\n\
+  \   # --------------------------------------------------------------------------\n\
+  \n   \"\"\"\n   FILE: identity_sample_async.py\n   DESCRIPTION:\n       These async\
+  \ samples demonstrate creating a user, issuing a token, revoking a token and deleting\
+  \ a user.\n\n   USAGE:\n       python identity_samples_async.py\n       Set the\
+  \ environment variables with your own values before running the sample:\n      \
+  \ 1) AZURE_COMMUNICATION_SERVICE_ENDPOINT - Communication Service endpoint url\n\
+  \       2) COMMUNICATION_AUTH_SAMPLES_CONNECTION_STRING - the connection string\
+  \ in your Communication Services resource\n       3) AZURE_CLIENT_ID - the client\
+  \ ID of your active directory application\n       4) AZURE_CLIENT_SECRET - the secret\
+  \ of your active directory application\n       5) AZURE_TENANT_ID - the tenant ID\
+  \ of your active directory application\n       6) COMMUNICATION_M365_APP_ID - the\
+  \ application id of Microsoft 365\n       7) COMMUNICATION_M365_AAD_AUTHORITY -\
+  \ the Azure AD authority of M365 \n       8) COMMUNICATION_M365_AAD_TENANT - the\
+  \ tenant ID of Microsoft 365 application\n       9) COMMUNICATION_MSAL_USERNAME\
+  \ - the username for authenticating via the MSAL library\n       10) COMMUNICATION_MSAL_PASSWORD\
+  \ - the password for authenticating via the MSAL library\n   \"\"\"\n   from datetime\
+  \ import timedelta\n   from azure.communication.identity._shared.utils import parse_connection_str\n\
+  \   from msal import PublicClientApplication\n   import asyncio\n   import os\n\n\
+  \n   class CommunicationIdentityClientSamples(object):\n       def __init__(self):\n\
+  \           self.connection_string = os.getenv(\"COMMUNICATION_AUTH_SAMPLES_CONNECTION_STRING\"\
+  , \"\")\n           self.endpoint = os.getenv(\"AZURE_COMMUNICATION_SERVICE_ENDPOINT\"\
+  )\n           self.client_id = os.getenv(\"AZURE_CLIENT_ID\")\n           self.client_secret\
+  \ = os.getenv(\"AZURE_CLIENT_SECRET\")\n           self.tenant_id = os.getenv(\"\
+  AZURE_TENANT_ID\")\n           self.m365_client_id = os.getenv(\"COMMUNICATION_M365_APP_ID\"\
+  , \"\")\n           self.m365_aad_authority = os.getenv(\"COMMUNICATION_M365_AAD_AUTHORITY\"\
+  )\n           self.m365_aad_tenant = os.getenv(\"COMMUNICATION_M365_AAD_TENANT\"\
+  )\n           self.msal_username = os.getenv(\"COMMUNICATION_MSAL_USERNAME\")\n\
+  \           self.msal_password = os.getenv(\"COMMUNICATION_MSAL_PASSWORD\")\n\n\
+  \       async def get_token(self):\n           from azure.communication.identity.aio\
+  \ import CommunicationIdentityClient\n           from azure.communication.identity\
+  \ import CommunicationTokenScope\n\n           if self.client_id is not None and\
+  \ self.client_secret is not None and self.tenant_id is not None:\n             \
+  \  from azure.identity.aio import DefaultAzureCredential\n\n               endpoint,\
+  \ _ = parse_connection_str(self.connection_string)\n               identity_client\
+  \ = CommunicationIdentityClient(endpoint, DefaultAzureCredential())\n          \
+  \ else:\n               identity_client = CommunicationIdentityClient.from_connection_string(self.connection_string)\n\
+  \n           async with identity_client:\n               user = await identity_client.create_user()\n\
+  \               print(f\"Issuing token for: {user.properties.get('id')}\")\n   \
+  \            tokenresponse = await identity_client.get_token(user, scopes=[CommunicationTokenScope.CHAT])\n\
+  \               print(f\"Token issued with value: {tokenresponse.token}\")\n\n \
+  \      async def get_token_with_custom_expiration(self):\n           from azure.communication.identity.aio\
+  \ import CommunicationIdentityClient\n           from azure.communication.identity\
+  \ import CommunicationTokenScope\n\n           if self.client_id is not None and\
+  \ self.client_secret is not None and self.tenant_id is not None:\n             \
+  \  from azure.identity.aio import DefaultAzureCredential\n\n               endpoint,\
+  \ _ = parse_connection_str(self.connection_string)\n               identity_client\
+  \ = CommunicationIdentityClient(endpoint, DefaultAzureCredential())\n          \
+  \ else:\n               identity_client = CommunicationIdentityClient.from_connection_string(self.connection_string)\n\
+  \n           async with identity_client:\n               user = await identity_client.create_user()\n\
+  \               print(f\"Issuing token for: {user.properties.get('id')}\")\n   \
+  \            token_expires_in = timedelta(hours=1)\n               tokenresponse\
+  \ = await identity_client.get_token(\n                   user,\n               \
+  \    scopes=[CommunicationTokenScope.CHAT],\n                   token_expires_in=token_expires_in,\n\
+  \               )\n               print(f\"Issued token with custom expiration:\
+  \ {tokenresponse.token}\")\n\n       async def revoke_tokens(self):\n          \
+  \ from azure.communication.identity.aio import CommunicationIdentityClient\n   \
+  \        from azure.communication.identity import CommunicationTokenScope\n\n  \
+  \         if self.client_id is not None and self.client_secret is not None and self.tenant_id\
+  \ is not None:\n               from azure.identity.aio import DefaultAzureCredential\n\
+  \n               endpoint, _ = parse_connection_str(self.connection_string)\n  \
+  \             identity_client = CommunicationIdentityClient(endpoint, DefaultAzureCredential())\n\
+  \           else:\n               identity_client = CommunicationIdentityClient.from_connection_string(self.connection_string)\n\
+  \n           async with identity_client:\n               user = await identity_client.create_user()\n\
+  \               tokenresponse = await identity_client.get_token(user, scopes=[CommunicationTokenScope.CHAT])\n\
+  \               print(f\"Revoking token: {tokenresponse.token}\")\n            \
+  \   await identity_client.revoke_tokens(user)\n               print(f\"{tokenresponse.token}\
+  \ revoked successfully\")\n\n       async def create_user(self):\n           from\
+  \ azure.communication.identity.aio import CommunicationIdentityClient\n\n      \
+  \     if self.client_id is not None and self.client_secret is not None and self.tenant_id\
+  \ is not None:\n               from azure.identity.aio import DefaultAzureCredential\n\
+  \n               endpoint, _ = parse_connection_str(self.connection_string)\n  \
+  \             identity_client = CommunicationIdentityClient(endpoint, DefaultAzureCredential())\n\
+  \           else:\n               identity_client = CommunicationIdentityClient.from_connection_string(self.connection_string)\n\
+  \n           async with identity_client:\n               print(\"Creating new user\"\
+  )\n               user = await identity_client.create_user()\n               print(f\"\
+  User created with id: {user.properties.get('id')}\")\n\n       async def create_user_and_token(self):\n\
+  \           from azure.communication.identity.aio import CommunicationIdentityClient\n\
+  \           from azure.communication.identity import CommunicationTokenScope\n\n\
+  \           if self.client_id is not None and self.client_secret is not None and\
+  \ self.tenant_id is not None:\n               from azure.identity.aio import DefaultAzureCredential\n\
+  \n               endpoint, _ = parse_connection_str(self.connection_string)\n  \
+  \             identity_client = CommunicationIdentityClient(endpoint, DefaultAzureCredential())\n\
+  \           else:\n               identity_client = CommunicationIdentityClient.from_connection_string(self.connection_string)\n\
+  \n           async with identity_client:\n               print(\"Creating new user\
+  \ with token\")\n               user, tokenresponse = await identity_client.create_user_and_token(scopes=[CommunicationTokenScope.CHAT])\n\
+  \               print(f\"User created with id: {user.properties.get('id')}\")\n\
+  \               print(f\"Token issued with value: {tokenresponse.token}\")\n\n \
+  \      async def create_user_and_token_with_custom_expiration(self):\n         \
+  \  from azure.communication.identity.aio import CommunicationIdentityClient\n  \
+  \         from azure.communication.identity import CommunicationTokenScope\n\n \
+  \          if self.client_id is not None and self.client_secret is not None and\
+  \ self.tenant_id is not None:\n               from azure.identity.aio import DefaultAzureCredential\n\
+  \n               endpoint, _ = parse_connection_str(self.connection_string)\n  \
+  \             identity_client = CommunicationIdentityClient(endpoint, DefaultAzureCredential())\n\
+  \           else:\n               identity_client = CommunicationIdentityClient.from_connection_string(self.connection_string)\n\
+  \n           async with identity_client:\n               print(\"Creating new user\
+  \ with token\")\n               token_expires_in = timedelta(hours=1)\n        \
+  \       user, tokenresponse = await identity_client.create_user_and_token(\n   \
+  \                scopes=[CommunicationTokenScope.CHAT], token_expires_in=token_expires_in\n\
+  \               )\n               print(f\"User created with id: {user.properties.get('id')}\"\
+  )\n               print(f\"Issued token with custom expiration: {tokenresponse.token}\"\
+  )\n\n       async def delete_user(self):\n           from azure.communication.identity.aio\
+  \ import CommunicationIdentityClient\n\n           if self.client_id is not None\
+  \ and self.client_secret is not None and self.tenant_id is not None:\n         \
+  \      from azure.identity.aio import DefaultAzureCredential\n\n               endpoint,\
+  \ _ = parse_connection_str(self.connection_string)\n               identity_client\
+  \ = CommunicationIdentityClient(endpoint, DefaultAzureCredential())\n          \
+  \ else:\n               identity_client = CommunicationIdentityClient.from_connection_string(self.connection_string)\n\
+  \n           async with identity_client:\n               user = await identity_client.create_user()\n\
+  \               print(f\"Deleting user: {user.properties.get('id')}\")\n       \
+  \        await identity_client.delete_user(user)\n               print(f\"{user.properties.get('id')}\
+  \ deleted\")\n\n       async def get_token_for_teams_user(self):\n           if\
+  \ os.getenv(\"SKIP_INT_IDENTITY_EXCHANGE_TOKEN_TEST\") == \"true\":\n          \
+  \     print(\"Skipping the Get Access Token for Teams User sample\")\n         \
+  \      return\n           from azure.communication.identity.aio import CommunicationIdentityClient\n\
+  \n           if self.client_id is not None and self.client_secret is not None and\
+  \ self.tenant_id is not None:\n               from azure.identity.aio import DefaultAzureCredential\n\
+  \n               endpoint, _ = parse_connection_str(self.connection_string)\n  \
+  \             identity_client = CommunicationIdentityClient(endpoint, DefaultAzureCredential())\n\
+  \           else:\n               identity_client = CommunicationIdentityClient.from_connection_string(self.connection_string)\n\
+  \n           async with identity_client:\n               msal_app = PublicClientApplication(\n\
+  \                   client_id=self.m365_client_id,\n                   authority=\"\
+  {}/{}\".format(self.m365_aad_authority, self.m365_aad_tenant),\n               )\n\
+  \               scopes = [\n                   \"https://auth.msft.communication.azure.com/Teams.ManageCalls\"\
+  ,\n                   \"https://auth.msft.communication.azure.com/Teams.ManageChats\"\
+  ,\n               ]\n               result = msal_app.acquire_token_by_username_password(\n\
+  \                   username=self.msal_username, password=self.msal_password, scopes=scopes\n\
+  \               )\n               aad_token = result[\"access_token\"]\n       \
+  \        teams_user_oid = result[\"id_token_claims\"][\"oid\"]\n               print(f\"\
+  AAD access token of a Teams User: {aad_token}\")\n\n               tokenresponse\
+  \ = await identity_client.get_token_for_teams_user(\n                   aad_token,\
+  \ self.m365_client_id, teams_user_oid\n               )\n               print(f\"\
+  Token issued with value: {tokenresponse.token}\")\n\n\n   async def main():\n  \
+  \     sample = CommunicationIdentityClientSamples()\n       await sample.create_user()\n\
+  \       await sample.create_user_and_token()\n       await sample.get_token()\n\
+  \       await sample.revoke_tokens()\n       await sample.delete_user()\n      \
+  \ await sample.get_token_for_teams_user()\n\n\n   if __name__ == \"__main__\":\n\
+  \       asyncio.run(main())\n\n   ````\n"
 methods:
 - uid: azure.communication.identity.aio.CommunicationIdentityClient.close
   name: close
@@ -43,19 +191,24 @@ methods:
     - <xref:azure.communication.identity.CommunicationUserIdentifier>
 - uid: azure.communication.identity.aio.CommunicationIdentityClient.create_user_and_token
   name: create_user_and_token
-  summary: "create a single Communication user with an identity token.\n:param scopes:\n\
-    \n   List of scopes to be added to the token."
+  summary: Create a single Communication user with an identity token.
   signature: 'async create_user_and_token(scopes: List[str | CommunicationTokenScope],
-    **kwargs) -> Tuple[CommunicationUserIdentifier, AccessToken]'
+    *, token_expires_in: timedelta | None = None, **kwargs) -> Tuple[CommunicationUserIdentifier,
+    AccessToken]'
   parameters:
   - name: scopes
+    description: List of scopes to be added to the token.
     isRequired: true
+    types:
+    - <xref:list>[<xref:str>
+    - <xref:azure.communication.identity.CommunicationTokenScope>]
   keywordOnlyParameters:
   - name: token_expires_in
     description: 'Custom validity period of the Communication Identity access token
 
       within [1, 24] hours range. If not provided, the default value of 24 hours will
       be used.'
+    defaultValue: None
     types:
     - <xref:datetime.timedelta>
   return:
@@ -95,7 +248,8 @@ methods:
   name: get_token
   summary: Generates a new token for an identity.
   signature: 'async get_token(user: CommunicationUserIdentifier, scopes: List[str
-    | CommunicationTokenScope], **kwargs) -> AccessToken'
+    | CommunicationTokenScope], *, token_expires_in: timedelta | None = None, **kwargs)
+    -> AccessToken'
   parameters:
   - name: user
     description: Azure Communication User
@@ -114,6 +268,7 @@ methods:
 
       within [1, 24] hours range. If not provided, the default value of 24 hours will
       be used.'
+    defaultValue: None
     types:
     - <xref:datetime.timedelta>
   return:
