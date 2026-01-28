@@ -1,12 +1,12 @@
 ---
 title: Azure AI Language Question Answering client library for Python
 keywords: Azure, python, SDK, API, azure-ai-language-questionanswering, cognitivelanguage
-ms.date: 11/13/2025
+ms.date: 01/28/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: cognitivelanguage
 ---
-# Azure AI Language Question Answering client library for Python - version 2.0.0b1 
+# Azure AI Language Question Answering client library for Python - version 2.0.0a20260128001 
 
 
 Question Answering is an Azure AI Language capability that lets you build a conversational, question‑and‑answer layer over your existing data. It extracts question/answer pairs from semi‑structured content (FAQ pages, manuals, documents) and uses them to answer user questions with the most relevant answer automatically.
@@ -369,24 +369,24 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [cognitive_auth]: https://learn.microsoft.com/azure/cognitive-services/authentication/
-[contributing]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-language-questionanswering_2.0.0b1/CONTRIBUTING.md
+[contributing]: https://github.com/Azure/azure-sdk-for-python/blob/main/CONTRIBUTING.md
 [python_logging]: https://docs.python.org/3/library/logging.html
 [sdk_logging_docs]: https://learn.microsoft.com/azure/developer/python/azure-sdk-logging
 [azure_core_ref_docs]: https://azuresdkdocs.z19.web.core.windows.net/python/azure-core/latest/azure.core.html
-[azure_core_readme]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-language-questionanswering_2.0.0b1/sdk/core/azure-core/README.md
+[azure_core_readme]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md
 [pip_link]: https://pypi.org/project/pip/
 [questionanswering_client_class]: https://azuresdkdocs.z19.web.core.windows.net/python/azure-ai-language-questionanswering/latest/azure.ai.language.questionanswering.html#azure.ai.language.questionanswering.QuestionAnsweringClient
 [authoring_client_class]: https://aka.ms/azsdk/python/questionansweringauthoringclient
 [questionanswering_refdocs_prompts]: https://azuresdkdocs.z19.web.core.windows.net/python/azure-ai-language-questionanswering/latest/azure.ai.language.questionanswering.models.html#azure.ai.language.questionanswering.models.KnowledgeBaseAnswerDialog
-[questionanswering_client_src]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-language-questionanswering_2.0.0b1/sdk/cognitivelanguage/azure-ai-language-questionanswering/
+[questionanswering_client_src]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/cognitivelanguage/azure-ai-language-questionanswering/
 [questionanswering_docs]: https://learn.microsoft.com/azure/ai-services/language-service/question-answering/overview
 [questionanswering_docs_chat]: https://learn.microsoft.com/azure/cognitive-services/qnamaker/how-to/chit-chat-knowledge-base
 [questionanswering_docs_features]: https://learn.microsoft.com/azure/ai-services/language-service/question-answering/overview#key-capabilities
 [questionanswering_pypi_package]: https://pypi.org/project/azure-ai-language-questionanswering/
 [questionanswering_refdocs]: https://azuresdkdocs.z19.web.core.windows.net/python/azure-ai-language-questionanswering/latest/azure.ai.language.questionanswering.html
-[questionanswering_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-language-questionanswering_2.0.0b1/sdk/cognitivelanguage/azure-ai-language-questionanswering/samples/README.md
-[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-language-questionanswering_2.0.0b1/sdk/identity/azure-identity#credentials
-[install_azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-language-questionanswering_2.0.0b1/sdk/identity/azure-identity#install-the-package
+[questionanswering_samples]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/cognitivelanguage/azure-ai-language-questionanswering/samples/README.md
+[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#credentials
+[install_azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#install-the-package
 [register_aad_app]: https://learn.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [grant_role_access]: https://learn.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [questionanswering_rest_docs]: https://learn.microsoft.com/rest/api/language/question-answering/operation-groups?view=rest-language-question-answering-2025-05-15-preview
