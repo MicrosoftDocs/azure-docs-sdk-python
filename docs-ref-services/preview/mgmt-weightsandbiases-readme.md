@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-weightsandbiases, weightsandbiases
-ms.date: 04/02/2025
+ms.date: 01/28/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: weightsandbiases
@@ -9,7 +9,7 @@ ms.service: weightsandbiases
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Weightsandbiases Management Client Library.
-This package has been tested with Python 3.8+.
+This package has been tested with Python 3.9+.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
 ## _Disclaimer_
@@ -20,7 +20,7 @@ _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For
 
 ### Prerequisites
 
-- Python 3.8+ is required to use this package.
+- Python 3.9+ is required to use this package.
 - [Azure subscription](https://azure.microsoft.com/free/)
 
 ### Install the package
