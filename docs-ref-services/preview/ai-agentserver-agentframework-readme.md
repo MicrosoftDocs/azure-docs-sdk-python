@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-ai-agentserver-agentframework, agentserver
-ms.date: 01/24/2026
+ms.date: 01/28/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: agentserver
@@ -46,7 +46,7 @@ If it works on local but failed on cloud. Check your logs in the application ins
 
 ## Next steps
 
-Please visit [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-agentframework_1.0.0b9/sdk/agentserver/azure-ai-agentserver-agentframework/samples) folder. There are several samples for you to build your agent with azure-ai-agentserver
+Please visit [Samples](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/agentserver/azure-ai-agentserver-agentframework/samples) folder. There are several samples for you to build your agent with azure-ai-agentserver
 
 
 ## Contributing
