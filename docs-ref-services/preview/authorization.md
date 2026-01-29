@@ -1,12 +1,12 @@
 ---
 title: Azure Authorization SDK for Python
 description: Reference for Azure Authorization SDK for Python
-ms.date: 01/28/2026
+ms.date: 01/29/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: authorization
-manager: routlaw
 keywords: Azure, python, SDK, API, Authorization
+manager: routlaw
 ---
 # Azure Authorization libraries for python
 
