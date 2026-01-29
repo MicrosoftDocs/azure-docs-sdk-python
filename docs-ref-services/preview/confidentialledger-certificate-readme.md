@@ -1,12 +1,12 @@
 ---
 title: Azure Confidential Ledger Certificate client library for Python
 keywords: Azure, python, SDK, API, azure-confidentialledger-certificate, confidentialledger
-ms.date: 10/14/2025
+ms.date: 01/29/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: confidentialledger
 ---
-# Azure Confidential Ledger Certificate client library for Python - version 1.0.0b1 
+# Azure Confidential Ledger Certificate client library for Python - version 1.0.0a20260128001 
 
 
 The Confidential Ledger Certificate client library is used to retrieve the TLS certificate required for connecting to a Confidential Ledger.
@@ -92,9 +92,9 @@ additional questions or comments.
 <!-- LINKS -->
 
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
-[azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-python/tree/azure-confidentialledger-certificate_1.0.0b1/sdk/core/azure-core#azure-core-library-exceptions
+[azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/core/azure-core#azure-core-library-exceptions
 [authenticate_with_token]: /azure/cognitive-services/authentication?tabs=powershell#authenticate-with-an-authentication-token
-[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-confidentialledger-certificate_1.0.0b1/sdk/identity/azure-identity#credentials
+[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#credentials
 [azure_identity_pip]: https://pypi.org/project/azure-identity/
 [pip]: https://pypi.org/project/pip/
 [azure_sub]: https://azure.microsoft.com/free/
