@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-deploymentmanager, deploymentmanager
-ms.date: 11/02/2022
+ms.date: 01/29/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: deploymentmanager
