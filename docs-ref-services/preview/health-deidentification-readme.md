@@ -1,12 +1,12 @@
 ---
 title: Azure Health Data Services de-identification service client library for Python
 keywords: Azure, python, SDK, API, azure-health-deidentification, healthdataaiservices
-ms.date: 08/11/2025
+ms.date: 01/29/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: healthdataaiservices
 ---
-# Azure Health Data Services de-identification service client library for Python - version 1.1.0b1 
+# Azure Health Data Services de-identification service client library for Python - version 1.1.0a20260128001 
 
 
 This package contains a client library for the de-identification service in Azure Health Data Services which 
@@ -21,7 +21,7 @@ Use the client library for the de-identification service to:
 - Replace PHI in unstructured text with realistic surrogate values
 - Manage asynchronous jobs to de-identify documents in Azure Storage
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-health-deidentification_1.1.0b1/sdk/healthdataaiservices/azure-health-deidentification/azure/health/deidentification)
+[Source code](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/healthdataaiservices/azure-health-deidentification/azure/health/deidentification)
 | [Package (PyPI)](https://pypi.org/project/azure-health-deidentification)
 | [API reference documentation](https://learn.microsoft.com/python/api/overview/azure/health-deidentification)
 | [Product documentation][product_documentation]
@@ -408,11 +408,11 @@ additional questions or comments.
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [product_documentation]: https://learn.microsoft.com/azure/healthcare-apis/deidentification/
 [azure_identity_pip]: https://pypi.org/project/azure-identity/
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-health-deidentification_1.1.0b1/sdk/identity/azure-identity#defaultazurecredential
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#defaultazurecredential
 [pip]: https://pypi.org/project/pip/
 [azure_sub]: https://azure.microsoft.com/free/
 [deid_quickstart]: https://learn.microsoft.com/azure/healthcare-apis/deidentification/quickstart
-[string_index]: https://github.com/Azure/azure-sdk-for-python/blob/azure-health-deidentification_1.1.0b1/sdk/healthdataaiservices/azure-health-deidentification/azure/health/deidentification/models/_models.py#L548
+[string_index]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/healthdataaiservices/azure-health-deidentification/azure/health/deidentification/models/_models.py#L548
 [character_encoding]: https://learn.microsoft.com/dotnet/standard/base-types/character-encoding-introduction
 [deid_redact]: https://learn.microsoft.com/azure/healthcare-apis/deidentification/redaction-format
 [deid_rbac]: https://learn.microsoft.com/azure/healthcare-apis/deidentification/manage-access-rbac
@@ -421,7 +421,7 @@ additional questions or comments.
 [azure_cli]: https://learn.microsoft.com/cli/azure/healthcareapis/deidservice?view=azure-cli-latest
 [azure_portal]: https://ms.portal.azure.com
 [azure_error]: https://learn.microsoft.com/python/api/azure-core/azure.core.exceptions.azureerror
-[samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-health-deidentification_1.1.0b1/sdk/healthdataaiservices/azure-health-deidentification/samples
+[samples]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/healthdataaiservices/azure-health-deidentification/samples
 [github_issue_label]: https://github.com/Azure/azure-sdk-for-python/labels/Health%20Deidentification
 [blob_names]: https://learn.microsoft.com/rest/api/storageservices/naming-and-referencing-containers--blobs--and-metadata#blob-names
-[test_data]: https://github.com/Azure/azure-sdk-for-python/tree/azure-health-deidentification_1.1.0b1/sdk/healthdataaiservices/azure-health-deidentification/tests/data
+[test_data]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/healthdataaiservices/azure-health-deidentification/tests/data
