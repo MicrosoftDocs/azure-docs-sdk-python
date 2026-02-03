@@ -1,7 +1,7 @@
 ---
 title: Azure Health Deidentification SDK for Python
 description: Reference for Azure Health Deidentification SDK for Python
-ms.date: 02/02/2026
+ms.date: 02/03/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: healthdeidentification
