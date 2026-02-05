@@ -1,7 +1,7 @@
 ---
 title: Azure API Center SDK for Python
 description: Reference for Azure API Center SDK for Python
-ms.date: 02/04/2026
+ms.date: 02/05/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: apicenter

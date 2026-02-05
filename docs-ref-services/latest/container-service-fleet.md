@@ -1,7 +1,7 @@
 ---
 title: Azure Container Service Fleet SDK for Python
 description: Reference for Azure Container Service Fleet SDK for Python
-ms.date: 02/04/2026
+ms.date: 02/05/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: containerservicefleet
