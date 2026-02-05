@@ -12,7 +12,7 @@ constructor:
     description: 'Supported Cognitive Services endpoints (protocol and hostname, for
       example:
 
-      [https://westus.api.cognitive.microsoft.com](https://westus.api.cognitive.microsoft.com).
+      [https://westus.api.cognitive.microsoft.com](https://westus.api.cognitive.microsoft.com)).
 
       Required.'
     isRequired: true
@@ -139,19 +139,22 @@ methods:
   - "Transcribe audio from a URL.<!--[!code-python[Main](les\\sample_transcribe_from_url.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\27\\\\azure_ai_transcription-1.0.0b2\\\
+    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\27\\\\azure_ai_transcription-1.0.0b3\\\
     \\samples\\\\sample_transcribe_from_url.py\", \"xml:space\": \"preserve\", \"\
     force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
     : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
     \ import AzureKeyCredential\n   from azure.ai.transcription import TranscriptionClient\n\
     \   from azure.ai.transcription.models import TranscriptionOptions\n\n   # Get\
     \ configuration from environment variables\n   endpoint = os.environ[\"AZURE_SPEECH_ENDPOINT\"\
-    ]\n   api_key = os.environ[\"AZURE_SPEECH_API_KEY\"]\n\n   # Create the transcription\
-    \ client\n   client = TranscriptionClient(endpoint=endpoint, credential=AzureKeyCredential(api_key))\n\
-    \n   # URL to your audio file (must be publicly accessible)\n   audio_url = \"\
-    https://example.com/path/to/audio.wav\"\n   # Configure transcription options\n\
-    \   options = TranscriptionOptions(locales=[\"en-US\"])\n\n   # Transcribe the\
-    \ audio from URL\n   # The service will access and transcribe the audio directly\
+    ]\n\n   # We recommend using role-based access control (RBAC) for production scenarios\n\
+    \   api_key = os.environ.get(\"AZURE_SPEECH_API_KEY\")\n   if api_key:\n     \
+    \  credential = AzureKeyCredential(api_key)\n   else:\n       from azure.identity\
+    \ import DefaultAzureCredential\n\n       credential = DefaultAzureCredential()\n\
+    \n   # Create the transcription client\n   client = TranscriptionClient(endpoint=endpoint,\
+    \ credential=credential)\n\n   # URL to your audio file (must be publicly accessible)\n\
+    \   audio_url = \"https://example.com/path/to/audio.wav\"\n   # Configure transcription\
+    \ options\n   options = TranscriptionOptions(locales=[\"en-US\"])\n\n   # Transcribe\
+    \ the audio from URL\n   # The service will access and transcribe the audio directly\
     \ from the URL\n   result = client.transcribe_from_url(audio_url, options=options)\n\
     \n   # Print the transcription result\n   print(f\"Transcription: {result.combined_phrases[0].text}\"\
     )\n\n   # Print duration information\n   if result.duration_milliseconds:\n  \
