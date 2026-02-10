@@ -1,7 +1,7 @@
 ---
 title: Azure Kubernetesconfiguration-Extensions SDK for Python
 description: Reference for Azure Kubernetesconfiguration-Extensions SDK for Python
-ms.date: 02/09/2026
+ms.date: 02/10/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: kubernetesconfiguration-extensions
