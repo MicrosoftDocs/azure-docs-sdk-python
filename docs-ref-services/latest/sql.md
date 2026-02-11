@@ -5,53 +5,58 @@ ms.date: 02/10/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: sql
+ai-usage: ai-assisted
 ---
 # Azure SQL Database libraries for Python
 
 ## Overview
 
-Work with data stored in [Azure SQL Database](/azure/sql-database/sql-database-technical-overview) from Python with the pyodbc [ODBC database driver](https://github.com/mkleehammer/pyodbc/wiki/Drivers-and-Driver-Managers). View our [quickstart](https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python) on connecting to an Azure SQL Database and using Transact-SQL statements to query data and getting started [sample](https://github.com/mkleehammer/pyodbc/wiki/Getting-started) with pyodbc.
+Work with data stored in [Azure SQL Database](/azure/sql-database/sql-database-technical-overview) from Python with the [mssql-python](https://pypi.org/project/mssql-python/) driver, Microsoft's native Python driver for SQL Server. View the [quickstart](/sql/connect/python/mssql-python/python-sql-driver-mssql-python-quickstart) to connect to an Azure SQL database and run Transact-SQL queries.
 
-## Install ODBC driver and pyodbc
+## Install mssql-python
 
 ```bash
-pip install pyodbc
+pip install mssql-python
 ```
-More [details](https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python#prerequisites) about installing the python and database communication libraries.
+
+The `mssql-python` package includes the Microsoft ODBC driver, so you don't need to install it separately. For more information, see the [mssql-python quickstart](/sql/connect/python/mssql-python/python-sql-driver-mssql-python-quickstart).
 
 ## Connect and execute a SQL query
 
 ### Connect to a SQL database
 
 ```python
-import pyodbc
+from mssql_python import connect
 
-server = 'your_server.database.windows.net'
-database = 'your_database'
-username = 'your_username'
-password = 'your_password'
-driver= '{ODBC Driver 13 for SQL Server}'
+connection_string = (
+    "Server=your_server.database.windows.net;"
+    "Database=your_database;"
+    "Encrypt=yes;"
+    "TrustServerCertificate=no;"
+    "Authentication=ActiveDirectoryInteractive"
+)
 
-cnxn = pyodbc.connect('DRIVER='+driver+';PORT=1433;SERVER='+server+';PORT=1443;DATABASE='+database+';UID='+username+';PWD='+ password)
+cnxn = connect(connection_string)
 cursor = cnxn.cursor()
 ```
 
 ### Execute a SQL query
 
 ```python
-cursor.execute("SELECT TOP 20 pc.Name as CategoryName, p.name as ProductName FROM [SalesLT].[ProductCategory] pc JOIN [SalesLT].[Product] p ON pc.productcategoryid = p.productcategoryid")
+cursor.execute(
+    "SELECT TOP 20 pc.Name as CategoryName, p.name as ProductName "
+    "FROM [SalesLT].[ProductCategory] pc "
+    "JOIN [SalesLT].[Product] p "
+    "ON pc.productcategoryid = p.productcategoryid"
+)
 row = cursor.fetchone()
 while row:
-    print (str(row[0]) + " " + str(row[1]))
+    print(str(row[0]) + " " + str(row[1]))
     row = cursor.fetchone()
 ```
 
 > [!div class="nextstepaction"]
-> [pyodbc sample](https://github.com/mkleehammer/pyodbc/wiki/Getting-started)
-
-## Connecting to ORMs
-
-pyodbc works with other ORMs such as [SQLAlchemy](https://docs.sqlalchemy.org/en/latest/dialects/mssql.html?highlight=pyodbc#module-sqlalchemy.dialects.mssql.pyodbc) and [Django](https://github.com/lionheart/django-pyodbc/). 
+> [mssql-python quickstart](/sql/connect/python/mssql-python/python-sql-driver-mssql-python-quickstart)
 
 ## [Management API](/python/api/overview/azure/sql/management)
 
