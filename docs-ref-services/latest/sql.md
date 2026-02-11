@@ -58,7 +58,7 @@ while row:
 > [!div class="nextstepaction"]
 > [mssql-python quickstart](/sql/connect/python/mssql-python/python-sql-driver-mssql-python-quickstart)
 
-## [Management API](/python/api/overview/azure/sql/management)
+## [Management API](/python/api/azure-mgmt-sql)
 
 Create and manage Azure SQL Database resources in your subscription with the management API. 
 
