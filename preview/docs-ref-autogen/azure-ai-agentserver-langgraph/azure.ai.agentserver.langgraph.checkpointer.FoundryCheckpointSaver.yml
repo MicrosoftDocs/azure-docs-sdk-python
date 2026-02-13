@@ -1,0 +1,345 @@
+### YamlMime:PythonClass
+uid: azure.ai.agentserver.langgraph.checkpointer.FoundryCheckpointSaver
+name: FoundryCheckpointSaver
+fullName: azure.ai.agentserver.langgraph.checkpointer.FoundryCheckpointSaver
+module: azure.ai.agentserver.langgraph.checkpointer
+summary: "Checkpoint saver backed by Azure AI Foundry checkpoint storage.\n\nImplements\
+  \ LangGraph's BaseCheckpointSaver interface using the\nFoundryCheckpointClient for\
+  \ remote storage.\n\nThis saver only supports async operations. Sync methods will\
+  \ raise\nNotImplementedError.\n\nExample:\n\n<!-- literal_block {\"ids\": [], \"\
+  classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\"\
+  : \"preserve\", \"language\": \"default\", \"force\": false, \"linenos\": false}\
+  \ -->\n\n````default\n\n   from azure.ai.agentserver.langgraph.checkpointer import\
+  \ FoundryCheckpointSaver\n   from azure.identity.aio import DefaultAzureCredential\n\
+  \n   saver = FoundryCheckpointSaver(\n       project_endpoint=\"https://myresource.services.ai.azure.com/api/projects/my-project\"\
+  ,\n       credential=DefaultAzureCredential(),\n   )\n\n   # Use with LangGraph\n\
+  \   graph = builder.compile(checkpointer=saver)\n   ````\n\nInitialize the Foundry\
+  \ checkpoint saver."
+constructor:
+  syntax: 'FoundryCheckpointSaver(project_endpoint: str, credential: AsyncTokenCredential
+    | TokenCredential, *, serde: SerializerProtocol | None = None)'
+  parameters:
+  - name: project_endpoint
+    description: 'The Azure AI Foundry project endpoint URL.
+
+      Example: "[https:/](https:/)/<resource>.services.ai.azure.com/api/projects/<project-id>"'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: credential
+    description: Credential for authentication. Must be an async credential.
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:AsyncTokenCredential>, <xref:TokenCredential>]
+  - name: serde
+    description: Optional serializer protocol. Defaults to JsonPlusSerializer.
+    isRequired: true
+    types:
+    - <xref:typing.Optional>[<xref:SerializerProtocol>]
+  - name: project_endpoint
+    description: The Azure AI Foundry project endpoint URL.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: credential
+    description: Credential for authentication. Must be an async credential.
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:AsyncTokenCredential>, <xref:TokenCredential>]
+  - name: serde
+    description: Optional serializer protocol.
+    isRequired: true
+    types:
+    - <xref:typing.Optional>[<xref:SerializerProtocol>]
+  keywordOnlyParameters:
+  - name: serde
+    defaultValue: None
+methods:
+- uid: azure.ai.agentserver.langgraph.checkpointer.FoundryCheckpointSaver.adelete_thread
+  name: adelete_thread
+  summary: Delete all checkpoints and writes for a thread.
+  signature: 'async adelete_thread(thread_id: str) -> None'
+  parameters:
+  - name: thread_id
+    description: The thread ID whose checkpoints should be deleted.
+    isRequired: true
+    types:
+    - <xref:str>
+- uid: azure.ai.agentserver.langgraph.checkpointer.FoundryCheckpointSaver.aget
+  name: aget
+  summary: Asynchronously fetch a checkpoint using the given configuration.
+  signature: 'async aget(config: RunnableConfig) -> Checkpoint | None'
+  parameters:
+  - name: config
+    description: Configuration specifying which checkpoint to retrieve.
+    isRequired: true
+  return:
+    description: The requested checkpoint, or *None* if not found.
+- uid: azure.ai.agentserver.langgraph.checkpointer.FoundryCheckpointSaver.aget_tuple
+  name: aget_tuple
+  summary: Asynchronously get a checkpoint tuple by config.
+  signature: 'async aget_tuple(config: RunnableConfig) -> CheckpointTuple | None'
+  parameters:
+  - name: config
+    description: Configuration specifying which checkpoint to retrieve.
+    isRequired: true
+    types:
+    - <xref:RunnableConfig>
+  return:
+    description: The checkpoint tuple, or None if not found.
+    types:
+    - <xref:typing.Optional>[<xref:CheckpointTuple>]
+- uid: azure.ai.agentserver.langgraph.checkpointer.FoundryCheckpointSaver.alist
+  name: alist
+  summary: Asynchronously list checkpoints matching filter criteria.
+  signature: 'async alist(config: RunnableConfig | None, *, filter: Dict[str, Any]
+    | None = None, before: RunnableConfig | None = None, limit: int | None = None)
+    -> AsyncIterator[CheckpointTuple]'
+  parameters:
+  - name: config
+    description: Base configuration for filtering checkpoints.
+    isRequired: true
+    types:
+    - <xref:typing.Optional>[<xref:RunnableConfig>]
+  keywordOnlyParameters:
+  - name: filter
+    description: Additional filtering criteria for metadata.
+    defaultValue: None
+  - name: before
+    description: List checkpoints created before this configuration.
+    defaultValue: None
+  - name: limit
+    description: Maximum number of checkpoints to return.
+    defaultValue: None
+  return:
+    description: Async iterator of matching checkpoint tuples.
+    types:
+    - <xref:typing.AsyncIterator>[<xref:CheckpointTuple>]
+- uid: azure.ai.agentserver.langgraph.checkpointer.FoundryCheckpointSaver.aput
+  name: aput
+  summary: Asynchronously store a checkpoint.
+  signature: 'async aput(config: RunnableConfig, checkpoint: Checkpoint, metadata:
+    CheckpointMetadata, new_versions: dict[str, str | int | float]) -> RunnableConfig'
+  parameters:
+  - name: config
+    description: Configuration for the checkpoint.
+    isRequired: true
+    types:
+    - <xref:RunnableConfig>
+  - name: checkpoint
+    description: The checkpoint to store.
+    isRequired: true
+    types:
+    - <xref:Checkpoint>
+  - name: metadata
+    description: Additional metadata for the checkpoint.
+    isRequired: true
+    types:
+    - <xref:CheckpointMetadata>
+  - name: new_versions
+    description: New channel versions as of this write.
+    isRequired: true
+    types:
+    - <xref:ChannelVersions>
+  return:
+    description: Updated configuration with the checkpoint ID.
+    types:
+    - <xref:RunnableConfig>
+- uid: azure.ai.agentserver.langgraph.checkpointer.FoundryCheckpointSaver.aput_writes
+  name: aput_writes
+  summary: Asynchronously store intermediate writes for a checkpoint.
+  signature: 'async aput_writes(config: RunnableConfig, writes: Sequence[Tuple[str,
+    Any]], task_id: str, task_path: str = '''') -> None'
+  parameters:
+  - name: config
+    description: Configuration of the related checkpoint.
+    isRequired: true
+    types:
+    - <xref:RunnableConfig>
+  - name: writes
+    description: List of writes to store as (channel, value) pairs.
+    isRequired: true
+    types:
+    - <xref:typing.Sequence>[<xref:typing.Tuple>[<xref:str>, <xref:typing.Any>]]
+  - name: task_id
+    description: Identifier for the task creating the writes.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: task_path
+    description: Path of the task creating the writes.
+    isRequired: true
+    types:
+    - <xref:str>
+- uid: azure.ai.agentserver.langgraph.checkpointer.FoundryCheckpointSaver.delete_thread
+  name: delete_thread
+  summary: Sync version not supported - use adelete_thread instead.
+  signature: 'delete_thread(thread_id: str) -> None'
+  parameters:
+  - name: thread_id
+    description: Identifier of the thread to delete.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: NotImplementedError
+    description: Always raised.
+- uid: azure.ai.agentserver.langgraph.checkpointer.FoundryCheckpointSaver.get
+  name: get
+  summary: Fetch a checkpoint using the given configuration.
+  signature: 'get(config: RunnableConfig) -> Checkpoint | None'
+  parameters:
+  - name: config
+    description: Configuration specifying which checkpoint to retrieve.
+    isRequired: true
+  return:
+    description: The requested checkpoint, or *None* if not found.
+- uid: azure.ai.agentserver.langgraph.checkpointer.FoundryCheckpointSaver.get_next_version
+  name: get_next_version
+  summary: 'Generate the next version ID for a channel.
+
+
+    Uses string versions with format "{counter}.{random}".'
+  signature: 'get_next_version(current: str | None, channel: None) -> str'
+  parameters:
+  - name: current
+    description: The current version identifier.
+    isRequired: true
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+  - name: channel
+    description: Deprecated argument, kept for backwards compatibility.
+    isRequired: true
+    types:
+    - <xref:None>
+  return:
+    description: The next version identifier.
+    types:
+    - <xref:str>
+- uid: azure.ai.agentserver.langgraph.checkpointer.FoundryCheckpointSaver.get_tuple
+  name: get_tuple
+  summary: Sync version not supported - use aget_tuple instead.
+  signature: 'get_tuple(config: RunnableConfig) -> CheckpointTuple | None'
+  parameters:
+  - name: config
+    description: Configuration specifying which checkpoint to retrieve.
+    isRequired: true
+    types:
+    - <xref:RunnableConfig>
+  return:
+    description: The checkpoint tuple, or None if not found.
+    types:
+    - <xref:typing.Optional>[<xref:CheckpointTuple>]
+  exceptions:
+  - type: NotImplementedError
+    description: Always raised.
+- uid: azure.ai.agentserver.langgraph.checkpointer.FoundryCheckpointSaver.list
+  name: list
+  summary: Sync version not supported - use alist instead.
+  signature: 'list(config: RunnableConfig | None, *, filter: Dict[str, Any] | None
+    = None, before: RunnableConfig | None = None, limit: int | None = None) -> Iterator[CheckpointTuple]'
+  parameters:
+  - name: config
+    description: Base configuration for filtering checkpoints.
+    isRequired: true
+    types:
+    - <xref:typing.Optional>[<xref:RunnableConfig>]
+  keywordOnlyParameters:
+  - name: filter
+    description: Additional filtering criteria for metadata.
+    defaultValue: None
+  - name: before
+    description: List checkpoints created before this configuration.
+    defaultValue: None
+  - name: limit
+    description: Maximum number of checkpoints to return.
+    defaultValue: None
+  return:
+    description: Iterator of matching checkpoint tuples.
+    types:
+    - <xref:typing.Iterator>[<xref:CheckpointTuple>]
+  exceptions:
+  - type: NotImplementedError
+    description: Always raised.
+- uid: azure.ai.agentserver.langgraph.checkpointer.FoundryCheckpointSaver.put
+  name: put
+  summary: Sync version not supported - use aput instead.
+  signature: 'put(config: RunnableConfig, checkpoint: Checkpoint, metadata: CheckpointMetadata,
+    new_versions: dict[str, str | int | float]) -> RunnableConfig'
+  parameters:
+  - name: config
+    description: Configuration for the checkpoint.
+    isRequired: true
+    types:
+    - <xref:RunnableConfig>
+  - name: checkpoint
+    description: The checkpoint to store.
+    isRequired: true
+    types:
+    - <xref:Checkpoint>
+  - name: metadata
+    description: Additional metadata for the checkpoint.
+    isRequired: true
+    types:
+    - <xref:CheckpointMetadata>
+  - name: new_versions
+    description: New channel versions as of this write.
+    isRequired: true
+    types:
+    - <xref:ChannelVersions>
+  return:
+    description: Updated configuration with the checkpoint ID.
+    types:
+    - <xref:RunnableConfig>
+  exceptions:
+  - type: NotImplementedError
+    description: Always raised.
+- uid: azure.ai.agentserver.langgraph.checkpointer.FoundryCheckpointSaver.put_writes
+  name: put_writes
+  summary: Sync version not supported - use aput_writes instead.
+  signature: 'put_writes(config: RunnableConfig, writes: Sequence[Tuple[str, Any]],
+    task_id: str, task_path: str = '''') -> None'
+  parameters:
+  - name: config
+    description: Configuration of the related checkpoint.
+    isRequired: true
+    types:
+    - <xref:RunnableConfig>
+  - name: writes
+    description: List of writes to store as (channel, value) pairs.
+    isRequired: true
+    types:
+    - <xref:typing.Sequence>[<xref:typing.Tuple>[<xref:str>, <xref:typing.Any>]]
+  - name: task_id
+    description: Identifier for the task creating the writes.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: task_path
+    description: Path of the task creating the writes.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: NotImplementedError
+    description: Always raised.
+attributes:
+- uid: azure.ai.agentserver.langgraph.checkpointer.FoundryCheckpointSaver.config_specs
+  name: config_specs
+  summary: Define the configuration options for the checkpoint saver.
+  return:
+    description: List of configuration field specs.
+    types:
+    - <xref:list>
+- uid: azure.ai.agentserver.langgraph.checkpointer.FoundryCheckpointSaver.serde
+  name: serde
+  signature: 'serde: SerializerProtocol = <langgraph.checkpoint.serde.jsonplus.JsonPlusSerializer
+    object>'
