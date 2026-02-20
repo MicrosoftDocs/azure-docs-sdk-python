@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-ai-agentserver-langgraph, agentserver
-ms.date: 02/13/2026
+ms.date: 02/20/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: agentserver
@@ -45,7 +45,7 @@ If it works on local but failed on cloud. Check your logs in the application ins
 
 ## Next steps
 
-Please visit [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-langgraph_1.0.0b12/sdk/agentserver/azure-ai-agentserver-langgraph/samples) folder. There are several samples for you to build your agent with azure-ai-agentserver-* packages
+Please visit [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-langgraph_1.0.0b13/sdk/agentserver/azure-ai-agentserver-langgraph/samples) folder. There are several samples for you to build your agent with azure-ai-agentserver-* packages
 
 
 ## Contributing
