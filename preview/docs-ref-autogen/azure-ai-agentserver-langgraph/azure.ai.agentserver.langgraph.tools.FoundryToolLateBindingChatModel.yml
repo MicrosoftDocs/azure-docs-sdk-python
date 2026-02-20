@@ -966,12 +966,35 @@ methods:
   summary: 'Get the namespace of the LangChain object.
 
 
-    For example, if the class is
+    The default implementation splits *cls.__module__* on *''.''*, e.g.
 
-    [*langchain.llms.openai.OpenAI*][langchain_openai.OpenAI], then the namespace
-    is
+    *langchain_openai.chat_models* becomes
 
-    *["langchain", "llms", "openai"]*'
+    *["langchain_openai", "chat_models"]*. This value is used by *lc_id* to
+
+    build the serialization identifier.
+
+
+    New partner packages should **not** override this method. The default
+
+    behavior is correct for any class whose module path already reflects
+
+    its package name. Some older packages (e.g. *langchain-openai*,
+
+    *langchain-anthropic*) override it to return a legacy-style namespace
+
+    like *["langchain", "chat_models", "openai"]*, matching the module
+
+    paths that existed before those integrations were split out of the
+
+    main *langchain* package. Those overrides are kept for
+
+    backwards-compatible deserialization; new packages should not copy them.
+
+
+    Deserialization mapping is handled separately by
+
+    *SERIALIZABLE_MAPPING* in *langchain_core.load.mapping*.'
   signature: get_lc_namespace() -> list[str]
   return:
     description: The namespace.
@@ -2229,7 +2252,7 @@ attributes:
     \ the best of both worlds.\n\n* If *False* (Default), will always use streaming\
     \ case if available. \n\nThe main reason for this flag is that code might be written\
     \ using *stream* and\na user may want to swap out a given model for another model\
-    \ whose the implementation\ndoes not properly support streaming."
+    \ whose implementation\ndoes not properly support streaming."
   signature: 'disable_streaming: bool | Literal[''tool_calling'']'
 - uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.input_schema
   name: input_schema
@@ -2272,7 +2295,10 @@ attributes:
       \  i.e. that were not filled from defaults."
 - uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.name
   name: name
-  summary: The name of the *Runnable*. Used for debugging and tracing.
+  summary: 'The name of the *Runnable*.
+
+
+    Used for debugging and tracing.'
   signature: 'name: str | None'
 - uid: azure.ai.agentserver.langgraph.tools.FoundryToolLateBindingChatModel.output_schema
   name: output_schema

@@ -9,12 +9,12 @@ summary: "> [!WARNING]\n> DO NOT instantiate this class directly.\n>\n> \n>\n> I
 constructor:
   syntax: ServersOperations(*args, **kwargs)
 methods:
-- uid: azure.mgmt.postgresqlflexibleservers.aio.operations.ServersOperations.begin_create
-  name: begin_create
+- uid: azure.mgmt.postgresqlflexibleservers.aio.operations.ServersOperations.begin_create_or_update
+  name: begin_create_or_update
   summary: Creates a new server.
-  signature: 'async begin_create(resource_group_name: str, server_name: str, parameters:
-    _models.Server, *, content_type: str = ''application/json'', **kwargs: Any) ->
-    AsyncLROPoller[_models.Server]'
+  signature: 'async begin_create_or_update(resource_group_name: str, server_name:
+    str, parameters: _models.Server, *, content_type: str = ''application/json'',
+    **kwargs: Any) -> AsyncLROPoller[_models.Server]'
   parameters:
   - name: resource_group_name
     description: 'The name of the resource group. The name is case insensitive.
@@ -29,26 +29,27 @@ methods:
     types:
     - <xref:str>
   - name: parameters
-    description: 'The required parameters for creating or updating a server. Is either
-      a
+    description: 'Parameters required to create a new server or to update an existing
+      server.
 
-      Server type or a IO[bytes] type. Required.'
+      Is one of the following types: Server, JSON, IO[bytes] Required.'
     isRequired: true
     types:
     - <xref:azure.mgmt.postgresqlflexibleservers.models.Server>
+    - <xref:JSON>
     - <xref:typing.IO>[<xref:bytes>]
   return:
-    description: 'An instance of AsyncLROPoller that returns either Server or the
-      result of
+    description: 'An instance of AsyncLROPoller that returns Server. The Server is
+      compatible with
 
-      cls(response)'
+      MutableMapping'
     types:
     - <xref:azure.core.polling.AsyncLROPoller>[<xref:azure.mgmt.postgresqlflexibleservers.models.Server>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.mgmt.postgresqlflexibleservers.aio.operations.ServersOperations.begin_delete
   name: begin_delete
-  summary: Deletes a server.
+  summary: Deletes or drops an existing server.
   signature: 'async begin_delete(resource_group_name: str, server_name: str, **kwargs:
     Any) -> AsyncLROPoller[None]'
   parameters:
@@ -65,15 +66,48 @@ methods:
     types:
     - <xref:str>
   return:
-    description: An instance of AsyncLROPoller that returns either None or the result
-      of cls(response)
+    description: An instance of AsyncLROPoller that returns None
     types:
     - <xref:azure.core.polling.AsyncLROPoller>[<xref:None>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+- uid: azure.mgmt.postgresqlflexibleservers.aio.operations.ServersOperations.begin_migrate_network_mode
+  name: begin_migrate_network_mode
+  summary: 'Migrates the network configuration of a PostgreSQL flexible server from
+    customer owned VNET to
+
+    Microsoft owned VNET with support for private endpoints, or from Microsoft owned
+    VNET with no
+
+    support for private endpoints to Microsoft owned VNET with support for private
+    endpoints.'
+  signature: 'async begin_migrate_network_mode(resource_group_name: str, server_name:
+    str, **kwargs: Any) -> AsyncLROPoller[MigrateNetworkStatus]'
+  parameters:
+  - name: resource_group_name
+    description: 'The name of the resource group. The name is case insensitive.
+
+      Required.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: server_name
+    description: The name of the server. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: 'An instance of AsyncLROPoller that returns MigrateNetworkStatus.
+      The
+
+      MigrateNetworkStatus is compatible with MutableMapping'
+    types:
+    - <xref:azure.core.polling.AsyncLROPoller>[<xref:azure.mgmt.postgresqlflexibleservers.models.MigrateNetworkStatus>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.mgmt.postgresqlflexibleservers.aio.operations.ServersOperations.begin_restart
   name: begin_restart
-  summary: Restarts a server.
+  summary: Restarts PostgreSQL database engine in a server.
   signature: 'async begin_restart(resource_group_name: str, server_name: str, parameters:
     _models.RestartParameter | None = None, *, content_type: str = ''application/json'',
     **kwargs: Any) -> AsyncLROPoller[None]'
@@ -91,24 +125,23 @@ methods:
     types:
     - <xref:str>
   - name: parameters
-    description: 'The parameters for restarting a server. Is either a RestartParameter
-      type or
+    description: 'Parameters to restart a server. Is one of the following types:
 
-      a IO[bytes] type. Default value is None.'
+      RestartParameter, JSON, IO[bytes] Default value is None.'
     defaultValue: None
     types:
     - <xref:azure.mgmt.postgresqlflexibleservers.models.RestartParameter>
+    - <xref:JSON>
     - <xref:typing.IO>[<xref:bytes>]
   return:
-    description: An instance of AsyncLROPoller that returns either None or the result
-      of cls(response)
+    description: An instance of AsyncLROPoller that returns None
     types:
     - <xref:azure.core.polling.AsyncLROPoller>[<xref:None>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.mgmt.postgresqlflexibleservers.aio.operations.ServersOperations.begin_start
   name: begin_start
-  summary: Starts a server.
+  summary: Starts a stopped server.
   signature: 'async begin_start(resource_group_name: str, server_name: str, **kwargs:
     Any) -> AsyncLROPoller[None]'
   parameters:
@@ -125,8 +158,7 @@ methods:
     types:
     - <xref:str>
   return:
-    description: An instance of AsyncLROPoller that returns either None or the result
-      of cls(response)
+    description: An instance of AsyncLROPoller that returns None
     types:
     - <xref:azure.core.polling.AsyncLROPoller>[<xref:None>]
   exceptions:
@@ -150,20 +182,19 @@ methods:
     types:
     - <xref:str>
   return:
-    description: An instance of AsyncLROPoller that returns either None or the result
-      of cls(response)
+    description: An instance of AsyncLROPoller that returns None
     types:
     - <xref:azure.core.polling.AsyncLROPoller>[<xref:None>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.mgmt.postgresqlflexibleservers.aio.operations.ServersOperations.begin_update
   name: begin_update
-  summary: 'Updates an existing server. The request body can contain one to many of
-    the properties present
+  summary: 'Updates an existing server. The request body can contain one or multiple
+    of the properties
 
-    in the normal server definition.'
+    present in the normal server definition.'
   signature: 'async begin_update(resource_group_name: str, server_name: str, parameters:
-    _models.ServerForUpdate, *, content_type: str = ''application/json'', **kwargs:
+    _models.ServerForPatch, *, content_type: str = ''application/json'', **kwargs:
     Any) -> AsyncLROPoller[_models.Server]'
   parameters:
   - name: resource_group_name
@@ -179,25 +210,27 @@ methods:
     types:
     - <xref:str>
   - name: parameters
-    description: 'The required parameters for updating a server. Is either a ServerForUpdate
+    description: 'Parameters required to update a server. Is one of the following
+      types:
 
-      type or a IO[bytes] type. Required.'
+      ServerForPatch, JSON, IO[bytes] Required.'
     isRequired: true
     types:
-    - <xref:azure.mgmt.postgresqlflexibleservers.models.ServerForUpdate>
+    - <xref:azure.mgmt.postgresqlflexibleservers.models.ServerForPatch>
+    - <xref:JSON>
     - <xref:typing.IO>[<xref:bytes>]
   return:
-    description: 'An instance of AsyncLROPoller that returns either Server or the
-      result of
+    description: 'An instance of AsyncLROPoller that returns Server. The Server is
+      compatible with
 
-      cls(response)'
+      MutableMapping'
     types:
     - <xref:azure.core.polling.AsyncLROPoller>[<xref:azure.mgmt.postgresqlflexibleservers.models.Server>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.mgmt.postgresqlflexibleservers.aio.operations.ServersOperations.get
   name: get
-  summary: Gets information about a server.
+  summary: Gets information about an existing server.
   signature: 'async get(resource_group_name: str, server_name: str, **kwargs: Any)
     -> Server'
   parameters:
@@ -214,25 +247,15 @@ methods:
     types:
     - <xref:str>
   return:
-    description: Server or the result of cls(response)
+    description: Server. The Server is compatible with MutableMapping
     types:
     - <xref:azure.mgmt.postgresqlflexibleservers.models.Server>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-- uid: azure.mgmt.postgresqlflexibleservers.aio.operations.ServersOperations.list
-  name: list
-  summary: List all the servers in a given subscription.
-  signature: 'list(**kwargs: Any) -> AsyncIterable[Server]'
-  return:
-    description: An iterator like instance of either Server or the result of cls(response)
-    types:
-    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.mgmt.postgresqlflexibleservers.models.Server>]
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.mgmt.postgresqlflexibleservers.aio.operations.ServersOperations.list_by_resource_group
   name: list_by_resource_group
-  summary: List all the servers in a given resource group.
-  signature: 'list_by_resource_group(resource_group_name: str, **kwargs: Any) -> AsyncIterable[Server]'
+  summary: Lists all servers in a resource group.
+  signature: 'list_by_resource_group(resource_group_name: str, **kwargs: Any) -> AsyncItemPaged[Server]'
   parameters:
   - name: resource_group_name
     description: 'The name of the resource group. The name is case insensitive.
@@ -242,12 +265,18 @@ methods:
     types:
     - <xref:str>
   return:
-    description: An iterator like instance of either Server or the result of cls(response)
+    description: An iterator like instance of Server
     types:
     - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.mgmt.postgresqlflexibleservers.models.Server>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-attributes:
-- uid: azure.mgmt.postgresqlflexibleservers.aio.operations.ServersOperations.models
-  name: models
-  signature: models = <module 'azure.mgmt.postgresqlflexibleservers.models' from 'C:\\ToolCache\\Python\\3.12.10\\x64\\Lib\\site-packages\\py2docfx\\venv\\venv218\\Lib\\site-packages\\azure\\mgmt\\postgresqlflexibleservers\\models\\__init__.py'>
+- uid: azure.mgmt.postgresqlflexibleservers.aio.operations.ServersOperations.list_by_subscription
+  name: list_by_subscription
+  summary: Lists all servers in a subscription.
+  signature: 'list_by_subscription(**kwargs: Any) -> AsyncItemPaged[Server]'
+  return:
+    description: An iterator like instance of Server
+    types:
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.mgmt.postgresqlflexibleservers.models.Server>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
