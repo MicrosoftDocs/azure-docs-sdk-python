@@ -1,10 +1,10 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-ai-voicelive, ai
-ms.date: 02/13/2026
+keywords: Azure, python, SDK, API, azure-ai-voicelive, voicelive
+ms.date: 02/23/2026
 ms.topic: reference
 ms.devlang: python
-ms.service: ai
+ms.service: voicelive
 ---
 Azure AI VoiceLive client library for Python
 ============================================
