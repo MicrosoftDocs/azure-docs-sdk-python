@@ -6,7 +6,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: ai
 ---
-# Azure AI Projects client library for Python - version 2.0.0a20260225001 
+# Azure AI Projects client library for Python - version 2.0.0a20260225002 
 
 
 The AI Projects client library (in preview) is part of the Microsoft Foundry SDK, and provides easy access to
