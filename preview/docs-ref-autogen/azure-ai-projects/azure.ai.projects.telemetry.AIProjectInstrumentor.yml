@@ -6,16 +6,62 @@ module: azure.ai.projects.telemetry
 summary: 'A class for managing the trace instrumentation of the AIProjectClient.
 
 
-  This class allows enabling or disabling tracing for AI Projects.
+  This class allows enabling or disabling tracing for AI Projects
 
-  and provides functionality to check whether instrumentation is active.'
+  and provides functionality to check whether instrumentation is active.
+
+
+  > [!WARNING]
+
+  > GenAI tracing is an experimental preview feature. To use this feature, you must
+  set the
+
+  >
+
+  > environment variable AZURE_EXPERIMENTAL_ENABLE_GENAI_TRACING=true (case insensitive)
+
+  >
+
+  > before calling the instrument() method. Spans, attributes, and events may be modified
+
+  >
+
+  > in future versions.
+
+  >'
 constructor:
   syntax: AIProjectInstrumentor()
 methods:
 - uid: azure.ai.projects.telemetry.AIProjectInstrumentor.instrument
   name: instrument
-  summary: Enable trace instrumentation for AIProjectClient.
-  signature: 'instrument(enable_content_recording: bool | None = None) -> None'
+  summary: 'Enable trace instrumentation for AIProjectClient.
+
+
+    > [!WARNING]
+
+    > GenAI tracing is an experimental preview feature. To use this feature, you must
+    set the
+
+    >
+
+    > environment variable AZURE_EXPERIMENTAL_ENABLE_GENAI_TRACING=true (case insensitive).
+
+    >
+
+    > If this environment variable is not set or set to any value other than "true",
+
+    >
+
+    > instrumentation will not be enabled and this method will return immediately
+    without effect.
+
+    >
+
+    > Spans, attributes, and events may be modified in future versions.
+
+    >'
+  signature: 'instrument(enable_content_recording: bool | None = None, enable_trace_context_propagation:
+    bool | None = None, enable_baggage_propagation: bool | None = None) -> None'
   parameters:
   - name: enable_content_recording
     description: 'Whether content recording is enabled as part
@@ -43,6 +89,44 @@ methods:
       if the environment variable is not found), even if instrument was already previously
 
       called without uninstrument being called in between the instrument calls.'
+    defaultValue: None
+    types:
+    - <xref:bool>, <xref:optional>
+  - name: enable_trace_context_propagation
+    description: 'Whether to enable automatic trace context propagation
+
+      to OpenAI SDK HTTP requests. When enabled, traceparent and tracestate headers
+      will be injected
+
+      into requests made by OpenAI clients obtained via get_openai_client(), allowing
+      server-side
+
+      spans to be correlated with client-side spans. *True* will enable it, *False*
+      will
+
+      disable it. If no value is provided, then the value read from environment variable
+
+      AZURE_TRACING_GEN_AI_ENABLE_TRACE_CONTEXT_PROPAGATION is used. If the environment
+
+      variable is not found, then the value will default to *False*.'
+    defaultValue: None
+    types:
+    - <xref:bool>, <xref:optional>
+  - name: enable_baggage_propagation
+    description: 'Whether to include baggage headers in trace context propagation.
+
+      Only applies when enable_trace_context_propagation is True. *True* will enable
+      baggage propagation,
+
+      *False* will disable it. If no value is provided, then the value read from environment
+      variable
+
+      AZURE_TRACING_GEN_AI_TRACE_CONTEXT_PROPAGATION_INCLUDE_BAGGAGE is used. If the
+      environment
+
+      variable is not found, then the value will default to *False*.
+
+      Note: Baggage may contain sensitive application data.'
     defaultValue: None
     types:
     - <xref:bool>, <xref:optional>
