@@ -1,7 +1,7 @@
 ---
 title: Azure Mixed Reality Authentication Package client library for Python
 keywords: Azure, python, SDK, API, azure-mixedreality-authentication, mixedreality
-ms.date: 02/23/2026
+ms.date: 02/26/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: mixedreality
@@ -174,7 +174,7 @@ python samples\client_sample_async.py
 
 # Troubleshooting
 
-The [troubleshooting](https://github.com/Azure/azure-sdk-for-python/tree/azure-mixedreality-authentication_1.0.0b2/sdk/identity/azure-identity#troubleshooting)
+The [troubleshooting](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#troubleshooting)
 section for Azure Identity can be helpful when troubleshooting authentication issues.
 
 # Next steps
@@ -198,7 +198,7 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 If you'd like to contribute to this library, please read the
-[contributing guide](https://github.com/Azure/azure-sdk-for-python/blob/azure-mixedreality-authentication_1.0.0b2/CONTRIBUTING.md) to learn more about how to
+[contributing guide](https://github.com/Azure/azure-sdk-for-python/blob/main/CONTRIBUTING.md) to learn more about how to
 build and test the code.
 
 
@@ -206,6 +206,6 @@ build and test the code.
 [azure_cli]: /cli/azure
 [azure_sub]: https://azure.microsoft.com/free/
 [azure_portal]: https://portal.azure.com
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-mixedreality-authentication_1.0.0b2/sdk/identity/azure-identity
-[defaultazurecredential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-mixedreality-authentication_1.0.0b2/sdk/identity/azure-identity#defaultazurecredential
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity
+[defaultazurecredential]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#defaultazurecredential
 
