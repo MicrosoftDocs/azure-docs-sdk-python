@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-agricultureplatform, agricultureplatform
-ms.date: 02/06/2026
+ms.date: 02/26/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: agricultureplatform
