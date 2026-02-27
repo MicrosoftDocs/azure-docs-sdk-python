@@ -1,7 +1,7 @@
 ---
 title: Azure Hybrid Container Service SDK for Python
 description: Reference for Azure Hybrid Container Service SDK for Python
-ms.date: 02/26/2026
+ms.date: 02/27/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: hybridcontainerservice
