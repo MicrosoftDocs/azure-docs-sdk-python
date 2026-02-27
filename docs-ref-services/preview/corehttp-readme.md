@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, corehttp, core
-ms.date: 02/05/2026
+ms.date: 02/27/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: core
