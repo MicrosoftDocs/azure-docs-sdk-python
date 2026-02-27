@@ -3,7 +3,7 @@ uid: azure.search.documents.aio.SearchIndexingBufferedSender
 name: SearchIndexingBufferedSender
 fullName: azure.search.documents.aio.SearchIndexingBufferedSender
 module: azure.search.documents.aio
-summary: A buffered sender for document indexing actions.
+summary: A buffered sender for document indexing actions (async version).
 constructor:
   syntax: 'SearchIndexingBufferedSender(endpoint: str, index_name: str, credential:
     AzureKeyCredential | AsyncTokenCredential, **kwargs: Any)'
@@ -25,8 +25,12 @@ constructor:
     - <xref:azure.core.credentials.AzureKeyCredential>
     - <xref:azure.core.credentials_async.AsyncTokenCredential>
   keywordOnlyParameters:
+  - name: auto_flush
+    description: Whether to automatically flush the batch. Default is True.
+    types:
+    - <xref:bool>
   - name: auto_flush_interval
-    description: 'how many max seconds if between 2 flushes. This only takes effect
+    description: 'How many max seconds between 2 flushes. This only takes effect
 
       when auto_flush is on. Default to 60 seconds.'
     types:
@@ -71,20 +75,15 @@ constructor:
     types:
     - <xref:str>
   - name: audience
-    description: 'sets the Audience to use for authentication with Microsoft Entra
-      ID. The
-
-      audience is not considered when using a shared key. If audience is not provided,
-      the public cloud audience
-
-      will be assumed.'
+    description: Sets the Audience to use for authentication with Microsoft Entra
+      ID.
     types:
     - <xref:str>
 methods:
 - uid: azure.search.documents.aio.SearchIndexingBufferedSender.close
   name: close
   summary: Close the session.
-  signature: 'async close(**kwargs: Any) -> None'
+  signature: async close(**kwargs) -> None
   return:
     description: None
     types:
@@ -92,20 +91,20 @@ methods:
 - uid: azure.search.documents.aio.SearchIndexingBufferedSender.delete_documents
   name: delete_documents
   summary: Queue delete documents actions
-  signature: 'async delete_documents(documents: List[Dict], **kwargs: Any) -> None'
+  signature: 'async delete_documents(documents: List[Dict], **kwargs) -> None'
   parameters:
   - name: documents
     description: A list of documents to delete.
     isRequired: true
     types:
-    - <xref:list>[<xref:typing.Dict>]
+    - <xref:list>[<xref:dict>]
 - uid: azure.search.documents.aio.SearchIndexingBufferedSender.flush
   name: flush
   summary: Flush the batch.
-  signature: 'async flush(timeout: int = 86400, **kwargs) -> bool'
+  signature: 'async flush(timeout: int = 86400, **kwargs: Any) -> bool'
   parameters:
   - name: timeout
-    description: time out setting. Default is 86400s (one day)
+    description: Time out setting. Default is 86400s (one day)
     defaultValue: '86400'
     types:
     - <xref:int>
@@ -115,20 +114,18 @@ methods:
     - <xref:bool>
   exceptions:
   - type: azure.core.exceptions.ServiceResponseTimeoutError
-    description: if there is a timeout
 - uid: azure.search.documents.aio.SearchIndexingBufferedSender.index_documents
   name: index_documents
   summary: Specify a document operations to perform as a batch.
-  signature: 'async index_documents(batch: IndexDocumentsBatch, **kwargs: Any) ->
-    List[IndexingResult]'
+  signature: 'async index_documents(batch: IndexDocumentsBatch, **kwargs) -> List[IndexingResult]'
   parameters:
   - name: batch
     description: A batch of document operations to perform.
     isRequired: true
     types:
-    - <xref:azure.search.documents.IndexDocumentsBatch>
+    - <xref:azure.search.documents.models.IndexDocumentsBatch>
   return:
-    description: Indexing result for each action in the batch.
+    description: Indexing result of each action in the batch.
     types:
     - <xref:list>[<xref:azure.search.documents.models.IndexingResult>]
   exceptions:
@@ -137,7 +134,7 @@ methods:
 - uid: azure.search.documents.aio.SearchIndexingBufferedSender.merge_documents
   name: merge_documents
   summary: Queue merge documents actions
-  signature: 'async merge_documents(documents: List[Dict], **kwargs: Any) -> None'
+  signature: 'async merge_documents(documents: List[Dict], **kwargs) -> None'
   parameters:
   - name: documents
     description: A list of documents to merge.
@@ -147,8 +144,8 @@ methods:
 - uid: azure.search.documents.aio.SearchIndexingBufferedSender.merge_or_upload_documents
   name: merge_or_upload_documents
   summary: Queue merge documents or upload documents actions
-  signature: 'async merge_or_upload_documents(documents: List[Dict], **kwargs: Any)
-    -> None'
+  signature: 'async merge_or_upload_documents(documents: List[Dict], **kwargs) ->
+    None'
   parameters:
   - name: documents
     description: A list of documents to merge or upload.
@@ -158,7 +155,7 @@ methods:
 - uid: azure.search.documents.aio.SearchIndexingBufferedSender.upload_documents
   name: upload_documents
   summary: Queue upload documents actions.
-  signature: 'async upload_documents(documents: List[Dict], **kwargs: Any) -> None'
+  signature: 'async upload_documents(documents: List[Dict], **kwargs) -> None'
   parameters:
   - name: documents
     description: A list of documents to upload.
@@ -170,6 +167,5 @@ attributes:
   name: actions
   summary: The list of currently index actions in queue to index.
   return:
-    description: The list of currently index actions in queue to index.
     types:
     - <xref:list>[<xref:azure.search.documents.models.IndexAction>]
