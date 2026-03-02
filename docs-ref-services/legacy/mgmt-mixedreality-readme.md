@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-mixedreality, mixedreality
-ms.date: 02/24/2026
+ms.date: 03/02/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: mixedreality

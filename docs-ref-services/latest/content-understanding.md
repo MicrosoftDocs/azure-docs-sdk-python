@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: contentunderstanding
 ---
-# Azure Content Understanding SDK for Python - preview
-## Packages - preview
+# Azure Content Understanding SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](content-understanding-index.md)]
