@@ -55,6 +55,26 @@ constructor:
   - name: serde
     defaultValue: None
 methods:
+- uid: azure.ai.agentserver.langgraph.checkpointer.FoundryCheckpointSaver.acopy_thread
+  name: acopy_thread
+  summary: Asynchronously copy all checkpoints and writes from one thread to another.
+  signature: 'async acopy_thread(source_thread_id: str, target_thread_id: str) ->
+    None'
+  parameters:
+  - name: source_thread_id
+    description: The thread ID to copy from.
+    isRequired: true
+  - name: target_thread_id
+    description: The thread ID to copy to.
+    isRequired: true
+- uid: azure.ai.agentserver.langgraph.checkpointer.FoundryCheckpointSaver.adelete_for_runs
+  name: adelete_for_runs
+  summary: Asynchronously delete all checkpoints and writes for the given run IDs.
+  signature: 'async adelete_for_runs(run_ids: Sequence[str]) -> None'
+  parameters:
+  - name: run_ids
+    description: The run IDs whose checkpoints should be deleted.
+    isRequired: true
 - uid: azure.ai.agentserver.langgraph.checkpointer.FoundryCheckpointSaver.adelete_thread
   name: adelete_thread
   summary: Delete all checkpoints and writes for a thread.
@@ -115,6 +135,23 @@ methods:
     description: Async iterator of matching checkpoint tuples.
     types:
     - <xref:typing.AsyncIterator>[<xref:CheckpointTuple>]
+- uid: azure.ai.agentserver.langgraph.checkpointer.FoundryCheckpointSaver.aprune
+  name: aprune
+  summary: Asynchronously prune checkpoints for the given threads.
+  signature: 'async aprune(thread_ids: Sequence[str], *, strategy: str = ''keep_latest'')
+    -> None'
+  parameters:
+  - name: thread_ids
+    description: The thread IDs to prune.
+    isRequired: true
+  - name: strategy
+    description: 'The pruning strategy. *"keep_latest"* retains only the most
+
+      recent checkpoint per namespace. *"delete"* removes all checkpoints.'
+    isRequired: true
+  keywordOnlyParameters:
+  - name: strategy
+    defaultValue: keep_latest
 - uid: azure.ai.agentserver.langgraph.checkpointer.FoundryCheckpointSaver.aput
   name: aput
   summary: Asynchronously store a checkpoint.
@@ -171,6 +208,25 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+- uid: azure.ai.agentserver.langgraph.checkpointer.FoundryCheckpointSaver.copy_thread
+  name: copy_thread
+  summary: Copy all checkpoints and writes from one thread to another.
+  signature: 'copy_thread(source_thread_id: str, target_thread_id: str) -> None'
+  parameters:
+  - name: source_thread_id
+    description: The thread ID to copy from.
+    isRequired: true
+  - name: target_thread_id
+    description: The thread ID to copy to.
+    isRequired: true
+- uid: azure.ai.agentserver.langgraph.checkpointer.FoundryCheckpointSaver.delete_for_runs
+  name: delete_for_runs
+  summary: Delete all checkpoints and writes associated with the given run IDs.
+  signature: 'delete_for_runs(run_ids: Sequence[str]) -> None'
+  parameters:
+  - name: run_ids
+    description: The run IDs whose checkpoints should be deleted.
+    isRequired: true
 - uid: azure.ai.agentserver.langgraph.checkpointer.FoundryCheckpointSaver.delete_thread
   name: delete_thread
   summary: Sync version not supported - use adelete_thread instead.
@@ -265,6 +321,23 @@ methods:
   exceptions:
   - type: NotImplementedError
     description: Always raised.
+- uid: azure.ai.agentserver.langgraph.checkpointer.FoundryCheckpointSaver.prune
+  name: prune
+  summary: Prune checkpoints for the given threads.
+  signature: 'prune(thread_ids: Sequence[str], *, strategy: str = ''keep_latest'')
+    -> None'
+  parameters:
+  - name: thread_ids
+    description: The thread IDs to prune.
+    isRequired: true
+  - name: strategy
+    description: 'The pruning strategy. *"keep_latest"* retains only the most
+
+      recent checkpoint per namespace. *"delete"* removes all checkpoints.'
+    isRequired: true
+  keywordOnlyParameters:
+  - name: strategy
+    defaultValue: keep_latest
 - uid: azure.ai.agentserver.langgraph.checkpointer.FoundryCheckpointSaver.put
   name: put
   summary: Sync version not supported - use aput instead.
@@ -331,6 +404,13 @@ methods:
   exceptions:
   - type: NotImplementedError
     description: Always raised.
+- uid: azure.ai.agentserver.langgraph.checkpointer.FoundryCheckpointSaver.with_allowlist
+  name: with_allowlist
+  summary: Return a shallow clone with a derived msgpack allowlist.
+  signature: 'with_allowlist(extra_allowlist: Collection[tuple[str, ...]]) -> BaseCheckpointSaver[V]'
+  parameters:
+  - name: extra_allowlist
+    isRequired: true
 attributes:
 - uid: azure.ai.agentserver.langgraph.checkpointer.FoundryCheckpointSaver.config_specs
   name: config_specs

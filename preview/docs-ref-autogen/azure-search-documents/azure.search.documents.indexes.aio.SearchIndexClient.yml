@@ -3,35 +3,33 @@ uid: azure.search.documents.indexes.aio.SearchIndexClient
 name: SearchIndexClient
 fullName: azure.search.documents.indexes.aio.SearchIndexClient
 module: azure.search.documents.indexes.aio
-summary: A client to interact with Azure search service Indexes.
+summary: SearchIndexClient.
 constructor:
   syntax: 'SearchIndexClient(endpoint: str, credential: AzureKeyCredential | AsyncTokenCredential,
-    **kwargs)'
+    **kwargs: Any)'
   parameters:
   - name: endpoint
-    description: The URL endpoint of an Azure search service
+    description: Service host. Required.
     isRequired: true
     types:
     - <xref:str>
   - name: credential
-    description: A credential to authorize search client requests
+    description: 'Credential used to authenticate requests to the service. Is either
+      a key
+
+      credential type or a token credential type. Required.'
     isRequired: true
     types:
     - <xref:azure.core.credentials.AzureKeyCredential>
     - <xref:azure.core.credentials_async.AsyncTokenCredential>
   keywordOnlyParameters:
   - name: api_version
-    description: The Search API version to use for requests.
-    types:
-    - <xref:str>
-  - name: audience
-    description: 'sets the Audience to use for authentication with Microsoft Entra
-      ID. The
+    description: 'The API version to use for this operation. Known values are
 
-      audience is not considered when using a shared key. If audience is not provided,
-      the public cloud audience
+      "2025-11-01-preview" and None. Default value is "2025-11-01-preview". Note that
+      overriding this
 
-      will be assumed.'
+      default value may result in unsupported behavior.'
     types:
     - <xref:str>
 methods:
@@ -42,12 +40,12 @@ methods:
     **kwargs: Any) -> AnalyzeResult'
   parameters:
   - name: index_name
-    description: The name of the index for which to test an analyzer.
+    description: The name of the index to test an analyzer on. Required.
     isRequired: true
     types:
     - <xref:str>
   - name: analyze_request
-    description: The text and analyzer or analysis components to test.
+    description: The text and analyzer or analysis components to test. Required.
     isRequired: true
     types:
     - <xref:azure.search.documents.indexes.models.AnalyzeTextOptions>
@@ -57,129 +55,93 @@ methods:
     - <xref:azure.search.documents.indexes.models.AnalyzeResult>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-    description: If the operation fails.
-  examples:
-  - "Analyze text<!--[!code-python[Main](les\\async_samples\\sample_analyze_text_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\async_samples\\\\sample_analyze_text_async.py\", \"xml:space\": \"\
-    preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
-    linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
-    \ import AzureKeyCredential\n   from azure.search.documents.indexes.aio import\
-    \ SearchIndexClient\n   from azure.search.documents.indexes.models import AnalyzeTextOptions\n\
-    \n   client = SearchIndexClient(service_endpoint, AzureKeyCredential(key))\n\n\
-    \   analyze_request = AnalyzeTextOptions(text=\"One's <two/>\", analyzer_name=\"\
-    standard.lucene\")\n\n   async with client:\n       result = await client.analyze_text(index_name,\
-    \ analyze_request)\n       print(result.as_dict())\n\n   ````\n"
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.close
   name: close
-  summary: Close the session.
   signature: async close() -> None
-  return:
-    description: None
-    types:
-    - <xref:None>
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.create_alias
   name: create_alias
   summary: Creates a new search alias.
-  signature: 'async create_alias(alias: SearchAlias, **kwargs: Any) -> SearchAlias'
+  signature: 'async create_alias(alias: SearchAlias | MutableMapping[str, Any] | IO[bytes],
+    **kwargs: Any) -> SearchAlias'
   parameters:
   - name: alias
-    description: The alias object.
+    description: 'The definition of the alias to create. Is one of the following types:
+
+      SearchAlias, JSON, IO[bytes] Required.'
     isRequired: true
     types:
     - <xref:azure.search.documents.indexes.models.SearchAlias>
+    - <xref:JSON>
+    - <xref:typing.IO>[<xref:bytes>]
   return:
-    description: The alias created
+    description: SearchAlias. The SearchAlias is compatible with MutableMapping
     types:
     - <xref:azure.search.documents.indexes.models.SearchAlias>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-    description: If the operation fails.
-  examples:
-  - "Create an alias.<!--[!code-python[Main](les\\async_samples\\sample_index_alias_crud_operations_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\async_samples\\\\sample_index_alias_crud_operations_async.py\", \"\
-    xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   alias = SearchAlias(name=alias_name,\
-    \ indexes=[index_name])\n   result = await client.create_alias(alias)\n\n   ````\n"
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.create_index
   name: create_index
   summary: Creates a new search index.
-  signature: 'async create_index(index: SearchIndex, **kwargs: Any) -> SearchIndex'
+  signature: 'async create_index(index: SearchIndex | MutableMapping[str, Any] | IO[bytes],
+    **kwargs: Any) -> SearchIndex'
   parameters:
   - name: index
-    description: The index object.
+    description: 'The definition of the index to create. Is one of the following types:
+
+      SearchIndex, JSON, IO[bytes] Required.'
     isRequired: true
     types:
     - <xref:azure.search.documents.indexes.models.SearchIndex>
+    - <xref:JSON>
+    - <xref:typing.IO>[<xref:bytes>]
   return:
-    description: The index created
+    description: SearchIndex. The SearchIndex is compatible with MutableMapping
     types:
     - <xref:azure.search.documents.indexes.models.SearchIndex>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-    description: If the operation fails.
-  examples:
-  - "Creating a new index.<!--[!code-python[Main](les\\async_samples\\sample_index_crud_operations_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\async_samples\\\\sample_index_crud_operations_async.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   client = SearchIndexClient(service_endpoint,\
-    \ AzureKeyCredential(key))\n   name = \"hotels\"\n   fields = [\n       SimpleField(name=\"\
-    hotelId\", type=SearchFieldDataType.String, key=True),\n       SimpleField(name=\"\
-    hotelName\", type=SearchFieldDataType.String, searchable=True),\n       SimpleField(name=\"\
-    baseRate\", type=SearchFieldDataType.Double),\n       SearchableField(name=\"\
-    description\", type=SearchFieldDataType.String, collection=True),\n       ComplexField(\n\
-    \           name=\"address\",\n           fields=[\n               SimpleField(name=\"\
-    streetAddress\", type=SearchFieldDataType.String),\n               SimpleField(name=\"\
-    city\", type=SearchFieldDataType.String),\n           ],\n           collection=True,\n\
-    \       ),\n   ]\n\n   cors_options = CorsOptions(allowed_origins=[\"*\"], max_age_in_seconds=60)\n\
-    \   scoring_profiles: List[ScoringProfile] = []\n   index = SearchIndex(name=name,\
-    \ fields=fields, scoring_profiles=scoring_profiles, cors_options=cors_options)\n\
-    \n   result = await client.create_index(index)\n   await client.close()\n\n  \
-    \ ````\n"
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.create_knowledge_base
   name: create_knowledge_base
   summary: Creates a new knowledge base.
-  signature: 'async create_knowledge_base(knowledge_base: KnowledgeBase, **kwargs:
-    Any) -> KnowledgeBase'
+  signature: 'async create_knowledge_base(knowledge_base: KnowledgeBase | MutableMapping[str,
+    Any] | IO[bytes], **kwargs: Any) -> KnowledgeBase'
   parameters:
   - name: knowledge_base
-    description: The knowledge base object.
+    description: 'The definition of the knowledge base to create. Is one of the following
+
+      types: KnowledgeBase, JSON, IO[bytes] Required.'
     isRequired: true
     types:
     - <xref:azure.search.documents.indexes.models.KnowledgeBase>
+    - <xref:JSON>
+    - <xref:typing.IO>[<xref:bytes>]
   return:
-    description: The knowledge base created
+    description: KnowledgeBase. The KnowledgeBase is compatible with MutableMapping
     types:
     - <xref:azure.search.documents.indexes.models.KnowledgeBase>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-    description: If the operation fails.
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.create_knowledge_source
   name: create_knowledge_source
   summary: Creates a new knowledge source.
-  signature: 'async create_knowledge_source(knowledge_source: KnowledgeSource, **kwargs:
-    Any) -> KnowledgeSource'
+  signature: 'async create_knowledge_source(knowledge_source: KnowledgeSource | MutableMapping[str,
+    Any] | IO[bytes], **kwargs: Any) -> KnowledgeSource'
   parameters:
   - name: knowledge_source
-    description: The knowledge source object.
+    description: 'The definition of the knowledge source to create. Is one of the
+
+      following types: KnowledgeSource, JSON, IO[bytes] Required.'
     isRequired: true
     types:
     - <xref:azure.search.documents.indexes.models.KnowledgeSource>
+    - <xref:JSON>
+    - <xref:typing.IO>[<xref:bytes>]
   return:
-    description: The knowledge source created
+    description: KnowledgeSource. The KnowledgeSource is compatible with MutableMapping
     types:
     - <xref:azure.search.documents.indexes.models.KnowledgeSource>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-    description: If the operation fails.
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.create_or_update_alias
   name: create_or_update_alias
   summary: Creates a new search alias or updates an alias if it already exists.
@@ -187,54 +149,22 @@ methods:
     MatchConditions = MatchConditions.Unconditionally, **kwargs: Any) -> SearchAlias'
   parameters:
   - name: alias
-    description: The definition of the alias to create or update.
+    description: The SearchAlias object to create or update. Required.
     isRequired: true
     types:
     - <xref:azure.search.documents.indexes.models.SearchAlias>
   keywordOnlyParameters:
   - name: match_condition
-    description: The match condition to use upon the etag
+    description: The match condition to use upon the etag. Default value is None.
     defaultValue: MatchConditions.Unconditionally
     types:
     - <xref:azure.core.MatchConditions>
   return:
-    description: The index created or updated
+    description: SearchAlias
     types:
     - <xref:azure.search.documents.indexes.models.SearchAlias>
   exceptions:
-  - type: azure.core.exceptions.ResourceNotFoundError
-    description: If the alias doesn't exist.
-  - type: azure.core.exceptions.ResourceModifiedError
-    description: If the alias has been modified.
-  - type: azure.core.exceptions.ResourceNotModifiedError
-    description: If the alias has not been modified.
-  - type: azure.core.exceptions.ResourceNotFoundError
-    description: If the alias is not found.
-  - type: azure.core.exceptions.ResourceExistsError
-    description: If the alias already exists.
-  examples:
-  - "Update an alias.<!--[!code-python[Main](les\\async_samples\\sample_index_alias_crud_operations_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\async_samples\\\\sample_index_alias_crud_operations_async.py\", \"\
-    xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   new_index_name\
-    \ = \"hotels\"\n   fields = [\n       SimpleField(name=\"hotelId\", type=SearchFieldDataType.String,\
-    \ key=True),\n       SimpleField(name=\"baseRate\", type=SearchFieldDataType.Double),\n\
-    \       SearchableField(name=\"description\", type=SearchFieldDataType.String,\
-    \ collection=True),\n       SearchableField(name=\"hotelName\", type=SearchFieldDataType.String),\n\
-    \       ComplexField(\n           name=\"address\",\n           fields=[\n   \
-    \            SimpleField(name=\"streetAddress\", type=SearchFieldDataType.String),\n\
-    \               SimpleField(name=\"city\", type=SearchFieldDataType.String),\n\
-    \               SimpleField(name=\"state\", type=SearchFieldDataType.String),\n\
-    \           ],\n           collection=True,\n       ),\n   ]\n   cors_options\
-    \ = CorsOptions(allowed_origins=[\"*\"], max_age_in_seconds=60)\n   scoring_profile\
-    \ = ScoringProfile(name=\"MyProfile\")\n   scoring_profiles = []\n   scoring_profiles.append(scoring_profile)\n\
-    \   index = SearchIndex(\n       name=new_index_name, fields=fields, scoring_profiles=scoring_profiles,\
-    \ cors_options=cors_options\n   )\n\n   result_index = await client.create_or_update_index(index=index)\n\
-    \n   alias = SearchAlias(name=alias_name, indexes=[new_index_name])\n   result\
-    \ = await client.create_or_update_alias(alias)\n\n\n   ````\n"
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.create_or_update_index
   name: create_or_update_index
   summary: Creates a new search index or updates an index if it already exists.
@@ -243,7 +173,7 @@ methods:
     **kwargs: Any) -> SearchIndex'
   parameters:
   - name: index
-    description: The index object.
+    description: The SearchIndex object to create or update. Required.
     isRequired: true
     types:
     - <xref:azure.search.documents.indexes.models.SearchIndex>
@@ -259,522 +189,413 @@ methods:
       the index can be impaired for several minutes after the index is updated, or
       longer for very
 
-      large indexes.'
+      large indexes. Default value is None.'
     defaultValue: None
     types:
     - <xref:bool>
   keywordOnlyParameters:
   - name: match_condition
-    description: The match condition to use upon the etag
+    description: The match condition to use upon the etag. Default value is None.
     defaultValue: MatchConditions.Unconditionally
     types:
     - <xref:azure.core.MatchConditions>
   return:
-    description: The index created or updated
+    description: SearchIndex
     types:
     - <xref:azure.search.documents.indexes.models.SearchIndex>
   exceptions:
-  - type: azure.core.exceptions.ResourceNotFoundError
-    description: If the index doesn't exist.
-  - type: azure.core.exceptions.ResourceModifiedError
-    description: If the index has been modified.
-  - type: azure.core.exceptions.ResourceNotModifiedError
-    description: If the index has not been modified.
-  - type: azure.core.exceptions.ResourceNotFoundError
-    description: If the index is not found.
-  - type: azure.core.exceptions.ResourceExistsError
-    description: If the index already exists.
-  examples:
-  - "Update an index.<!--[!code-python[Main](les\\async_samples\\sample_index_crud_operations_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\async_samples\\\\sample_index_crud_operations_async.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   client = SearchIndexClient(service_endpoint,\
-    \ AzureKeyCredential(key))\n   name = \"hotels\"\n   fields = [\n       SimpleField(name=\"\
-    hotelId\", type=SearchFieldDataType.String, key=True),\n       SimpleField(name=\"\
-    hotelName\", type=SearchFieldDataType.String, searchable=True),\n       SimpleField(name=\"\
-    baseRate\", type=SearchFieldDataType.Double),\n       SearchableField(name=\"\
-    description\", type=SearchFieldDataType.String, collection=True),\n       ComplexField(\n\
-    \           name=\"address\",\n           fields=[\n               SimpleField(name=\"\
-    streetAddress\", type=SearchFieldDataType.String),\n               SimpleField(name=\"\
-    city\", type=SearchFieldDataType.String),\n               SimpleField(name=\"\
-    state\", type=SearchFieldDataType.String),\n           ],\n           collection=True,\n\
-    \       ),\n   ]\n\n   cors_options = CorsOptions(allowed_origins=[\"*\"], max_age_in_seconds=60)\n\
-    \   scoring_profile = ScoringProfile(name=\"MyProfile\")\n   scoring_profiles\
-    \ = []\n   scoring_profiles.append(scoring_profile)\n   index = SearchIndex(name=name,\
-    \ fields=fields, scoring_profiles=scoring_profiles, cors_options=cors_options)\n\
-    \n   result = await client.create_or_update_index(index=index)\n   await client.close()\n\
-    \n   ````\n"
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.create_or_update_knowledge_base
   name: create_or_update_knowledge_base
-  summary: Creates a new knowledge base or updates one if it already exists.
+  summary: Creates a new knowledge base or updates a knowledge base if it already
+    exists.
   signature: 'async create_or_update_knowledge_base(knowledge_base: KnowledgeBase,
     *, match_condition: MatchConditions = MatchConditions.Unconditionally, **kwargs:
     Any) -> KnowledgeBase'
   parameters:
   - name: knowledge_base
-    description: The knowledge base object.
+    description: The KnowledgeBase object to create or update. Required.
     isRequired: true
     types:
     - <xref:azure.search.documents.indexes.models.KnowledgeBase>
   keywordOnlyParameters:
   - name: match_condition
-    description: The match condition to use upon the etag
+    description: The match condition to use upon the etag. Default value is None.
     defaultValue: MatchConditions.Unconditionally
     types:
     - <xref:azure.core.MatchConditions>
   return:
-    description: The knowledge base created or updated
+    description: KnowledgeBase
     types:
     - <xref:azure.search.documents.indexes.models.KnowledgeBase>
   exceptions:
-  - type: azure.core.exceptions.ResourceNotFoundError
-    description: If the knowledge base doesn't exist.
-  - type: azure.core.exceptions.ResourceModifiedError
-    description: If the knowledge base has been modified on the server.
-  - type: azure.core.exceptions.ResourceNotModifiedError
-    description: 'If the knowledge base hasn''t been
-
-      modified on the server.'
-  - type: azure.core.exceptions.ResourceExistsError
-    description: If the knowledge base already exists.
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.create_or_update_knowledge_source
   name: create_or_update_knowledge_source
-  summary: Creates a new knowledge source or updates an existing one.
+  summary: Creates a new knowledge source or updates a knowledge source if it already
+    exists.
   signature: 'async create_or_update_knowledge_source(knowledge_source: KnowledgeSource,
     *, match_condition: MatchConditions = MatchConditions.Unconditionally, **kwargs:
     Any) -> KnowledgeSource'
   parameters:
   - name: knowledge_source
-    description: The knowledge source object.
+    description: The KnowledgeSource object to create or update. Required.
     isRequired: true
     types:
     - <xref:azure.search.documents.indexes.models.KnowledgeSource>
   keywordOnlyParameters:
   - name: match_condition
-    description: The match condition to use upon the etag
+    description: The match condition to use upon the etag. Default value is None.
     defaultValue: MatchConditions.Unconditionally
     types:
     - <xref:azure.core.MatchConditions>
   return:
-    description: The knowledge source created or updated
+    description: KnowledgeSource
     types:
     - <xref:azure.search.documents.indexes.models.KnowledgeSource>
   exceptions:
-  - type: azure.core.exceptions.ResourceNotFoundError
-    description: If the index doesn't exist.
-  - type: azure.core.exceptions.ResourceModifiedError
-    description: If the index has been modified in the server.
-  - type: azure.core.exceptions.ResourceNotModifiedError
-    description: If the index hasn't been modified in the server.
-  - type: azure.core.exceptions.ResourceNotFoundError
-    description: If the index doesn't exist.
-  - type: azure.core.exceptions.ResourceExistsError
-    description: If the index already exists.
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.create_or_update_synonym_map
   name: create_or_update_synonym_map
-  summary: 'Create a new Synonym Map in an Azure Search service, or update an
-
-    existing one.'
+  summary: Creates a new synonym map or updates a synonym map if it already exists.
   signature: 'async create_or_update_synonym_map(synonym_map: SynonymMap, *, match_condition:
     MatchConditions = MatchConditions.Unconditionally, **kwargs: Any) -> SynonymMap'
   parameters:
   - name: synonym_map
-    description: The Synonym Map object
+    description: The SynonymMap object to create or update. Required.
     isRequired: true
     types:
     - <xref:azure.search.documents.indexes.models.SynonymMap>
   keywordOnlyParameters:
   - name: match_condition
-    description: The match condition to use upon the etag
+    description: The match condition to use upon the etag. Default value is None.
     defaultValue: MatchConditions.Unconditionally
     types:
     - <xref:azure.core.MatchConditions>
   return:
-    description: The created or updated Synonym Map
+    description: SynonymMap
     types:
     - <xref:azure.search.documents.indexes.models.SynonymMap>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.create_synonym_map
   name: create_synonym_map
-  summary: Create a new Synonym Map in an Azure Search service
-  signature: 'async create_synonym_map(synonym_map: SynonymMap, **kwargs: Any) ->
-    SynonymMap'
+  summary: Creates a new synonym map.
+  signature: 'async create_synonym_map(synonym_map: SynonymMap | MutableMapping[str,
+    Any] | IO[bytes], **kwargs: Any) -> SynonymMap'
   parameters:
   - name: synonym_map
-    description: The Synonym Map object
+    description: 'The definition of the synonym map to create. Is one of the following
+      types:
+
+      SynonymMap, JSON, IO[bytes] Required.'
     isRequired: true
     types:
     - <xref:azure.search.documents.indexes.models.SynonymMap>
+    - <xref:JSON>
+    - <xref:typing.IO>[<xref:bytes>]
   return:
-    description: The created Synonym Map
+    description: SynonymMap. The SynonymMap is compatible with MutableMapping
     types:
     - <xref:azure.search.documents.indexes.models.SynonymMap>
-  examples:
-  - "Create a Synonym Map<!--[!code-python[Main](les\\async_samples\\sample_synonym_map_operations_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\async_samples\\\\sample_synonym_map_operations_async.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   synonyms =\
-    \ [\n       \"USA, United States, United States of America\",\n       \"Washington,\
-    \ Wash. => WA\",\n   ]\n   synonym_map = SynonymMap(name=\"test-syn-map\", synonyms=synonyms)\n\
-    \   result = await client.create_synonym_map(synonym_map)\n   print(\"Create new\
-    \ Synonym Map 'test-syn-map succeeded\")\n\n   ````\n"
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.delete_alias
   name: delete_alias
-  summary: 'Deletes a search alias and its associated mapping to an index.
-
-    This operation is permanent, with no recovery option. The mapped index is untouched
-    by this operation'
+  summary: Deletes a search alias and its associated mapping to an index.
   signature: 'async delete_alias(alias: str | SearchAlias, *, match_condition: MatchConditions
     = MatchConditions.Unconditionally, **kwargs: Any) -> None'
   parameters:
   - name: alias
-    description: The alias name or object to delete.
+    description: The name of the alias to delete or a SearchAlias object. Required.
     isRequired: true
     types:
     - <xref:str>
     - <xref:azure.search.documents.indexes.models.SearchAlias>
   keywordOnlyParameters:
   - name: match_condition
-    description: The match condition to use upon the etag
+    description: The match condition to use upon the etag. Default value is None.
     defaultValue: MatchConditions.Unconditionally
     types:
     - <xref:azure.core.MatchConditions>
+  return:
+    description: None
+    types:
+    - <xref:None>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-    description: If the operation fails.
-  examples:
-  - "Delete an alias.<!--[!code-python[Main](les\\async_samples\\sample_index_alias_crud_operations_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\async_samples\\\\sample_index_alias_crud_operations_async.py\", \"\
-    xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n\n   await client.delete_alias(alias_name)\n\
-    \n   ````\n"
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.delete_index
   name: delete_index
-  summary: 'Deletes a search index and all the documents it contains. The model must
-    be
-
-    provided instead of the name to use the access conditions'
+  summary: Deletes a search index and all the documents it contains.
   signature: 'async delete_index(index: str | SearchIndex, *, match_condition: MatchConditions
     = MatchConditions.Unconditionally, **kwargs: Any) -> None'
   parameters:
   - name: index
-    description: The index name or object to delete.
+    description: The name of the index to delete or a SearchIndex object. Required.
     isRequired: true
     types:
     - <xref:str>
     - <xref:azure.search.documents.indexes.models.SearchIndex>
   keywordOnlyParameters:
   - name: match_condition
-    description: The match condition to use upon the etag
+    description: The match condition to use upon the etag. Default value is None.
     defaultValue: MatchConditions.Unconditionally
     types:
     - <xref:azure.core.MatchConditions>
+  return:
+    description: None
+    types:
+    - <xref:None>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-    description: If the operation fails.
-  examples:
-  - "Delete an index.<!--[!code-python[Main](les\\async_samples\\sample_index_crud_operations_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\async_samples\\\\sample_index_crud_operations_async.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   client = SearchIndexClient(service_endpoint,\
-    \ AzureKeyCredential(key))\n   name = \"hotels\"\n   await client.delete_index(name)\n\
-    \   await client.close()\n\n   ````\n"
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.delete_knowledge_base
   name: delete_knowledge_base
-  summary: Deletes an existing knowledge base.
+  summary: Deletes a knowledge base.
   signature: 'async delete_knowledge_base(knowledge_base: str | KnowledgeBase, *,
     match_condition: MatchConditions = MatchConditions.Unconditionally, **kwargs:
     Any) -> None'
   parameters:
   - name: knowledge_base
-    description: The knowledge base name or object to delete.
+    description: The name of the knowledge base to delete or a KnowledgeBase object.
+      Required.
     isRequired: true
     types:
     - <xref:str>
     - <xref:azure.search.documents.indexes.models.KnowledgeBase>
   keywordOnlyParameters:
   - name: match_condition
-    description: The match condition to use upon the etag
+    description: The match condition to use upon the etag. Default value is None.
     defaultValue: MatchConditions.Unconditionally
     types:
     - <xref:azure.core.MatchConditions>
+  return:
+    description: None
+    types:
+    - <xref:None>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-    description: If the operation fails.
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.delete_knowledge_source
   name: delete_knowledge_source
-  summary: Deletes an existing knowledge source.
+  summary: Deletes a knowledge source.
   signature: 'async delete_knowledge_source(knowledge_source: str | KnowledgeSource,
     *, match_condition: MatchConditions = MatchConditions.Unconditionally, **kwargs:
     Any) -> None'
   parameters:
   - name: knowledge_source
-    description: The knowledge source name or object to delete.
+    description: The name of the knowledge source to delete or a KnowledgeSource object.
+      Required.
     isRequired: true
     types:
     - <xref:str>
     - <xref:azure.search.documents.indexes.models.KnowledgeSource>
   keywordOnlyParameters:
   - name: match_condition
-    description: The match condition to use upon the etag
+    description: The match condition to use upon the etag. Default value is None.
     defaultValue: MatchConditions.Unconditionally
     types:
     - <xref:azure.core.MatchConditions>
+  return:
+    description: None
+    types:
+    - <xref:None>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-    description: If the operation fails.
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.delete_synonym_map
   name: delete_synonym_map
-  summary: 'Delete a named Synonym Map in an Azure Search service. To use access conditions,
-
-    the SynonymMap model must be provided instead of the name. It is enough to provide
-
-    the name of the synonym map to delete unconditionally.'
+  summary: Deletes a synonym map.
   signature: 'async delete_synonym_map(synonym_map: str | SynonymMap, *, match_condition:
     MatchConditions = MatchConditions.Unconditionally, **kwargs: Any) -> None'
   parameters:
   - name: synonym_map
-    description: The synonym map name or object to delete
+    description: The name of the synonym map to delete or a SynonymMap object. Required.
     isRequired: true
     types:
     - <xref:str>
     - <xref:azure.search.documents.indexes.models.SynonymMap>
   keywordOnlyParameters:
   - name: match_condition
-    description: The match condition to use upon the etag
+    description: The match condition to use upon the etag. Default value is None.
     defaultValue: MatchConditions.Unconditionally
     types:
     - <xref:azure.core.MatchConditions>
-  examples:
-  - "Delete a Synonym Map<!--[!code-python[Main](les\\async_samples\\sample_synonym_map_operations_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\async_samples\\\\sample_synonym_map_operations_async.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   await client.delete_synonym_map(\"\
-    test-syn-map\")\n   print(\"Synonym Map 'test-syn-map' deleted\")\n\n   ````\n"
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.get_alias
   name: get_alias
-  summary: Retrieve a named alias in an Azure Search service
-  signature: 'async get_alias(name: str, **kwargs) -> SearchAlias'
+  summary: Retrieves an alias definition.
+  signature: 'async get_alias(name: str, **kwargs: Any) -> SearchAlias'
   parameters:
   - name: name
-    description: The name of the alias to retrieve.
+    description: The name of the alias. Required.
     isRequired: true
     types:
     - <xref:str>
   return:
-    description: SearchAlias object
+    description: SearchAlias. The SearchAlias is compatible with MutableMapping
     types:
     - <xref:azure.search.documents.indexes.models.SearchAlias>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-    description: If the operation fails.
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.get_index
   name: get_index
-  summary: Retrieve a named index in an Azure Search service
+  summary: Retrieves an index definition.
   signature: 'async get_index(name: str, **kwargs: Any) -> SearchIndex'
   parameters:
   - name: name
-    description: The name of the index to retrieve.
+    description: The name of the index. Required.
     isRequired: true
     types:
     - <xref:str>
   return:
-    description: SearchIndex object
+    description: SearchIndex. The SearchIndex is compatible with MutableMapping
     types:
     - <xref:azure.search.documents.indexes.models.SearchIndex>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-    description: If the operation fails.
-  examples:
-  - "Get an index.<!--[!code-python[Main](les\\async_samples\\sample_index_crud_operations_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\async_samples\\\\sample_index_crud_operations_async.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   client = SearchIndexClient(service_endpoint,\
-    \ AzureKeyCredential(key))\n   name = \"hotels\"\n   result = await client.get_index(name)\n\
-    \   await client.close()\n\n   ````\n"
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.get_index_statistics
   name: get_index_statistics
-  summary: 'Returns statistics for the given index, including a document count
-
-    and storage usage.'
-  signature: 'async get_index_statistics(index_name: str, **kwargs: Any) -> MutableMapping[str,
-    Any]'
+  summary: Returns statistics for the given index, including a document count and
+    storage usage.
+  signature: 'async get_index_statistics(index_name: str, **kwargs: Any) -> GetIndexStatisticsResult'
   parameters:
   - name: index_name
-    description: The name of the index to retrieve.
+    description: The name of the index to retrieve statistics for. Required.
     isRequired: true
     types:
     - <xref:str>
   return:
-    description: Statistics for the given index, including a document count and storage
-      usage.
+    description: GetIndexStatisticsResult
     types:
-    - <xref:typing.Dict>
+    - <xref:azure.search.documents.indexes.models.GetIndexStatisticsResult>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-    description: If the operation fails.
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.get_knowledge_base
   name: get_knowledge_base
-  summary: Gets a knowledge base definition.
+  summary: Retrieves a knowledge base definition.
   signature: 'async get_knowledge_base(name: str, **kwargs: Any) -> KnowledgeBase'
   parameters:
   - name: name
-    description: The name of the knowledge base to retrieve.
+    description: The name of the knowledge base. Required.
     isRequired: true
     types:
     - <xref:str>
   return:
-    description: KnowledgeBase object
+    description: KnowledgeBase. The KnowledgeBase is compatible with MutableMapping
     types:
     - <xref:azure.search.documents.indexes.models.KnowledgeBase>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-    description: If the operation fails.
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.get_knowledge_source
   name: get_knowledge_source
+  summary: Retrieves a knowledge source definition.
   signature: 'async get_knowledge_source(name: str, **kwargs: Any) -> KnowledgeSource'
   parameters:
   - name: name
-    description: The name of the knowledge source to retrieve.
+    description: The name of the knowledge source. Required.
     isRequired: true
     types:
     - <xref:str>
   return:
-    description: KnowledgeSource object
+    description: KnowledgeSource. The KnowledgeSource is compatible with MutableMapping
     types:
     - <xref:azure.search.documents.indexes.models.KnowledgeSource>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-    description: If the operation fails.
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.get_knowledge_source_status
   name: get_knowledge_source_status
-  summary: Returns the current status and synchronization history of a knowledge source.
+  summary: Retrieves the status of a knowledge source.
   signature: 'async get_knowledge_source_status(name: str, **kwargs: Any) -> KnowledgeSourceStatus'
   parameters:
   - name: name
-    description: The name of the knowledge source for which to retrieve status.
+    description: The name of the knowledge source. Required.
     isRequired: true
     types:
     - <xref:str>
   return:
-    description: KnowledgeSourceStatus object
+    description: KnowledgeSourceStatus. The KnowledgeSourceStatus is compatible with
+      MutableMapping
     types:
-    - <xref:azure.search.documents.indexes.models.KnowledgeSourceStatus>
+    - <xref:azure.search.documents.knowledgebases.models.KnowledgeSourceStatus>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-    description: If the operation fails.
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.get_search_client
   name: get_search_client
   summary: Return a client to perform operations on Search.
-  signature: 'get_search_client(index_name: str, **kwargs: Any) -> SearchClient'
+  signature: 'get_search_client(index_name: str, **kwargs: Any) -> azure.search.documents.aio.SearchClient'
   parameters:
   - name: index_name
-    description: The name of the Search Index
+    description: The name of the index. Required.
     isRequired: true
     types:
     - <xref:str>
   return:
-    description: SearchClient
+    description: A SearchClient for operations on the named index.
     types:
     - <xref:azure.search.documents.aio.SearchClient>
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.get_service_statistics
   name: get_service_statistics
-  summary: Get service level statistics for a search service.
-  signature: async get_service_statistics(**kwargs) -> MutableMapping[str, Any]
+  summary: Gets service level statistics for a search service.
+  signature: 'async get_service_statistics(**kwargs: Any) -> SearchServiceStatistics'
   return:
-    description: Service statistics result
+    description: SearchServiceStatistics. The SearchServiceStatistics is compatible
+      with MutableMapping
     types:
-    - <xref:dict>
+    - <xref:azure.search.documents.indexes.models.SearchServiceStatistics>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.get_synonym_map
   name: get_synonym_map
-  summary: Retrieve a named Synonym Map in an Azure Search service
+  summary: Retrieves a synonym map definition.
   signature: 'async get_synonym_map(name: str, **kwargs: Any) -> SynonymMap'
   parameters:
   - name: name
-    description: The name of the Synonym Map to get
+    description: The name of the synonym map. Required.
     isRequired: true
     types:
     - <xref:str>
   return:
-    description: The retrieved Synonym Map
+    description: SynonymMap. The SynonymMap is compatible with MutableMapping
     types:
     - <xref:azure.search.documents.indexes.models.SynonymMap>
   exceptions:
-  - type: azure.core.exceptions.ResourceNotFoundError
-    description: If the Synonym Map doesn't exist.
-  examples:
-  - "Get a Synonym Map<!--[!code-python[Main](les\\async_samples\\sample_synonym_map_operations_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\async_samples\\\\sample_synonym_map_operations_async.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   result = await\
-    \ client.get_synonym_map(\"test-syn-map\")\n   print(\"Retrived Synonym Map 'test-syn-map'\
-    \ with synonyms\")\n   if result:\n       for syn in result.synonyms:\n      \
-    \     print(\"    {}\".format(syn))\n\n   ````\n"
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.get_synonym_map_names
   name: get_synonym_map_names
-  summary: List the Synonym Map names in an Azure Search service.
+  summary: Lists the names of all synonym maps available for a search service.
   signature: 'async get_synonym_map_names(**kwargs: Any) -> List[str]'
   return:
     description: List of synonym map names
     types:
-    - <xref:typing.List>[<xref:str>]
+    - <xref:list>[<xref:str>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-    description: If the operation fails.
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.get_synonym_maps
   name: get_synonym_maps
-  summary: List the Synonym Maps in an Azure Search service.
-  signature: 'async get_synonym_maps(*, select: List[str] | None = None, **kwargs)
-    -> List[SynonymMap]'
+  summary: Lists all synonym maps available for a search service.
+  signature: 'async get_synonym_maps(*, select: List[str] | None = None, **kwargs:
+    Any) -> List[SynonymMap]'
   keywordOnlyParameters:
   - name: select
-    description: 'Selects which top-level properties of the skillsets to retrieve.
-      Specified as a
+    description: 'Selects which top-level properties of the synonym maps to retrieve.
+      Specified
 
-      list of JSON property names, or ''*'' for all properties. The default is all
+      as a comma-separated list of JSON property names, or ''*'' for all properties.
+      The default is
 
-      properties.'
+      all properties. Default value is None.'
     defaultValue: None
     types:
-    - <xref:typing.List>[<xref:str>]
+    - <xref:list>[<xref:str>]
   return:
     description: List of synonym maps
     types:
-    - <xref:typing.List>[<xref:azure.search.documents.indexes.models.SynonymMap>]
+    - <xref:list>[<xref:azure.search.documents.indexes.models.SynonymMap>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-    description: If the operation fails.
-  examples:
-  - "List Synonym Maps<!--[!code-python[Main](les\\async_samples\\sample_synonym_map_operations_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\async_samples\\\\sample_synonym_map_operations_async.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   result = await\
-    \ client.get_synonym_maps()\n   names = [x.name for x in result]\n   print(\"\
-    Found {} Synonym Maps in the service: {}\".format(len(result), \", \".join(names)))\n\
-    \n   ````\n"
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.list_alias_names
   name: list_alias_names
   summary: List the alias names in an Azure Search service.
@@ -788,97 +609,102 @@ methods:
     description: If the operation fails.
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.list_aliases
   name: list_aliases
-  summary: List the aliases in an Azure Search service.
-  signature: 'list_aliases(*, select: List[str] | None = None, **kwargs) -> AsyncItemPaged[SearchAlias]'
-  keywordOnlyParameters:
-  - name: select
-    description: 'Selects which top-level properties of the skillsets to retrieve.
-      Specified as a
-
-      list of JSON property names, or ''*'' for all properties. The default is all
-
-      properties.'
-    defaultValue: None
-    types:
-    - <xref:list>[<xref:str>]
+  summary: Lists all aliases available for a search service.
+  signature: 'list_aliases(**kwargs: Any) -> AsyncItemPaged[SearchAlias]'
   return:
-    description: List of Aliases
+    description: An iterator like instance of SearchAlias
     types:
     - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.search.documents.indexes.models.SearchAlias>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-    description: If the operation fails.
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.list_index_names
   name: list_index_names
-  summary: List the index names in an Azure Search service.
+  summary: Lists the names of all indexes available for a search service.
   signature: 'list_index_names(**kwargs: Any) -> AsyncItemPaged[str]'
   return:
-    description: List of index names
+    description: An async iterator like instance of index names
     types:
     - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:str>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-    description: If the operation fails.
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.list_index_stats_summary
   name: list_index_stats_summary
-  summary: Get index level statistics for a search service.
+  summary: Retrieves a summary of statistics for all indexes in the search service.
   signature: 'list_index_stats_summary(**kwargs: Any) -> AsyncItemPaged[IndexStatisticsSummary]'
   return:
-    description: Index statistics result.
+    description: An iterator like instance of IndexStatisticsSummary
     types:
     - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.search.documents.indexes.models.IndexStatisticsSummary>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.list_indexes
   name: list_indexes
-  summary: List the indexes in an Azure Search service.
-  signature: 'list_indexes(*, select: List[str] | None = None, **kwargs) -> AsyncItemPaged[SearchIndex]'
+  summary: Lists all indexes available for a search service.
+  signature: 'list_indexes(*, select: List[str] | None = None, **kwargs: Any) -> AsyncItemPaged[SearchIndex]'
   keywordOnlyParameters:
   - name: select
-    description: 'Selects which top-level properties of the skillsets to retrieve.
-      Specified as a
+    description: 'Selects which top-level properties to retrieve. Specified as a comma-separated
 
       list of JSON property names, or ''*'' for all properties. The default is all
+      properties.
 
-      properties.'
+      Default value is None.'
     defaultValue: None
     types:
     - <xref:list>[<xref:str>]
   return:
-    description: List of indexes
+    description: An async iterator like instance of SearchIndex
     types:
     - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.search.documents.indexes.models.SearchIndex>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-    description: If the operation fails.
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.list_knowledge_bases
   name: list_knowledge_bases
-  summary: List the knowledge bases in an Azure Search service.
+  summary: Lists all knowledge bases available for a search service.
   signature: 'list_knowledge_bases(**kwargs: Any) -> AsyncItemPaged[KnowledgeBase]'
   return:
-    description: List of knowledge bases
+    description: An iterator like instance of KnowledgeBase
     types:
     - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.search.documents.indexes.models.KnowledgeBase>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-    description: If the operation fails.
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.list_knowledge_sources
   name: list_knowledge_sources
-  summary: List the knowledge sources in an Azure Search service.
+  summary: Lists all knowledge sources available for a search service.
   signature: 'list_knowledge_sources(**kwargs: Any) -> AsyncItemPaged[KnowledgeSource]'
   return:
-    description: List of Knowledge Sources
+    description: An iterator like instance of KnowledgeSource
     types:
     - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.search.documents.indexes.models.KnowledgeSource>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-    description: If the operation fails.
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.send_request
   name: send_request
-  summary: Runs a network request using the client's existing pipeline.
-  signature: 'async send_request(request: HttpRequest, *, stream: bool = False, **kwargs)
-    -> AsyncHttpResponse'
+  summary: 'Runs the network request through the client''s chained policies.
+
+
+    ```
+
+
+    >>> from azure.core.rest import HttpRequest
+
+    >>> request = HttpRequest("GET", "https://www.example.org/")
+
+    <HttpRequest [GET], url: ''https://www.example.org/''>
+
+    >>> response = await client.send_request(request)
+
+    <AsyncHttpResponse: 200 OK>
+
+    ```
+
+
+    For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> Awaitable[AsyncHttpResponse]'
   parameters:
   - name: request
-    description: The network request you want to make.
+    description: The network request you want to make. Required.
     isRequired: true
     types:
     - <xref:azure.core.rest.HttpRequest>
