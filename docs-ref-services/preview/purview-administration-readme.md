@@ -6,7 +6,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: purview
 ---
-# Azure Purview Administration client library for Python - version 1.0.0a20260302001 
+# Azure Purview Administration client library for Python - version 1.0.0a20260303001 
 
 
 Azure Purview is a fully managed cloud service.
