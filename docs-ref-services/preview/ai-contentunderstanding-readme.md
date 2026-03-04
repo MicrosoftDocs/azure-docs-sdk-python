@@ -1,12 +1,12 @@
 ---
 title: Azure AI Content Understanding client library for Python
 keywords: Azure, python, SDK, API, azure-ai-contentunderstanding, contentunderstanding
-ms.date: 01/20/2026
+ms.date: 03/04/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: contentunderstanding
 ---
-# Azure AI Content Understanding client library for Python - version 1.0.0b1 
+# Azure AI Content Understanding client library for Python - version 1.0.0a20260303001 
 
 
 Azure AI Content Understanding is a multimodal AI service that extracts semantic content from documents, video, audio, and image files. It transforms unstructured content into structured, machine-readable data optimized for retrieval-augmented generation (RAG) and automated workflows.
@@ -40,7 +40,7 @@ This table shows the relationship between SDK versions and supported API service
 
 | SDK version | Supported API service version |
 | ----------- | ----------------------------- |
-| 1.0.0b1     | 2025-11-01                    |
+| 1.0.0       | 2025-11-01                    |
 
 ### Prerequisites
 
@@ -204,7 +204,7 @@ python samples/sample_update_defaults.py
 
 **Verification**
 
-After the script runs successfully, you can use prebuilt analyzers like `prebuilt-invoice` or `prebuilt-documentSearch`. For more examples and sample code, see the [Examples](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-contentunderstanding_1.0.0b1/sdk/contentunderstanding/azure-ai-contentunderstanding/README.md#examples) section.
+After the script runs successfully, you can use prebuilt analyzers like `prebuilt-invoice` or `prebuilt-documentSearch`. For more examples and sample code, see the [Examples](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/contentunderstanding/azure-ai-contentunderstanding/README.md#examples) section.
 
 If you encounter errors:
 - **Deployment Not Found**: Check that deployment names in environment variables match exactly what you created in Foundry.
@@ -292,7 +292,7 @@ You can create custom analyzers with specific field schemas for multi-modal cont
 
 ### Content types
 
-The API returns different content types based on the input. Both `DocumentContent` and `AudioVisualContent` classes derive from `MediaContent` class, which provides basic information and markdown representation. Each derived class provides additional properties to access detailed information:
+The API returns different content types based on the input. Both `DocumentContent` and `AudioVisualContent` classes derive from `AnalysisContent` class, which provides basic information and markdown representation. Each derived class provides additional properties to access detailed information:
 
 * **`DocumentContent`** - For document files (PDF, HTML, images, Office documents such as Word, Excel, PowerPoint, and more). Provides basic information such as page count and MIME type. Retrieve detailed information including pages, tables, figures, paragraphs, and many others.
 * **`AudioVisualContent`** - For audio and video files. Provides basic information such as timing information (start/end times) and frame dimensions (for video). Retrieve detailed information including transcript phrases, timing information, and for video, key frame references and more.
@@ -310,7 +310,7 @@ The SDK provides `LROPoller` types that handle polling automatically when using 
 ### Main classes
 
 * **`ContentUnderstandingClient`** - The main client for analyzing content, as well as creating, managing, and configuring analyzers
-* **`AnalyzeResult`** - Contains the structured results of an analysis operation, including content elements, markdown, and metadata
+* **`AnalysisResult`** - Contains the structured results of an analysis operation, including content elements, markdown, and metadata
 
 ### Thread safety
 
@@ -336,6 +336,7 @@ The samples demonstrate:
 * **Custom Analyzers** - Create custom analyzers with field schemas for specialized extraction needs
 * **Document Classification** - Create and use classifiers to categorize documents
 * **Analyzer Management** - Get, list, update, copy, and delete analyzers
+* **Labeled Training Data** - Create custom analyzers with labeled training data from Azure Blob Storage for improved extraction accuracy
 * **Result Management** - Retrieve result files from video analysis and delete analysis results
 
 See the [samples README][sample_readme] for introductions of samples and the [samples directory][python_cu_samples] for complete examples. 
@@ -392,7 +393,7 @@ import asyncio
 import os
 from dotenv import load_dotenv
 from azure.ai.contentunderstanding.aio import ContentUnderstandingClient
-from azure.ai.contentunderstanding.models import AnalyzeInput, AnalyzeResult, MediaContent, DocumentContent, MediaContentKind
+from azure.ai.contentunderstanding.models import AnalysisInput, AnalysisResult, AnalysisContent, DocumentContent, AnalysisContentKind
 from azure.core.credentials import AzureKeyCredential
 from azure.identity.aio import DefaultAzureCredential
 
@@ -409,17 +410,17 @@ async def analyze_document():
         # Analyze document using prebuilt-documentSearch
         poller = await client.begin_analyze(
             analyzer_id="prebuilt-documentSearch", 
-            inputs=[AnalyzeInput(url=file_url)]
+            inputs=[AnalysisInput(url=file_url)]
         )
-        result: AnalyzeResult = await poller.result()
+        result: AnalysisResult = await poller.result()
         
         # Extract markdown content
-        content: MediaContent = result.contents[0]
+        content: AnalysisContent = result.contents[0]
         print("Markdown Content:")
         print(content.markdown)
         
         # Access document-specific properties
-        if content.kind == MediaContentKind.DOCUMENT:
+        if content.kind == AnalysisContentKind.DOCUMENT:
             document_content: DocumentContent = content  # type: ignore
             print(f"Pages: {document_content.start_page_number} - {document_content.end_page_number}")
 
@@ -439,7 +440,7 @@ import asyncio
 import os
 from dotenv import load_dotenv
 from azure.ai.contentunderstanding.aio import ContentUnderstandingClient
-from azure.ai.contentunderstanding.models import AnalyzeInput, AnalyzeResult, DocumentContent
+from azure.ai.contentunderstanding.models import AnalysisInput, AnalysisResult, DocumentContent
 from azure.core.credentials import AzureKeyCredential
 from azure.identity.aio import DefaultAzureCredential
 
@@ -461,9 +462,9 @@ async def analyze_invoice():
         # Analyze invoice using prebuilt-invoice analyzer
         poller = await client.begin_analyze(
             analyzer_id="prebuilt-invoice", 
-            inputs=[AnalyzeInput(url=file_url)]
+            inputs=[AnalysisInput(url=file_url)]
         )
-        result: AnalyzeResult = await poller.result()
+        result: AnalysisResult = await poller.result()
         
         # Extract invoice fields
         content: DocumentContent = result.contents[0]  # type: ignore
@@ -559,27 +560,27 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 
 <!-- LINKS -->
 
-[python_cu_src]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.0.0b1/sdk/contentunderstanding/azure-ai-contentunderstanding/azure/ai/contentunderstanding
+[python_cu_src]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/azure/ai/contentunderstanding
 [python_cu_pypi]: https://pypi.org/project/azure-ai-contentunderstanding/
 [python_cu_product_docs]: https://learn.microsoft.com/azure/ai-services/content-understanding/
-[python_cu_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.0.0b1/sdk/contentunderstanding/azure-ai-contentunderstanding/samples
+[python_cu_samples]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/samples
 [azure_sub]: https://azure.microsoft.com/free/
 [cu_quickstart]: https://learn.microsoft.com/azure/ai-services/content-understanding/quickstart/use-rest-api?tabs=portal%2Cdocument
 [cu_region_support]: https://learn.microsoft.com/azure/ai-services/content-understanding/language-region-support
 [azure_portal]: https://portal.azure.com/
 [deploy_models_docs]: https://learn.microsoft.com/azure/ai-studio/how-to/deploy-models-openai
-[azure_identity_readme]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.0.0b1/sdk/identity/azure-identity/README.md
+[azure_identity_readme]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity/README.md
 [cu_prebuilt_analyzers]: https://learn.microsoft.com/azure/ai-services/content-understanding/concepts/prebuilt-analyzers
-[client_options]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-contentunderstanding_1.0.0b1/sdk/core/azure-core/README.md#configurations
-[handling_failures]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-contentunderstanding_1.0.0b1/sdk/core/azure-core/README.md#azure-core-library-exceptions
-[diagnostics]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-contentunderstanding_1.0.0b1/sdk/core/azure-core/README.md#logging
+[client_options]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md#configurations
+[handling_failures]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md#azure-core-library-exceptions
+[diagnostics]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md#logging
 [python_logging]: https://docs.python.org/3/library/logging.html
 [sdk_logging_docs]: https://learn.microsoft.com/azure/developer/python/sdk/azure-sdk-logging
-[sample_readme]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.0.0b1/sdk/contentunderstanding/azure-ai-contentunderstanding/samples/README.md
-[sample_update_defaults]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-contentunderstanding_1.0.0b1/sdk/contentunderstanding/azure-ai-contentunderstanding/samples/sample_update_defaults.py
-[sample_analyze_binary]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-contentunderstanding_1.0.0b1/sdk/contentunderstanding/azure-ai-contentunderstanding/samples/sample_analyze_binary.py
-[tests_readme]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.0.0b1/sdk/contentunderstanding/azure-ai-contentunderstanding/tests/README.md
-[azure_sdk_testing_guide]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-contentunderstanding_1.0.0b1/doc/dev/tests.md
+[sample_readme]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/samples/README.md
+[sample_update_defaults]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/contentunderstanding/azure-ai-contentunderstanding/samples/sample_update_defaults.py
+[sample_analyze_binary]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/contentunderstanding/azure-ai-contentunderstanding/samples/sample_analyze_binary.py
+[tests_readme]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/tests/README.md
+[azure_sdk_testing_guide]: https://github.com/Azure/azure-sdk-for-python/blob/main/doc/dev/tests.md
 [pip]: https://pypi.org/project/pip/
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
