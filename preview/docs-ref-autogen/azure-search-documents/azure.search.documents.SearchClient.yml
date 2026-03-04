@@ -3,63 +3,50 @@ uid: azure.search.documents.SearchClient
 name: SearchClient
 fullName: azure.search.documents.SearchClient
 module: azure.search.documents
-summary: A client to interact with an existing Azure search index.
+summary: SearchClient.
 constructor:
   syntax: 'SearchClient(endpoint: str, index_name: str, credential: AzureKeyCredential
     | TokenCredential, **kwargs: Any)'
   parameters:
   - name: endpoint
-    description: The URL endpoint of an Azure search service
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: index_name
-    description: The name of the index to connect to
+    description: Service host. Required.
     isRequired: true
     types:
     - <xref:str>
   - name: credential
-    description: A credential to authorize search client requests
+    description: 'Credential used to authenticate requests to the service. Is either
+      a key
+
+      credential type or a token credential type. Required.'
     isRequired: true
     types:
     - <xref:azure.core.credentials.AzureKeyCredential>
     - <xref:azure.core.credentials.TokenCredential>
+  - name: index_name
+    description: The name of the index. Required.
+    isRequired: true
+    types:
+    - <xref:str>
   keywordOnlyParameters:
   - name: api_version
-    description: The Search API version to use for requests.
+    description: 'The API version to use for this operation. Default value is
+
+      "2025-11-01-preview". Note that overriding this default value may result in
+      unsupported
+
+      behavior.'
     types:
     - <xref:str>
-  - name: audience
-    description: 'sets the Audience to use for authentication with Microsoft Entra
-      ID. The
-
-      audience is not considered when using a shared key. If audience is not provided,
-      the public cloud audience
-
-      will be assumed.'
-    types:
-    - <xref:str>
-examples:
-- "Creating the SearchClient with an API key.<!--[!code-python[Main](les\\sample_authentication.py\
-  \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-  : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.12.10\\\\x64\\\
-  \\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\
-  \\samples\\\\sample_authentication.py\", \"xml:space\": \"preserve\", \"force\"\
-  : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-  linenos\": false} -->\n\n````python\n\n   from azure.core.credentials import AzureKeyCredential\n\
-  \   from azure.search.documents import SearchClient\n\n   service_endpoint = os.environ[\"\
-  AZURE_SEARCH_SERVICE_ENDPOINT\"]\n   index_name = os.environ[\"AZURE_SEARCH_INDEX_NAME\"\
-  ]\n   key = os.environ[\"AZURE_SEARCH_API_KEY\"]\n\n   search_client = SearchClient(service_endpoint,\
-  \ index_name, AzureKeyCredential(key))\n\n   ````\n"
 methods:
 - uid: azure.search.documents.SearchClient.autocomplete
   name: autocomplete
-  summary: Get search auto-completion results from the Azure search index.
+  summary: Autocomplete incomplete search terms based on input text and matching terms
+    in the index.
   signature: 'autocomplete(search_text: str, suggester_name: str, *, mode: str | AutocompleteMode
     | None = None, filter: str | None = None, use_fuzzy_matching: bool | None = None,
     highlight_post_tag: str | None = None, highlight_pre_tag: str | None = None, minimum_coverage:
-    float | None = None, search_fields: List[str] | None = None, top: int | None =
-    None, **kwargs) -> List[MutableMapping[str, Any]]'
+    float | None = None, search_fields: list[str] | None = None, top: int | None =
+    None, **kwargs: Any) -> List[AutocompleteItem]'
   parameters:
   - name: search_text
     description: The search text on which to base autocomplete results.
@@ -76,21 +63,21 @@ methods:
   keywordOnlyParameters:
   - name: mode
     description: 'Specifies the mode for Autocomplete. The default is ''oneTerm''.
-      Use
 
-      ''twoTerms'' to get shingles and ''oneTermWithContext'' to use the current context
-      while producing
+      Use ''twoTerms'' to get shingles and ''oneTermWithContext'' to use the current
+      context while
 
-      auto-completed terms. Possible values include: ''oneTerm'', ''twoTerms'', ''oneTermWithContext''.'
+      producing auto-completed terms. Known values are: "oneTerm", "twoTerms", and
+
+      "oneTermWithContext".'
     defaultValue: None
     types:
     - <xref:str>
     - <xref:azure.search.documents.models.AutocompleteMode>
   - name: filter
     description: 'An OData expression that filters the documents used to produce completed
-      terms
 
-      for the Autocomplete result.'
+      terms for the Autocomplete result.'
     defaultValue: None
     types:
     - <xref:str>
@@ -126,77 +113,68 @@ methods:
     - <xref:str>
   - name: minimum_coverage
     description: 'A number between 0 and 100 indicating the percentage of the index
-      that
 
-      must be covered by an autocomplete query in order for the query to be reported
-      as a success.
+      that must be covered by an autocomplete query in order for the query to be reported
+      as a
 
-      This parameter can be useful for ensuring search availability even for services
-      with only one
+      success. This parameter can be useful for ensuring search availability even
+      for services with
 
-      replica. The default is 80.'
+      only one replica. The default is 80.'
     defaultValue: None
     types:
     - <xref:float>
   - name: search_fields
-    description: 'The list of field names to consider when querying for auto-completed
+    description: 'The comma-separated list of field names to consider when querying
+      for
 
-      terms. Target fields must be included in the specified suggester.'
+      auto-completed terms. Target fields must be included in the specified suggester.
+      Default value
+
+      is None.'
     defaultValue: None
     types:
     - <xref:list>[<xref:str>]
   - name: top
     description: 'The number of auto-completed terms to retrieve. This must be a value
-      between 1 and
+      between 1
 
-      100. The default is 5.'
+      and 100. The default is 5.'
     defaultValue: None
     types:
     - <xref:int>
   return:
-    description: List of auto-completion results.
+    description: List of autocomplete results.
     types:
-    - <xref:list>[<xref:dict>]
+    - <xref:list>[<xref:dict>[<xref:str>, <xref:typing.Any>]]
   examples:
-  - "Get a auto-completions.<!--[!code-python[Main](les\\sample_autocomplete.py )]-->\n\
-    \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.12.10\\\\\
-    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\sample_autocomplete.py\", \"xml:space\": \"preserve\", \"force\"\
+  - "Get autocomplete suggestions.<!--[!code-python[Main](les\\sample_query_autocomplete.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0a20260303001\\\
+    \\samples\\\\sample_query_autocomplete.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   from azure.core.credentials import AzureKeyCredential\n\
     \   from azure.search.documents import SearchClient\n\n   search_client = SearchClient(service_endpoint,\
     \ index_name, AzureKeyCredential(key))\n\n   results = search_client.autocomplete(search_text=\"\
-    bo\", suggester_name=\"sg\")\n\n   print(\"Autocomplete suggestions for 'bo'\"\
-    )\n   for result in results:\n       print(\"    Completion: {}\".format(result[\"\
-    text\"]))\n\n   ````\n"
+    bo\", suggester_name=\"sg\")\n\n   print(\"Results: autocomplete for 'bo'\")\n\
+    \   for result in results:\n       print(f\"  Completion: {result['text']}\")\n\
+    \n   ````\n"
 - uid: azure.search.documents.SearchClient.close
   name: close
-  summary: Close the session.
   signature: close() -> None
-  return:
-    description: None
-    types:
-    - <xref:None>
 - uid: azure.search.documents.SearchClient.delete_documents
   name: delete_documents
-  summary: 'Delete documents from the Azure search index
+  summary: 'Delete documents from the Azure search index.
 
 
-    Delete removes the specified document from the index. Any field you
+    Delete removes the specified documents from the index. Any field you
 
-    specify in a delete operation, other than the key field, will be
+    specify in a delete operation, other than the key field, will be ignored.
 
-    ignored. If you want to remove an individual field from a document, use
+    If you want to remove a field from a document, use merge instead and
 
-    *merge_documents* instead and set the field explicitly to None.
-
-
-    Delete operations are idempotent. That is, even if a document key does
-
-    not exist in the index, attempting a delete operation with that key will
-
-    result in a 200 status code.'
+    set the field explicitly to None.'
   signature: 'delete_documents(documents: List[Dict], **kwargs: Any) -> List[IndexingResult]'
   parameters:
   - name: documents
@@ -209,55 +187,70 @@ methods:
     types:
     - <xref:list>[<xref:azure.search.documents.models.IndexingResult>]
   examples:
-  - "Delete existing documents to an index<!--[!code-python[Main](les\\sample_crud_operations.py\
+  - "Delete documents from an index<!--[!code-python[Main](les\\sample_documents_crud.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\sample_crud_operations.py\", \"xml:space\": \"preserve\", \"force\"\
+    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0a20260303001\\\
+    \\samples\\\\sample_documents_crud.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-    linenos\": false} -->\n\n````python\n\n   result = search_client.delete_documents(documents=[{\"\
-    hotelId\": \"1000\"}])\n\n   print(\"Delete new document succeeded: {}\".format(result[0].succeeded))\n\
-    \n   ````\n"
+    linenos\": false} -->\n\n````python\n\n   from azure.core.credentials import AzureKeyCredential\n\
+    \   from azure.search.documents import SearchClient\n\n   search_client = SearchClient(service_endpoint,\
+    \ index_name, AzureKeyCredential(key))\n\n   result = search_client.delete_documents(documents=[{\"\
+    HotelId\": \"100\"}])\n\n   print(f\"Deleted: document 100 (succeeded={result[0].succeeded})\"\
+    )\n\n   ````\n"
 - uid: azure.search.documents.SearchClient.get_document
   name: get_document
-  summary: Retrieve a document from the Azure search index by its key.
-  signature: 'get_document(key: str, selected_fields: List[str] | None = None, **kwargs:
-    Any) -> Dict'
+  summary: Retrieves a document from the index.
+  signature: 'get_document(key: str, *, query_source_authorization: str | None = None,
+    enable_elevated_read: bool | None = None, selected_fields: list[str] | None =
+    None, **kwargs: Any) -> LookupDocument'
   parameters:
   - name: key
-    description: The primary key value for the document to retrieve
+    description: The key of the document to retrieve. Required.
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
+  - name: query_source_authorization
+    description: 'Token identifying the user for which the query is being
+
+      executed. This token is used to enforce security restrictions on documents.
+      Default value is
+
+      None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: enable_elevated_read
+    description: 'A value that enables elevated read that bypass document level
+
+      permission checks for the query operation. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:bool>
   - name: selected_fields
-    description: an allow-list of fields to include in the results
+    description: 'List of field names to retrieve for the document; Any field not
+
+      retrieved will be missing from the returned document. Default value is None.'
     defaultValue: None
     types:
     - <xref:list>[<xref:str>]
   return:
-    description: The document as stored in the Azure search index
+    description: LookupDocument. The LookupDocument is compatible with MutableMapping
     types:
-    - <xref:dict>
-  examples:
-  - "Get a specific document from the search index.<!--[!code-python[Main](les\\sample_get_document.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\sample_get_document.py\", \"xml:space\": \"preserve\", \"force\"\
-    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-    linenos\": false} -->\n\n````python\n\n   from azure.core.credentials import AzureKeyCredential\n\
-    \   from azure.search.documents import SearchClient\n\n   search_client = SearchClient(service_endpoint,\
-    \ index_name, AzureKeyCredential(key))\n\n   result = search_client.get_document(key=\"\
-    23\")\n\n   print(\"Details for hotel '23' are:\")\n   print(\"        Name: {}\"\
-    .format(result[\"hotelName\"]))\n\n   ````\n"
+    - <xref:azure.search.documents.models.LookupDocument>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.SearchClient.get_document_count
   name: get_document_count
-  summary: Return the number of documents in the Azure search index.
+  summary: Queries the number of documents in the index.
   signature: 'get_document_count(**kwargs: Any) -> int'
   return:
-    description: The count of documents in the index
+    description: int
     types:
     - <xref:int>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.SearchClient.index_documents
   name: index_documents
   summary: Specify a document operations to perform as a batch.
@@ -277,16 +270,16 @@ methods:
     description: The request is too large.
 - uid: azure.search.documents.SearchClient.merge_documents
   name: merge_documents
-  summary: 'Merge documents in to existing documents in the Azure search index.
+  summary: 'Merge documents in the Azure search index.
 
 
     Merge updates an existing document with the specified fields. If the
 
-    document doesn''t exist, the merge will fail. Any field you specify in a
+    document doesn''t exist, the merge will fail. Any field you specify in
 
-    merge will replace the existing field in the document. This also applies
+    a merge will replace the existing field in the document. This also
 
-    to collections of primitive and complex types.'
+    applies to collections of primitive and complex types.'
   signature: 'merge_documents(documents: List[Dict], **kwargs: Any) -> List[IndexingResult]'
   parameters:
   - name: documents
@@ -299,28 +292,27 @@ methods:
     types:
     - <xref:list>[<xref:azure.search.documents.models.IndexingResult>]
   examples:
-  - "Merge fields into existing documents to an index<!--[!code-python[Main](les\\\
-    sample_crud_operations.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
-    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
-    ToolCache\\\\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\\
-    dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\\samples\\\\sample_crud_operations.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   result = search_client.merge_documents(documents=[{\"hotelId\": \"783\",\
-    \ \"hotelName\": \"Renovated Ranch\"}])\n\n   print(\"Merge into new document\
-    \ succeeded: {}\".format(result[0].succeeded))\n\n   ````\n"
+  - "Merge documents in an index<!--[!code-python[Main](les\\sample_documents_crud.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0a20260303001\\\
+    \\samples\\\\sample_documents_crud.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   from azure.core.credentials import AzureKeyCredential\n\
+    \   from azure.search.documents import SearchClient\n\n   search_client = SearchClient(service_endpoint,\
+    \ index_name, AzureKeyCredential(key))\n\n   result = search_client.merge_documents(documents=[{\"\
+    HotelId\": \"100\", \"HotelName\": \"Azure Sanctuary & Spa\"}])\n\n   print(f\"\
+    Merged: document 100 (succeeded={result[0].succeeded})\")\n\n   ````\n"
 - uid: azure.search.documents.SearchClient.merge_or_upload_documents
   name: merge_or_upload_documents
-  summary: 'Merge documents in to existing documents in the Azure search index,
-
-    or upload them if they do not yet exist.
+  summary: 'Merge or upload documents to the Azure search index.
 
 
-    This action behaves like *merge_documents* if a document with the given
+    Merge or upload behaves like merge if a document with the given key
 
-    key already exists in the index. If the document does not exist, it
+    already exists in the index. If the document does not exist, it behaves
 
-    behaves like *upload_documents* with a new document.'
+    like upload with a new document.'
   signature: 'merge_or_upload_documents(documents: List[Dict], **kwargs: Any) -> List[IndexingResult]'
   parameters:
   - name: documents
@@ -332,6 +324,19 @@ methods:
     description: List of IndexingResult
     types:
     - <xref:list>[<xref:azure.search.documents.models.IndexingResult>]
+  examples:
+  - "Merge or upload documents to an index<!--[!code-python[Main](les\\sample_documents_crud.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0a20260303001\\\
+    \\samples\\\\sample_documents_crud.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   from azure.core.credentials import AzureKeyCredential\n\
+    \   from azure.search.documents import SearchClient\n\n   search_client = SearchClient(service_endpoint,\
+    \ index_name, AzureKeyCredential(key))\n\n   result = search_client.merge_or_upload_documents(\n\
+    \       documents=[{\"HotelId\": \"100\", \"HotelName\": \"Azure Sanctuary & Spa\"\
+    }]\n   )\n\n   print(f\"Merge or upload: document 100 (succeeded={result[0].succeeded})\"\
+    )\n\n   ````\n"
 - uid: azure.search.documents.SearchClient.search
   name: search
   summary: Search the Azure search index for documents.
@@ -354,7 +359,7 @@ methods:
     str | SemanticErrorMode | None = None, semantic_max_wait_in_milliseconds: int
     | None = None, query_rewrites: str | QueryRewritesType | None = None, query_rewrites_count:
     int | None = None, debug: str | QueryDebugMode | None = None, hybrid_search: HybridSearch
-    | None = None, x_ms_query_source_authorization: str | None = None, x_ms_enable_elevated_read:
+    | None = None, query_source_authorization: str | None = None, enable_elevated_read:
     bool | None = None, **kwargs: Any) -> SearchItemPaged[Dict]'
   parameters:
   - name: search_text
@@ -490,13 +495,14 @@ methods:
     types:
     - <xref:str>
   - name: search_fields
-    description: 'The list of field names to which to scope the full-text search.
-      When
+    description: 'The comma-separated list of field names to which to scope the full-text
 
-      using fielded search (fieldName:searchExpression) in a full Lucene query, the
-      field names of
+      search. When using fielded search (fieldName:searchExpression) in a full Lucene
+      query, the
 
-      each fielded search expression take precedence over any field names listed in
+      field names of each fielded search expression take precedence over any field
+      names listed in
+
       this parameter.'
     defaultValue: None
     types:
@@ -596,7 +602,7 @@ methods:
     types:
     - <xref:bool>
   - name: semantic_fields
-    description: The list of field names used for semantic search.
+    description: The comma-separated list of field names used for semantic ranking.
     defaultValue: None
     types:
     - <xref:list>[<xref:str>]
@@ -752,7 +758,7 @@ methods:
     defaultValue: None
     types:
     - <xref:azure.search.documents.models.HybridSearch>
-  - name: x_ms_query_source_authorization
+  - name: query_source_authorization
     description: 'Token identifying the user for which the query is being
 
       executed. This token is used to enforce security restrictions on documents.
@@ -762,7 +768,7 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
-  - name: x_ms_enable_elevated_read
+  - name: enable_elevated_read
     description: 'A value that enables elevated read that bypass document level
 
       permission checks for the query operation. Default value is None.'
@@ -774,27 +780,45 @@ methods:
     types:
     - <xref:azure.search.documents.SearchItemPaged>[<xref:dict>]
   examples:
-  - "Get search result facets.<!--[!code-python[Main](les\\sample_facet_query.py )]-->\n\
-    \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.12.10\\\\\
-    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\sample_facet_query.py\", \"xml:space\": \"preserve\", \"force\":\
-    \ false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+  - "Get search result facets.<!--[!code-python[Main](les\\sample_query_facets.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0a20260303001\\\
+    \\samples\\\\sample_query_facets.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   from azure.core.credentials import AzureKeyCredential\n\
     \   from azure.search.documents import SearchClient\n\n   search_client = SearchClient(service_endpoint,\
     \ index_name, AzureKeyCredential(key))\n\n   results = search_client.search(search_text=\"\
-    WiFi\", facets=[\"category,count:3\", \"parkingIncluded\"])\n\n   facets: Dict[str,\
-    \ List[str]] = cast(Dict[str, List[str]], results.get_facets())\n\n   print(\"\
-    Catgory facet counts for hotels:\")\n   for facet in facets[\"category\"]:\n \
-    \      print(\"    {}\".format(facet))\n\n   ````\n"
+    WiFi\", facets=[\"Category,count:3\", \"ParkingIncluded\"])\n\n   facets = results.get_facets()\n\
+    \n   print(\"Results: category facets\")\n   if facets:\n       for facet in facets[\"\
+    Category\"]:\n           print(f\"  {facet}\")\n\n   ````\n"
 - uid: azure.search.documents.SearchClient.send_request
   name: send_request
-  summary: Runs a network request using the client's existing pipeline.
-  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs)
-    -> HttpResponse'
+  summary: 'Runs the network request through the client''s chained policies.
+
+
+    ```
+
+
+    >>> from azure.core.rest import HttpRequest
+
+    >>> request = HttpRequest("GET", "https://www.example.org/")
+
+    <HttpRequest [GET], url: ''https://www.example.org/''>
+
+    >>> response = client.send_request(request)
+
+    <HttpResponse: 200 OK>
+
+    ```
+
+
+    For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> HttpResponse'
   parameters:
   - name: request
-    description: The network request you want to make.
+    description: The network request you want to make. Required.
     isRequired: true
     types:
     - <xref:azure.core.rest.HttpRequest>
@@ -811,24 +835,22 @@ methods:
     - <xref:azure.core.rest.HttpResponse>
 - uid: azure.search.documents.SearchClient.suggest
   name: suggest
-  summary: Get search suggestion results from the Azure search index.
+  summary: Get search suggestions for documents in the Azure search index.
   signature: 'suggest(search_text: str, suggester_name: str, *, filter: str | None
     = None, use_fuzzy_matching: bool | None = None, highlight_post_tag: str | None
     = None, highlight_pre_tag: str | None = None, minimum_coverage: float | None =
     None, order_by: List[str] | None = None, search_fields: List[str] | None = None,
-    select: List[str] | None = None, top: int | None = None, **kwargs) -> List[MutableMapping[str,
-    Any]]'
+    select: List[str] | None = None, top: int | None = None, **kwargs: Any) -> List[SuggestResult]'
   parameters:
   - name: search_text
-    description: 'Required. The search text to use to suggest documents. Must be at
-      least 1
+    description: 'The search text to use to suggest documents. Must be at least 1
 
       character, and no more than 100 characters.'
     isRequired: true
     types:
     - <xref:str>
   - name: suggester_name
-    description: 'Required. The name of the suggester as specified in the suggesters
+    description: 'The name of the suggester as specified in the suggesters
 
       collection that''s part of the index definition.'
     isRequired: true
@@ -841,18 +863,18 @@ methods:
     types:
     - <xref:str>
   - name: use_fuzzy_matching
-    description: 'A value indicating whether to use fuzzy matching for the suggestions
+    description: 'A value indicating whether to use fuzzy matching for the
 
-      query. Default is false. When set to true, the query will find terms even if
-      there''s a
+      suggestion query. Default is false. When set to true, the query will find suggestions
+      even if
 
-      substituted or missing character in the search text. While this provides a better
-      experience in
+      there''s a substituted or missing character in the search text. While this provides
+      a better
 
-      some scenarios, it comes at a performance cost as fuzzy suggestions queries
-      are slower and
+      experience in some scenarios, it comes at a performance cost as fuzzy suggestion
+      searches are
 
-      consume more resources.'
+      slower and consume more resources.'
     defaultValue: None
     types:
     - <xref:bool>
@@ -872,80 +894,78 @@ methods:
     - <xref:str>
   - name: minimum_coverage
     description: 'A number between 0 and 100 indicating the percentage of the index
-      that
 
-      must be covered by a suggestions query in order for the query to be reported
-      as a success. This
+      that must be covered by a suggestion query in order for the query to be reported
+      as a success.
 
-      parameter can be useful for ensuring search availability even for services with
-      only one
+      This parameter can be useful for ensuring search availability even for services
+      with only one
 
       replica. The default is 80.'
     defaultValue: None
     types:
     - <xref:float>
   - name: order_by
-    description: 'The list of OData $orderby expressions by which to sort the results.
-      Each
+    description: 'The comma-separated list of OData $orderby expressions by which
+      to sort the
 
-      expression can be either a field name or a call to either the geo.distance()
-      or the
+      results. Each expression can be either a field name or a call to either the
+      geo.distance() or
 
-      search.score() functions. Each expression can be followed by asc to indicate
-      ascending, or desc
+      the search.score() functions. Each expression can be followed by asc to indicate
+      ascending, or
 
-      to indicate descending. The default is ascending order. Ties will be broken
-      by the match scores
+      desc to indicate descending. The default is ascending order. Ties will be broken
+      by the match
 
-      of documents. If no $orderby is specified, the default sort order is descending
-      by document
+      scores of documents. If no $orderby is specified, the default sort order is
+      descending by
 
-      match score. There can be at most 32 $orderby clauses.'
+      document match score. There can be at most 32 $orderby clauses.'
     defaultValue: None
     types:
     - <xref:list>[<xref:str>]
   - name: search_fields
-    description: 'The list of field names to search for the specified search text.
-      Target
+    description: 'The comma-separated list of field names to search for the specified
 
-      fields must be included in the specified suggester.'
+      search text. Target fields must be included in the specified suggester.'
     defaultValue: None
     types:
     - <xref:list>[<xref:str>]
   - name: select
-    description: 'The list of fields to retrieve. If unspecified, only the key field
-      will be
+    description: 'The comma-separated list of fields to retrieve. If unspecified,
+      only the key
 
-      included in the results.'
+      field will be included in the results.'
     defaultValue: None
     types:
     - <xref:list>[<xref:str>]
   - name: top
-    description: 'The number of suggestions to retrieve. The value must be a number
-      between 1 and
+    description: 'The number of suggestions to retrieve. This must be a value between
+      1 and 100.
 
-      100. The default is 5.'
+      The default is 5.'
     defaultValue: None
     types:
     - <xref:int>
   return:
     description: List of suggestion results.
     types:
-    - <xref:list>[<xref:dict>]
+    - <xref:list>[<xref:dict>[<xref:str>, <xref:typing.Any>]]
   examples:
-  - "Get search suggestions.<!--[!code-python[Main](les\\sample_suggestions.py )]-->\n\
-    \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.12.10\\\\\
-    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\sample_suggestions.py\", \"xml:space\": \"preserve\", \"force\":\
-    \ false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+  - "Get search suggestions.<!--[!code-python[Main](les\\sample_query_suggestions.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
+    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0a20260303001\\\
+    \\samples\\\\sample_query_suggestions.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   from azure.core.credentials import AzureKeyCredential\n\
     \   from azure.search.documents import SearchClient\n\n   search_client = SearchClient(service_endpoint,\
     \ index_name, AzureKeyCredential(key))\n\n   results = search_client.suggest(search_text=\"\
-    coffee\", suggester_name=\"sg\")\n\n   print(\"Search suggestions for 'coffee'\"\
+    coffee\", suggester_name=\"sg\")\n\n   print(\"Results: suggestions for 'coffee'\"\
     )\n   for result in results:\n       hotel = search_client.get_document(key=result[\"\
-    hotelId\"])\n       print(\"    Text: {} for Hotel: {}\".format(repr(result[\"\
-    text\"]), hotel[\"hotelName\"]))\n\n   ````\n"
+    HotelId\"])\n       print(f\"  Text: {result['text']!r}, HotelName: {hotel['HotelName']}\"\
+    )\n\n   ````\n"
 - uid: azure.search.documents.SearchClient.upload_documents
   name: upload_documents
   summary: 'Upload documents to the Azure search index.
@@ -968,13 +988,23 @@ methods:
     types:
     - <xref:list>[<xref:azure.search.documents.models.IndexingResult>]
   examples:
-  - "Upload new documents to an index<!--[!code-python[Main](les\\sample_crud_operations.py\
+  - "Upload new documents to an index<!--[!code-python[Main](les\\sample_documents_crud.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\sample_crud_operations.py\", \"xml:space\": \"preserve\", \"force\"\
+    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0a20260303001\\\
+    \\samples\\\\sample_documents_crud.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-    linenos\": false} -->\n\n````python\n\n   DOCUMENT = {\n       \"hotelId\": \"\
-    1000\",\n       \"hotelName\": \"Azure Inn\",\n   }\n\n   result = search_client.upload_documents(documents=[DOCUMENT])\n\
-    \n   print(\"Upload of new document succeeded: {}\".format(result[0].succeeded))\n\
-    \n   ````\n"
+    linenos\": false} -->\n\n````python\n\n   from azure.core.credentials import AzureKeyCredential\n\
+    \   from azure.search.documents import SearchClient\n\n   search_client = SearchClient(service_endpoint,\
+    \ index_name, AzureKeyCredential(key))\n\n   document = {\n       \"HotelId\"\
+    : \"100\",\n       \"HotelName\": \"Azure Sanctuary\",\n       \"Description\"\
+    : \"A quiet retreat offering understated elegance and premium amenities.\",\n\
+    \       \"Description_fr\": \"Meilleur h\xF4tel en ville si vous aimez les h\xF4\
+    tels de luxe.\",\n       \"Category\": \"Luxury\",\n       \"Tags\": [\n     \
+    \      \"pool\",\n           \"view\",\n           \"wifi\",\n           \"concierge\"\
+    ,\n           \"private beach\",\n           \"gourmet dining\",\n           \"\
+    spa\",\n       ],\n       \"ParkingIncluded\": False,\n       \"LastRenovationDate\"\
+    : \"2024-01-15T00:00:00+00:00\",\n       \"Rating\": 5,\n       \"Location\":\
+    \ {\"type\": \"Point\", \"coordinates\": [-122.131577, 47.678581]},\n   }\n\n\
+    \   result = search_client.upload_documents(documents=[document])\n\n   print(f\"\
+    Uploaded: document 100 (succeeded={result[0].succeeded})\")\n\n   ````\n"
