@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-computebulkactions, computebulkactions
-ms.date: 02/19/2026
+ms.date: 03/04/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: computebulkactions
