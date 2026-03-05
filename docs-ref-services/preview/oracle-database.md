@@ -1,7 +1,7 @@
 ---
 title: Azure Oracle Database SDK for Python
 description: Reference for Azure Oracle Database SDK for Python
-ms.date: 03/04/2026
+ms.date: 03/05/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: oracledatabase
