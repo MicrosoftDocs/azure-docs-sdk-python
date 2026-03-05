@@ -1,12 +1,12 @@
 ---
 title: Azure AI Projects client library for Python
 keywords: Azure, python, SDK, API, azure-ai-projects, ai
-ms.date: 02/24/2026
+ms.date: 03/05/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: ai
 ---
-# Azure AI Projects client library for Python - version 2.0.0b4 
+# Azure AI Projects client library for Python - version 2.0.0a20260305003 
 
 
 The AI Projects client library (in preview) is part of the Microsoft Foundry SDK, and provides easy access to
@@ -248,7 +248,7 @@ asset_file_path = os.path.abspath(
 
 # Upload the CSV file for the code interpreter
 file = openai_client.files.create(purpose="assistants", file=open(asset_file_path, "rb"))
-tool = CodeInterpreterTool(container=CodeInterpreterContainerAuto(file_ids=[file.id]))
+tool = CodeInterpreterTool(container=AutoCodeInterpreterToolParam(file_ids=[file.id]))
 ```
 
 <!-- END SNIPPET -->
@@ -1223,7 +1223,7 @@ You can add custom attributes to spans by creating a custom span processor. Here
 
 ```python
 class CustomAttributeSpanProcessor(SpanProcessor):
-    def __init__(self):
+    def __init__(self) -> None:
         pass
 
     def on_start(self, span: Span, parent_context=None):
