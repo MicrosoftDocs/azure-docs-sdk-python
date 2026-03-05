@@ -12,7 +12,9 @@ summary: 'Custom ContentUnderstandingClient with static patches for analyze oper
 
   - Returns AnalyzeLROPoller with .operation_id property
 
-  - Fixes content_type default for begin_analyze_binary'
+  - Fixes content_type default for begin_analyze_binary
+
+  - Defaults polling_interval to 3 seconds'
 constructor:
   syntax: 'ContentUnderstandingClient(endpoint: str, credential: AzureKeyCredential
     | TokenCredential, **kwargs: Any)'
@@ -41,7 +43,7 @@ constructor:
   - name: polling_interval
     description: 'Default waiting time between two polls for LRO operations if no
 
-      Retry-After header is present.'
+      Retry-After header is present. Default value is 3 seconds.'
     types:
     - <xref:int>
 methods:
@@ -65,10 +67,9 @@ methods:
     > This ensures ContentSpan offsets work correctly with Python string slicing.
 
     >'
-  signature: 'begin_analyze(analyzer_id: str, *, processing_location: str | _models.ProcessingLocation
-    | None = None, content_type: str = ''application/json'', inputs: list[_models.AnalyzeInput]
-    | None = None, model_deployments: dict[str, str] | None = None, **kwargs: Any)
-    -> AnalyzeLROPoller[_models.AnalyzeResult]'
+  signature: 'begin_analyze(analyzer_id: str, *, inputs: list[_models.AnalysisInput],
+    model_deployments: dict[str, str] | None = None, processing_location: str | _models.ProcessingLocation
+    | None = None, **kwargs: Any) -> AnalyzeLROPoller[_models.AnalysisResult]'
   parameters:
   - name: analyzer_id
     description: The unique identifier of the analyzer. Required.
@@ -81,6 +82,22 @@ methods:
     - <xref:JSON>
     - <xref:typing.IO>[<xref:bytes>]
   keywordOnlyParameters:
+  - name: inputs
+    description: 'Inputs to analyze. Currently, only pro mode supports multiple inputs.
+
+      Required.'
+    defaultValue: <object object at 0x00000185D7EB67F0>
+    types:
+    - <xref:list>[<xref:azure.ai.contentunderstanding.models.AnalysisInput>]
+  - name: model_deployments
+    description: 'Override default mapping of model names to deployments.
+
+      Ex. { "gpt-4.1": "myGpt41Deployment", "text-embedding-3-large":
+
+      "myTextEmbedding3LargeDeployment" }. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:dict>[<xref:str>, <xref:str>]
   - name: processing_location
     description: 'The location where the data may be processed. Defaults to
 
@@ -95,29 +112,13 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
-  - name: inputs
-    description: 'Inputs to analyze. Currently, only pro mode supports multiple inputs.
-
-      Default value is None.'
-    defaultValue: None
-    types:
-    - <xref:list>[<xref:azure.ai.contentunderstanding.models.AnalyzeInput>]
-  - name: model_deployments
-    description: 'Override default mapping of model names to deployments.
-
-      Ex. { "gpt-4.1": "myGpt41Deployment", "text-embedding-3-large":
-
-      "myTextEmbedding3LargeDeployment" }. Default value is None.'
-    defaultValue: None
-    types:
-    - <xref:dict>[<xref:str>, <xref:str>]
   return:
-    description: 'An instance of AnalyzeLROPoller that returns AnalyzeResult. The
-      AnalyzeResult is
+    description: 'An instance of AnalyzeLROPoller that returns AnalysisResult. The
+      AnalysisResult is
 
       compatible with MutableMapping. The poller includes an .operation_id property.'
     types:
-    - <xref:azure.ai.contentunderstanding.models.AnalyzeLROPoller>[<xref:azure.ai.contentunderstanding.models.AnalyzeResult>]
+    - <xref:azure.ai.contentunderstanding.models.AnalyzeLROPoller>[<xref:azure.ai.contentunderstanding.models.AnalysisResult>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.ai.contentunderstanding.ContentUnderstandingClient.begin_analyze_binary
@@ -140,9 +141,9 @@ methods:
     > This ensures ContentSpan offsets work correctly with Python string slicing.
 
     >'
-  signature: 'begin_analyze_binary(analyzer_id: str, binary_input: bytes, *, processing_location:
-    str | ProcessingLocation | None = None, input_range: str | None = None, content_type:
-    str = ''application/octet-stream'', **kwargs: Any) -> AnalyzeLROPoller[AnalyzeResult]'
+  signature: 'begin_analyze_binary(analyzer_id: str, binary_input: bytes, *, content_range:
+    str | None = None, content_type: str = ''application/octet-stream'', processing_location:
+    str | ProcessingLocation | None = None, **kwargs: Any) -> AnalyzeLROPoller[AnalysisResult]'
   parameters:
   - name: analyzer_id
     description: The unique identifier of the analyzer. Required.
@@ -155,16 +156,7 @@ methods:
     types:
     - <xref:bytes>
   keywordOnlyParameters:
-  - name: processing_location
-    description: 'The location where the data may be processed. Defaults to
-
-      global. Known values are: "geography", "dataZone", and "global". Default value
-      is None.'
-    defaultValue: None
-    types:
-    - <xref:str>
-    - <xref:azure.ai.contentunderstanding.models.ProcessingLocation>
-  - name: input_range
+  - name: content_range
     description: 'Range of the input to analyze (ex. `1-3,5,9-`). Document content
       uses
 
@@ -180,13 +172,22 @@ methods:
     defaultValue: application/octet-stream
     types:
     - <xref:str>
+  - name: processing_location
+    description: 'The location where the data may be processed. Defaults to
+
+      global. Known values are: "geography", "dataZone", and "global". Default value
+      is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.ai.contentunderstanding.models.ProcessingLocation>
   return:
-    description: 'An instance of AnalyzeLROPoller that returns AnalyzeResult. The
-      AnalyzeResult is
+    description: 'An instance of AnalyzeLROPoller that returns AnalysisResult. The
+      AnalysisResult is
 
       compatible with MutableMapping. The poller includes an .operation_id property.'
     types:
-    - <xref:azure.ai.contentunderstanding.models.AnalyzeLROPoller>[<xref:azure.ai.contentunderstanding.models.AnalyzeResult>]
+    - <xref:azure.ai.contentunderstanding.models.AnalyzeLROPoller>[<xref:azure.ai.contentunderstanding.models.AnalysisResult>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.ai.contentunderstanding.ContentUnderstandingClient.begin_copy_analyzer
@@ -211,7 +212,7 @@ methods:
   keywordOnlyParameters:
   - name: source_analyzer_id
     description: Source analyzer ID. Required.
-    defaultValue: <object object at 0x000001DEFFA7A7C0>
+    defaultValue: <object object at 0x00000185D7EB6800>
     types:
     - <xref:str>
   - name: allow_replace
@@ -391,7 +392,7 @@ methods:
   keywordOnlyParameters:
   - name: target_azure_resource_id
     description: Azure resource ID of the target analyzer location. Required.
-    defaultValue: <object object at 0x000001DEFFA7A7C0>
+    defaultValue: <object object at 0x00000185D7EB6800>
     types:
     - <xref:str>
   - name: target_region
@@ -487,7 +488,7 @@ methods:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.ai.contentunderstanding.ContentUnderstandingClient.update_defaults
   name: update_defaults
-  summary: Return default settings for this Content Understanding resource.
+  summary: Update default settings for this Content Understanding resource.
   signature: 'update_defaults(body: ~collections.abc.MutableMapping[str, ~typing.Any]
     | ~typing.IO[bytes] = <object object>, *, model_deployments: ~typing.Dict[str,
     str] | None = None, **kwargs: ~typing.Any) -> ContentUnderstandingDefaults'
@@ -499,11 +500,14 @@ methods:
     - <xref:typing.IO>[<xref:bytes>]
   keywordOnlyParameters:
   - name: model_deployments
-    description: 'Mapping of model names to deployments.
+    description: 'Specify the default mapping of model names to LLM/embedding
 
-      Ex. { "gpt-4.1": "myGpt41Deployment", "text-embedding-3-large":
+      deployments in Microsoft Foundry. For details and current semantics, see
 
-      "myTextEmbedding3LargeDeployment" }. Default value is None.'
+      [https://aka.ms/cudoc-quickstart-rest](https://aka.ms/cudoc-quickstart-rest).
+      Default value
+
+      is None.'
     defaultValue: None
     types:
     - <xref:azure.ai.contentunderstanding.models.RecordMergePatchUpdate>

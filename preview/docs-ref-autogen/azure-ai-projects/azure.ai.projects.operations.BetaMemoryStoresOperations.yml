@@ -10,7 +10,7 @@ methods:
   name: begin_update_memories
   summary: Update memory store with conversation memories.
   signature: 'begin_update_memories(name: str, *, scope: str, content_type: str =
-    ''application/json'', items: List[dict[str, Any]] | None = None, previous_update_id:
+    ''application/json'', items: str | ResponseInputParam | None = None, previous_update_id:
     str | None = None, update_delay: int | None = None, **kwargs: Any) -> UpdateMemoriesLROPoller'
   parameters:
   - name: name
@@ -29,23 +29,25 @@ methods:
       as a user ID.
 
       Required.'
-    defaultValue: <object object at 0x00000295B208B1C0>
+    defaultValue: <object object at 0x000002012E91B240>
     types:
     - <xref:str>
   - name: items
-    description: 'A list of message items you would like to store in memory, each
-      one represented
+    description: 'A message or list of messages you would like to store in memory.
+      When using a
 
-      as a dictionary, with `role`, `content` and `type` properties (with type equals
+      list, each item needs to correspond to a dictionary with *role*, *content* and
+      *type*
 
-      `message`). Each message is identical to OpenAI''s EasyInputMessageParam. For
-      example:
+      keys. For example: {"role": "user", "type": "message", "content": "my user message"}.
 
-      {"role": "user", "type": "message", "content": "my user message"}. Default value
-      is None.'
+      Only messages with *type* equals *message* are currently processed. Others are
+      ignored.
+
+      Default value is None.'
     defaultValue: None
     types:
-    - <xref:list>[<xref:dict>[<xref:str>, <xref:any>]]
+    - <xref:typing.Union>[<xref:str>, <xref:openai.types.responses.ResponseInputParam>]
   - name: previous_update_id
     description: 'The unique ID of the previous update request, enabling incremental
 
@@ -92,12 +94,12 @@ methods:
   keywordOnlyParameters:
   - name: name
     description: The name of the memory store. Required.
-    defaultValue: <object object at 0x00000295B208B1C0>
+    defaultValue: <object object at 0x000002012E91B240>
     types:
     - <xref:str>
   - name: definition
     description: The memory store definition. Required.
-    defaultValue: <object object at 0x00000295B208B1C0>
+    defaultValue: <object object at 0x000002012E91B240>
     types:
     - <xref:azure.ai.projects.models.MemoryStoreDefinition>
   - name: description
@@ -160,7 +162,7 @@ methods:
       such as a
 
       user ID. Required.'
-    defaultValue: <object object at 0x00000295B208B1C0>
+    defaultValue: <object object at 0x000002012E91B240>
     types:
     - <xref:str>
   return:
@@ -240,11 +242,10 @@ methods:
   name: search_memories
   summary: Search for relevant memories from a memory store based on conversation
     context.
-  signature: 'search_memories(name: str, body: ~collections.abc.MutableMapping[str,
-    ~typing.Any] | ~typing.IO[bytes] = <object object>, *, scope: str = <object object>,
-    items: list[dict[str, typing.Any]] | None = None, previous_search_id: str | None
-    = None, options: ~azure.ai.projects.models._models.MemorySearchOptions | None
-    = None, **kwargs: ~typing.Any) -> MemoryStoreSearchResult'
+  signature: 'search_memories(name: str, *, scope: str, content_type: str = ''application/json'',
+    items: str | ResponseInputParam | None = None, previous_search_id: str | None
+    = None, options: _models.MemorySearchOptions | None = None, **kwargs: Any) ->
+    _models.MemoryStoreSearchResult'
   parameters:
   - name: name
     description: The name of the memory store to search. Required.
@@ -262,23 +263,25 @@ methods:
       as a user ID.
 
       Required.'
-    defaultValue: <object object at 0x00000295B208B1C0>
+    defaultValue: <object object at 0x000002012E91B240>
     types:
     - <xref:str>
   - name: items
-    description: 'A list of queries you would like to use in the search, each one
-      represented as
+    description: 'A message or list of messages used to extract relevant memories.
+      When using a
 
-      a dictionary, with `role`, `content` and `type` properties (with type equals
+      list, each item needs to correspond to a dictionary with *role*, *content* and
+      *type*
 
-      `message`). Each query is a message identical to OpenAI''s EasyInputMessageParam.
-      For example:
+      keys. For example: {"role": "user", "type": "message", "content": "my user message"}.
 
-      {"role": "user", "type": "message", "content": "my user message"}. Default value
-      is None.'
+      Only messages with *type* equals *message* are currently processed. Others are
+      ignored.
+
+      Default value is None.'
     defaultValue: None
     types:
-    - <xref:list>[<xref:dict>[<xref:str>, <xref:any>]]
+    - <xref:typing.Union>[<xref:str>, <xref:openai.types.responses.ResponseInputParam>]
   - name: previous_search_id
     description: 'The unique ID of the previous search request, enabling incremental
 

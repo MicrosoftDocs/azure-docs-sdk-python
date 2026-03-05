@@ -3,333 +3,314 @@ uid: azure.search.documents.indexes.SearchIndexerClient
 name: SearchIndexerClient
 fullName: azure.search.documents.indexes.SearchIndexerClient
 module: azure.search.documents.indexes
-summary: A client to interact with Azure search service Indexers.
+summary: SearchIndexerClient.
 constructor:
   syntax: 'SearchIndexerClient(endpoint: str, credential: AzureKeyCredential | TokenCredential,
     **kwargs: Any)'
   parameters:
   - name: endpoint
-    description: The URL endpoint of an Azure search service
+    description: Service host. Required.
     isRequired: true
     types:
     - <xref:str>
   - name: credential
-    description: A credential to authorize search client requests
+    description: 'Credential used to authenticate requests to the service. Is either
+      a key
+
+      credential type or a token credential type. Required.'
     isRequired: true
     types:
     - <xref:azure.core.credentials.AzureKeyCredential>
     - <xref:azure.core.credentials.TokenCredential>
   keywordOnlyParameters:
   - name: api_version
-    description: The Search API version to use for requests.
-    types:
-    - <xref:str>
-  - name: audience
-    description: 'sets the Audience to use for authentication with Microsoft Entra
-      ID. The
+    description: 'The API version to use for this operation. Known values are
 
-      audience is not considered when using a shared key. If audience is not provided,
-      the public cloud audience
+      "2025-11-01-preview" and None. Default value is "2025-11-01-preview". Note that
+      overriding this
 
-      will be assumed.'
+      default value may result in unsupported behavior.'
     types:
     - <xref:str>
 methods:
 - uid: azure.search.documents.indexes.SearchIndexerClient.close
   name: close
-  summary: Close the session.
   signature: close() -> None
-  return:
-    description: None
-    types:
-    - <xref:None>
 - uid: azure.search.documents.indexes.SearchIndexerClient.create_data_source_connection
   name: create_data_source_connection
-  summary: Creates a new data source connection.
-  signature: 'create_data_source_connection(data_source_connection: SearchIndexerDataSourceConnection,
-    **kwargs: Any) -> SearchIndexerDataSourceConnection'
+  summary: Creates a new datasource.
+  signature: 'create_data_source_connection(data_source_connection: SearchIndexerDataSourceConnection
+    | MutableMapping[str, Any] | IO[bytes], **kwargs: Any) -> SearchIndexerDataSourceConnection'
   parameters:
   - name: data_source_connection
-    description: The definition of the data source connection to create.
+    description: 'The definition of the datasource to create. Is one of the
+
+      following types: SearchIndexerDataSourceConnection, JSON, IO[bytes] Required.'
     isRequired: true
     types:
     - <xref:azure.search.documents.indexes.models.SearchIndexerDataSourceConnection>
+    - <xref:JSON>
+    - <xref:typing.IO>[<xref:bytes>]
   return:
-    description: The created SearchIndexerDataSourceConnection
+    description: 'SearchIndexerDataSourceConnection. The SearchIndexerDataSourceConnection
+      is compatible
+
+      with MutableMapping'
     types:
     - <xref:azure.search.documents.indexes.models.SearchIndexerDataSourceConnection>
-  examples:
-  - "Create a Data Source<!--[!code-python[Main](les\\sample_data_source_operations.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\sample_data_source_operations.py\", \"xml:space\": \"preserve\",\
-    \ \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
-    : 1}, \"linenos\": false} -->\n\n````python\n\n   container = SearchIndexerDataContainer(name=\"\
-    searchcontainer\")\n   data_source_connection = SearchIndexerDataSourceConnection(\n\
-    \       name=\"sample-data-source-connection\", type=\"azureblob\", connection_string=connection_string,\
-    \ container=container\n   )\n   result = client.create_data_source_connection(data_source_connection)\n\
-    \   print(result)\n   print(\"Create new Data Source Connection - sample-data-source-connection\"\
-    )\n\n   ````\n"
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.SearchIndexerClient.create_indexer
   name: create_indexer
-  summary: Creates a new SearchIndexer.
-  signature: 'create_indexer(indexer: SearchIndexer, **kwargs: Any) -> SearchIndexer'
+  summary: Creates a new indexer.
+  signature: 'create_indexer(indexer: SearchIndexer | MutableMapping[str, Any] | IO[bytes],
+    **kwargs: Any) -> SearchIndexer'
   parameters:
   - name: indexer
-    description: The definition of the indexer to create.
+    description: 'The definition of the indexer to create. Is one of the following
+      types:
+
+      SearchIndexer, JSON, IO[bytes] Required.'
     isRequired: true
     types:
     - <xref:azure.search.documents.indexes.models.SearchIndexer>
+    - <xref:JSON>
+    - <xref:typing.IO>[<xref:bytes>]
   return:
-    description: The created SearchIndexer
+    description: SearchIndexer. The SearchIndexer is compatible with MutableMapping
     types:
     - <xref:azure.search.documents.indexes.models.SearchIndexer>
-  examples:
-  - "Create a SearchIndexer<!--[!code-python[Main](les\\sample_indexers_operations.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\sample_indexers_operations.py\", \"xml:space\": \"preserve\", \"\
-    force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
-    : 1}, \"linenos\": false} -->\n\n````python\n\n   # create a datasource\n   container\
-    \ = SearchIndexerDataContainer(name=\"searchcontainer\")\n   data_source_connection\
-    \ = SearchIndexerDataSourceConnection(\n       name=\"indexer-datasource\", type=\"\
-    azureblob\", connection_string=connection_string, container=container\n   )\n\
-    \   data_source = indexers_client.create_data_source_connection(data_source_connection)\n\
-    \n   # create an indexer\n   indexer = SearchIndexer(\n       name=\"sample-indexer\"\
-    , data_source_name=\"indexer-datasource\", target_index_name=\"indexer-hotels\"\
-    \n   )\n   result = indexers_client.create_indexer(indexer)\n   print(\"Create\
-    \ new Indexer - sample-indexer\")\n\n   ````\n"
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.SearchIndexerClient.create_or_update_data_source_connection
   name: create_or_update_data_source_connection
   summary: Creates a new data source connection or updates a data source connection
     if it already exists.
   signature: 'create_or_update_data_source_connection(data_source_connection: SearchIndexerDataSourceConnection,
-    *, match_condition: MatchConditions = MatchConditions.Unconditionally, skip_indexer_reset_requirement_for_cache:
-    bool | None = None, **kwargs: Any) -> SearchIndexerDataSourceConnection'
+    *, skip_indexer_reset_requirement_for_cache: bool | None = None, match_condition:
+    MatchConditions = MatchConditions.Unconditionally, **kwargs: Any) -> SearchIndexerDataSourceConnection'
   parameters:
   - name: data_source_connection
-    description: The definition of the data source connection to create or update.
+    description: The SearchIndexerDataSourceConnection object to create or update.
+      Required.
     isRequired: true
     types:
     - <xref:azure.search.documents.indexes.models.SearchIndexerDataSourceConnection>
   keywordOnlyParameters:
-  - name: match_condition
-    description: The match condition to use upon the etag
-    defaultValue: MatchConditions.Unconditionally
-    types:
-    - <xref:azure.core.MatchConditions>
   - name: skip_indexer_reset_requirement_for_cache
-    description: Ignores cache reset requirements.
+    description: 'Ignores cache reset requirements. Default
+
+      value is None.'
     defaultValue: None
     types:
     - <xref:bool>
+  - name: match_condition
+    description: The match condition to use upon the etag. Default value is None.
+    defaultValue: MatchConditions.Unconditionally
+    types:
+    - <xref:azure.core.MatchConditions>
   return:
-    description: The created SearchIndexerDataSourceConnection
+    description: SearchIndexerDataSourceConnection
     types:
     - <xref:azure.search.documents.indexes.models.SearchIndexerDataSourceConnection>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.SearchIndexerClient.create_or_update_indexer
   name: create_or_update_indexer
   summary: Creates a new indexer or updates an indexer if it already exists.
-  signature: 'create_or_update_indexer(indexer: SearchIndexer, *, match_condition:
-    MatchConditions = MatchConditions.Unconditionally, skip_indexer_reset_requirement_for_cache:
+  signature: 'create_or_update_indexer(indexer: SearchIndexer, *, skip_indexer_reset_requirement_for_cache:
     bool | None = None, disable_cache_reprocessing_change_detection: bool | None =
-    None, **kwargs: Any) -> SearchIndexer'
+    None, match_condition: MatchConditions = MatchConditions.Unconditionally, **kwargs:
+    Any) -> SearchIndexer'
   parameters:
   - name: indexer
-    description: The definition of the indexer to create or update.
+    description: The SearchIndexer object to create or update. Required.
     isRequired: true
     types:
     - <xref:azure.search.documents.indexes.models.SearchIndexer>
   keywordOnlyParameters:
-  - name: match_condition
-    description: The match condition to use upon the etag
-    defaultValue: MatchConditions.Unconditionally
-    types:
-    - <xref:azure.core.MatchConditions>
   - name: skip_indexer_reset_requirement_for_cache
-    description: Ignores cache reset requirements.
+    description: 'Ignores cache reset requirements. Default
+
+      value is None.'
     defaultValue: None
     types:
     - <xref:bool>
   - name: disable_cache_reprocessing_change_detection
     description: 'Disables cache reprocessing change
 
-      detection.'
+      detection. Default value is None.'
     defaultValue: None
     types:
     - <xref:bool>
+  - name: match_condition
+    description: The match condition to use upon the etag. Default value is None.
+    defaultValue: MatchConditions.Unconditionally
+    types:
+    - <xref:azure.core.MatchConditions>
   return:
-    description: The created SearchIndexer
+    description: SearchIndexer
     types:
     - <xref:azure.search.documents.indexes.models.SearchIndexer>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.SearchIndexerClient.create_or_update_skillset
   name: create_or_update_skillset
-  summary: 'Create a new SearchIndexerSkillset in an Azure Search service, or update
-    an
-
-    existing one.'
-  signature: 'create_or_update_skillset(skillset: SearchIndexerSkillset, *, match_condition:
-    MatchConditions = MatchConditions.Unconditionally, skip_indexer_reset_requirement_for_cache:
+  summary: Creates a new skillset in a search service or updates the skillset if it
+    already exists.
+  signature: 'create_or_update_skillset(skillset: SearchIndexerSkillset, *, skip_indexer_reset_requirement_for_cache:
     bool | None = None, disable_cache_reprocessing_change_detection: bool | None =
-    None, **kwargs: Any) -> SearchIndexerSkillset'
+    None, match_condition: MatchConditions = MatchConditions.Unconditionally, **kwargs:
+    Any) -> SearchIndexerSkillset'
   parameters:
   - name: skillset
-    description: The SearchIndexerSkillset object to create or update
+    description: The SearchIndexerSkillset object to create or update. Required.
     isRequired: true
     types:
     - <xref:azure.search.documents.indexes.models.SearchIndexerSkillset>
   keywordOnlyParameters:
-  - name: match_condition
-    description: The match condition to use upon the etag
-    defaultValue: MatchConditions.Unconditionally
-    types:
-    - <xref:azure.core.MatchConditions>
   - name: skip_indexer_reset_requirement_for_cache
-    description: Ignores cache reset requirements.
+    description: 'Ignores cache reset requirements. Default
+
+      value is None.'
     defaultValue: None
     types:
     - <xref:bool>
   - name: disable_cache_reprocessing_change_detection
     description: 'Disables cache reprocessing change
 
-      detection.'
+      detection. Default value is None.'
     defaultValue: None
     types:
     - <xref:bool>
+  - name: match_condition
+    description: The match condition to use upon the etag. Default value is None.
+    defaultValue: MatchConditions.Unconditionally
+    types:
+    - <xref:azure.core.MatchConditions>
   return:
-    description: The created or updated SearchIndexerSkillset
+    description: SearchIndexerSkillset
     types:
     - <xref:azure.search.documents.indexes.models.SearchIndexerSkillset>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.SearchIndexerClient.create_skillset
   name: create_skillset
-  summary: Create a new SearchIndexerSkillset in an Azure Search service
-  signature: 'create_skillset(skillset: SearchIndexerSkillset, **kwargs: Any) -> SearchIndexerSkillset'
+  summary: Creates a new skillset in a search service.
+  signature: 'create_skillset(skillset: SearchIndexerSkillset | MutableMapping[str,
+    Any] | IO[bytes], **kwargs: Any) -> SearchIndexerSkillset'
   parameters:
   - name: skillset
-    description: The SearchIndexerSkillset object to create
+    description: 'The skillset containing one or more skills to create in a search
+      service. Is
+
+      one of the following types: SearchIndexerSkillset, JSON, IO[bytes] Required.'
     isRequired: true
     types:
     - <xref:azure.search.documents.indexes.models.SearchIndexerSkillset>
+    - <xref:JSON>
+    - <xref:typing.IO>[<xref:bytes>]
   return:
-    description: The created SearchIndexerSkillset
+    description: SearchIndexerSkillset. The SearchIndexerSkillset is compatible with
+      MutableMapping
     types:
     - <xref:azure.search.documents.indexes.models.SearchIndexerSkillset>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.SearchIndexerClient.delete_data_source_connection
   name: delete_data_source_connection
-  summary: 'Deletes a data source connection. To use access conditions, the SearchIndexerDataSourceConnection
-
-    model must be provided instead of the name. It is enough to provide the name of
-    the data source connection
-
-    to delete unconditionally'
+  summary: Deletes a data source connection.
   signature: 'delete_data_source_connection(data_source_connection: str | SearchIndexerDataSourceConnection,
     *, match_condition: MatchConditions = MatchConditions.Unconditionally, **kwargs:
     Any) -> None'
   parameters:
   - name: data_source_connection
-    description: The data source connection to delete.
+    description: The name of the data source connection to delete or a SearchIndexerDataSourceConnection
+      object. Required.
     isRequired: true
     types:
     - <xref:str>
     - <xref:azure.search.documents.indexes.models.SearchIndexerDataSourceConnection>
   keywordOnlyParameters:
   - name: match_condition
-    description: The match condition to use upon the etag
+    description: The match condition to use upon the etag. Default value is None.
     defaultValue: MatchConditions.Unconditionally
     types:
     - <xref:azure.core.MatchConditions>
-  examples:
-  - "Delete a SearchIndexerDataSourceConnection<!--[!code-python[Main](les\\sample_data_source_operations.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\sample_data_source_operations.py\", \"xml:space\": \"preserve\",\
-    \ \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
-    : 1}, \"linenos\": false} -->\n\n````python\n\n   client.delete_data_source_connection(\"\
-    sample-data-source-connection\")\n   print(\"Data Source Connection 'sample-data-source-connection'\
-    \ successfully deleted\")\n\n   ````\n"
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.SearchIndexerClient.delete_indexer
   name: delete_indexer
-  summary: 'Deletes an indexer. To use access conditions, the SearchIndexer model
-
-    must be provided instead of the name. It is enough to provide
-
-    the name of the indexer to delete unconditionally.'
+  summary: Deletes an indexer.
   signature: 'delete_indexer(indexer: str | SearchIndexer, *, match_condition: MatchConditions
     = MatchConditions.Unconditionally, **kwargs: Any) -> None'
   parameters:
   - name: indexer
-    description: The indexer to delete.
+    description: The name of the indexer to delete or a SearchIndexer object. Required.
     isRequired: true
     types:
     - <xref:str>
     - <xref:azure.search.documents.indexes.models.SearchIndexer>
   keywordOnlyParameters:
   - name: match_condition
-    description: The match condition to use upon the etag
+    description: The match condition to use upon the etag. Default value is None.
     defaultValue: MatchConditions.Unconditionally
     types:
     - <xref:azure.core.MatchConditions>
-  examples:
-  - "Delete a SearchIndexer<!--[!code-python[Main](les\\sample_indexers_operations.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\sample_indexers_operations.py\", \"xml:space\": \"preserve\", \"\
-    force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
-    : 1}, \"linenos\": false} -->\n\n````python\n\n   indexers_client.delete_indexer(\"\
-    sample-indexer\")\n   print(\"Indexer 'sample-indexer' successfully deleted\"\
-    )\n\n   ````\n"
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.SearchIndexerClient.delete_skillset
   name: delete_skillset
-  summary: 'Delete a named SearchIndexerSkillset in an Azure Search service. To use
-    access conditions,
-
-    the SearchIndexerSkillset model must be provided instead of the name. It is enough
-    to provide
-
-    the name of the skillset to delete unconditionally'
+  summary: Deletes a skillset.
   signature: 'delete_skillset(skillset: str | SearchIndexerSkillset, *, match_condition:
     MatchConditions = MatchConditions.Unconditionally, **kwargs: Any) -> None'
   parameters:
   - name: skillset
-    description: The SearchIndexerSkillset to delete
+    description: The name of the skillset to delete or a SearchIndexerSkillset object.
+      Required.
     isRequired: true
     types:
     - <xref:str>
     - <xref:azure.search.documents.indexes.models.SearchIndexerSkillset>
   keywordOnlyParameters:
   - name: match_condition
-    description: The match condition to use upon the etag
+    description: The match condition to use upon the etag. Default value is None.
     defaultValue: MatchConditions.Unconditionally
     types:
     - <xref:azure.core.MatchConditions>
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.SearchIndexerClient.get_data_source_connection
   name: get_data_source_connection
-  summary: Retrieves a data source connection definition.
+  summary: Retrieves a datasource definition.
   signature: 'get_data_source_connection(name: str, **kwargs: Any) -> SearchIndexerDataSourceConnection'
   parameters:
   - name: name
-    description: The name of the data source connection to retrieve.
+    description: The name of the datasource. Required.
     isRequired: true
     types:
     - <xref:str>
   return:
-    description: The SearchIndexerDataSourceConnection that is fetched.
+    description: 'SearchIndexerDataSourceConnection. The SearchIndexerDataSourceConnection
+      is compatible
+
+      with MutableMapping'
     types:
     - <xref:azure.search.documents.indexes.models.SearchIndexerDataSourceConnection>
-  examples:
-  - "Retrieve a SearchIndexerDataSourceConnection<!--[!code-python[Main](les\\sample_data_source_operations.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\sample_data_source_operations.py\", \"xml:space\": \"preserve\",\
-    \ \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
-    : 1}, \"linenos\": false} -->\n\n````python\n\n   result = client.get_data_source_connection(\"\
-    sample-data-source-connection\")\n   print(\"Retrived Data Source Connection 'sample-data-source-connection'\"\
-    )\n\n   ````\n"
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.SearchIndexerClient.get_data_source_connection_names
   name: get_data_source_connection_names
   summary: Lists all data source connection names available for a search service.
@@ -342,15 +323,15 @@ methods:
   name: get_data_source_connections
   summary: Lists all data source connections available for a search service.
   signature: 'get_data_source_connections(*, select: List[str] | None = None, **kwargs:
-    Any) -> Sequence[SearchIndexerDataSourceConnection]'
+    Any) -> List[SearchIndexerDataSourceConnection]'
   keywordOnlyParameters:
   - name: select
-    description: 'Selects which top-level properties of the skillsets to retrieve.
-      Specified as a
+    description: 'Selects which top-level properties to retrieve. Specified as a comma-separated
 
       list of JSON property names, or ''*'' for all properties. The default is all
+      properties. Default
 
-      properties.'
+      value is None.'
     defaultValue: None
     types:
     - <xref:list>[<xref:str>]
@@ -358,41 +339,24 @@ methods:
     description: List of all the data source connections.
     types:
     - <xref:list>[<xref:azure.search.documents.indexes.models.SearchIndexerDataSourceConnection>]
-  examples:
-  - "List all the SearchIndexerDataSourceConnections<!--[!code-python[Main](les\\\
-    sample_data_source_operations.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
-    classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\":\
-    \ \"C:\\\\ToolCache\\\\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\
-    \\dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\\samples\\\\sample_data_source_operations.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   result = client.get_data_source_connections()\n   names = [ds.name for ds\
-    \ in result]\n   print(\"Found {} Data Source Connections in the service: {}\"\
-    .format(len(result), \", \".join(names)))\n\n   ````\n"
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.SearchIndexerClient.get_indexer
   name: get_indexer
   summary: Retrieves an indexer definition.
   signature: 'get_indexer(name: str, **kwargs: Any) -> SearchIndexer'
   parameters:
   - name: name
-    description: The name of the indexer to retrieve.
+    description: The name of the indexer. Required.
     isRequired: true
     types:
     - <xref:str>
   return:
-    description: The SearchIndexer that is fetched.
+    description: SearchIndexer. The SearchIndexer is compatible with MutableMapping
     types:
     - <xref:azure.search.documents.indexes.models.SearchIndexer>
-  examples:
-  - "Retrieve a SearchIndexer<!--[!code-python[Main](les\\sample_indexers_operations.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\sample_indexers_operations.py\", \"xml:space\": \"preserve\", \"\
-    force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
-    : 1}, \"linenos\": false} -->\n\n````python\n\n   result = indexers_client.get_indexer(\"\
-    sample-indexer\")\n   print(\"Retrived Indexer 'sample-indexer'\")\n   return\
-    \ result\n\n   ````\n"
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.SearchIndexerClient.get_indexer_names
   name: get_indexer_names
   summary: Lists all indexer names available for a search service.
@@ -402,51 +366,45 @@ methods:
     types:
     - <xref:list>[<xref:str>]
   examples:
-  - "List all the SearchIndexers<!--[!code-python[Main](les\\sample_indexers_operations.py\
+  - "List all the SearchIndexers<!--[!code-python[Main](les\\sample_indexer_crud.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\sample_indexers_operations.py\", \"xml:space\": \"preserve\", \"\
-    force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
-    : 1}, \"linenos\": false} -->\n\n````python\n\n   result = indexers_client.get_indexers()\n\
-    \   names = [x.name for x in result]\n   print(\"Found {} Indexers in the service:\
-    \ {}\".format(len(result), \", \".join(names)))\n\n   ````\n"
+    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0a20260304001\\\
+    \\samples\\\\sample_indexer_crud.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   from azure.core.credentials import AzureKeyCredential\n\
+    \   from azure.search.documents.indexes import SearchIndexerClient\n\n   indexer_client\
+    \ = SearchIndexerClient(service_endpoint, AzureKeyCredential(key))\n\n   result\
+    \ = indexer_client.get_indexers()\n   names = [x.name for x in result]\n   print(f\"\
+    Indexers ({len(result)}): {', '.join(names)}\")\n\n   ````\n"
 - uid: azure.search.documents.indexes.SearchIndexerClient.get_indexer_status
   name: get_indexer_status
-  summary: Get the status of the indexer.
+  summary: Returns the current status and execution history of an indexer.
   signature: 'get_indexer_status(name: str, **kwargs: Any) -> SearchIndexerStatus'
   parameters:
   - name: name
-    description: The name of the indexer to fetch the status.
+    description: The name of the indexer. Required.
     isRequired: true
     types:
     - <xref:str>
   return:
-    description: SearchIndexerStatus
+    description: SearchIndexerStatus. The SearchIndexerStatus is compatible with MutableMapping
     types:
     - <xref:azure.search.documents.indexes.models.SearchIndexerStatus>
-  examples:
-  - "Get a SearchIndexer's status<!--[!code-python[Main](les\\sample_indexers_operations.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\sample_indexers_operations.py\", \"xml:space\": \"preserve\", \"\
-    force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
-    : 1}, \"linenos\": false} -->\n\n````python\n\n   result = indexers_client.get_indexer_status(\"\
-    sample-indexer\")\n   print(\"Retrived Indexer status for 'sample-indexer'\")\n\
-    \   return result\n\n   ````\n"
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.SearchIndexerClient.get_indexers
   name: get_indexers
   summary: Lists all indexers available for a search service.
-  signature: 'get_indexers(*, select: List[str] | None = None, **kwargs: Any) -> Sequence[SearchIndexer]'
+  signature: 'get_indexers(*, select: List[str] | None = None, **kwargs: Any) -> List[SearchIndexer]'
   keywordOnlyParameters:
   - name: select
-    description: 'Selects which top-level properties of the skillsets to retrieve.
-      Specified as a
+    description: 'Selects which top-level properties to retrieve. Specified as a comma-separated
 
       list of JSON property names, or ''*'' for all properties. The default is all
+      properties. Default
 
-      properties.'
+      value is None.'
     defaultValue: None
     types:
     - <xref:list>[<xref:str>]
@@ -454,33 +412,25 @@ methods:
     description: List of all the SearchIndexers.
     types:
     - <xref:list>[<xref:azure.search.documents.indexes.models.SearchIndexer>]
-  examples:
-  - "List all the SearchIndexers<!--[!code-python[Main](les\\sample_indexers_operations.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\sample_indexers_operations.py\", \"xml:space\": \"preserve\", \"\
-    force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
-    : 1}, \"linenos\": false} -->\n\n````python\n\n   result = indexers_client.get_indexers()\n\
-    \   names = [x.name for x in result]\n   print(\"Found {} Indexers in the service:\
-    \ {}\".format(len(result), \", \".join(names)))\n\n   ````\n"
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.SearchIndexerClient.get_skillset
   name: get_skillset
-  summary: Retrieve a named SearchIndexerSkillset in an Azure Search service
+  summary: Retrieves a skillset in a search service.
   signature: 'get_skillset(name: str, **kwargs: Any) -> SearchIndexerSkillset'
   parameters:
   - name: name
-    description: The name of the SearchIndexerSkillset to get
+    description: The name of the skillset. Required.
     isRequired: true
     types:
     - <xref:str>
   return:
-    description: The retrieved SearchIndexerSkillset
+    description: SearchIndexerSkillset. The SearchIndexerSkillset is compatible with
+      MutableMapping
     types:
     - <xref:azure.search.documents.indexes.models.SearchIndexerSkillset>
   exceptions:
-  - type: azure.core.exceptions.ResourceNotFoundError
-    description: If the skillset cannot be found.
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.SearchIndexerClient.get_skillset_names
   name: get_skillset_names
   summary: List the SearchIndexerSkillset names in an Azure Search service.
@@ -494,27 +444,26 @@ methods:
     description: If there is an error in the REST request.
 - uid: azure.search.documents.indexes.SearchIndexerClient.get_skillsets
   name: get_skillsets
-  summary: List the SearchIndexerSkillsets in an Azure Search service.
+  summary: Lists all skillsets available for a search service.
   signature: 'get_skillsets(*, select: List[str] | None = None, **kwargs: Any) ->
     List[SearchIndexerSkillset]'
   keywordOnlyParameters:
   - name: select
-    description: 'Selects which top-level properties of the skillsets to retrieve.
-      Specified as a
+    description: 'Selects which top-level properties to retrieve. Specified as a comma-separated
 
       list of JSON property names, or ''*'' for all properties. The default is all
+      properties. Default
 
-      properties.'
+      value is None.'
     defaultValue: None
     types:
     - <xref:list>[<xref:str>]
   return:
-    description: List of SearchIndexerSkillsets
+    description: List of all the SearchIndexerSkillsets.
     types:
     - <xref:list>[<xref:azure.search.documents.indexes.models.SearchIndexerSkillset>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-    description: If there is an error in the REST request.
 - uid: azure.search.documents.indexes.SearchIndexerClient.reset_documents
   name: reset_documents
   summary: Resets specific documents in the datasource to be selectively re-ingested
@@ -523,12 +472,14 @@ methods:
     *, overwrite: bool = False, **kwargs: Any) -> None'
   parameters:
   - name: indexer
-    description: The indexer to reset documents for.
+    description: The indexer to reset documents for. Can be the indexer name or a
+      SearchIndexer object.
     isRequired: true
     types:
     - <xref:str>
     - <xref:azure.search.documents.indexes.models.SearchIndexer>
   - name: keys_or_ids
+    description: The document keys or ids to reset.
     isRequired: true
     types:
     - <xref:azure.search.documents.indexes.models.DocumentKeysOrIds>
@@ -537,38 +488,33 @@ methods:
     description: 'If false, keys or ids will be appended to existing ones. If true,
       only the
 
-      keys or ids in this payload will be queued to be re-ingested. The default is
-      false.'
+      keys or ids in this payload will be queued to be re-ingested. Default value
+      is False.'
     defaultValue: 'False'
     types:
     - <xref:bool>
   return:
-    description: None, or the result of cls(response)
+    description: None
     types:
     - <xref:None>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-    description: If there is an error in the REST request.
 - uid: azure.search.documents.indexes.SearchIndexerClient.reset_indexer
   name: reset_indexer
   summary: Resets the change tracking state associated with an indexer.
   signature: 'reset_indexer(name: str, **kwargs: Any) -> None'
   parameters:
   - name: name
-    description: The name of the indexer to reset.
+    description: The name of the indexer. Required.
     isRequired: true
     types:
     - <xref:str>
-  examples:
-  - "Reset a SearchIndexer's change tracking state<!--[!code-python[Main](les\\sample_indexers_operations.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\sample_indexers_operations.py\", \"xml:space\": \"preserve\", \"\
-    force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
-    : 1}, \"linenos\": false} -->\n\n````python\n\n   result = indexers_client.reset_indexer(\"\
-    sample-indexer\")\n   print(\"Reset the Indexer 'sample-indexer'\")\n   return\
-    \ result\n\n   ````\n"
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.SearchIndexerClient.reset_skills
   name: reset_skills
   summary: Reset an existing skillset in a search service.
@@ -576,23 +522,23 @@ methods:
     **kwargs: Any) -> None'
   parameters:
   - name: skillset
-    description: The SearchIndexerSkillset to reset
+    description: The skillset to reset skills for. Can be the skillset name or a SearchIndexerSkillset
+      object.
     isRequired: true
     types:
     - <xref:str>
     - <xref:azure.search.documents.indexes.models.SearchIndexerSkillset>
   - name: skill_names
-    description: the names of skills to be reset.
+    description: The names of the skills to reset.
     isRequired: true
     types:
-    - <xref:typing.List>[<xref:str>]
+    - <xref:list>[<xref:str>]
   return:
-    description: None, or the result of cls(response)
+    description: None
     types:
     - <xref:None>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-    description: If there is an error in the REST request.
 - uid: azure.search.documents.indexes.SearchIndexerClient.resync
   name: resync
   summary: Resync selective options from the datasource to be re-ingested by the indexer.
@@ -600,13 +546,14 @@ methods:
     | IndexerResyncOption], **kwargs: Any) -> None'
   parameters:
   - name: indexer
-    description: The indexer to resync for.
+    description: The indexer to resync. Can be the indexer name or a SearchIndexer
+      object.
     isRequired: true
     types:
     - <xref:str>
     - <xref:azure.search.documents.indexes.models.SearchIndexer>
   - name: indexer_resync_options
-    description: Required.
+    description: Re-sync options that have been pre-defined from data source.
     isRequired: true
     types:
     - <xref:list>[<xref:str>
@@ -617,24 +564,60 @@ methods:
     - <xref:None>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-    description: If there is an error in the REST request.
 - uid: azure.search.documents.indexes.SearchIndexerClient.run_indexer
   name: run_indexer
-  summary: Run an indexer.
+  summary: Runs an indexer on-demand.
   signature: 'run_indexer(name: str, **kwargs: Any) -> None'
   parameters:
   - name: name
-    description: The name of the indexer to run.
+    description: The name of the indexer. Required.
     isRequired: true
     types:
     - <xref:str>
-  examples:
-  - "Run a SearchIndexer<!--[!code-python[Main](les\\sample_indexers_operations.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\306\\\\azure_search_documents-11.7.0b2\\\
-    \\samples\\\\sample_indexers_operations.py\", \"xml:space\": \"preserve\", \"\
-    force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
-    : 1}, \"linenos\": false} -->\n\n````python\n\n   result = indexers_client.run_indexer(\"\
-    sample-indexer\")\n   print(\"Ran the Indexer 'sample-indexer'\")\n   return result\n\
-    \n   ````\n"
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.search.documents.indexes.SearchIndexerClient.send_request
+  name: send_request
+  summary: 'Runs the network request through the client''s chained policies.
+
+
+    ```
+
+
+    >>> from azure.core.rest import HttpRequest
+
+    >>> request = HttpRequest("GET", "https://www.example.org/")
+
+    <HttpRequest [GET], url: ''https://www.example.org/''>
+
+    >>> response = client.send_request(request)
+
+    <HttpResponse: 200 OK>
+
+    ```
+
+
+    For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> HttpResponse'
+  parameters:
+  - name: request
+    description: The network request you want to make. Required.
+    isRequired: true
+    types:
+    - <xref:azure.core.rest.HttpRequest>
+  keywordOnlyParameters:
+  - name: stream
+    description: Whether the response payload will be streamed. Defaults to False.
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  return:
+    description: The response of your network call. Does not do error handling on
+      your response.
+    types:
+    - <xref:azure.core.rest.HttpResponse>
