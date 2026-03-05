@@ -1,12 +1,12 @@
 ---
 title: Azure Cosmos DB SQL API client library for Python
 keywords: Azure, python, SDK, API, azure-cosmos, cosmos
-ms.date: 12/17/2025
+ms.date: 03/05/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: cosmos
 ---
-# Azure Cosmos DB SQL API client library for Python - version 4.15.0b2 
+# Azure Cosmos DB SQL API client library for Python - version 4.15.1a20260304002 
 
 
 ## _Disclaimer_
@@ -34,7 +34,7 @@ Use the Azure Cosmos DB SQL API SDK for Python to manage databases and the JSON 
 
 ### Important update on Python 2.x Support
 
-New releases of this SDK won't support Python 2.x starting January 1st, 2022. Please check the [CHANGELOG](https://github.com/Azure/azure-sdk-for-python/blob/azure-cosmos_4.15.0b2/sdk/cosmos/azure-cosmos/CHANGELOG.md) for more information.
+New releases of this SDK won't support Python 2.x starting January 1st, 2022. Please check the [CHANGELOG](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cosmos/azure-cosmos/CHANGELOG.md) for more information.
 
 ### Prerequisites
 
@@ -961,28 +961,50 @@ Cross region hedging availability strategy improves availability and reduces lat
 
 #### Enabling Cross Region Hedging
 
-You can enable cross region hedging by passing the `availability_strategy_config` parameter as a dictionary to the `CosmosClient` or per-request. The most common configuration keys are `threshold_ms` (delay before sending a hedged request) and `threshold_steps_ms` (step interval for additional hedged requests).
+You can enable cross region hedging by passing the `availability_strategy` parameter to the `CosmosClient` or per-request. This parameter accepts:
+
+- **`True`**: Enable hedging with default values (`threshold_ms=500`, `threshold_steps_ms=100`) or override client settings to this default at the request level.
+- **`False`**: Explicitly disable hedging at the client or request level (overrides client-level settings)
+- **`dict`**: Enable hedging with custom values. The keys are `threshold_ms` (delay before sending a hedged request) and `threshold_steps_ms` (step interval for additional hedged requests). Missing keys will use default values.
+- **`None`**: Default value only usable at the request level. Use the client-level configurations.
+
+Hedging will also be implicitly enabled when per-partition automatic failover is enabled, in which case the `CrossRegionHedgingStrategy` applies the default values outlined above of 500 ms for `threshold_ms` and 100 ms for `threshold_steps_ms` unless you override them via `availability_strategy`.
 
 #### Client-level configuration
 
 ```python
 from azure.cosmos import CosmosClient
 
+# Enable with default values
 client = CosmosClient(
     "<account-uri>",
     "<account-key>",
-    availability_strategy_config={"threshold_ms": 150, "threshold_steps_ms": 50}
+    availability_strategy=True
+)
+
+# Enable with custom values
+client = CosmosClient(
+    "<account-uri>",
+    "<account-key>",
+    availability_strategy={"threshold_ms": 150, "threshold_steps_ms": 50}
 )
 ```
 
 #### Request-level configuration
 
 ```python
-# Override or provide the strategy per request
+# Override or provide the strategy per request with custom values
 container.read_item(
     item="item_id",
     partition_key="pk_value",
-    availability_strategy_config={"threshold_ms": 150, "threshold_steps_ms": 50}
+    availability_strategy={"threshold_ms": 150, "threshold_steps_ms": 50}
+)
+
+# Enable with default values for a specific request
+container.read_item(
+    item="item_id",
+    partition_key="pk_value",
+    availability_strategy=True
 )
 ```
 
@@ -993,7 +1015,7 @@ container.read_item(
 container.read_item(
     item="item_id",
     partition_key="pk_value",
-    availability_strategy_config=None
+    availability_strategy=False
 )
 ```
 
@@ -1008,7 +1030,7 @@ executor = ThreadPoolExecutor(max_workers=2)
 client = CosmosClient(
     "<account-uri>",
     "<account-key>",
-    availability_strategy_config={"threshold_ms": 150, "threshold_steps_ms": 50},
+    availability_strategy=True,  # or use a dict for custom values
     availability_strategy_executor=executor
 )
 ```
@@ -1016,16 +1038,32 @@ client = CosmosClient(
 #### Customized max concurrency for hedging for async client
 
 ```python
-# Customize the max concurrency on the default ThreadPoolExecutor for the sync client
-from azure.cosmos import CosmosClient
+# Customize the max concurrency for the async client
+from azure.cosmos.aio import CosmosClient
 
 client = CosmosClient(
     "<account-uri>",
     "<account-key>",
-    availability_strategy_config={"threshold_ms": 150, "threshold_steps_ms": 50},
+    availability_strategy=True,  # or use a dict for custom values
     availability_strategy_max_concurrency=2
 )
 ```
+
+### Cross Region Hedging - Best Practices
+
+1. Configure appropriate thresholds based on your application's needs:
+   - Lower thresholds: More aggressive hedging, potentially higher costs
+   - Higher thresholds: More conservative, may impact latency
+
+2. Use request-level overrides judiciously:
+   - Disable hedging for non-critical operations
+   - Use custom thresholds for latency-sensitive operations
+
+3. Monitor usage:
+   - Track hedging patterns
+   - Adjust thresholds based on observed performance
+
+4. Enable multiple write regions when write availability is critical
 
 ## Troubleshooting
 
@@ -1143,7 +1181,7 @@ to use this functionality are the following:
 pip install azure-core-tracing-opentelemetry
 pip install opentelemetry-sdk
 ```
-For more information on this, we recommend taking a look at this [document](https://github.com/Azure/azure-sdk-for-python/blob/azure-cosmos_4.15.0b2/sdk/core/azure-core-tracing-opentelemetry/README.md) 
+For more information on this, we recommend taking a look at this [document](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core-tracing-opentelemetry/README.md) 
 from Azure Core describing how to set it up. We have also added a [sample file][telemetry_sample] to show how it can
 be used with our SDK. This works the same way regardless of the Cosmos client you are using.
 
@@ -1161,11 +1199,11 @@ For more extensive documentation on the Cosmos DB service, see the [Azure Cosmos
 [cosmos_container]: https://learn.microsoft.com/azure/cosmos-db/databases-containers-items#azure-cosmos-containers
 [cosmos_database]: https://learn.microsoft.com/azure/cosmos-db/databases-containers-items#azure-cosmos-databases
 [cosmos_docs]: https://learn.microsoft.com/azure/cosmos-db/
-[cosmos_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.15.0b2/sdk/cosmos/azure-cosmos/samples
+[cosmos_samples]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/cosmos/azure-cosmos/samples
 [cosmos_pypi]: https://pypi.org/project/azure-cosmos/
 [cosmos_http_status_codes]: https://learn.microsoft.com/rest/api/cosmos-db/http-status-codes-for-cosmosdb
 [cosmos_item]: https://learn.microsoft.com/azure/cosmos-db/databases-containers-items#azure-cosmos-items
-[cosmos_models]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.15.0b2/sdk/cosmos/azure-cosmos/azure/cosmos/_models.py
+[cosmos_models]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/cosmos/azure-cosmos/azure/cosmos/_models.py
 [cosmos_request_units]: https://learn.microsoft.com/azure/cosmos-db/request-units
 [cosmos_resources]: https://learn.microsoft.com/azure/cosmos-db/databases-containers-items
 [cosmos_sql_queries]: https://learn.microsoft.com/azure/cosmos-db/how-to-sql-query
@@ -1182,26 +1220,26 @@ For more extensive documentation on the Cosmos DB service, see the [Azure Cosmos
 [ref_cosmosclient]: https://aka.ms/azsdk-python-cosmos-ref-cosmos-client
 [ref_database]: https://aka.ms/azsdk-python-cosmos-ref-database
 [ref_httpfailure]: https://aka.ms/azsdk-python-cosmos-ref-http-failure
-[sample_database_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.15.0b2/sdk/cosmos/azure-cosmos/samples/database_management.py
-[sample_document_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.15.0b2/sdk/cosmos/azure-cosmos/samples/document_management.py
-[sample_document_mgmt_async]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.15.0b2/sdk/cosmos/azure-cosmos/samples/document_management_async.py
-[sample_examples_misc]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.15.0b2/sdk/cosmos/azure-cosmos/samples/examples.py
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.15.0b2/sdk/cosmos/azure-cosmos
+[sample_database_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/cosmos/azure-cosmos/samples/database_management.py
+[sample_document_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/cosmos/azure-cosmos/samples/document_management.py
+[sample_document_mgmt_async]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/cosmos/azure-cosmos/samples/document_management_async.py
+[sample_examples_misc]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/cosmos/azure-cosmos/samples/examples.py
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/cosmos/azure-cosmos
 [venv]: https://docs.python.org/3/library/venv.html
 [virtualenv]: https://virtualenv.pypa.io
-[telemetry_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.15.0b2/sdk/cosmos/azure-cosmos/samples/tracing_open_telemetry.py
-[timeouts_document]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.15.0b2/sdk/cosmos/azure-cosmos/docs/TimeoutAndRetriesConfig.md
-[cosmos_transactional_batch]: https://learn.microsoft.com/azure/cosmos-db/nosql/transactional-batch
-[cosmos_concurrency_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.15.0b2/sdk/cosmos/azure-cosmos/samples/concurrency_sample.py
-[cosmos_index_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.15.0b2/sdk/cosmos/azure-cosmos/samples/index_management.py
-[cosmos_index_sample_async]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.15.0b2/sdk/cosmos/azure-cosmos/samples/index_management_async.py
+[telemetry_sample]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/cosmos/azure-cosmos/samples/tracing_open_telemetry.py
+[timeouts_document]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/cosmos/azure-cosmos/docs/TimeoutAndRetriesConfig.md
+[cosmos_transactional_batch]: https://learn.microsoft.com/azure/cosmos-db/transactional-batch
+[cosmos_concurrency_sample]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/cosmos/azure-cosmos/samples/concurrency_sample.py
+[cosmos_index_sample]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/cosmos/azure-cosmos/samples/index_management.py
+[cosmos_index_sample_async]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/cosmos/azure-cosmos/samples/index_management_async.py
 [RRF]: https://learn.microsoft.com/azure/search/hybrid-search-ranking
 [BM25]: https://learn.microsoft.com/azure/search/index-similarity-and-scoring
 [cosmos_fts]: https://aka.ms/cosmosfulltextsearch
 [cosmos_index_policy_change]: https://learn.microsoft.com/azure/cosmos-db/index-policy#modifying-the-indexing-policy
-[cosmos_throughput_bucket_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.15.0b2/sdk/cosmos/azure-cosmos/samples/throughput_bucket_management.py
-[cosmos_throughput_bucket_sample_async]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.15.0b2/sdk/cosmos/azure-cosmos/samples/throughput_bucket_management_async.py
-[cosmos_diagnostics_filter_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-cosmos_4.15.0b2/sdk/cosmos/azure-cosmos/samples/diagnostics_filter_sample.py
+[cosmos_throughput_bucket_sample]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/cosmos/azure-cosmos/samples/throughput_bucket_management.py
+[cosmos_throughput_bucket_sample_async]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/cosmos/azure-cosmos/samples/throughput_bucket_management_async.py
+[cosmos_diagnostics_filter_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cosmos/azure-cosmos/samples/diagnostics_filter_sample.py
 [cosmos_throughput_bucket_configuration]: https://learn.microsoft.com/azure/cosmos-db/nosql/throughput-buckets#configuring-throughput-buckets
 
 ## Contributing
@@ -1217,3 +1255,4 @@ provided by the bot. You will only need to do this once across all repos using o
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
