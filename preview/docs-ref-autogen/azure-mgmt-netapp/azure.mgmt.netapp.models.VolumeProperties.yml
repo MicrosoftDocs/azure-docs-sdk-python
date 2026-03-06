@@ -30,17 +30,13 @@ variables:
     quota used for alerting only. For regular volumes, valid values are in the range
     50GiB to
 
-    100TiB.
+    100TiB. For large volumes, valid values are in the range 100TiB to 500TiB, and
+    on an
 
-    For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional
-    basis,
+    exceptional basis, from to 2400GiB to 2400TiB. Values expressed in bytes as multiples
+    of 1 GiB.
 
-    from to 2400GiB to 2400TiB.
-
-    For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values
-    expressed in
-
-    bytes as multiples of 1 GiB. Required.'
+    Required.'
   name: usage_threshold
   types:
   - <xref:int>
@@ -237,13 +233,6 @@ variables:
   name: ldap_enabled
   types:
   - <xref:bool>
-- description: 'Specifies the type of LDAP server for a given NFS volume. Known values
-
-    are: "ActiveDirectory" and "OpenLDAP".'
-  name: ldap_server_type
-  types:
-  - <xref:str>
-  - <xref:azure.mgmt.netapp.models.LdapServerType>
 - description: Specifies whether Cool Access(tiering) is enabled for the volume.
   name: cool_access
   types:
@@ -260,22 +249,19 @@ variables:
     behavior from the cool tier to standard storage based on the read pattern for
     cool access
 
-    enabled volumes. The possible values for this field are:
+    enabled volumes. The possible values for this field are: Default - Data will be
+    pulled from
 
-    Default - Data will be pulled from cool tier to standard storage on random reads.
-    This policy
+    cool tier to standard storage on random reads. This policy is the default. OnRead
+    - All
 
-    is the default.
+    client-driven data read is pulled from cool tier to standard storage on both sequential
+    and
 
-    OnRead - All client-driven data read is pulled from cool tier to standard storage
-    on both
+    random reads. Never - No client-driven data is pulled from cool tier to standard
+    storage. Known
 
-    sequential and random reads.
-
-    Never - No client-driven data is pulled from cool tier to standard storage. Known
-    values are:
-
-    "Default", "OnRead", and "Never".'
+    values are: "Default", "OnRead", and "Never".'
   name: cool_access_retrieval_policy
   types:
   - <xref:str>
@@ -427,24 +413,6 @@ variables:
   name: is_large_volume
   types:
   - <xref:bool>
-- description: 'Specifies the type of the Large Volume. When set to ''LargeVolume'',
-    the
-
-    large volume is created with standard configuration.
-
-    If it is set to ''ExtraLargeVolume7Dot2PiB'', the extra large volume is created
-    with higher
-
-    capacity limit 7.2PiB with cool access enabled,
-
-    delivering higher capacity limit with lower costs. Known values are: "LargeVolume"
-    and
-
-    "PremExtraLargeVolume7Dot2PiB".'
-  name: large_volume_type
-  types:
-  - <xref:str>
-  - <xref:azure.mgmt.netapp.models.LargeVolumeType>
 - description: Id of the snapshot or backup that the volume is restored from.
   name: originating_resource_id
   types:
@@ -455,40 +423,6 @@ variables:
   name: inherited_size_in_bytes
   types:
   - <xref:int>
-- description: 'Language supported for volume. Known values are: "c.utf-8", "utf8mb4",
-    "ar",
-
-    "ar.utf-8", "hr", "hr.utf-8", "cs", "cs.utf-8", "da", "da.utf-8", "nl", "nl.utf-8",
-    "en",
-
-    "en.utf-8", "fi", "fi.utf-8", "fr", "fr.utf-8", "de", "de.utf-8", "he", "he.utf-8",
-    "hu",
-
-    "hu.utf-8", "it", "it.utf-8", "ja", "ja.utf-8", "ja-v1", "ja-v1.utf-8", "ja-jp.pck",
-
-    "ja-jp.pck.utf-8", "ja-jp.932", "ja-jp.932.utf-8", "ja-jp.pck-v2", "ja-jp.pck-v2.utf-8",
-    "ko",
-
-    "ko.utf-8", "no", "no.utf-8", "pl", "pl.utf-8", "pt", "pt.utf-8", "c", "ro", "ro.utf-8",
-    "ru",
-
-    "ru.utf-8", "zh", "zh.utf-8", "zh.gbk", "zh.gbk.utf-8", "zh-tw.big5", "zh-tw.big5.utf-8",
-
-    "zh-tw", "zh-tw.utf-8", "sk", "sk.utf-8", "sl", "sl.utf-8", "es", "es.utf-8",
-    "sv", "sv.utf-8",
-
-    "tr", "tr.utf-8", "en-us", and "en-us.utf-8".'
-  name: language
-  types:
-  - <xref:str>
-  - <xref:azure.mgmt.netapp.models.VolumeLanguage>
-- description: 'Specifies whether the volume operates in Breakthrough Mode. Known
-
-    values are: "Enabled" and "Disabled".'
-  name: breakthrough_mode
-  types:
-  - <xref:str>
-  - <xref:azure.mgmt.netapp.models.BreakthroughMode>
 attributes:
 - uid: azure.mgmt.netapp.models.VolumeProperties.accept_grow_capacity_pool_for_short_term_clone_split
   name: accept_grow_capacity_pool_for_short_term_clone_split
@@ -524,12 +458,6 @@ attributes:
   name: baremetal_tenant_id
   summary: Unique Baremetal Tenant Identifier.
   signature: 'baremetal_tenant_id: str | None'
-- uid: azure.mgmt.netapp.models.VolumeProperties.breakthrough_mode
-  name: breakthrough_mode
-  summary: '"Enabled" and
-
-    "Disabled".'
-  signature: 'breakthrough_mode: str | _models.BreakthroughMode | None'
 - uid: azure.mgmt.netapp.models.VolumeProperties.capacity_pool_resource_id
   name: capacity_pool_resource_id
   summary: Pool Resource Id used in case of creating a volume through volume group.
@@ -557,22 +485,17 @@ attributes:
     storage based on the read pattern for cool access enabled volumes. The possible
     values for this
 
-    field are:
+    field are: Default - Data will be pulled from cool tier to standard storage on
+    random reads.
 
-    Default - Data will be pulled from cool tier to standard storage on random reads.
-    This policy
+    This policy is the default. OnRead - All client-driven data read is pulled from
+    cool tier to
 
-    is the default.
+    standard storage on both sequential and random reads. Never - No client-driven
+    data is pulled
 
-    OnRead - All client-driven data read is pulled from cool tier to standard storage
-    on both
-
-    sequential and random reads.
-
-    Never - No client-driven data is pulled from cool tier to standard storage. Known
-    values are:
-
-    "Default", "OnRead", and "Never".'
+    from cool tier to standard storage. Known values are: "Default", "OnRead", and
+    "Never".'
   signature: 'cool_access_retrieval_policy: str | _models.CoolAccessRetrievalPolicy
     | None'
 - uid: azure.mgmt.netapp.models.VolumeProperties.cool_access_tiering_policy
@@ -710,57 +633,10 @@ attributes:
 
     volume. Only applicable if encryptionKeySource = ''Microsoft.KeyVault''.'
   signature: 'key_vault_private_endpoint_resource_id: str | None'
-- uid: azure.mgmt.netapp.models.VolumeProperties.language
-  name: language
-  summary: '"c.utf-8", "utf8mb4", "ar",
-
-    "ar.utf-8", "hr", "hr.utf-8", "cs", "cs.utf-8", "da", "da.utf-8", "nl",
-
-    "nl.utf-8", "en", "en.utf-8", "fi", "fi.utf-8", "fr", "fr.utf-8", "de",
-
-    "de.utf-8", "he", "he.utf-8", "hu", "hu.utf-8", "it", "it.utf-8", "ja",
-
-    "ja.utf-8", "ja-v1", "ja-v1.utf-8", "ja-jp.pck", "ja-jp.pck.utf-8", "ja-jp.932",
-
-    "ja-jp.932.utf-8", "ja-jp.pck-v2", "ja-jp.pck-v2.utf-8", "ko", "ko.utf-8", "no",
-
-    "no.utf-8", "pl", "pl.utf-8", "pt", "pt.utf-8", "c", "ro", "ro.utf-8", "ru",
-
-    "ru.utf-8", "zh", "zh.utf-8", "zh.gbk", "zh.gbk.utf-8", "zh-tw.big5",
-
-    "zh-tw.big5.utf-8", "zh-tw", "zh-tw.utf-8", "sk", "sk.utf-8", "sl", "sl.utf-8",
-
-    "es", "es.utf-8", "sv", "sv.utf-8", "tr", "tr.utf-8", "en-us", and
-
-    "en-us.utf-8".'
-  signature: 'language: str | _models.VolumeLanguage | None'
-- uid: azure.mgmt.netapp.models.VolumeProperties.large_volume_type
-  name: large_volume_type
-  summary: 'Specifies the type of the Large Volume. When set to ''LargeVolume'', the
-    large volume is created
-
-    with standard configuration.
-
-    If it is set to ''ExtraLargeVolume7Dot2PiB'', the extra large volume is created
-    with higher
-
-    capacity limit 7.2PiB with cool access enabled,
-
-    delivering higher capacity limit with lower costs. Known values are: "LargeVolume"
-    and
-
-    "PremExtraLargeVolume7Dot2PiB".'
-  signature: 'large_volume_type: str | _models.LargeVolumeType | None'
 - uid: azure.mgmt.netapp.models.VolumeProperties.ldap_enabled
   name: ldap_enabled
   summary: Specifies whether LDAP is enabled or not for a given NFS volume.
   signature: 'ldap_enabled: bool | None'
-- uid: azure.mgmt.netapp.models.VolumeProperties.ldap_server_type
-  name: ldap_server_type
-  summary: '"ActiveDirectory"
-
-    and "OpenLDAP".'
-  signature: 'ldap_server_type: str | _models.LdapServerType | None'
 - uid: azure.mgmt.netapp.models.VolumeProperties.maximum_number_of_files
   name: maximum_number_of_files
   summary: 'Maximum number of files allowed. Needs a service request in order to be
@@ -908,16 +784,12 @@ attributes:
     quota used for
 
     alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
+    For large
 
-    For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional
-    basis,
+    volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional
+    basis, from to
 
-    from to 2400GiB to 2400TiB.
-
-    For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values
-    expressed in
-
-    bytes as multiples of 1 GiB. Required.'
+    2400GiB to 2400TiB. Values expressed in bytes as multiples of 1 GiB. Required.'
   signature: 'usage_threshold: int'
 - uid: azure.mgmt.netapp.models.VolumeProperties.volume_group_name
   name: volume_group_name

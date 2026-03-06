@@ -50,13 +50,13 @@ methods:
     To update or replace an existing item, use the
 
     <xref:azure.cosmos.aio.ContainerProxy.upsert_item> method.'
-  signature: 'async create_item(body: dict[str, typing.Any], *, pre_trigger_include:
-    str | None = None, post_trigger_include: str | None = None, indexing_directive:
-    int | None = None, enable_automatic_id_generation: bool = False, session_token:
-    str | None = None, initial_headers: dict[str, str] | None = None, priority: ~typing.Literal[''High'',
+  signature: 'async create_item(body: dict[str, Any], *, pre_trigger_include: str
+    | None = None, post_trigger_include: str | None = None, indexing_directive: int
+    | None = None, enable_automatic_id_generation: bool = False, session_token: str
+    | None = None, initial_headers: dict[str, str] | None = None, priority: Literal[''High'',
     ''Low''] | None = None, no_response: bool | None = None, retry_write: int | None
-    = None, throughput_bucket: int | None = None, availability_strategy_config: dict[str,
-    typing.Any] | None = <object object>, **kwargs: ~typing.Any) -> CosmosDict'
+    = None, throughput_bucket: int | None = None, availability_strategy: bool | dict[str,
+    Any] | None = None, **kwargs: Any) -> CosmosDict'
   parameters:
   - name: body
     description: A dict-like object representing the item to create.
@@ -152,13 +152,21 @@ methods:
     defaultValue: None
     types:
     - <xref:int>
-  - name: availability_strategy_config
-    description: 'The threshold-based availability strategy to use for this request.
+  - name: availability_strategy
+    description: 'Enables an availability strategy by using cross-region request hedging.
 
-      If not provided, the client''s default strategy will be used.'
-    defaultValue: <object object at 0x0000026094633E50>
+      Can be True (use client config if present, otherwise use default values: threshold_ms=500,
+      threshold_steps_ms=100),
+
+      False (disable hedging even if client has it enabled),
+
+      or a dict with keys `threshold_ms` and `threshold_steps_ms` to override the
+      client''s configured availability strategy.
+
+      If not provided, uses the client''s configured strategy.'
+    defaultValue: None
     types:
-    - <xref:dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:typing.Union>[<xref:bool>, <xref:dict>[<xref:str>, <xref:typing.Any>]]
   return:
     description: A CosmosDict representing the new item. The dict will be empty if
       *no_response* is specified.
@@ -282,19 +290,16 @@ methods:
 
 
     If the item does not already exist in the container, an exception is raised.'
-  signature: 'async delete_item(item: str | ~typing.Mapping[str, ~typing.Any], partition_key:
-    None | bool | float | int | str | ~typing.Type[~azure.cosmos.partition_key.NonePartitionKeyValue]
-    | ~typing.Type[~azure.cosmos.partition_key.NullPartitionKeyValue] | ~azure.cosmos.partition_key._Empty
-    | ~azure.cosmos.partition_key._Undefined | ~typing.Sequence[None | bool | float
-    | int | str | ~typing.Type[~azure.cosmos.partition_key.NonePartitionKeyValue]
-    | ~typing.Type[~azure.cosmos.partition_key.NullPartitionKeyValue] | ~azure.cosmos.partition_key._Empty
-    | ~azure.cosmos.partition_key._Undefined], *, pre_trigger_include: str | None
-    = None, post_trigger_include: str | None = None, session_token: str | None = None,
-    initial_headers: dict[str, str] | None = None, etag: str | None = None, match_condition:
-    ~azure.core._match_conditions.MatchConditions | None = None, priority: ~typing.Literal[''High'',
+  signature: 'async delete_item(item: str | Mapping[str, Any], partition_key: None
+    | bool | float | int | str | Type[NonePartitionKeyValue] | Type[NullPartitionKeyValue]
+    | _Empty | _Undefined | Sequence[None | bool | float | int | str | Type[NonePartitionKeyValue]
+    | Type[NullPartitionKeyValue] | _Empty | _Undefined], *, pre_trigger_include:
+    str | None = None, post_trigger_include: str | None = None, session_token: str
+    | None = None, initial_headers: dict[str, str] | None = None, etag: str | None
+    = None, match_condition: MatchConditions | None = None, priority: Literal[''High'',
     ''Low''] | None = None, retry_write: int | None = None, throughput_bucket: int
-    | None = None, availability_strategy_config: dict[str, typing.Any] | None = <object
-    object>, **kwargs: ~typing.Any) -> None'
+    | None = None, availability_strategy: bool | dict[str, Any] | None = None, **kwargs:
+    Any) -> None'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to be deleted.
@@ -391,13 +396,21 @@ methods:
     defaultValue: None
     types:
     - <xref:int>
-  - name: availability_strategy_config
-    description: 'The threshold-based availability strategy to use for this request.
+  - name: availability_strategy
+    description: 'Enables an availability strategy by using cross-region request hedging.
 
-      If not provided, the client''s default strategy will be used.'
-    defaultValue: <object object at 0x0000026094633E50>
+      Can be True (use client config if present, otherwise use default values: threshold_ms=500,
+      threshold_steps_ms=100),
+
+      False (disable hedging even if client has it enabled),
+
+      or a dict with keys `threshold_ms` and `threshold_steps_ms` to override the
+      client''s configured availability strategy.
+
+      If not provided, uses the client''s configured strategy.'
+    defaultValue: None
     types:
-    - <xref:dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:typing.Union>[<xref:bool>, <xref:dict>[<xref:str>, <xref:typing.Any>]]
   return:
     types:
     - <xref:None>
@@ -409,18 +422,15 @@ methods:
 - uid: azure.cosmos.aio.ContainerProxy.execute_item_batch
   name: execute_item_batch
   summary: Executes the transactional batch for the specified partition key.
-  signature: 'async execute_item_batch(batch_operations: ~typing.Sequence[~typing.Tuple[str,
-    ~typing.Tuple[~typing.Any, ...]] | ~typing.Tuple[str, ~typing.Tuple[~typing.Any,
-    ...], dict[str, typing.Any]]], partition_key: None | bool | float | int | str
-    | ~typing.Type[~azure.cosmos.partition_key.NonePartitionKeyValue] | ~typing.Type[~azure.cosmos.partition_key.NullPartitionKeyValue]
-    | ~azure.cosmos.partition_key._Empty | ~azure.cosmos.partition_key._Undefined
-    | ~typing.Sequence[None | bool | float | int | str | ~typing.Type[~azure.cosmos.partition_key.NonePartitionKeyValue]
-    | ~typing.Type[~azure.cosmos.partition_key.NullPartitionKeyValue] | ~azure.cosmos.partition_key._Empty
-    | ~azure.cosmos.partition_key._Undefined], *, pre_trigger_include: str | None
-    = None, post_trigger_include: str | None = None, session_token: str | None = None,
-    priority: ~typing.Literal[''High'', ''Low''] | None = None, retry_write: int |
-    None = None, throughput_bucket: int | None = None, availability_strategy_config:
-    dict[str, typing.Any] | None = <object object>, **kwargs: ~typing.Any) -> CosmosList'
+  signature: 'async execute_item_batch(batch_operations: Sequence[Tuple[str, Tuple[Any,
+    ...]] | Tuple[str, Tuple[Any, ...], dict[str, Any]]], partition_key: None | bool
+    | float | int | str | Type[NonePartitionKeyValue] | Type[NullPartitionKeyValue]
+    | _Empty | _Undefined | Sequence[None | bool | float | int | str | Type[NonePartitionKeyValue]
+    | Type[NullPartitionKeyValue] | _Empty | _Undefined], *, pre_trigger_include:
+    str | None = None, post_trigger_include: str | None = None, session_token: str
+    | None = None, priority: Literal[''High'', ''Low''] | None = None, retry_write:
+    int | None = None, throughput_bucket: int | None = None, availability_strategy:
+    bool | dict[str, Any] | None = None, **kwargs: Any) -> CosmosList'
   parameters:
   - name: batch_operations
     description: The batch of operations to be executed.
@@ -497,13 +507,21 @@ methods:
     defaultValue: None
     types:
     - <xref:int>
-  - name: availability_strategy_config
-    description: 'The threshold-based availability strategy to use for this request.
+  - name: availability_strategy
+    description: 'Enables an availability strategy by using cross-region request hedging.
 
-      If not provided, the client''s default strategy will be used.'
-    defaultValue: <object object at 0x0000026094633E50>
+      Can be True (use client config if present, otherwise use default values: threshold_ms=500,
+      threshold_steps_ms=100),
+
+      False (disable hedging even if client has it enabled),
+
+      or a dict with keys `threshold_ms` and `threshold_steps_ms` to override the
+      client''s configured availability strategy.
+
+      If not provided, uses the client''s configured strategy.'
+    defaultValue: None
     types:
-    - <xref:dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:typing.Union>[<xref:bool>, <xref:dict>[<xref:str>, <xref:typing.Any>]]
   return:
     description: A CosmosList representing the items after the batch operations went
       through.
@@ -711,20 +729,16 @@ methods:
   summary: "Patches the specified item with the provided operations if it\n   exists\
     \ in the container.\n\nIf the item does not already exist in the container, an\
     \ exception is raised."
-  signature: 'async patch_item(item: str | dict[str, typing.Any], partition_key: None
-    | bool | float | int | str | ~typing.Type[~azure.cosmos.partition_key.NonePartitionKeyValue]
-    | ~typing.Type[~azure.cosmos.partition_key.NullPartitionKeyValue] | ~azure.cosmos.partition_key._Empty
-    | ~azure.cosmos.partition_key._Undefined | ~typing.Sequence[None | bool | float
-    | int | str | ~typing.Type[~azure.cosmos.partition_key.NonePartitionKeyValue]
-    | ~typing.Type[~azure.cosmos.partition_key.NullPartitionKeyValue] | ~azure.cosmos.partition_key._Empty
-    | ~azure.cosmos.partition_key._Undefined], patch_operations: list[dict[str, typing.Any]],
-    *, filter_predicate: str | None = None, pre_trigger_include: str | None = None,
-    post_trigger_include: str | None = None, session_token: str | None = None, etag:
-    str | None = None, match_condition: ~azure.core._match_conditions.MatchConditions
-    | None = None, priority: ~typing.Literal[''High'', ''Low''] | None = None, no_response:
-    bool | None = None, retry_write: int | None = None, throughput_bucket: int | None
-    = None, availability_strategy_config: dict[str, typing.Any] | None = <object object>,
-    **kwargs: ~typing.Any) -> CosmosDict'
+  signature: 'async patch_item(item: str | dict[str, Any], partition_key: None | bool
+    | float | int | str | Type[NonePartitionKeyValue] | Type[NullPartitionKeyValue]
+    | _Empty | _Undefined | Sequence[None | bool | float | int | str | Type[NonePartitionKeyValue]
+    | Type[NullPartitionKeyValue] | _Empty | _Undefined], patch_operations: list[dict[str,
+    Any]], *, filter_predicate: str | None = None, pre_trigger_include: str | None
+    = None, post_trigger_include: str | None = None, session_token: str | None = None,
+    etag: str | None = None, match_condition: MatchConditions | None = None, priority:
+    Literal[''High'', ''Low''] | None = None, no_response: bool | None = None, retry_write:
+    int | None = None, throughput_bucket: int | None = None, availability_strategy:
+    bool | dict[str, Any] | None = None, **kwargs: Any) -> CosmosDict'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to be patched.
@@ -836,13 +850,21 @@ methods:
       This excluded_location will override existing excluded_locations in client level.'
     types:
     - <xref:typing.Sequence>[<xref:str>]
-  - name: availability_strategy_config
-    description: 'The threshold-based availability strategy to use for this request.
+  - name: availability_strategy
+    description: 'Enables an availability strategy by using cross-region request hedging.
 
-      If not provided, the client''s default strategy will be used.'
-    defaultValue: <object object at 0x0000026094633E50>
+      Can be True (use client config if present, otherwise use default values: threshold_ms=500,
+      threshold_steps_ms=100),
+
+      False (disable hedging even if client has it enabled),
+
+      or a dict with keys `threshold_ms` and `threshold_steps_ms` to override the
+      client''s configured availability strategy.
+
+      If not provided, uses the client''s configured strategy.'
+    defaultValue: None
     types:
-    - <xref:dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:typing.Union>[<xref:bool>, <xref:dict>[<xref:str>, <xref:typing.Any>]]
   return:
     description: 'A CosmosDict representing the item after the patch operations went
       through. The dict will be empty if
@@ -921,8 +943,9 @@ methods:
     PartitionKeyType, populate_index_metrics: bool | None = None, populate_query_metrics:
     bool | None = None, priority: Literal[''High'', ''Low''] | None = None, response_hook:
     Callable[[Mapping[str, str], dict[str, Any]], None] | None = None, session_token:
-    str | None = None, throughput_bucket: int | None = None, availability_strategy_config:
-    dict[str, Any] | None = _Unset, **kwargs: Any) -> AsyncItemPaged[dict[str, Any]]'
+    str | None = None, throughput_bucket: int | None = None, availability_strategy:
+    bool | dict[str, Any] | None = None, **kwargs: Any) -> AsyncItemPaged[dict[str,
+    Any]]'
   parameters:
   - name: args
     description: args
@@ -1038,12 +1061,20 @@ methods:
     description: The desired throughput bucket for the client.
     types:
     - <xref:int>
-  - name: availability_strategy_config
-    description: 'The threshold-based availability strategy to use for this request.
+  - name: availability_strategy
+    description: 'Enables an availability strategy by using cross-region request hedging.
 
-      If not provided, the client''s default strategy will be used.'
+      Can be True (use client config if present, otherwise use default values: threshold_ms=500,
+      threshold_steps_ms=100),
+
+      False (disable hedging even if client has it enabled),
+
+      or a dict with keys `threshold_ms` and `threshold_steps_ms` to override the
+      client''s configured availability strategy.
+
+      If not provided, uses the client''s configured strategy.'
     types:
-    - <xref:dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:typing.Union>[<xref:bool>, <xref:dict>[<xref:str>, <xref:typing.Any>]]
   return:
     description: An Iterable of items (dicts).
     types:
@@ -1053,8 +1084,8 @@ methods:
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\
     \\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    51\\\\azure_cosmos-4.15.0b2\\\\samples\\\\examples_async.py\", \"xml:space\":\
-    \ \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    51\\\\azure_cosmos-4.15.1a20260304002\\\\samples\\\\examples_async.py\", \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           async\
     \ for queried_item in container.query_items(\n                   query='SELECT\
     \ * FROM products p WHERE p.productModel <> \"DISCONTINUED\"'\n           ):\n\
@@ -1063,8 +1094,8 @@ methods:
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\
     \\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    51\\\\azure_cosmos-4.15.0b2\\\\samples\\\\examples_async.py\", \"xml:space\":\
-    \ \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    51\\\\azure_cosmos-4.15.1a20260304002\\\\samples\\\\examples_async.py\", \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           discontinued_items\
     \ = container.query_items(\n               query='SELECT * FROM products p WHERE\
     \ p.productModel = @model AND p.productName=\"Widget\"',\n               parameters=[dict(name=\"\
@@ -1079,8 +1110,8 @@ methods:
     datetime | Literal[''Now'', ''Beginning''] | None = None, partition_key: PartitionKeyType,
     priority: Literal[''High'', ''Low''] | None = None, mode: Literal[''LatestVersion'',
     ''AllVersionsAndDeletes''] | None = None, response_hook: Callable[[Mapping[str,
-    str], dict[str, Any]], None] | None = None, availability_strategy_config: dict[str,
-    Any] | None = _Unset, **kwargs: Any) -> AsyncItemPaged[dict[str, Any]]'
+    str], dict[str, Any]], None] | None = None, availability_strategy: bool | dict[str,
+    Any] | None = None, **kwargs: Any) -> AsyncItemPaged[dict[str, Any]]'
   keywordOnlyParameters:
   - name: continuation
     description: The continuation token retrieved from previous response. It contains
@@ -1148,12 +1179,20 @@ methods:
       This excluded_location will override existing excluded_locations in client level.'
     types:
     - <xref:typing.Sequence>[<xref:str>]
-  - name: availability_strategy_config
-    description: 'The threshold-based availability strategy to use for this request.
+  - name: availability_strategy
+    description: 'Enables an availability strategy by using cross-region request hedging.
 
-      If not provided, the client''s default strategy will be used.'
+      Can be True (use client config if present, otherwise use default values: threshold_ms=500,
+      threshold_steps_ms=100),
+
+      False (disable hedging even if client has it enabled),
+
+      or a dict with keys `threshold_ms` and `threshold_steps_ms` to override the
+      client''s configured availability strategy.
+
+      If not provided, uses the client''s configured strategy.'
     types:
-    - <xref:dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:typing.Union>[<xref:bool>, <xref:dict>[<xref:str>, <xref:typing.Any>]]
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
@@ -1219,10 +1258,9 @@ methods:
   summary: List all the items in the container.
   signature: 'read_all_items(*, max_item_count: int | None = None, session_token:
     str | None = None, initial_headers: dict[str, str] | None = None, max_integrated_cache_staleness_in_ms:
-    int | None = None, priority: ~typing.Literal[''High'', ''Low''] | None = None,
-    throughput_bucket: int | None = None, availability_strategy_config: dict[str,
-    typing.Any] | None = <object object>, **kwargs: ~typing.Any) -> AsyncItemPaged[dict[str,
-    Any]]'
+    int | None = None, priority: Literal[''High'', ''Low''] | None = None, throughput_bucket:
+    int | None = None, availability_strategy: bool | dict[str, Any] | None = None,
+    **kwargs: Any) -> AsyncItemPaged[dict[str, Any]]'
   keywordOnlyParameters:
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
@@ -1281,13 +1319,21 @@ methods:
       This excluded_location will override existing excluded_locations in client level.'
     types:
     - <xref:typing.Sequence>[<xref:str>]
-  - name: availability_strategy_config
-    description: 'The threshold-based availability strategy to use for this request.
+  - name: availability_strategy
+    description: 'Enables an availability strategy by using cross-region request hedging.
 
-      If not provided, the client''s default strategy will be used.'
-    defaultValue: <object object at 0x0000026094633E50>
+      Can be True (use client config if present, otherwise use default values: threshold_ms=500,
+      threshold_steps_ms=100),
+
+      False (disable hedging even if client has it enabled),
+
+      or a dict with keys `threshold_ms` and `threshold_steps_ms` to override the
+      client''s configured availability strategy.
+
+      If not provided, uses the client''s configured strategy.'
+    defaultValue: None
     types:
-    - <xref:dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:typing.Union>[<xref:bool>, <xref:dict>[<xref:str>, <xref:typing.Any>]]
   return:
     description: An AsyncItemPaged of items (dicts).
     types:
@@ -1323,17 +1369,15 @@ methods:
 - uid: azure.cosmos.aio.ContainerProxy.read_item
   name: read_item
   summary: Get the item identified by *item*.
-  signature: 'async read_item(item: str | ~typing.Mapping[str, ~typing.Any], partition_key:
-    None | bool | float | int | str | ~typing.Type[~azure.cosmos.partition_key.NonePartitionKeyValue]
-    | ~typing.Type[~azure.cosmos.partition_key.NullPartitionKeyValue] | ~azure.cosmos.partition_key._Empty
-    | ~azure.cosmos.partition_key._Undefined | ~typing.Sequence[None | bool | float
-    | int | str | ~typing.Type[~azure.cosmos.partition_key.NonePartitionKeyValue]
-    | ~typing.Type[~azure.cosmos.partition_key.NullPartitionKeyValue] | ~azure.cosmos.partition_key._Empty
-    | ~azure.cosmos.partition_key._Undefined], *, post_trigger_include: str | None
-    = None, session_token: str | None = None, initial_headers: dict[str, str] | None
-    = None, max_integrated_cache_staleness_in_ms: int | None = None, priority: ~typing.Literal[''High'',
-    ''Low''] | None = None, throughput_bucket: int | None = None, availability_strategy_config:
-    dict[str, typing.Any] | None = <object object>, **kwargs: ~typing.Any) -> CosmosDict'
+  signature: 'async read_item(item: str | Mapping[str, Any], partition_key: None |
+    bool | float | int | str | Type[NonePartitionKeyValue] | Type[NullPartitionKeyValue]
+    | _Empty | _Undefined | Sequence[None | bool | float | int | str | Type[NonePartitionKeyValue]
+    | Type[NullPartitionKeyValue] | _Empty | _Undefined], *, post_trigger_include:
+    str | None = None, session_token: str | None = None, initial_headers: dict[str,
+    str] | None = None, max_integrated_cache_staleness_in_ms: int | None = None, priority:
+    Literal[''High'', ''Low''] | None = None, throughput_bucket: int | None = None,
+    availability_strategy: bool | dict[str, Any] | None = None, **kwargs: Any) ->
+    CosmosDict'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to retrieve.
@@ -1407,13 +1451,21 @@ methods:
       This excluded_location will override existing excluded_locations in client level.'
     types:
     - <xref:typing.Sequence>[<xref:str>]
-  - name: availability_strategy_config
-    description: 'The threshold-based availability strategy to use for this request.
+  - name: availability_strategy
+    description: 'Enables an availability strategy by using cross-region request hedging.
 
-      If not provided, the client''s default strategy will be used.'
-    defaultValue: <object object at 0x0000026094633E50>
+      Can be True (use client config if present, otherwise use default values: threshold_ms=500,
+      threshold_steps_ms=100),
+
+      False (disable hedging even if client has it enabled),
+
+      or a dict with keys `threshold_ms` and `threshold_steps_ms` to override the
+      client''s configured availability strategy.
+
+      If not provided, uses the client''s configured strategy.'
+    defaultValue: None
     types:
-    - <xref:dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:typing.Union>[<xref:bool>, <xref:dict>[<xref:str>, <xref:typing.Any>]]
   return:
     description: A CosmosDict representing the retrieved item.
     types:
@@ -1426,8 +1478,8 @@ methods:
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\
     \\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    51\\\\azure_cosmos-4.15.0b2\\\\samples\\\\examples_async.py\", \"xml:space\":\
-    \ \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    51\\\\azure_cosmos-4.15.1a20260304002\\\\samples\\\\examples_async.py\", \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           item\
     \ = await container.read_item(\"item2\", partition_key=\"Widget\")\n         \
     \  item[\"productModel\"] = \"DISCONTINUED\"\n           updated_item = await\
@@ -1440,18 +1492,14 @@ methods:
     This method is a batched point-read operation. It is more efficient than
 
     issuing multiple individual point reads.'
-  signature: 'async read_items(items: ~typing.Sequence[~typing.Tuple[str, None | bool
-    | float | int | str | ~typing.Type[~azure.cosmos.partition_key.NonePartitionKeyValue]
-    | ~typing.Type[~azure.cosmos.partition_key.NullPartitionKeyValue] | ~azure.cosmos.partition_key._Empty
-    | ~azure.cosmos.partition_key._Undefined | ~typing.Sequence[None | bool | float
-    | int | str | ~typing.Type[~azure.cosmos.partition_key.NonePartitionKeyValue]
-    | ~typing.Type[~azure.cosmos.partition_key.NullPartitionKeyValue] | ~azure.cosmos.partition_key._Empty
-    | ~azure.cosmos.partition_key._Undefined]]], *, max_concurrency: int | None =
-    None, consistency_level: str | None = None, session_token: str | None = None,
-    initial_headers: dict[str, str] | None = None, excluded_locations: list[str] |
-    None = None, priority: ~typing.Literal[''High'', ''Low''] | None = None, throughput_bucket:
-    int | None = None, availability_strategy_config: dict[str, typing.Any] | None
-    = <object object>, **kwargs: ~typing.Any) -> CosmosList'
+  signature: 'async read_items(items: Sequence[Tuple[str, None | bool | float | int
+    | str | Type[NonePartitionKeyValue] | Type[NullPartitionKeyValue] | _Empty | _Undefined
+    | Sequence[None | bool | float | int | str | Type[NonePartitionKeyValue] | Type[NullPartitionKeyValue]
+    | _Empty | _Undefined]]], *, max_concurrency: int | None = None, consistency_level:
+    str | None = None, session_token: str | None = None, initial_headers: dict[str,
+    str] | None = None, excluded_locations: list[str] | None = None, priority: Literal[''High'',
+    ''Low''] | None = None, throughput_bucket: int | None = None, availability_strategy:
+    bool | dict[str, Any] | None = None, **kwargs: Any) -> CosmosList'
   parameters:
   - name: items
     description: A list of tuples, where each tuple contains an item's ID and partition
@@ -1506,13 +1554,21 @@ methods:
     defaultValue: None
     types:
     - <xref:int>
-  - name: availability_strategy_config
-    description: 'The threshold-based availability strategy to use for this request.
+  - name: availability_strategy
+    description: 'Enables an availability strategy by using cross-region request hedging.
 
-      If not provided, the client''s default strategy will be used.'
-    defaultValue: <object object at 0x0000026094633E50>
+      Can be True (use client config if present, otherwise use default values: threshold_ms=500,
+      threshold_steps_ms=100),
+
+      False (disable hedging even if client has it enabled),
+
+      or a dict with keys `threshold_ms` and `threshold_steps_ms` to override the
+      client''s configured availability strategy.
+
+      If not provided, uses the client''s configured strategy.'
+    defaultValue: None
     types:
-    - <xref:dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:typing.Union>[<xref:bool>, <xref:dict>[<xref:str>, <xref:typing.Any>]]
   return:
     description: 'A CosmosList containing the retrieved items. Items that were not
       found are omitted from the list.
@@ -1529,14 +1585,13 @@ methods:
 
 
     If the item does not already exist in the container, an exception is raised.'
-  signature: 'async replace_item(item: str | ~typing.Mapping[str, ~typing.Any], body:
-    dict[str, typing.Any], *, pre_trigger_include: str | None = None, post_trigger_include:
-    str | None = None, session_token: str | None = None, initial_headers: dict[str,
-    str] | None = None, etag: str | None = None, match_condition: ~azure.core._match_conditions.MatchConditions
-    | None = None, priority: ~typing.Literal[''High'', ''Low''] | None = None, no_response:
-    bool | None = None, retry_write: int | None = None, throughput_bucket: int | None
-    = None, availability_strategy_config: dict[str, typing.Any] | None = <object object>,
-    **kwargs: ~typing.Any) -> CosmosDict'
+  signature: 'async replace_item(item: str | Mapping[str, Any], body: dict[str, Any],
+    *, pre_trigger_include: str | None = None, post_trigger_include: str | None =
+    None, session_token: str | None = None, initial_headers: dict[str, str] | None
+    = None, etag: str | None = None, match_condition: MatchConditions | None = None,
+    priority: Literal[''High'', ''Low''] | None = None, no_response: bool | None =
+    None, retry_write: int | None = None, throughput_bucket: int | None = None, availability_strategy:
+    bool | dict[str, Any] | None = None, **kwargs: Any) -> CosmosDict'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to be replaced.
@@ -1637,13 +1692,21 @@ methods:
       This excluded_location will override existing excluded_locations in client level.'
     types:
     - <xref:typing.Sequence>[<xref:str>]
-  - name: availability_strategy_config
-    description: 'The threshold-based availability strategy to use for this request.
+  - name: availability_strategy
+    description: 'Enables an availability strategy by using cross-region request hedging.
 
-      If not provided, the client''s default strategy will be used.'
-    defaultValue: <object object at 0x0000026094633E50>
+      Can be True (use client config if present, otherwise use default values: threshold_ms=500,
+      threshold_steps_ms=100),
+
+      False (disable hedging even if client has it enabled),
+
+      or a dict with keys `threshold_ms` and `threshold_steps_ms` to override the
+      client''s configured availability strategy.
+
+      If not provided, uses the client''s configured strategy.'
+    defaultValue: None
     types:
-    - <xref:dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:typing.Union>[<xref:bool>, <xref:dict>[<xref:str>, <xref:typing.Any>]]
   return:
     description: 'A CosmosDict representing the item after replace went through. The
       dict will be empty if *no_response*
@@ -1750,14 +1813,13 @@ methods:
     If the item already exists in the container, it is replaced. If the item
 
     does not already exist, it is inserted.'
-  signature: 'async upsert_item(body: dict[str, typing.Any], *, pre_trigger_include:
-    str | None = None, post_trigger_include: str | None = None, session_token: str
-    | None = None, initial_headers: dict[str, str] | None = None, etag: str | None
-    = None, match_condition: ~azure.core._match_conditions.MatchConditions | None
-    = None, priority: ~typing.Literal[''High'', ''Low''] | None = None, no_response:
-    bool | None = None, retry_write: int | None = None, throughput_bucket: int | None
-    = None, availability_strategy_config: dict[str, typing.Any] | None = <object object>,
-    **kwargs: ~typing.Any) -> CosmosDict'
+  signature: 'async upsert_item(body: dict[str, Any], *, pre_trigger_include: str
+    | None = None, post_trigger_include: str | None = None, session_token: str | None
+    = None, initial_headers: dict[str, str] | None = None, etag: str | None = None,
+    match_condition: MatchConditions | None = None, priority: Literal[''High'', ''Low'']
+    | None = None, no_response: bool | None = None, retry_write: int | None = None,
+    throughput_bucket: int | None = None, availability_strategy: bool | dict[str,
+    Any] | None = None, **kwargs: Any) -> CosmosDict'
   parameters:
   - name: body
     description: A dict-like object representing the item to update or insert.
@@ -1853,13 +1915,21 @@ methods:
       This excluded_location will override existing excluded_locations in client level.'
     types:
     - <xref:typing.Sequence>[<xref:str>]
-  - name: availability_strategy_config
-    description: 'The threshold-based availability strategy to use for this request.
+  - name: availability_strategy
+    description: 'Enables an availability strategy by using cross-region request hedging.
 
-      If not provided, the client''s default strategy will be used.'
-    defaultValue: <object object at 0x0000026094633E50>
+      Can be True (use client config if present, otherwise use default values: threshold_ms=500,
+      threshold_steps_ms=100),
+
+      False (disable hedging even if client has it enabled),
+
+      or a dict with keys `threshold_ms` and `threshold_steps_ms` to override the
+      client''s configured availability strategy.
+
+      If not provided, uses the client''s configured strategy.'
+    defaultValue: None
     types:
-    - <xref:dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:typing.Union>[<xref:bool>, <xref:dict>[<xref:str>, <xref:typing.Any>]]
   return:
     description: A CosmosDict representing the upserted item. The dict will be empty
       if *no_response* is specified.
