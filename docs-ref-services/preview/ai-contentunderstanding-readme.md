@@ -1,12 +1,12 @@
 ---
 title: Azure AI Content Understanding client library for Python
 keywords: Azure, python, SDK, API, azure-ai-contentunderstanding, contentunderstanding
-ms.date: 03/05/2026
+ms.date: 03/06/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: contentunderstanding
 ---
-# Azure AI Content Understanding client library for Python - version 1.0.0a20260304001 
+# Azure AI Content Understanding client library for Python - version 1.0.0a20260305001 
 
 
 Azure AI Content Understanding is a multimodal AI service that extracts semantic content from documents, video, audio, and image files. It transforms unstructured content into structured, machine-readable data optimized for retrieval-augmented generation (RAG) and automated workflows.
