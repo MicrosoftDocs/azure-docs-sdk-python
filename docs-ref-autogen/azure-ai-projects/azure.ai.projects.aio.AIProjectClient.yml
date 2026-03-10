@@ -5,20 +5,21 @@ fullName: azure.ai.projects.aio.AIProjectClient
 module: azure.ai.projects.aio
 summary: AIProjectClient.
 constructor:
-  syntax: 'AIProjectClient(endpoint: str, credential: AsyncTokenCredential, **kwargs:
-    Any)'
+  syntax: 'AIProjectClient(endpoint: str, credential: AsyncTokenCredential, *, allow_preview:
+    bool = False, **kwargs: Any)'
   parameters:
   - name: endpoint
-    description: 'Project endpoint. In the form
+    description: 'Foundry Project endpoint in the form
 
-      "[https://your-ai-services-account-name.services.ai.azure.com/api/projects/_project](https://your-ai-services-account-name.services.ai.azure.com/api/projects/_project)"
+      "[https:/](https:/)/{ai-services-account-name}.services.ai.azure.com/api/projects/{project-name}".
+      If you
 
-      if your Foundry Hub has only one Project, or to use the default Project in your
-      Hub. Or in the
+      only have one Project in your Foundry Hub, or to target the default Project
+      in your Hub, use
 
-      form "[https://your-ai-services-account-name.services.ai.azure.com/api/projects/your-project-name](https://your-ai-services-account-name.services.ai.azure.com/api/projects/your-project-name)"
+      the form "[https:/](https:/)/{ai-services-account-name}.services.ai.azure.com/api/projects/_project".
 
-      if you want to explicitly specify the Foundry Project name. Required.'
+      Required.'
     isRequired: true
     types:
     - <xref:str>
@@ -27,105 +28,106 @@ constructor:
     isRequired: true
     types:
     - <xref:azure.core.credentials_async.AsyncTokenCredential>
+  - name: allow_preview
+    description: 'Whether to enable preview features. Optional, default is False.
+
+      Set this to True to create a Hosted Agent (using <xref:azure.ai.projects.models.HostedAgentDefinition>)
+
+      or a Workflow Agent (using <xref:azure.ai.projects.models.WorkflowAgentDefinition>).
+
+      Set this to True to use human evaluation rule action (class <xref:azure.ai.projects.models.HumanEvaluationPreviewRuleAction>).
+
+      Methods on the *.beta* sub-client (class <xref:azure.ai.projects.aio.operations.BetaOperations>)
+
+      are all in preview, but do not require setting *allow_preview=True* since it''s
+      implied by the sub-client name.
+
+      When preview features are enabled, the client libraries sends the HTTP request
+      header *Foundry-Features*
+
+      with the appropriate value in all relevant calls to the service.'
+    isRequired: true
   keywordOnlyParameters:
   - name: api_version
-    description: 'The API version to use for this operation. Default value is
+    description: 'The API version to use for this operation. Known values are "v1"
+      and
 
-      "v1". Note that overriding this default value may result in unsupported
+      None. Default value is "v1". Note that overriding this default value may result
+      in unsupported
 
       behavior.'
     types:
     - <xref:str>
+  - name: allow_preview
+    defaultValue: 'False'
 variables:
-- description: The asynchronous AgentsClient associated with this AIProjectClient.
+- description: BetaOperations operations
+  name: beta
+  types:
+  - <xref:azure.ai.projects.aio.operations.BetaOperations>
+- description: AgentsOperations operations
   name: agents
   types:
-  - <xref:azure.ai.agents.aio.AgentsClient>
+  - <xref:azure.ai.projects.aio.operations.AgentsOperations>
+- description: EvaluationRulesOperations operations
+  name: evaluation_rules
+  types:
+  - <xref:azure.ai.projects.aio.operations.EvaluationRulesOperations>
 - description: ConnectionsOperations operations
   name: connections
   types:
   - <xref:azure.ai.projects.aio.operations.ConnectionsOperations>
-- description: TelemetryOperations operations
-  name: telemetry
-  types:
-  - <xref:azure.ai.projects.aio.operations.TelemetryOperations>
 - description: DatasetsOperations operations
   name: datasets
   types:
   - <xref:azure.ai.projects.aio.operations.DatasetsOperations>
-- description: IndexesOperations operations
-  name: indexes
-  types:
-  - <xref:azure.ai.projects.aio.operations.IndexesOperations>
 - description: DeploymentsOperations operations
   name: deployments
   types:
   - <xref:azure.ai.projects.aio.operations.DeploymentsOperations>
+- description: IndexesOperations operations
+  name: indexes
+  types:
+  - <xref:azure.ai.projects.aio.operations.IndexesOperations>
 methods:
 - uid: azure.ai.projects.aio.AIProjectClient.close
   name: close
   signature: async close() -> None
 - uid: azure.ai.projects.aio.AIProjectClient.get_openai_client
   name: get_openai_client
-  summary: 'Get an authenticated AsyncAzureOpenAI client (from the *openai* package)
-    to use with
+  summary: 'Get an authenticated AsyncOpenAI client from the *openai* package.
 
-    AI models deployed to your AI Foundry Project or connected Azure OpenAI services.
+
+    Keyword arguments are passed to the AsyncOpenAI client constructor.
+
+
+    The AsyncOpenAI client constructor is called with:
+
+    * `base_url` set to the endpoint provided to the AIProjectClient constructor,
+    with "/openai/v1" appended.
+
+    Can be overridden by passing `base_url` as a keyword argument.
+
+    * `api_key` set to a get_bearer_token_provider() callable that uses the TokenCredential
+    provided to the
+
+    AIProjectClient constructor, with scope "[https://ai.azure.com/.default](https://ai.azure.com/.default)".
+
+    Can be overridden by passing `api_key` as a keyword argument.
 
 
     > [!NOTE]
 
-    > The package openai must be installed prior to calling this method.
+    > The packages openai and azure.identity must be installed prior to calling this
+    method.
 
     >'
-  signature: 'async get_openai_client(*, api_version: str | None = None, connection_name:
-    str | None = None, **kwargs) -> AsyncOpenAI'
-  keywordOnlyParameters:
-  - name: api_version
-    description: 'The Azure OpenAI api-version to use when creating the client. Optional.
-
-      See "Data plane - Inference" row in the table at
-
-      [https://learn.microsoft.com/azure/ai-foundry/openai/reference#api-specs](https://learn.microsoft.com/azure/ai-foundry/openai/reference#api-specs).
-      If this keyword
-
-      is not specified, you must set the environment variable *OPENAI_API_VERSION*
-      instead.'
-    defaultValue: None
-    types:
-    - <xref:typing.Optional>[<xref:str>]
-  - name: connection_name
-    description: 'Optional. If specified, the connection named here must be of type
-      Azure OpenAI.
-
-      The returned AzureOpenAI client will use the inference URL specified by the
-      connected Azure OpenAI
-
-      service, and can be used with AI models deployed to that service. If not specified,
-      the returned
-
-      AzureOpenAI client will use the inference URL of the parent AI Services resource,
-      and can be used
-
-      with AI models deployed directly to your AI Foundry project.'
-    defaultValue: None
-    types:
-    - <xref:typing.Optional>[<xref:str>]
+  signature: 'get_openai_client(**kwargs: Any) -> AsyncOpenAI'
   return:
-    description: An authenticated AsyncAzureOpenAI client
+    description: An authenticated AsyncOpenAI client
     types:
-    - <xref:openai.AsyncAzureOpenAI>
+    - <xref:openai.AsyncOpenAI>
   exceptions:
-  - type: azure.core.exceptions.ResourceNotFoundError
-    description: 'if an Azure OpenAI connection
-
-      does not exist.'
-  - type: azure.core.exceptions.ModuleNotFoundError
-    description: 'if the *openai* package
-
-      is not installed.'
-  - type: ValueError
-    description: if the connection name is an empty string.
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.ai.projects.aio.AIProjectClient.send_request
   name: send_request
@@ -168,13 +170,3 @@ methods:
       your response.
     types:
     - <xref:azure.core.rest.AsyncHttpResponse>
-attributes:
-- uid: azure.ai.projects.aio.AIProjectClient.agents
-  name: agents
-  summary: 'Get the asynchronous AgentsClient associated with this AIProjectClient.
-
-    The package azure.ai.agents must be installed to use this property.'
-  return:
-    description: The asynchronous AgentsClient associated with this AIProjectClient.
-    types:
-    - <xref:azure.ai.agents.aio.AgentsClient>

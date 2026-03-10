@@ -913,10 +913,11 @@ attributes:
     \ using the *output_text* property where supported in SDKs. "
   signature: 'output: List[ParsedResponseOutputMessage | ParsedResponseFunctionToolCall
     | ResponseFileSearchToolCall | ResponseFunctionWebSearch | ResponseComputerToolCall
-    | ResponseReasoningItem | McpCall | McpApprovalRequest | ImageGenerationCall |
-    LocalShellCall | LocalShellCallAction | McpListTools | ResponseCodeInterpreterToolCall
-    | ResponseCustomToolCall | ResponseCompactionItem | ResponseFunctionShellToolCall
-    | ResponseFunctionShellToolCallOutput | ResponseApplyPatchToolCall | ResponseApplyPatchToolCallOutput]'
+    | ResponseToolSearchCall | ResponseToolSearchOutputItem | ResponseReasoningItem
+    | McpCall | McpApprovalRequest | ImageGenerationCall | LocalShellCall | LocalShellCallAction
+    | McpListTools | ResponseCodeInterpreterToolCall | ResponseCustomToolCall | ResponseCompactionItem
+    | ResponseFunctionShellToolCall | ResponseFunctionShellToolCallOutput | ResponseApplyPatchToolCall
+    | ResponseApplyPatchToolCallOutput]'
 - uid: azure.ai.agentserver.core.models.openai.ParsedResponse.output_parsed
   name: output_parsed
 - uid: azure.ai.agentserver.core.models.openai.ParsedResponse.output_text
@@ -1120,15 +1121,16 @@ attributes:
     required=False, default=None), ''instructions'': FieldInfo(annotation=Union[str,
     List[Annotated[Union[EasyInputMessage, Message, ResponseOutputMessage, ResponseFileSearchToolCall,
     ResponseComputerToolCall, ComputerCallOutput, ResponseFunctionWebSearch, ResponseFunctionToolCall,
-    FunctionCallOutput, ResponseReasoningItem, ResponseCompactionItemParam, ImageGenerationCall,
-    ResponseCodeInterpreterToolCall, LocalShellCall, LocalShellCallOutput, ShellCall,
-    ShellCallOutput, ApplyPatchCall, ApplyPatchCallOutput, McpListTools, McpApprovalRequest,
-    McpApprovalResponse, McpCall, ResponseCustomToolCallOutput, ResponseCustomToolCall,
-    ItemReference], PropertyInfo]], NoneType], required=False, default=None), ''max_output_tokens'':
-    FieldInfo(annotation=Union[int, NoneType], required=False, default=None), ''max_tool_calls'':
-    FieldInfo(annotation=Union[int, NoneType], required=False, default=None), ''metadata'':
-    FieldInfo(annotation=Union[Dict[str, str], NoneType], required=False, default=None),
-    ''model'': FieldInfo(annotation=Union[str, Literal[''gpt-5.2'', ''gpt-5.2-2025-12-11'',
+    FunctionCallOutput, ToolSearchCall, ResponseToolSearchOutputItemParam, ResponseReasoningItem,
+    ResponseCompactionItemParam, ImageGenerationCall, ResponseCodeInterpreterToolCall,
+    LocalShellCall, LocalShellCallOutput, ShellCall, ShellCallOutput, ApplyPatchCall,
+    ApplyPatchCallOutput, McpListTools, McpApprovalRequest, McpApprovalResponse, McpCall,
+    ResponseCustomToolCallOutput, ResponseCustomToolCall, ItemReference], PropertyInfo]],
+    NoneType], required=False, default=None), ''max_output_tokens'': FieldInfo(annotation=Union[int,
+    NoneType], required=False, default=None), ''max_tool_calls'': FieldInfo(annotation=Union[int,
+    NoneType], required=False, default=None), ''metadata'': FieldInfo(annotation=Union[Dict[str,
+    str], NoneType], required=False, default=None), ''model'': FieldInfo(annotation=Union[str,
+    Literal[''gpt-5.4'', ''gpt-5.3-chat-latest'', ''gpt-5.2'', ''gpt-5.2-2025-12-11'',
     ''gpt-5.2-chat-latest'', ''gpt-5.2-pro'', ''gpt-5.2-pro-2025-12-11'', ''gpt-5.1'',
     ''gpt-5.1-2025-11-13'', ''gpt-5.1-codex'', ''gpt-5.1-mini'', ''gpt-5.1-chat-latest'',
     ''gpt-5'', ''gpt-5-mini'', ''gpt-5-nano'', ''gpt-5-2025-08-07'', ''gpt-5-mini-2025-08-07'',
@@ -1153,14 +1155,15 @@ attributes:
     ''gpt-5.1-codex-max'']], required=True), ''object'': FieldInfo(annotation=Literal[''response''],
     required=True), ''output'': FieldInfo(annotation=List[Annotated[Union[ParsedResponseOutputMessage,
     ParsedResponseFunctionToolCall, ResponseFileSearchToolCall, ResponseFunctionWebSearch,
-    ResponseComputerToolCall, ResponseReasoningItem, McpCall, McpApprovalRequest,
-    ImageGenerationCall, LocalShellCall, LocalShellCallAction, McpListTools, ResponseCodeInterpreterToolCall,
-    ResponseCustomToolCall, ResponseCompactionItem, ResponseFunctionShellToolCall,
-    ResponseFunctionShellToolCallOutput, ResponseApplyPatchToolCall, ResponseApplyPatchToolCallOutput],
-    PropertyInfo]], required=True), ''parallel_tool_calls'': FieldInfo(annotation=bool,
-    required=True), ''previous_response_id'': FieldInfo(annotation=Union[str, NoneType],
-    required=False, default=None), ''prompt'': FieldInfo(annotation=Union[ResponsePrompt,
-    NoneType], required=False, default=None), ''prompt_cache_key'': FieldInfo(annotation=Union[str,
+    ResponseComputerToolCall, ResponseToolSearchCall, ResponseToolSearchOutputItem,
+    ResponseReasoningItem, McpCall, McpApprovalRequest, ImageGenerationCall, LocalShellCall,
+    LocalShellCallAction, McpListTools, ResponseCodeInterpreterToolCall, ResponseCustomToolCall,
+    ResponseCompactionItem, ResponseFunctionShellToolCall, ResponseFunctionShellToolCallOutput,
+    ResponseApplyPatchToolCall, ResponseApplyPatchToolCallOutput], PropertyInfo]],
+    required=True), ''parallel_tool_calls'': FieldInfo(annotation=bool, required=True),
+    ''previous_response_id'': FieldInfo(annotation=Union[str, NoneType], required=False,
+    default=None), ''prompt'': FieldInfo(annotation=Union[ResponsePrompt, NoneType],
+    required=False, default=None), ''prompt_cache_key'': FieldInfo(annotation=Union[str,
     NoneType], required=False, default=None), ''prompt_cache_retention'': FieldInfo(annotation=Union[Literal[''in-memory'',
     ''24h''], NoneType], required=False, default=None), ''reasoning'': FieldInfo(annotation=Union[Reasoning,
     NoneType], required=False, default=None), ''safety_identifier'': FieldInfo(annotation=Union[str,
@@ -1174,11 +1177,11 @@ attributes:
     ''auto'', ''required''], ToolChoiceAllowed, ToolChoiceTypes, ToolChoiceFunction,
     ToolChoiceMcp, ToolChoiceCustom, ToolChoiceApplyPatch, ToolChoiceShell], required=True),
     ''tools'': FieldInfo(annotation=List[Annotated[Union[FunctionTool, FileSearchTool,
-    ComputerTool, WebSearchTool, Mcp, CodeInterpreter, ImageGeneration, LocalShell,
-    FunctionShellTool, CustomTool, WebSearchPreviewTool, ApplyPatchTool], PropertyInfo]],
-    required=True), ''top_logprobs'': FieldInfo(annotation=Union[int, NoneType], required=False,
-    default=None), ''top_p'': FieldInfo(annotation=Union[float, NoneType], required=False,
-    default=None), ''truncation'': FieldInfo(annotation=Union[Literal[''auto'', ''disabled''],
-    NoneType], required=False, default=None), ''usage'': FieldInfo(annotation=Union[ResponseUsage,
+    ComputerTool, ComputerUsePreviewTool, WebSearchTool, Mcp, CodeInterpreter, ImageGeneration,
+    LocalShell, FunctionShellTool, CustomTool, NamespaceTool, ToolSearchTool, WebSearchPreviewTool,
+    ApplyPatchTool], PropertyInfo]], required=True), ''top_logprobs'': FieldInfo(annotation=Union[int,
+    NoneType], required=False, default=None), ''top_p'': FieldInfo(annotation=Union[float,
+    NoneType], required=False, default=None), ''truncation'': FieldInfo(annotation=Union[Literal[''auto'',
+    ''disabled''], NoneType], required=False, default=None), ''usage'': FieldInfo(annotation=Union[ResponseUsage,
     NoneType], required=False, default=None), ''user'': FieldInfo(annotation=Union[str,
     NoneType], required=False, default=None)}'
