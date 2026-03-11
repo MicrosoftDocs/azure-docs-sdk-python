@@ -1,7 +1,7 @@
 ---
 title: Azure Alerts Management SDK for Python
 description: Reference for Azure Alerts Management SDK for Python
-ms.date: 03/10/2026
+ms.date: 03/11/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: alertsmanagement
