@@ -1,5 +1,3 @@
 | Reference | Package | Source |
 |---|---|---|
-|[unknown](ai-agentserver-core-readme.md)|[azure-ai-agentserver-core](https://pypi.org/project/azure-ai-agentserver-core)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/agentserver/azure-ai-agentserver-core)|
-|[unknown](ai-language-questionanswering-authoring-readme.md)|[azure-ai-language-questionanswering-authoring](https://pypi.org/project/azure-ai-language-questionanswering-authoring)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cognitivelanguage/azure-ai-language-questionanswering-authoring)|
-|[unknown](confidentialledger-certificate-readme.md)|[azure-confidentialledger-certificate](https://pypi.org/project/azure-confidentialledger-certificate)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/confidentialledger/azure-confidentialledger-certificate)|
+|[unknown](mgmt-containerregistrytasks-readme.md)|[azure-mgmt-containerregistrytasks](https://pypi.org/project/azure-mgmt-containerregistrytasks)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/containerregistry/azure-mgmt-containerregistrytasks)|
