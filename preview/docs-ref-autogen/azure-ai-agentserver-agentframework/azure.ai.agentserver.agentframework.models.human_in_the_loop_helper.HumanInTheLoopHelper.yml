@@ -14,7 +14,7 @@ methods:
     isRequired: true
 - uid: azure.ai.agentserver.agentframework.models.human_in_the_loop_helper.HumanInTheLoopHelper.convert_response
   name: convert_response
-  signature: 'convert_response(hitl_request: RequestInfoEvent, input: Dict) -> ChatMessage'
+  signature: 'convert_response(hitl_request: PendingHitlRequest, input: Dict) -> Message'
   parameters:
   - name: hitl_request
     isRequired: true
@@ -22,50 +22,39 @@ methods:
     isRequired: true
 - uid: azure.ai.agentserver.agentframework.models.human_in_the_loop_helper.HumanInTheLoopHelper.convert_user_input_request_content
   name: convert_user_input_request_content
-  signature: 'convert_user_input_request_content(content: FunctionApprovalRequestContent)
-    -> dict'
+  signature: 'convert_user_input_request_content(content: Any) -> dict'
   parameters:
   - name: content
     isRequired: true
 - uid: azure.ai.agentserver.agentframework.models.human_in_the_loop_helper.HumanInTheLoopHelper.get_pending_hitl_request
   name: get_pending_hitl_request
-  signature: 'get_pending_hitl_request(thread_messages: List[ChatMessage] = None,
-    checkpoint: WorkflowCheckpoint | None = None) -> dict[str, Union[agent_framework._workflows._events.RequestInfoEvent,
-    Any]]'
+  signature: 'get_pending_hitl_request(session_messages: List[Message] | None = None,
+    checkpoint: WorkflowCheckpoint | None = None) -> Dict[str, PendingHitlRequest]'
   parameters:
-  - name: thread_messages
+  - name: session_messages
     defaultValue: None
   - name: checkpoint
     defaultValue: None
-- uid: azure.ai.agentserver.agentframework.models.human_in_the_loop_helper.HumanInTheLoopHelper.remove_hitl_content_from_thread
-  name: remove_hitl_content_from_thread
-  summary: 'Remove HITL function call contents and related results from a conversation
-    thread.
-
-
-    HITL requests become `function_call` entries named `HUMAN_IN_THE_LOOP_FUNCTION_NAME`
-    when converted
-
-    by the adapter. To avoid feeding those synthetic requests back into the agent,
-    this method strips the
-
-    HITL function_calls and their placeholder outputs while preserving real tool invocations.'
-  signature: 'remove_hitl_content_from_thread(thread_messages: List[ChatMessage])
-    -> List[ChatMessage]'
+- uid: azure.ai.agentserver.agentframework.models.human_in_the_loop_helper.HumanInTheLoopHelper.remove_hitl_content_from_session
+  name: remove_hitl_content_from_session
+  summary: Remove HITL function call contents and related results from a conversation
+    session.
+  signature: 'remove_hitl_content_from_session(session_messages: List[Message]) ->
+    List[Message]'
   parameters:
-  - name: thread_messages
-    description: The messages converted from the conversation API.
+  - name: session_messages
+    description: The list of messages in the conversation session.
     isRequired: true
     types:
-    - <xref:typing.List>[<xref:ChatMessage>]
+    - <xref:typing.List>[<xref:Message>]
   return:
-    description: Messages without HITL-specific artifacts.
+    description: The filtered list of messages with HITL content removed.
     types:
-    - <xref:typing.List>[<xref:ChatMessage>]
+    - <xref:typing.List>[<xref:Message>]
 - uid: azure.ai.agentserver.agentframework.models.human_in_the_loop_helper.HumanInTheLoopHelper.validate_and_convert_hitl_response
   name: validate_and_convert_hitl_response
   signature: 'validate_and_convert_hitl_response(input: str | List[Dict] | None, pending_requests:
-    Dict[str, RequestInfoEvent]) -> List[ChatMessage] | None'
+    Dict[str, PendingHitlRequest]) -> List[Message] | None'
   parameters:
   - name: input
     isRequired: true
