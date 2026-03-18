@@ -22,13 +22,42 @@ constructor:
   - name: api_version
     description: 'The API version to use for this operation. Default value is
 
-      "2024-12-01-preview". Note that overriding this default value may result in
+      "2025-11-01-preview". Note that overriding this default value may result in
       unsupported
 
       behavior.'
     types:
     - <xref:str>
+  - name: polling_interval
+    description: 'Default waiting time between two polls for LRO operations if no
+
+      Retry-After header is present.'
+    types:
+    - <xref:int>
 methods:
+- uid: azure.developer.loadtesting.aio.LoadTestRunClient.begin_generate_test_run_insights
+  name: begin_generate_test_run_insights
+  summary: 'Generate insights for the test run.
+
+
+    Generate insights for the test run.'
+  signature: 'async begin_generate_test_run_insights(test_run_id: str, **kwargs: Any)
+    -> AsyncLROPoller[None]'
+  parameters:
+  - name: test_run_id
+    description: 'Unique name for the load test run, must contain only lower-case
+      alphabetic,
+
+      numeric, underscore or hyphen characters. Required.'
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: An instance of AsyncLROPoller that returns None
+    types:
+    - <xref:azure.core.polling.AsyncLROPoller>[<xref:None>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.developer.loadtesting.aio.LoadTestRunClient.begin_test_profile_run
   name: begin_test_profile_run
   summary: 'Create and start a new test profile run.
@@ -122,7 +151,8 @@ methods:
     | MutableMapping[str, Any] | IO[bytes], **kwargs: Any) -> TestRunAppComponents'
   parameters:
   - name: test_run_id
-    description: 'Unique Id for the load test run, must contain only lower-case alphabetic,
+    description: 'Unique name for the load test run, must contain only lower-case
+      alphabetic,
 
       numeric, underscore or hyphen characters. Required.'
     isRequired: true
@@ -156,7 +186,8 @@ methods:
     Any) -> TestRunServerMetricsConfiguration'
   parameters:
   - name: test_run_id
-    description: 'Unique Id for the load test run, must contain only lower-case alphabetic,
+    description: 'Unique name for the load test run, must contain only lower-case
+      alphabetic,
 
       numeric, underscore or hyphen characters. Required.'
     isRequired: true
@@ -249,6 +280,29 @@ methods:
       MutableMapping
     types:
     - <xref:azure.developer.loadtesting.models.TestRunAppComponents>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.developer.loadtesting.aio.LoadTestRunClient.get_latest_test_run_insights
+  name: get_latest_test_run_insights
+  summary: 'Get the latest insights for the test run.
+
+
+    Get the latest insights for the test run.'
+  signature: 'async get_latest_test_run_insights(test_run_id: str, **kwargs: Any)
+    -> TestRunInsights'
+  parameters:
+  - name: test_run_id
+    description: 'Unique name for the load test run, must contain only lower-case
+      alphabetic,
+
+      numeric, underscore or hyphen characters. Required.'
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: TestRunInsights. The TestRunInsights is compatible with MutableMapping
+    types:
+    - <xref:azure.developer.loadtesting.models.TestRunInsights>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.developer.loadtesting.aio.LoadTestRunClient.get_metric_definitions
@@ -411,7 +465,7 @@ methods:
     List the dimension values for the given metric dimension name.'
   signature: 'list_metric_dimension_values(test_run_id: str, name: str, *, metric_name:
     str, metric_namespace: str, time_interval: str, interval: str | TimeGrain | None
-    = None, **kwargs: Any) -> AsyncIterable[str]'
+    = None, **kwargs: Any) -> AsyncItemPaged[str]'
   parameters:
   - name: test_run_id
     description: 'Unique name for the load test run, must contain only lower-case
@@ -464,7 +518,7 @@ methods:
   signature: 'list_metrics(test_run_id: str, body: MetricRequestPayload | MutableMapping[str,
     Any] | IO[bytes] | None = None, *, metric_name: str, metric_namespace: str, time_interval:
     str, aggregation: str | None = None, interval: str | TimeGrain | None = None,
-    **kwargs: Any) -> AsyncIterable[TimeSeriesElement]'
+    **kwargs: Any) -> AsyncItemPaged[TimeSeriesElement]'
   parameters:
   - name: test_run_id
     description: 'Unique name for the load test run, must contain only lower-case
@@ -527,8 +581,8 @@ methods:
     max_start_date_time: datetime | None = None, min_end_date_time: datetime | None
     = None, max_end_date_time: datetime | None = None, created_date_start_time: datetime
     | None = None, created_date_end_time: datetime | None = None, test_profile_run_ids:
-    List[str] | None = None, test_profile_ids: List[str] | None = None, statuses:
-    List[str] | None = None, **kwargs: Any) -> AsyncIterable[TestProfileRun]'
+    list[str] | None = None, test_profile_ids: list[str] | None = None, statuses:
+    list[str] | None = None, **kwargs: Any) -> AsyncItemPaged[TestProfileRun]'
   keywordOnlyParameters:
   - name: min_start_date_time
     description: 'Minimum Start DateTime(RFC 3339 literal format) of the test
@@ -608,12 +662,16 @@ methods:
     Get all test runs for the given filters.'
   signature: 'list_test_runs(*, orderby: str | None = None, search: str | None = None,
     test_id: str | None = None, execution_from: datetime | None = None, execution_to:
-    datetime | None = None, status: str | None = None, **kwargs: Any) -> AsyncIterable[TestRun]'
+    datetime | None = None, status: str | None = None, created_by_types: list[str]
+    | None = None, test_ids: list[str] | None = None, **kwargs: Any) -> AsyncItemPaged[TestRun]'
   keywordOnlyParameters:
   - name: orderby
-    description: 'Sort on the supported fields in (field asc/desc) format. eg: executedDateTime
+    description: 'Sort on the supported fields in (field asc/desc) format. eg: createdDateTime
 
-      asc. Supported fields - executedDateTime. Default value is None.'
+      asc.
+
+      Supported fields - createdDateTime, executedDateTime (legacy). Default value
+      is None.'
     defaultValue: None
     types:
     - <xref:str>
@@ -651,6 +709,21 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
+  - name: created_by_types
+    description: 'Comma separated list of type of entities that have created the test
+
+      run. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:list>[<xref:str>]
+  - name: test_ids
+    description: 'Comma-separated list of test IDs. If you are using testIds, do not
+      send a
+
+      value for testId. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:list>[<xref:str>]
   return:
     description: An iterator like instance of TestRun
     types:
@@ -739,5 +812,38 @@ methods:
     description: TestRun. The TestRun is compatible with MutableMapping
     types:
     - <xref:azure.developer.loadtesting.models.TestRun>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.developer.loadtesting.aio.LoadTestRunClient.update_latest_test_run_insights
+  name: update_latest_test_run_insights
+  summary: 'Update the latest insights for the test run.
+
+
+    Update the latest insights for the test run.'
+  signature: 'async update_latest_test_run_insights(test_run_id: str, body: TestRunInsights
+    | MutableMapping[str, Any] | IO[bytes], **kwargs: Any) -> TestRunInsights'
+  parameters:
+  - name: test_run_id
+    description: 'Unique name for the load test run, must contain only lower-case
+      alphabetic,
+
+      numeric, underscore or hyphen characters. Required.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: body
+    description: 'Test run insights model. Is one of the following types: TestRunInsights,
+      JSON,
+
+      IO[bytes] Required.'
+    isRequired: true
+    types:
+    - <xref:azure.developer.loadtesting.models.TestRunInsights>
+    - <xref:JSON>
+    - <xref:typing.IO>[<xref:bytes>]
+  return:
+    description: TestRunInsights. The TestRunInsights is compatible with MutableMapping
+    types:
+    - <xref:azure.developer.loadtesting.models.TestRunInsights>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
