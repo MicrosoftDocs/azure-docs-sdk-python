@@ -1,7 +1,7 @@
 ---
 title: Azure Network Function SDK for Python
 description: Reference for Azure Network Function SDK for Python
-ms.date: 03/19/2026
+ms.date: 03/20/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: networkfunction
