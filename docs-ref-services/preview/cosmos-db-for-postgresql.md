@@ -1,7 +1,7 @@
 ---
 title: Azure Cosmos DB for PostgreSQL SDK for Python
 description: Reference for Azure Cosmos DB for PostgreSQL SDK for Python
-ms.date: 03/23/2026
+ms.date: 03/24/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: cosmosdbforpostgresql
