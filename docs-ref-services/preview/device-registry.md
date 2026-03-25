@@ -1,7 +1,7 @@
 ---
 title: Azure Device Registry SDK for Python
 description: Reference for Azure Device Registry SDK for Python
-ms.date: 03/24/2026
+ms.date: 03/25/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: deviceregistry
