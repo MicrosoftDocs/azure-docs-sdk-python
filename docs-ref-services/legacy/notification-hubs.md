@@ -29,7 +29,7 @@ from azure.mgmt.notificationhubs import NotificationHubsManagementClient
 from azure.common.credentials import UserPassCredentials
 
 # Replace this with your subscription id
-subscription_id = '33333333-3333-3333-3333-333333333333'
+subscription_id = 'aaaa0a0a-bb1b-cc2c-dd3d-eeeeee4e4e4e'
 
 # See above for details on creating different types of AAD credentials
 credentials = UserPassCredentials(
@@ -62,4 +62,3 @@ print(output.is_availiable) # Yes, it's 'availiable', it's a typo in the REST AP
 
 > [!div class="nextstepaction"]
 > [Explore the Management APIs](/python/api/overview/azure/notificationhubs/management)
-
