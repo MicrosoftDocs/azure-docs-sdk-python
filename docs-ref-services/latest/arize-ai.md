@@ -1,7 +1,7 @@
 ---
 title: Azure Arize AI SDK for Python
 description: Reference for Azure Arize AI SDK for Python
-ms.date: 04/06/2026
+ms.date: 04/07/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: arizeai
