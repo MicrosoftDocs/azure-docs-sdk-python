@@ -1,7 +1,7 @@
 ---
 title: Azure Connected Cache SDK for Python
 description: Reference for Azure Connected Cache SDK for Python
-ms.date: 04/14/2026
+ms.date: 04/15/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: connectedcache
