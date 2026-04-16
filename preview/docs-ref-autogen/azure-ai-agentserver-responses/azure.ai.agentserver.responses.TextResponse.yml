@@ -1,0 +1,50 @@
+### YamlMime:PythonClass
+uid: azure.ai.agentserver.responses.TextResponse
+name: TextResponse
+fullName: azure.ai.agentserver.responses.TextResponse
+module: azure.ai.agentserver.responses
+summary: "A high-level convenience that produces a complete text-message response\
+  \ stream.\n\nImplements <xref:AsyncIterable> so it can be returned directly from\
+  \ a\n`response_handler`.\n\nHandles the full SSE lifecycle automatically:\n\n* `response.created`\
+  \ \u2192 `response.in_progress` \n\n* `response.output_item.added` (message) \n\n\
+  * `response.content_part.added` (text) \n\n* `response.output_text.delta` (one or\
+  \ more) \n\n* `response.output_text.done` \n\n* `response.content_part.done` \n\n\
+  * `response.output_item.done` \n\n* `response.completed` \n\n**Plain string**:\n\
+  \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+  : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"language\": \"default\",\
+  \ \"force\": false, \"linenos\": false} -->\n\n````default\n\n   return TextResponse(context,\
+  \ request, text=\"Hello!\")\n   ````\n\n**Callable (sync or async)**:\n\n<!-- literal_block\
+  \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\":\
+  \ [], \"xml:space\": \"preserve\", \"language\": \"default\", \"force\": false,\
+  \ \"linenos\": false} -->\n\n````default\n\n   return TextResponse(context, request,\n\
+  \       text=lambda: \"Hello!\")\n   ````\n\n**Async iterable (token streaming)**:\n\
+  \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+  : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"language\": \"default\",\
+  \ \"force\": false, \"linenos\": false} -->\n\n````default\n\n   async def tokens():\n\
+  \       for t in [\"Hello\", \", \", \"world!\"]:\n           yield t\n\n   return\
+  \ TextResponse(context, request, text=tokens())\n   ````"
+constructor:
+  syntax: 'TextResponse(context: ResponseContext, request: CreateResponse, *, text:
+    TextSource, configure: Callable[[''ResponseObject''], None] | None = None)'
+  parameters:
+  - name: context
+    description: The response context (provides the response ID).
+    isRequired: true
+  - name: request
+    description: The incoming create-response request.
+    isRequired: true
+  - name: text
+    description: "The text source \u2014 a plain string, a sync/async callable\nreturning\
+      \ a string, or an async iterable of string chunks for\ntoken-by-token streaming."
+    isRequired: true
+  - name: configure
+    description: 'An optional callback to configure the
+
+      <xref:azure.ai.agentserver.responses.ResponseObject> before `response.created`
+      is emitted.'
+    isRequired: true
+  keywordOnlyParameters:
+  - name: text
+    isRequired: true
+  - name: configure
+    defaultValue: None

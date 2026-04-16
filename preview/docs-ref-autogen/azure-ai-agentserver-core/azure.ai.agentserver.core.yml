@@ -2,17 +2,258 @@
 uid: azure.ai.agentserver.core
 name: core
 fullName: azure.ai.agentserver.core
+summary: "Azure AI AgentServerHost core framework.\n\n\nProvides the <xref:AgentServerHost>\
+  \ base class and shared utilities for\nbuilding Azure AI Hosted Agent containers.\n\
+  \n\nPublic API::\n\n\n    from azure.ai.agentserver.core import (\n        AgentConfig,\n\
+  \        AgentServerHost,\n        configure_observability,\n        create_error_response,\n\
+  \        detach_context,\n        end_span,\n        flush_spans,\n        record_error,\n\
+  \        set_current_span,\n        trace_stream,\n    )"
 type: rootImport
+functions:
+- uid: azure.ai.agentserver.core.build_server_version
+  name: build_server_version
+  summary: 'Build a standard version segment for the `x-platform-server` header.
+
+
+    Format: `{sdk_name}/{version} (python/{major}.{minor})`
+
+
+    Protocol packages call this during host initialisation and pass the
+
+    result to <xref:azure.ai.agentserver.core.AgentServerHost.register_server_version>.'
+  signature: 'build_server_version(sdk_name: str, version: str) -> str'
+  parameters:
+  - name: sdk_name
+    description: 'The SDK identifier
+
+      (e.g., `"azure-ai-agentserver-responses"`).'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: version
+    description: The package version string (e.g., `"1.0.0b1"`).
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: A formatted version string.
+    types:
+    - <xref:str>
+  exceptions:
+  - type: ValueError
+    description: If *sdk_name* or *version* is empty.
+- uid: azure.ai.agentserver.core.configure_observability
+  name: configure_observability
+  summary: 'Default observability setup: console logging + tracing/OTel export.
+
+
+    Attaches a formatted `StreamHandler` to the **root** logger so that
+
+    both SDK and user `logging.info()` calls are visible on the console.
+
+    Then configures OpenTelemetry tracing and log export (Azure Monitor
+
+    and/or OTLP) when a connection string or OTLP endpoint is available.
+
+
+    Pass this function (or a custom replacement) as the
+
+    `configure_observability` parameter of <xref:azure.ai.agentserver.core.AgentServerHost>.
+
+    Pass `None` to disable all SDK-managed observability setup.'
+  signature: 'configure_observability(*, connection_string: str | None = None, log_level:
+    str | None = None) -> None'
+  keywordOnlyParameters:
+  - name: connection_string
+    description: Application Insights connection string.
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:None>
+  - name: log_level
+    description: Log level name (e.g. `"INFO"`, `"DEBUG"`).
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:None>
+- uid: azure.ai.agentserver.core.create_error_response
+  name: create_error_response
+  summary: Build a `JSONResponse` with the standard error envelope.
+  signature: 'create_error_response(code: str, message: str, *, status_code: int,
+    error_type: str | None = None, details: list[dict[str, Any]] | None = None, headers:
+    dict[str, str] | None = None) -> JSONResponse'
+  parameters:
+  - name: code
+    description: Machine-readable error code (e.g. `"internal_error"`).
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: message
+    description: Human-readable error message.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: status_code
+    description: HTTP status code for the response.
+    types:
+    - <xref:int>
+  - name: error_type
+    description: 'Optional error type classification string.  When
+
+      provided, included as `"type"` in the error body.'
+    defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+  - name: details
+    description: 'Child error objects, each with at least `code` and
+
+      `message` keys.'
+    defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:list>[<xref:dict>[<xref:str>, <xref:typing.Any>]]]
+  - name: headers
+    description: Extra HTTP headers to include on the response.
+    defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:dict>[<xref:str>, <xref:str>]]
+  return:
+    description: A ready-to-send JSON error response.
+    types:
+    - <xref:JSONResponse>
+- uid: azure.ai.agentserver.core.detach_context
+  name: detach_context
+  summary: 'Detach a context previously attached by <xref:azure.ai.agentserver.core.set_current_span>.
+
+
+    Best-effort no-op when *token* is `None` or when the token is no
+
+    longer the current OpenTelemetry context.'
+  signature: 'detach_context(token: Any) -> None'
+  parameters:
+  - name: token
+    description: The token returned by <xref:azure.ai.agentserver.core.set_current_span>.
+    isRequired: true
+    types:
+    - <xref:typing.Any>
+- uid: azure.ai.agentserver.core.end_span
+  name: end_span
+  summary: 'End a span, optionally recording an error first.
+
+
+    No-op when *span* is `None`.'
+  signature: 'end_span(span: Any, exc: BaseException | None = None) -> None'
+  parameters:
+  - name: span
+    description: The OTel span to end, or `None`.
+    isRequired: true
+    types:
+    - <xref:any>
+  - name: exc
+    description: Optional exception to record before ending.
+    defaultValue: None
+    types:
+    - <xref:BaseException>
+    - <xref:None>
+- uid: azure.ai.agentserver.core.flush_spans
+  name: flush_spans
+  summary: "Flush all pending spans from the TracerProvider.\n\nThe `BatchSpanProcessor`\
+    \ buffers spans and exports them on a timer\n(default 5 seconds).  In hosted sandbox\
+    \ environments the platform may\nsuspend the process immediately after an HTTP\
+    \ response is sent, before\nthe batch timer fires.  Calling this function after\
+    \ ending the request\nspan ensures that all child spans \u2014 including short-lived\
+    \ ones created\nby third-party tracers (e.g. LangChain/LangGraph per-node spans)\
+    \ \u2014 are\nexported before the sandbox is frozen.\n\nNo-op when the OTel SDK\
+    \ is not installed or the provider does not\nsupport `force_flush`."
+  signature: 'flush_spans(timeout_millis: int = 5000) -> None'
+  parameters:
+  - name: timeout_millis
+    description: 'Maximum time to wait for the flush, in
+
+      milliseconds.  Defaults to 5000 (5 seconds).'
+    defaultValue: '5000'
+    types:
+    - <xref:int>
+- uid: azure.ai.agentserver.core.record_error
+  name: record_error
+  summary: 'Record an exception and ERROR status on a span.
+
+
+    Sets `error.type` and `otel.status.description` per OTel
+
+    semantic conventions.'
+  signature: 'record_error(span: Any, exc: BaseException) -> None'
+  parameters:
+  - name: span
+    description: The OTel span, or `None`.
+    isRequired: true
+    types:
+    - <xref:any>
+  - name: exc
+    description: The exception to record.
+    isRequired: true
+    types:
+    - <xref:BaseException>
+- uid: azure.ai.agentserver.core.set_current_span
+  name: set_current_span
+  summary: 'Set a span as the current span in the OTel context.
+
+
+    This makes *span* the active parent for any child spans created
+
+    by downstream code (e.g. framework handlers).  Without this,
+
+    spans created inside the handler would become siblings rather
+
+    than children of *span*.
+
+
+    Returns a context token that **must** be passed to
+
+    <xref:azure.ai.agentserver.core.detach_context> when the scope ends.  No-op when
+    *span*
+
+    is `None`.'
+  signature: 'set_current_span(span: Any) -> Any'
+  parameters:
+  - name: span
+    description: The OTel span to make current, or *None*.
+    isRequired: true
+    types:
+    - <xref:typing.Any>
+  return:
+    description: A context token, or *None*.
+    types:
+    - <xref:typing.Any>
+- uid: azure.ai.agentserver.core.trace_stream
+  name: trace_stream
+  summary: 'Wrap a streaming body so the span covers the full transmission.
+
+
+    Yields chunks unchanged.  Ends the span when the iterator is
+
+    exhausted or raises an exception.'
+  signature: 'async trace_stream(iterator: AsyncIterable[str | bytes | memoryview],
+    span: Any) -> AsyncIterator[str | bytes | memoryview]'
+  parameters:
+  - name: iterator
+    description: The async iterable to wrap.
+    isRequired: true
+    types:
+    - <xref:typing.AsyncIterable>[<xref:str>
+    - <xref:bytes>
+    - <xref:memoryview>]
+  - name: span
+    description: The OTel span to end on completion, or `None`.
+    isRequired: true
+    types:
+    - <xref:any>
+  return:
+    description: An async iterator yielding chunks unchanged.
+    types:
+    - <xref:typing.AsyncIterator>[<xref:str>
+    - <xref:bytes>
+    - <xref:memoryview>]
 classes:
-- azure.ai.agentserver.core.AgentServerContext
-- azure.ai.agentserver.core.FoundryCBAgent
-packages:
-- azure.ai.agentserver.core.application
-- azure.ai.agentserver.core.checkpoints
-- azure.ai.agentserver.core.models
-- azure.ai.agentserver.core.server
-- azure.ai.agentserver.core.tools
-- azure.ai.agentserver.core.utils
-modules:
-- azure.ai.agentserver.core.constants
-- azure.ai.agentserver.core.logger
+- azure.ai.agentserver.core.AgentConfig
+- azure.ai.agentserver.core.AgentServerHost

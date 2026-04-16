@@ -1,0 +1,117 @@
+### YamlMime:PythonClass
+uid: azure.ai.agentserver.responses.streaming.TextContentBuilder
+name: TextContentBuilder
+fullName: azure.ai.agentserver.responses.streaming.TextContentBuilder
+module: azure.ai.agentserver.responses.streaming
+summary: "Scoped builder for a text content part within an output message item.\n\n\
+  Lifecycle: `emit_added()` \u2192 `emit_delta()` (0+) \u2192 `emit_text_done()`\n\
+  \u2192 `emit_annotation_added()` (0+) \u2192 `emit_done()`.\n\nInitialize the text\
+  \ content builder."
+constructor:
+  syntax: 'TextContentBuilder(stream: ResponseEventStream, output_index: int, content_index:
+    int, item_id: str)'
+  parameters:
+  - name: stream
+    description: The parent event stream.
+    isRequired: true
+    types:
+    - <xref:azure.ai.agentserver.responses.streaming.ResponseEventStream>
+  - name: output_index
+    description: Zero-based index of the parent output item.
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: content_index
+    description: Zero-based index of this content part.
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: item_id
+    description: Identifier of the parent output item.
+    isRequired: true
+    types:
+    - <xref:str>
+methods:
+- uid: azure.ai.agentserver.responses.streaming.TextContentBuilder.emit_added
+  name: emit_added
+  summary: Emit a `content_part.added` event for this text content.
+  signature: emit_added() -> ResponseContentPartAddedEvent
+  return:
+    description: The emitted event dict.
+    types:
+    - <xref:azure.ai.agentserver.responses.models.ResponseContentPartAddedEvent>
+  exceptions:
+  - type: ValueError
+    description: If the builder is not in `NOT_STARTED` state.
+- uid: azure.ai.agentserver.responses.streaming.TextContentBuilder.emit_annotation_added
+  name: emit_annotation_added
+  summary: Emit a text annotation added event.
+  signature: 'emit_annotation_added(annotation: Annotation) -> ResponseOutputTextAnnotationAddedEvent'
+  parameters:
+  - name: annotation
+    description: "The annotation to attach\u2014a typed\n<xref:azure.ai.agentserver.responses.models.Annotation>\
+      \ subclass."
+    isRequired: true
+    types:
+    - <xref:azure.ai.agentserver.responses.models.Annotation>
+  return:
+    description: The emitted event dict.
+    types:
+    - <xref:azure.ai.agentserver.responses.models.ResponseOutputTextAnnotationAddedEvent>
+- uid: azure.ai.agentserver.responses.streaming.TextContentBuilder.emit_delta
+  name: emit_delta
+  signature: 'emit_delta(text: str) -> ResponseTextDeltaEvent'
+  parameters:
+  - name: text
+    isRequired: true
+- uid: azure.ai.agentserver.responses.streaming.TextContentBuilder.emit_done
+  name: emit_done
+  summary: 'Emit a `content_part.done` event, closing this content part.
+
+
+    Must be called after `emit_text_done()`.'
+  signature: emit_done() -> ResponseContentPartDoneEvent
+  return:
+    description: The emitted event dict.
+    types:
+    - <xref:azure.ai.agentserver.responses.models.ResponseContentPartDoneEvent>
+  exceptions:
+  - type: ValueError
+    description: If text has not been finalized or builder is already done.
+- uid: azure.ai.agentserver.responses.streaming.TextContentBuilder.emit_text_done
+  name: emit_text_done
+  summary: 'Emit an `output_text.done` event with the merged final text.
+
+
+    Call this after all deltas have been emitted. After this, you may
+
+    call `emit_annotation_added()` and then `emit_done()`.'
+  signature: 'emit_text_done(final_text: str | None = None) -> ResponseTextDoneEvent'
+  parameters:
+  - name: final_text
+    description: Optional override for the final text; uses merged deltas if `None`.
+    defaultValue: None
+    types:
+    - <xref:str> | <xref:None>
+  return:
+    description: The emitted event dict.
+    types:
+    - <xref:azure.ai.agentserver.responses.models.ResponseTextDoneEvent>
+  exceptions:
+  - type: ValueError
+    description: If the builder is not in `ADDED` state or text is already done.
+attributes:
+- uid: azure.ai.agentserver.responses.streaming.TextContentBuilder.content_index
+  name: content_index
+  summary: Return the zero-based content part index.
+  return:
+    description: The content index.
+    types:
+    - <xref:int>
+- uid: azure.ai.agentserver.responses.streaming.TextContentBuilder.final_text
+  name: final_text
+  summary: Return the final merged text, or `None` if not yet done.
+  return:
+    description: The final text string.
+    types:
+    - <xref:str> | <xref:None>

@@ -1,0 +1,215 @@
+### YamlMime:PythonClass
+uid: azure.ai.agentserver.responses.ResponseProviderProtocol
+name: ResponseProviderProtocol
+fullName: azure.ai.agentserver.responses.ResponseProviderProtocol
+module: azure.ai.agentserver.responses
+summary: 'Protocol for response storage providers.
+
+
+  Implementations provide response envelope storage plus input/history item lookup.
+
+
+  Every operation accepts an optional `isolation` parameter (S-018).
+
+  Implementations MUST use it to partition data in multi-tenant
+
+  deployments.  When `None`, the provider operates without tenant
+
+  scoping (suitable for local development).'
+constructor:
+  syntax: ResponseProviderProtocol(*args, **kwargs)
+methods:
+- uid: azure.ai.agentserver.responses.ResponseProviderProtocol.create_response
+  name: create_response
+  summary: Persist a new response envelope and optional input/history references.
+  signature: 'async create_response(response: ResponseObject, input_items: Iterable[OutputItem]
+    | None, history_item_ids: Iterable[str] | None, *, isolation: IsolationContext
+    | None = None) -> None'
+  parameters:
+  - name: response
+    description: The response envelope to persist.
+    isRequired: true
+    types:
+    - <xref:azure.ai.agentserver.responses.models._generated.ResponseObject>
+  - name: input_items
+    description: Optional resolved output items to associate with the response.
+    isRequired: true
+    types:
+    - <xref:typing.Iterable>[<xref:azure.ai.agentserver.responses.models.OutputItem>]
+      | <xref:None>
+  - name: history_item_ids
+    description: Optional history item IDs to link to the response.
+    isRequired: true
+    types:
+    - <xref:typing.Iterable>[<xref:str>] | <xref:None>
+  keywordOnlyParameters:
+  - name: isolation
+    description: Isolation context for multi-tenant partitioning.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.IsolationContext> | <xref:None>
+  return:
+    types:
+    - <xref:None>
+- uid: azure.ai.agentserver.responses.ResponseProviderProtocol.delete_response
+  name: delete_response
+  summary: Delete a response envelope by ID.
+  signature: 'async delete_response(response_id: str, *, isolation: IsolationContext
+    | None = None) -> None'
+  parameters:
+  - name: response_id
+    description: The unique identifier of the response to delete.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: isolation
+    description: Isolation context for multi-tenant partitioning.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.IsolationContext> | <xref:None>
+  return:
+    types:
+    - <xref:None>
+  exceptions:
+  - type: KeyError
+    description: If the response does not exist.
+- uid: azure.ai.agentserver.responses.ResponseProviderProtocol.get_history_item_ids
+  name: get_history_item_ids
+  summary: Get history item IDs for a conversation chain scope.
+  signature: 'async get_history_item_ids(previous_response_id: str | None, conversation_id:
+    str | None, limit: int, *, isolation: IsolationContext | None = None) -> list[str]'
+  parameters:
+  - name: previous_response_id
+    description: Optional response ID to chain history from.
+    isRequired: true
+    types:
+    - <xref:str> | <xref:None>
+  - name: conversation_id
+    description: Optional conversation ID to scope history lookup.
+    isRequired: true
+    types:
+    - <xref:str> | <xref:None>
+  - name: limit
+    description: Maximum number of history item IDs to return.
+    isRequired: true
+    types:
+    - <xref:int>
+  keywordOnlyParameters:
+  - name: isolation
+    description: Isolation context for multi-tenant partitioning.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.IsolationContext> | <xref:None>
+  return:
+    description: A list of history item IDs within the given scope.
+    types:
+    - <xref:list>[<xref:str>]
+- uid: azure.ai.agentserver.responses.ResponseProviderProtocol.get_input_items
+  name: get_input_items
+  summary: Get response input/history items for one response ID using cursor pagination.
+  signature: 'async get_input_items(response_id: str, limit: int = 20, ascending:
+    bool = False, after: str | None = None, before: str | None = None, *, isolation:
+    IsolationContext | None = None) -> list[OutputItem]'
+  parameters:
+  - name: response_id
+    description: The unique identifier of the response whose items to fetch.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: limit
+    description: Maximum number of items to return. Defaults to 20.
+    defaultValue: '20'
+    types:
+    - <xref:int>
+  - name: ascending
+    description: Whether to return items in ascending order. Defaults to False.
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: after
+    description: Cursor ID; only return items after this ID.
+    defaultValue: None
+    types:
+    - <xref:str> | <xref:None>
+  - name: before
+    description: Cursor ID; only return items before this ID.
+    defaultValue: None
+    types:
+    - <xref:str> | <xref:None>
+  keywordOnlyParameters:
+  - name: isolation
+    description: Isolation context for multi-tenant partitioning.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.IsolationContext> | <xref:None>
+  return:
+    description: A list of output items matching the pagination criteria.
+    types:
+    - <xref:list>[<xref:azure.ai.agentserver.responses.models.OutputItem>]
+- uid: azure.ai.agentserver.responses.ResponseProviderProtocol.get_items
+  name: get_items
+  summary: Get items by ID (missing IDs produce `None` entries).
+  signature: 'async get_items(item_ids: Iterable[str], *, isolation: IsolationContext
+    | None = None) -> list[OutputItem | None]'
+  parameters:
+  - name: item_ids
+    description: The item identifiers to look up.
+    isRequired: true
+    types:
+    - <xref:typing.Iterable>[<xref:str>]
+  keywordOnlyParameters:
+  - name: isolation
+    description: Isolation context for multi-tenant partitioning.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.IsolationContext> | <xref:None>
+  return:
+    description: A list of output items in the same order as *item_ids*; missing items
+      are `None`.
+    types:
+    - <xref:list>[<xref:azure.ai.agentserver.responses.models.OutputItem> | <xref:None>]
+- uid: azure.ai.agentserver.responses.ResponseProviderProtocol.get_response
+  name: get_response
+  summary: Load one response envelope by ID.
+  signature: 'async get_response(response_id: str, *, isolation: IsolationContext
+    | None = None) -> ResponseObject'
+  parameters:
+  - name: response_id
+    description: The unique identifier of the response to retrieve.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: isolation
+    description: Isolation context for multi-tenant partitioning.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.IsolationContext> | <xref:None>
+  return:
+    description: The response envelope matching the given ID.
+    types:
+    - <xref:azure.ai.agentserver.responses.models._generated.ResponseObject>
+  exceptions:
+  - type: KeyError
+    description: If the response does not exist.
+- uid: azure.ai.agentserver.responses.ResponseProviderProtocol.update_response
+  name: update_response
+  summary: Persist an updated response envelope.
+  signature: 'async update_response(response: ResponseObject, *, isolation: IsolationContext
+    | None = None) -> None'
+  parameters:
+  - name: response
+    description: The response envelope with updated fields to persist.
+    isRequired: true
+    types:
+    - <xref:azure.ai.agentserver.responses.models._generated.ResponseObject>
+  keywordOnlyParameters:
+  - name: isolation
+    description: Isolation context for multi-tenant partitioning.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.IsolationContext> | <xref:None>
+  return:
+    types:
+    - <xref:None>

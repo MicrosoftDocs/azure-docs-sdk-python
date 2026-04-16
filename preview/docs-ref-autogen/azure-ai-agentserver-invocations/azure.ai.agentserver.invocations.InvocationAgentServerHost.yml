@@ -1,0 +1,309 @@
+### YamlMime:PythonClass
+uid: azure.ai.agentserver.invocations.InvocationAgentServerHost
+name: InvocationAgentServerHost
+fullName: azure.ai.agentserver.invocations.InvocationAgentServerHost
+module: azure.ai.agentserver.invocations
+summary: "Invocation protocol host for Azure AI Hosted Agents.\n\nA <xref:azure.ai.agentserver.core.AgentServerHost>\
+  \ subclass that adds\nthe invocation protocol endpoints.  Use the decorator methods\
+  \ to wire\nhandler functions to the endpoints.\n\nFor multi-protocol agents, compose\
+  \ via cooperative inheritance:\n\n<!-- literal_block {\"ids\": [], \"classes\":\
+  \ [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\": \"preserve\"\
+  , \"language\": \"default\", \"force\": false, \"linenos\": false} -->\n\n````default\n\
+  \n   class MyHost(InvocationAgentServerHost, ResponsesAgentServerHost):\n      \
+  \ pass\n   ````\n\nUsage:\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
+  names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\": \"preserve\", \"\
+  language\": \"default\", \"force\": false, \"linenos\": false} -->\n\n````default\n\
+  \n   from azure.ai.agentserver.invocations import InvocationAgentServerHost\n\n\
+  \   app = InvocationAgentServerHost()\n\n   @app.invoke_handler\n   async def handle(request):\n\
+  \       return JSONResponse({\"ok\": True})\n\n   app.run()\n   ````"
+constructor:
+  syntax: 'InvocationAgentServerHost(*, openapi_spec: dict[str, Any] | None = None,
+    **kwargs: Any)'
+  parameters:
+  - name: openapi_spec
+    description: 'Optional OpenAPI spec dict.  When provided, the spec
+
+      is served at `GET /invocations/docs/openapi.json`.'
+    isRequired: true
+    types:
+    - <xref:typing.Optional>[<xref:dict>[<xref:str>, <xref:typing.Any>]]
+  keywordOnlyParameters:
+  - name: openapi_spec
+    defaultValue: None
+methods:
+- uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.add_exception_handler
+  name: add_exception_handler
+  signature: 'add_exception_handler(exc_class_or_status_code: int | type[Exception],
+    handler: ExceptionHandler) -> None'
+  parameters:
+  - name: exc_class_or_status_code
+    isRequired: true
+  - name: handler
+    isRequired: true
+- uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.add_middleware
+  name: add_middleware
+  signature: 'add_middleware(middleware_class: ~starlette.middleware._MiddlewareFactory[~P],
+    *args: ~typing.~P, **kwargs: ~typing.~P) -> None'
+  parameters:
+  - name: middleware_class
+    isRequired: true
+- uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.add_route
+  name: add_route
+  signature: 'add_route(path: str, route: Callable[[Request], Awaitable[Response]
+    | Response], methods: list[str] | None = None, name: str | None = None, include_in_schema:
+    bool = True) -> None'
+  parameters:
+  - name: path
+    isRequired: true
+  - name: route
+    isRequired: true
+  - name: methods
+    defaultValue: None
+  - name: name
+    defaultValue: None
+  - name: include_in_schema
+    defaultValue: 'True'
+- uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.build_middleware_stack
+  name: build_middleware_stack
+  signature: build_middleware_stack() -> Callable[[MutableMapping[str, Any], Callable[[],
+    Awaitable[MutableMapping[str, Any]]], Callable[[MutableMapping[str, Any]], Awaitable[None]]],
+    Awaitable[None]]
+- uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.cancel_invocation_handler
+  name: cancel_invocation_handler
+  summary: Register a function as the cancel-invocation handler.
+  signature: 'cancel_invocation_handler(fn: Callable[[Request], Awaitable[Response]])
+    -> Callable[[Request], Awaitable[Response]]'
+  parameters:
+  - name: fn
+    description: Async function accepting a Starlette Request and returning a Response.
+    isRequired: true
+    types:
+    - <xref:typing.Callable>[[<xref:Request>], <xref:typing.Awaitable>[<xref:Response>]]
+  return:
+    description: The original function (unmodified).
+    types:
+    - <xref:typing.Callable>[[<xref:Request>], <xref:typing.Awaitable>[<xref:Response>]]
+  exceptions:
+  - type: TypeError
+    description: If *fn* is not an async function.
+- uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.get_invocation_handler
+  name: get_invocation_handler
+  summary: Register a function as the get-invocation handler.
+  signature: 'get_invocation_handler(fn: Callable[[Request], Awaitable[Response]])
+    -> Callable[[Request], Awaitable[Response]]'
+  parameters:
+  - name: fn
+    description: Async function accepting a Starlette Request and returning a Response.
+    isRequired: true
+    types:
+    - <xref:typing.Callable>[[<xref:Request>], <xref:typing.Awaitable>[<xref:Response>]]
+  return:
+    description: The original function (unmodified).
+    types:
+    - <xref:typing.Callable>[[<xref:Request>], <xref:typing.Awaitable>[<xref:Response>]]
+  exceptions:
+  - type: TypeError
+    description: If *fn* is not an async function.
+- uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.get_openapi_spec
+  name: get_openapi_spec
+  summary: Return the stored OpenAPI spec, or None.
+  signature: get_openapi_spec() -> dict[str, Any] | None
+- uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.host
+  name: host
+  signature: 'host(host: str, app: Callable[[MutableMapping[str, Any], Callable[[],
+    Awaitable[MutableMapping[str, Any]]], Callable[[MutableMapping[str, Any]], Awaitable[None]]],
+    Awaitable[None]], name: str | None = None) -> None'
+  parameters:
+  - name: host
+    isRequired: true
+  - name: app
+    isRequired: true
+  - name: name
+    defaultValue: None
+- uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.invoke_handler
+  name: invoke_handler
+  summary: "Register a function as the invoke handler.\n\nUsage:\n\n<!-- literal_block\
+    \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
+    : [], \"xml:space\": \"preserve\", \"language\": \"default\", \"force\": false,\
+    \ \"linenos\": false} -->\n\n````default\n\n   @invocations.invoke_handler\n \
+    \  async def handle(request: Request) -> Response:\n       ...\n   ````"
+  signature: 'invoke_handler(fn: Callable[[Request], Awaitable[Response]]) -> Callable[[Request],
+    Awaitable[Response]]'
+  parameters:
+  - name: fn
+    description: Async function accepting a Starlette Request and returning a Response.
+    isRequired: true
+    types:
+    - <xref:typing.Callable>[[<xref:Request>], <xref:typing.Awaitable>[<xref:Response>]]
+  return:
+    description: The original function (unmodified).
+    types:
+    - <xref:typing.Callable>[[<xref:Request>], <xref:typing.Awaitable>[<xref:Response>]]
+  exceptions:
+  - type: TypeError
+    description: If *fn* is not an async function.
+- uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.mount
+  name: mount
+  signature: 'mount(path: str, app: Callable[[MutableMapping[str, Any], Callable[[],
+    Awaitable[MutableMapping[str, Any]]], Callable[[MutableMapping[str, Any]], Awaitable[None]]],
+    Awaitable[None]], name: str | None = None) -> None'
+  parameters:
+  - name: path
+    isRequired: true
+  - name: app
+    isRequired: true
+  - name: name
+    defaultValue: None
+- uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.register_server_version
+  name: register_server_version
+  summary: "Register a version segment for the `x-platform-server` header.\n\nProtocol\
+    \ packages (e.g. responses, invocations) call this in their\n`__init__` to add\
+    \ their own portion.  Handler developers can also\ncall it to append a custom\
+    \ version string.  Duplicates are ignored.\n\nUse <xref:azure.ai.agentserver.core.build_server_version>\
+    \ to\nbuild a standard segment:\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\": \"preserve\"\
+    , \"language\": \"default\", \"force\": false, \"linenos\": false} -->\n\n````default\n\
+    \n   from azure.ai.agentserver.core import build_server_version\n\n   app.register_server_version(\n\
+    \       build_server_version(\"my-library\", \"2.0.0\")\n   )\n   ````"
+  signature: 'register_server_version(version_segment: str) -> None'
+  parameters:
+  - name: version_segment
+    description: The version string to register.
+    isRequired: true
+    types:
+    - <xref:str>
+  exceptions:
+  - type: ValueError
+    description: If *version_segment* is empty or whitespace-only.
+- uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.request_span
+  name: request_span
+  summary: 'Create a request-scoped span with this host''s identity attributes.
+
+
+    Delegates to <xref:_tracing.request_span> with pre-populated
+
+    agent identity from environment variables.'
+  signature: 'request_span(headers: Any, request_id: str, operation: str, *, operation_name:
+    str | None = None, session_id: str = '''', end_on_exit: bool = True) -> Any'
+  parameters:
+  - name: headers
+    description: HTTP request headers.
+    isRequired: true
+    types:
+    - <xref:any>
+  - name: request_id
+    description: The request/invocation ID.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: operation
+    description: Span operation (e.g. `"invoke_agent"`).
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: operation_name
+    description: Optional `gen_ai.operation.name` value.
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:None>
+  - name: session_id
+    description: Session ID.
+    types:
+    - <xref:str>
+  - name: end_on_exit
+    description: Whether to end the span when the context exits.
+    defaultValue: 'True'
+    types:
+    - <xref:bool>
+  return:
+    description: Context manager yielding the OTel span.
+    types:
+    - <xref:any>
+- uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.run
+  name: run
+  summary: Start the server synchronously.
+  signature: 'run(host: str = ''0.0.0.0'', port: int | None = None) -> None'
+  parameters:
+  - name: host
+    description: Network interface to bind. Defaults to `"0.0.0.0"`.
+    defaultValue: 0.0.0.0
+    types:
+    - <xref:str>
+  - name: port
+    description: Port to bind. Defaults to `PORT` env var or 8088.
+    defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:int>]
+- uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.run_async
+  name: run_async
+  summary: Start the server asynchronously (awaitable).
+  signature: 'async run_async(host: str = ''0.0.0.0'', port: int | None = None) ->
+    None'
+  parameters:
+  - name: host
+    description: Network interface to bind. Defaults to `"0.0.0.0"`.
+    defaultValue: 0.0.0.0
+    types:
+    - <xref:str>
+  - name: port
+    description: Port to bind. Defaults to `PORT` env var or 8088.
+    defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:int>]
+- uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.shutdown_handler
+  name: shutdown_handler
+  summary: Register a function as the shutdown handler.
+  signature: 'shutdown_handler(fn: Callable[[], Awaitable[None]]) -> Callable[[],
+    Awaitable[None]]'
+  parameters:
+  - name: fn
+    description: Async function called during graceful shutdown.
+    isRequired: true
+    types:
+    - <xref:typing.Callable>[[], <xref:typing.Awaitable>[<xref:None>]]
+  return:
+    description: The original function (unmodified).
+    types:
+    - <xref:typing.Callable>[[], <xref:typing.Awaitable>[<xref:None>]]
+- uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.sse_keepalive_stream
+  name: sse_keepalive_stream
+  summary: 'Interleave SSE keep-alive comment frames into a streaming body.
+
+
+    Emits `b": keep-alive\n\n"` whenever the upstream iterator has not
+
+    produced a chunk within *interval* seconds.  This prevents
+
+    proxies/load-balancers from closing idle connections.'
+  signature: 'async static sse_keepalive_stream(iterator: AsyncIterable[str | bytes
+    | memoryview], interval: int) -> AsyncIterator[str | bytes | memoryview]'
+  parameters:
+  - name: iterator
+    description: The async iterable to wrap.
+    isRequired: true
+    types:
+    - <xref:typing.AsyncIterable>[<xref:str>
+    - <xref:bytes>
+    - <xref:memoryview>]
+  - name: interval
+    description: Seconds between keep-alive frames. Must be > 0.
+    isRequired: true
+    types:
+    - <xref:int>
+  return:
+    description: An async iterator with interleaved keep-alive frames.
+    types:
+    - <xref:typing.AsyncIterator>[<xref:str>
+    - <xref:bytes>
+    - <xref:memoryview>]
+- uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.url_path_for
+  name: url_path_for
+  signature: 'url_path_for(name: str, /, **path_params: Any) -> URLPath'
+  positionalOnlyParameters:
+  - name: name
+    isRequired: true
+attributes:
+- uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.routes
+  name: routes

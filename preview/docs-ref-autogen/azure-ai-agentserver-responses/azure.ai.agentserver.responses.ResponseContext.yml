@@ -1,0 +1,102 @@
+### YamlMime:PythonClass
+uid: azure.ai.agentserver.responses.ResponseContext
+name: ResponseContext
+fullName: azure.ai.agentserver.responses.ResponseContext
+module: azure.ai.agentserver.responses
+summary: "Runtime context exposed to response handlers and used by hosting orchestration.\n\
+  \n* response identifier \n\n* shutdown signal flag \n\n* async input/history resolution"
+constructor:
+  syntax: 'ResponseContext(*, response_id: str, mode_flags: ResponseModeFlags, request:
+    CreateResponse | None = None, created_at: datetime | None = None, provider: ResponseProviderProtocol
+    | None = None, input_items: list[InputParam] | list[OutputItem] | None = None,
+    previous_response_id: str | None = None, conversation_id: str | None = None, history_limit:
+    int = 100, client_headers: dict[str, str] | None = None, query_parameters: dict[str,
+    str] | None = None, isolation: IsolationContext | None = None)'
+  keywordOnlyParameters:
+  - name: response_id
+    isRequired: true
+  - name: mode_flags
+    isRequired: true
+  - name: request
+    defaultValue: None
+  - name: created_at
+    defaultValue: None
+  - name: provider
+    defaultValue: None
+  - name: input_items
+    defaultValue: None
+  - name: previous_response_id
+    defaultValue: None
+  - name: conversation_id
+    defaultValue: None
+  - name: history_limit
+    defaultValue: '100'
+  - name: client_headers
+    defaultValue: None
+  - name: query_parameters
+    defaultValue: None
+  - name: isolation
+    defaultValue: None
+methods:
+- uid: azure.ai.agentserver.responses.ResponseContext.get_history
+  name: get_history
+  summary: Resolve and cache conversation history items via the provider.
+  signature: async get_history() -> Sequence[OutputItem]
+  return:
+    description: A tuple of conversation history items.
+    types:
+    - <xref:typing.Sequence>[<xref:azure.ai.agentserver.responses.models.OutputItem>]
+- uid: azure.ai.agentserver.responses.ResponseContext.get_input_items
+  name: get_input_items
+  summary: "Return the caller's input items as <xref:azure.ai.agentserver.responses.Item>\
+    \ subtypes.\n\nInline items are returned as-is \u2014 the same <xref:azure.ai.agentserver.responses.Item>\
+    \ subtypes from\nthe original request (e.g. <xref:azure.ai.agentserver.responses.ItemMessage>,\n\
+    <xref:azure.ai.agentserver.responses.FunctionCallOutputItemParam>).\n<xref:azure.ai.agentserver.responses.ItemReferenceParam>\
+    \ entries are batch-resolved via the\nprovider and converted back to <xref:azure.ai.agentserver.responses.Item>\
+    \ subtypes.\nUnresolvable references (provider returns `None`) are silently dropped."
+  signature: 'async get_input_items(*, resolve_references: bool = True) -> Sequence[Item]'
+  keywordOnlyParameters:
+  - name: resolve_references
+    description: 'When `True` (default),
+
+      <xref:azure.ai.agentserver.responses.ItemReferenceParam> items are resolved
+      via the provider and
+
+      returned as their concrete <xref:azure.ai.agentserver.responses.Item> subtype.  When
+      `False`,
+
+      item references are left as <xref:azure.ai.agentserver.responses.ItemReferenceParam>
+      in the
+
+      returned sequence.'
+    defaultValue: 'True'
+  return:
+    description: A tuple of input items.
+    types:
+    - <xref:typing.Sequence>[<xref:azure.ai.agentserver.responses.models.Item>]
+- uid: azure.ai.agentserver.responses.ResponseContext.get_input_text
+  name: get_input_text
+  summary: 'Resolve input items and extract all text content as a single string.
+
+
+    Convenience method that calls <xref:azure.ai.agentserver.responses.ResponseContext.get_input_items>,
+    filters for
+
+    <xref:azure.ai.agentserver.responses.ItemMessage> items, expands their content,
+    and joins all
+
+    <xref:azure.ai.agentserver.responses.MessageContentInputTextContent> text values
+    with newline
+
+    separators.'
+  signature: 'async get_input_text(*, resolve_references: bool = True) -> str'
+  keywordOnlyParameters:
+  - name: resolve_references
+    description: 'When `True` (default), item references
+
+      are resolved before extracting text.'
+    defaultValue: 'True'
+  return:
+    description: The combined text content, or `""` if no text found.
+    types:
+    - <xref:str>
