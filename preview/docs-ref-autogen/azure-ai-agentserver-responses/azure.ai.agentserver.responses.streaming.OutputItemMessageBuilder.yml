@@ -1,0 +1,168 @@
+### YamlMime:PythonClass
+uid: azure.ai.agentserver.responses.streaming.OutputItemMessageBuilder
+name: OutputItemMessageBuilder
+fullName: azure.ai.agentserver.responses.streaming.OutputItemMessageBuilder
+module: azure.ai.agentserver.responses.streaming
+summary: 'Scoped builder for a message output item in stream mode.
+
+
+  Initialize the message output item builder.'
+constructor:
+  syntax: 'OutputItemMessageBuilder(stream: ResponseEventStream, output_index: int,
+    item_id: str)'
+  parameters:
+  - name: stream
+    description: The parent event stream.
+    isRequired: true
+    types:
+    - <xref:azure.ai.agentserver.responses.streaming.ResponseEventStream>
+  - name: output_index
+    description: Zero-based index of this output item.
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: item_id
+    description: Unique identifier for this output item.
+    isRequired: true
+    types:
+    - <xref:str>
+methods:
+- uid: azure.ai.agentserver.responses.streaming.OutputItemMessageBuilder.add_refusal_content
+  name: add_refusal_content
+  summary: Create and return a refusal content part builder.
+  signature: add_refusal_content() -> RefusalContentBuilder
+  return:
+    description: A new refusal content builder scoped to this message.
+    types:
+    - <xref:azure.ai.agentserver.responses.streaming.RefusalContentBuilder>
+- uid: azure.ai.agentserver.responses.streaming.OutputItemMessageBuilder.add_text_content
+  name: add_text_content
+  summary: Create and return a text content part builder.
+  signature: add_text_content() -> TextContentBuilder
+  return:
+    description: A new text content builder scoped to this message.
+    types:
+    - <xref:azure.ai.agentserver.responses.streaming.TextContentBuilder>
+- uid: azure.ai.agentserver.responses.streaming.OutputItemMessageBuilder.arefusal_content
+  name: arefusal_content
+  summary: 'Async variant of <xref:azure.ai.agentserver.responses.streaming.OutputItemMessageBuilder.refusal_content>
+    with streaming support.
+
+
+    When *text* is a string, behaves identically to <xref:azure.ai.agentserver.responses.streaming.OutputItemMessageBuilder.refusal_content>.
+
+    When *text* is an async iterable of string chunks, emits one
+
+    `refusal.delta` per chunk in real time (S-055), then
+
+    `refusal.done` with the accumulated text.'
+  signature: 'async arefusal_content(text: str | AsyncIterable[str]) -> AsyncIterator[ResponseStreamEvent]'
+  parameters:
+  - name: text
+    description: Complete refusal text or async iterable of text chunks.
+    isRequired: true
+    types:
+    - <xref:str> | <xref:typing.AsyncIterable>[<xref:str>]
+  return:
+    description: An async iterator of event dicts.
+    types:
+    - <xref:typing.AsyncIterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
+- uid: azure.ai.agentserver.responses.streaming.OutputItemMessageBuilder.atext_content
+  name: atext_content
+  summary: 'Async variant of <xref:azure.ai.agentserver.responses.streaming.OutputItemMessageBuilder.text_content>
+    with streaming support.
+
+
+    When *text* is a string, behaves identically to <xref:azure.ai.agentserver.responses.streaming.OutputItemMessageBuilder.text_content>.
+
+    When *text* is an async iterable of string chunks, emits one
+
+    `output_text.delta` per chunk in real time (S-055), then
+
+    `output_text.done` with the accumulated text.'
+  signature: 'async atext_content(text: str | AsyncIterable[str]) -> AsyncIterator[ResponseStreamEvent]'
+  parameters:
+  - name: text
+    description: Complete text or async iterable of text chunks.
+    isRequired: true
+    types:
+    - <xref:str> | <xref:typing.AsyncIterable>[<xref:str>]
+  return:
+    description: An async iterator of event dicts.
+    types:
+    - <xref:typing.AsyncIterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
+- uid: azure.ai.agentserver.responses.streaming.OutputItemMessageBuilder.emit_added
+  name: emit_added
+  summary: Emit an `output_item.added` event for this message item.
+  signature: emit_added() -> ResponseOutputItemAddedEvent
+  return:
+    description: The emitted event dict.
+    types:
+    - <xref:azure.ai.agentserver.responses.models.ResponseOutputItemAddedEvent>
+- uid: azure.ai.agentserver.responses.streaming.OutputItemMessageBuilder.emit_done
+  name: emit_done
+  summary: 'Emit an `output_item.done` event for this message item.
+
+
+    Builds the content list from the tracked child content builders.'
+  signature: emit_done() -> ResponseOutputItemDoneEvent
+  return:
+    description: The emitted event dict.
+    types:
+    - <xref:azure.ai.agentserver.responses.models.ResponseOutputItemDoneEvent>
+  exceptions:
+  - type: ValueError
+    description: If no content parts have been created.
+- uid: azure.ai.agentserver.responses.streaming.OutputItemMessageBuilder.refusal_content
+  name: refusal_content
+  summary: 'Yield the full lifecycle for a refusal content part.
+
+
+    Creates the sub-builder, emits `content_part.added`,
+
+    `refusal.delta`, `refusal.done`, and `content_part.done`.'
+  signature: 'refusal_content(text: str) -> Iterator[ResponseStreamEvent]'
+  parameters:
+  - name: text
+    description: The complete refusal text.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: An iterator of event dicts.
+    types:
+    - <xref:typing.Iterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
+- uid: azure.ai.agentserver.responses.streaming.OutputItemMessageBuilder.text_content
+  name: text_content
+  summary: 'Yield the full lifecycle for a text content part.
+
+
+    Creates the sub-builder, emits `content_part.added`,
+
+    `output_text.delta`, `output_text.done`, and `content_part.done`.'
+  signature: 'text_content(text: str) -> Iterator[ResponseStreamEvent]'
+  parameters:
+  - name: text
+    description: The complete text content.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: An iterator of event dicts.
+    types:
+    - <xref:typing.Iterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
+attributes:
+- uid: azure.ai.agentserver.responses.streaming.OutputItemMessageBuilder.item_id
+  name: item_id
+  summary: Return the output item identifier.
+  return:
+    description: The item ID.
+    types:
+    - <xref:str>
+- uid: azure.ai.agentserver.responses.streaming.OutputItemMessageBuilder.output_index
+  name: output_index
+  summary: Return the zero-based output index.
+  return:
+    description: The output index.
+    types:
+    - <xref:int>

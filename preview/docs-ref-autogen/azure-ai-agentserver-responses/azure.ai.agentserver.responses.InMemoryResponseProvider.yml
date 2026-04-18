@@ -1,0 +1,526 @@
+### YamlMime:PythonClass
+uid: azure.ai.agentserver.responses.InMemoryResponseProvider
+name: InMemoryResponseProvider
+fullName: azure.ai.agentserver.responses.InMemoryResponseProvider
+module: azure.ai.agentserver.responses
+summary: 'In-memory provider implementing both `ResponseProviderProtocol` and `ResponseStreamProviderProtocol`.
+
+
+  Initialize in-memory state and an async mutation lock.'
+constructor:
+  syntax: InMemoryResponseProvider()
+methods:
+- uid: azure.ai.agentserver.responses.InMemoryResponseProvider.append_stream_event
+  name: append_stream_event
+  summary: Append one stream event to replay state for an existing execution.
+  signature: 'async append_stream_event(response_id: str, event: StreamEventRecord,
+    *, ttl_seconds: int | None = None) -> bool'
+  parameters:
+  - name: response_id
+    description: The unique identifier of the response to append the event to.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: event
+    description: The stream event record to append.
+    isRequired: true
+    types:
+    - <xref:azure.ai.agentserver.responses.models.runtime.StreamEventRecord>
+  keywordOnlyParameters:
+  - name: ttl_seconds
+    description: Optional time-to-live in seconds to refresh expiration.
+    defaultValue: None
+    types:
+    - <xref:int>
+    - <xref:None>
+  return:
+    description: '`True` if the entry was found and the event was appended, `False`
+      otherwise.'
+    types:
+    - <xref:bool>
+- uid: azure.ai.agentserver.responses.InMemoryResponseProvider.create_execution
+  name: create_execution
+  summary: Create a new execution and replay container for `execution.response_id`.
+  signature: 'async create_execution(execution: ResponseExecution, *, ttl_seconds:
+    int | None = None) -> None'
+  parameters:
+  - name: execution
+    description: The execution state to store.
+    isRequired: true
+    types:
+    - <xref:azure.ai.agentserver.responses.models.runtime.ResponseExecution>
+  keywordOnlyParameters:
+  - name: ttl_seconds
+    description: Optional time-to-live in seconds for automatic expiration.
+    defaultValue: None
+    types:
+    - <xref:int>
+    - <xref:None>
+  return:
+    types:
+    - <xref:None>
+  exceptions:
+  - type: ValueError
+    description: If an entry with the same response ID already exists.
+- uid: azure.ai.agentserver.responses.InMemoryResponseProvider.create_response
+  name: create_response
+  summary: 'Persist a new response envelope and optional input/history references.
+
+
+    Stores a deep copy of the response, indexes input items by their IDs,
+
+    and tracks conversation membership for history resolution.'
+  signature: 'async create_response(response: ResponseObject, input_items: Iterable[OutputItem]
+    | None, history_item_ids: Iterable[str] | None, *, isolation: IsolationContext
+    | None = None) -> None'
+  parameters:
+  - name: response
+    description: The response envelope to persist.
+    isRequired: true
+    types:
+    - <xref:azure.ai.agentserver.responses.models._generated.Response>
+  - name: input_items
+    description: Optional resolved output items to associate with the response.
+    isRequired: true
+    types:
+    - <xref:typing.Iterable>[<xref:azure.ai.agentserver.responses.models.OutputItem>]
+      | <xref:None>
+  - name: history_item_ids
+    description: Optional history item IDs to link to the response.
+    isRequired: true
+    types:
+    - <xref:typing.Iterable>[<xref:str>] | <xref:None>
+  keywordOnlyParameters:
+  - name: isolation
+    description: Isolation context for multi-tenant partitioning.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.IsolationContext> | <xref:None>
+  return:
+    types:
+    - <xref:None>
+  exceptions:
+  - type: ValueError
+    description: If a non-deleted response with the same ID already exists.
+- uid: azure.ai.agentserver.responses.InMemoryResponseProvider.delete
+  name: delete
+  summary: 'Delete all state for a response ID if present.
+
+
+    Removes the entry entirely from the store (unlike `delete_response`
+
+    which soft-deletes).'
+  signature: 'async delete(response_id: str) -> bool'
+  parameters:
+  - name: response_id
+    description: The unique identifier of the response to remove.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: '`True` if an entry was found and removed, `False` otherwise.'
+    types:
+    - <xref:bool>
+- uid: azure.ai.agentserver.responses.InMemoryResponseProvider.delete_response
+  name: delete_response
+  summary: 'Delete a stored response envelope by identifier.
+
+
+    Marks the entry as deleted and clears the response payload.'
+  signature: 'async delete_response(response_id: str, *, isolation: IsolationContext
+    | None = None) -> None'
+  parameters:
+  - name: response_id
+    description: The unique identifier of the response to delete.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: isolation
+    description: Isolation context for multi-tenant partitioning.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.IsolationContext> | <xref:None>
+  return:
+    types:
+    - <xref:None>
+  exceptions:
+  - type: KeyError
+    description: If the response does not exist or has already been deleted.
+- uid: azure.ai.agentserver.responses.InMemoryResponseProvider.delete_stream_events
+  name: delete_stream_events
+  summary: Delete persisted SSE events for `response_id`.
+  signature: 'async delete_stream_events(response_id: str, *, isolation: IsolationContext
+    | None = None) -> None'
+  parameters:
+  - name: response_id
+    description: The unique identifier of the response whose events to remove.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: isolation
+    description: Isolation context for multi-tenant partitioning.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.IsolationContext> | <xref:None>
+  return:
+    types:
+    - <xref:None>
+- uid: azure.ai.agentserver.responses.InMemoryResponseProvider.get_execution
+  name: get_execution
+  summary: Get a defensive copy of execution state for `response_id` if present.
+  signature: 'async get_execution(response_id: str) -> ResponseExecution | None'
+  parameters:
+  - name: response_id
+    description: The unique identifier of the response execution to retrieve.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: A deep copy of the execution state, or `None` if not found.
+    types:
+    - <xref:azure.ai.agentserver.responses.models.runtime.ResponseExecution> | <xref:None>
+- uid: azure.ai.agentserver.responses.InMemoryResponseProvider.get_history_item_ids
+  name: get_history_item_ids
+  summary: 'Resolve history item IDs from previous response and/or conversation scope.
+
+
+    Collects history item IDs from the previous response chain and/or
+
+    all responses within the given conversation, up to *limit*.'
+  signature: 'async get_history_item_ids(previous_response_id: str | None, conversation_id:
+    str | None, limit: int, *, isolation: IsolationContext | None = None) -> list[str]'
+  parameters:
+  - name: previous_response_id
+    description: Optional response ID to chain history from.
+    isRequired: true
+    types:
+    - <xref:str> | <xref:None>
+  - name: conversation_id
+    description: Optional conversation ID to scope history lookup.
+    isRequired: true
+    types:
+    - <xref:str> | <xref:None>
+  - name: limit
+    description: Maximum number of history item IDs to return.
+    isRequired: true
+    types:
+    - <xref:int>
+  keywordOnlyParameters:
+  - name: isolation
+    description: Isolation context for multi-tenant partitioning.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.IsolationContext> | <xref:None>
+  return:
+    description: A list of history item IDs within the given scope.
+    types:
+    - <xref:list>[<xref:str>]
+- uid: azure.ai.agentserver.responses.InMemoryResponseProvider.get_input_items
+  name: get_input_items
+  summary: 'Retrieve input/history items for a response with basic cursor paging.
+
+
+    Returns deep copies of stored items, combining history and input item IDs
+
+    with optional cursor-based pagination.'
+  signature: 'async get_input_items(response_id: str, limit: int = 20, ascending:
+    bool = False, after: str | None = None, before: str | None = None, *, isolation:
+    IsolationContext | None = None) -> list[azure.ai.agentserver.responses.models._generated.sdk.models.models._models.OutputItem]'
+  parameters:
+  - name: response_id
+    description: The unique identifier of the response whose items to fetch.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: limit
+    description: "Maximum number of items to return (clamped to 1\u2013100). Defaults\
+      \ to 20."
+    defaultValue: '20'
+    types:
+    - <xref:int>
+  - name: ascending
+    description: Whether to return items in ascending order. Defaults to False.
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: after
+    description: Cursor ID; only return items after this ID.
+    defaultValue: None
+    types:
+    - <xref:str> | <xref:None>
+  - name: before
+    description: Cursor ID; only return items before this ID.
+    defaultValue: None
+    types:
+    - <xref:str> | <xref:None>
+  keywordOnlyParameters:
+  - name: isolation
+    description: Isolation context for multi-tenant partitioning.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.IsolationContext> | <xref:None>
+  return:
+    description: A list of input/history items matching the pagination criteria.
+    types:
+    - <xref:list>[<xref:azure.ai.agentserver.responses.models.OutputItem>]
+  exceptions:
+  - type: KeyError
+    description: If the response does not exist.
+  - type: ValueError
+    description: If the response has been deleted.
+- uid: azure.ai.agentserver.responses.InMemoryResponseProvider.get_items
+  name: get_items
+  summary: 'Retrieve items by ID, preserving request order.
+
+
+    Returns deep copies of stored items. Missing IDs produce `None` entries.'
+  signature: 'async get_items(item_ids: Iterable[str], *, isolation: IsolationContext
+    | None = None) -> list[azure.ai.agentserver.responses.models._generated.sdk.models.models._models.OutputItem
+    | None]'
+  parameters:
+  - name: item_ids
+    description: The item identifiers to look up.
+    isRequired: true
+    types:
+    - <xref:typing.Iterable>[<xref:str>]
+  keywordOnlyParameters:
+  - name: isolation
+    description: Isolation context for multi-tenant partitioning.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.IsolationContext> | <xref:None>
+  return:
+    description: A list of output items in the same order as *item_ids*; missing items
+      are `None`.
+    types:
+    - <xref:list>[<xref:azure.ai.agentserver.responses.models.OutputItem> | <xref:None>]
+- uid: azure.ai.agentserver.responses.InMemoryResponseProvider.get_replay_events
+  name: get_replay_events
+  summary: 'Get defensive copies of replay events for `response_id`, filtering out
+    expired events.
+
+
+    Events older than the entry''s `replay_event_ttl_seconds` (default 600s / 10 minutes,
+
+    per spec B35) are excluded from the returned list.'
+  signature: 'async get_replay_events(response_id: str) -> list[azure.ai.agentserver.responses.models.runtime.StreamEventRecord]
+    | None'
+  parameters:
+  - name: response_id
+    description: The unique identifier of the response whose events to retrieve.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: A list of deep-copied stream event records, or `None` if not found.
+    types:
+    - <xref:list>[<xref:azure.ai.agentserver.responses.models.runtime.StreamEventRecord>]
+      | <xref:None>
+- uid: azure.ai.agentserver.responses.InMemoryResponseProvider.get_response
+  name: get_response
+  summary: Retrieve one response envelope by identifier.
+  signature: 'async get_response(response_id: str, *, isolation: IsolationContext
+    | None = None) -> ResponseObject'
+  parameters:
+  - name: response_id
+    description: The unique identifier of the response to retrieve.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: isolation
+    description: Isolation context for multi-tenant partitioning.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.IsolationContext> | <xref:None>
+  return:
+    description: A deep copy of the stored response envelope.
+    types:
+    - <xref:azure.ai.agentserver.responses.models._generated.Response>
+  exceptions:
+  - type: KeyError
+    description: If the response does not exist or has been deleted.
+- uid: azure.ai.agentserver.responses.InMemoryResponseProvider.get_stream_events
+  name: get_stream_events
+  summary: 'Retrieve the persisted SSE events for `response_id`, excluding expired
+    events.
+
+
+    Events older than the entry''s `replay_event_ttl_seconds` (default 600s / 10 minutes,
+
+    per spec B35) are filtered out.'
+  signature: 'async get_stream_events(response_id: str, *, isolation: IsolationContext
+    | None = None) -> list[azure.ai.agentserver.responses.models._generated.sdk.models.models._models.ResponseStreamEvent]
+    | None'
+  parameters:
+  - name: response_id
+    description: The unique identifier of the response whose events to retrieve.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: isolation
+    description: Isolation context for multi-tenant partitioning.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.IsolationContext> | <xref:None>
+  return:
+    description: A deep-copied list of event instances, or `None` if not found.
+    types:
+    - <xref:list>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
+      | <xref:None>
+- uid: azure.ai.agentserver.responses.InMemoryResponseProvider.purge_expired
+  name: purge_expired
+  summary: Remove expired entries and return count.
+  signature: 'async purge_expired(*, now: datetime | None = None) -> int'
+  keywordOnlyParameters:
+  - name: now
+    description: Optional override for the current time (useful for testing).
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+    - <xref:None>
+  return:
+    description: The number of expired entries that were removed.
+    types:
+    - <xref:int>
+- uid: azure.ai.agentserver.responses.InMemoryResponseProvider.save_stream_events
+  name: save_stream_events
+  summary: 'Persist the complete ordered list of SSE events for `response_id`.
+
+
+    Each event is stamped with `_saved_at` (UTC) so that <xref:azure.ai.agentserver.responses.InMemoryResponseProvider.get_stream_events>
+
+    can enforce per-event replay TTL (B35).'
+  signature: 'async save_stream_events(response_id: str, events: list[azure.ai.agentserver.responses.models._generated.sdk.models.models._models.ResponseStreamEvent],
+    *, isolation: IsolationContext | None = None) -> None'
+  parameters:
+  - name: response_id
+    description: The unique identifier of the response.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: events
+    description: Ordered list of event instances.
+    isRequired: true
+    types:
+    - <xref:list>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
+  keywordOnlyParameters:
+  - name: isolation
+    description: Isolation context for multi-tenant partitioning.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.IsolationContext> | <xref:None>
+  return:
+    types:
+    - <xref:None>
+- uid: azure.ai.agentserver.responses.InMemoryResponseProvider.set_cancel_requested
+  name: set_cancel_requested
+  summary: Mark cancellation requested and enforce lifecycle-safe cancel transitions.
+  signature: 'async set_cancel_requested(response_id: str, *, ttl_seconds: int | None
+    = None) -> bool'
+  parameters:
+  - name: response_id
+    description: The unique identifier of the response to cancel.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: ttl_seconds
+    description: Optional time-to-live in seconds to refresh expiration.
+    defaultValue: None
+    types:
+    - <xref:int>
+    - <xref:None>
+  return:
+    description: '`True` if the entry was found and cancel was applied, `False` otherwise.'
+    types:
+    - <xref:bool>
+  exceptions:
+  - type: ValueError
+    description: If the execution is already terminal in a non-cancelled state.
+- uid: azure.ai.agentserver.responses.InMemoryResponseProvider.set_response_snapshot
+  name: set_response_snapshot
+  summary: Set the latest response snapshot for an existing response execution.
+  signature: 'async set_response_snapshot(response_id: str, response: ResponseObject,
+    *, ttl_seconds: int | None = None) -> bool'
+  parameters:
+  - name: response_id
+    description: The unique identifier of the response to update.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: response
+    description: The response snapshot to associate with the execution.
+    isRequired: true
+    types:
+    - <xref:azure.ai.agentserver.responses.models._generated.Response>
+  keywordOnlyParameters:
+  - name: ttl_seconds
+    description: Optional time-to-live in seconds to refresh expiration.
+    defaultValue: None
+    types:
+    - <xref:int>
+    - <xref:None>
+  return:
+    description: '`True` if the entry was found and updated, `False` otherwise.'
+    types:
+    - <xref:bool>
+- uid: azure.ai.agentserver.responses.InMemoryResponseProvider.transition_execution_status
+  name: transition_execution_status
+  summary: Transition execution state while preserving lifecycle invariants.
+  signature: 'async transition_execution_status(response_id: str, next_status: Literal[''queued'',
+    ''in_progress'', ''completed'', ''failed'', ''cancelled'', ''incomplete''], *,
+    ttl_seconds: int | None = None) -> bool'
+  parameters:
+  - name: response_id
+    description: The unique identifier of the response execution to transition.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: next_status
+    description: The target status to transition to.
+    isRequired: true
+    types:
+    - <xref:azure.ai.agentserver.responses.models.runtime.ResponseStatus>
+  keywordOnlyParameters:
+  - name: ttl_seconds
+    description: Optional time-to-live in seconds to refresh expiration.
+    defaultValue: None
+    types:
+    - <xref:int>
+    - <xref:None>
+  return:
+    description: '`True` if the entry was found and transitioned, `False` otherwise.'
+    types:
+    - <xref:bool>
+- uid: azure.ai.agentserver.responses.InMemoryResponseProvider.update_response
+  name: update_response
+  summary: 'Update a stored response envelope.
+
+
+    Replaces the stored response with a deep copy and updates
+
+    the execution snapshot.'
+  signature: 'async update_response(response: ResponseObject, *, isolation: IsolationContext
+    | None = None) -> None'
+  parameters:
+  - name: response
+    description: The response envelope with updated fields.
+    isRequired: true
+    types:
+    - <xref:azure.ai.agentserver.responses.models._generated.Response>
+  keywordOnlyParameters:
+  - name: isolation
+    description: Isolation context for multi-tenant partitioning.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.IsolationContext> | <xref:None>
+  return:
+    types:
+    - <xref:None>
+  exceptions:
+  - type: KeyError
+    description: If the response does not exist or has been deleted.

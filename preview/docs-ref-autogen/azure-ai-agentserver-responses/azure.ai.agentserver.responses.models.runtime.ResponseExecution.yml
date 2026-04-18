@@ -1,0 +1,158 @@
+### YamlMime:PythonClass
+uid: azure.ai.agentserver.responses.models.runtime.ResponseExecution
+name: ResponseExecution
+fullName: azure.ai.agentserver.responses.models.runtime.ResponseExecution
+module: azure.ai.agentserver.responses.models.runtime
+summary: 'Lightweight pipeline state for one response execution.
+
+
+  This type intentionally does not own persisted stream history. Stream replay
+
+  concerns are modeled separately in <xref:azure.ai.agentserver.responses.models.runtime.StreamReplayState>.'
+constructor:
+  syntax: 'ResponseExecution(*, response_id: str, mode_flags: ResponseModeFlags, created_at:
+    datetime | None = None, updated_at: datetime | None = None, completed_at: datetime
+    | None = None, status: ResponseStatus = ''in_progress'', response: ResponseObject
+    | None = None, execution_task: asyncio.Task[Any] | None = None, cancel_requested:
+    bool = False, client_disconnected: bool = False, response_created_seen: bool =
+    False, subject: _ResponseEventSubject | None = None, cancel_signal: asyncio.Event
+    | None = None, input_items: list[OutputItem] | None = None, previous_response_id:
+    str | None = None, response_context: ResponseContext | None = None, initial_model:
+    str | None = None, initial_agent_reference: AgentReference | dict[str, Any] |
+    None = None, agent_session_id: str | None = None, conversation_id: str | None
+    = None)'
+  keywordOnlyParameters:
+  - name: response_id
+    isRequired: true
+  - name: mode_flags
+    isRequired: true
+  - name: created_at
+    defaultValue: None
+  - name: updated_at
+    defaultValue: None
+  - name: completed_at
+    defaultValue: None
+  - name: status
+    defaultValue: in_progress
+  - name: response
+    defaultValue: None
+  - name: execution_task
+    defaultValue: None
+  - name: cancel_requested
+    defaultValue: 'False'
+  - name: client_disconnected
+    defaultValue: 'False'
+  - name: response_created_seen
+    defaultValue: 'False'
+  - name: subject
+    defaultValue: None
+  - name: cancel_signal
+    defaultValue: None
+  - name: input_items
+    defaultValue: None
+  - name: previous_response_id
+    defaultValue: None
+  - name: response_context
+    defaultValue: None
+  - name: initial_model
+    defaultValue: None
+  - name: initial_agent_reference
+    defaultValue: None
+  - name: agent_session_id
+    defaultValue: None
+  - name: conversation_id
+    defaultValue: None
+methods:
+- uid: azure.ai.agentserver.responses.models.runtime.ResponseExecution.apply_event
+  name: apply_event
+  summary: "Apply a normalised stream event \u2014 updates self.response and self.status.\n\
+    \nDoes nothing if the execution is already `\"cancelled\"`."
+  signature: 'apply_event(normalized: ResponseStreamEvent, all_events: list[azure.ai.agentserver.responses.models._generated.sdk.models.models._models.ResponseStreamEvent])
+    -> None'
+  parameters:
+  - name: normalized
+    description: The normalised event (`ResponseStreamEvent` model instance).
+    isRequired: true
+    types:
+    - <xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>
+  - name: all_events
+    description: 'The full ordered list of handler events seen so far
+
+      (used to extract the latest response snapshot).'
+    isRequired: true
+    types:
+    - <xref:list>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
+- uid: azure.ai.agentserver.responses.models.runtime.ResponseExecution.set_response_snapshot
+  name: set_response_snapshot
+  summary: Replace the current response snapshot from handler-emitted events.
+  signature: 'set_response_snapshot(response: ResponseObject) -> None'
+  parameters:
+  - name: response
+    description: The latest response snapshot to store.
+    isRequired: true
+    types:
+    - <xref:azure.ai.agentserver.responses.ResponseObject>
+- uid: azure.ai.agentserver.responses.models.runtime.ResponseExecution.transition_to
+  name: transition_to
+  summary: 'Transition this execution to a valid lifecycle status.
+
+
+    Updates `status`, `updated_at`, and `completed_at` (for terminal states).
+
+    Re-entering the current status is a no-op that only refreshes `updated_at`.'
+  signature: 'transition_to(next_status: Literal[''queued'', ''in_progress'', ''completed'',
+    ''failed'', ''cancelled'', ''incomplete'']) -> None'
+  parameters:
+  - name: next_status
+    description: The target lifecycle status.
+    isRequired: true
+    types:
+    - <xref:ResponseStatus>
+  exceptions:
+  - type: ValueError
+    description: If the requested transition is not allowed.
+attributes:
+- uid: azure.ai.agentserver.responses.models.runtime.ResponseExecution.agent_reference
+  name: agent_reference
+  summary: Extract agent_reference from the stored response snapshot.
+  return:
+    description: The agent reference model or dict, or empty dict if no response snapshot
+      is set.
+    types:
+    - <xref:azure.ai.agentserver.responses.models.AgentReference> | <xref:dict>[<xref:str>,
+      <xref:typing.Any>]
+- uid: azure.ai.agentserver.responses.models.runtime.ResponseExecution.is_terminal
+  name: is_terminal
+  summary: Return whether the execution has reached a terminal state.
+  return:
+    description: True if the status is one of completed, failed, cancelled, or incomplete.
+    types:
+    - <xref:bool>
+- uid: azure.ai.agentserver.responses.models.runtime.ResponseExecution.model
+  name: model
+  summary: Extract model name from the stored response snapshot.
+  return:
+    description: The model name, or `None` if no response snapshot is set.
+    types:
+    - <xref:str> | <xref:None>
+- uid: azure.ai.agentserver.responses.models.runtime.ResponseExecution.replay_enabled
+  name: replay_enabled
+  summary: SSE replay is only available for background+stream+store responses.
+  return:
+    description: True if this execution supports SSE replay.
+    types:
+    - <xref:bool>
+- uid: azure.ai.agentserver.responses.models.runtime.ResponseExecution.visible_via_get
+  name: visible_via_get
+  summary: 'Non-streaming stored responses are retrievable via GET after completion.
+
+
+    For background non-stream responses, visibility is deferred until
+
+    `response.created` is processed (FR-001: response not accessible
+
+    before the handler emits `response.created`).'
+  return:
+    description: True if this execution can be retrieved via GET.
+    types:
+    - <xref:bool>

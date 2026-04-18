@@ -1,0 +1,254 @@
+### YamlMime:PythonClass
+uid: azure.ai.agentserver.responses.FoundryStorageProvider
+name: FoundryStorageProvider
+fullName: azure.ai.agentserver.responses.FoundryStorageProvider
+module: azure.ai.agentserver.responses
+summary: "An HTTP-backed response storage provider that persists data via the Foundry\
+  \ storage API.\n\nThis class satisfies the\n<xref:azure.ai.agentserver.responses.store._base.ResponseProviderProtocol>\
+  \ structural\nprotocol.  Obtain an instance through the constructor and supply it\
+  \ when building a\n`ResponsesServer`.\n\nUses <xref:azure.core.AsyncPipelineClient>\
+  \ for HTTP transport, providing\nbuilt-in retry, logging, distributed tracing, and\
+  \ bearer-token authentication.\n\nExample:\n\n<!-- literal_block {\"ids\": [], \"\
+  classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\"\
+  : \"preserve\", \"language\": \"default\", \"force\": false, \"linenos\": false}\
+  \ -->\n\n````default\n\n   async with FoundryStorageProvider(credential=DefaultAzureCredential())\
+  \ as provider:\n       app = ResponsesServer(handler=my_handler, store=provider)\n\
+  \   ````"
+constructor:
+  syntax: 'FoundryStorageProvider(credential: AsyncTokenCredential, settings: FoundryStorageSettings
+    | None = None)'
+  parameters:
+  - name: credential
+    description: An async credential used to obtain bearer tokens for the Foundry
+      API.
+    isRequired: true
+    types:
+    - <xref:AsyncTokenCredential>
+  - name: settings
+    description: 'Storage settings. If omitted,
+
+      <xref:azure.ai.agentserver.responses.FoundryStorageSettings.from_env> is called
+      automatically.'
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.FoundryStorageSettings> | <xref:None>
+methods:
+- uid: azure.ai.agentserver.responses.FoundryStorageProvider.aclose
+  name: aclose
+  summary: Close the underlying HTTP pipeline client.
+  signature: async aclose() -> None
+- uid: azure.ai.agentserver.responses.FoundryStorageProvider.create_response
+  name: create_response
+  summary: Persist a new response with its associated input items and history.
+  signature: 'async create_response(response: ResponseObject, input_items: Iterable[OutputItem]
+    | None, history_item_ids: Iterable[str] | None, *, isolation: IsolationContext
+    | None = None) -> None'
+  parameters:
+  - name: response
+    description: The initial response snapshot.
+    isRequired: true
+    types:
+    - <xref:azure.ai.agentserver.responses.ResponseObject>
+  - name: input_items
+    description: Resolved output items for this response turn.
+    isRequired: true
+    types:
+    - <xref:typing.Iterable>[<xref:azure.ai.agentserver.responses.models.OutputItem>]
+      | <xref:None>
+  - name: history_item_ids
+    description: Item IDs from the prior conversation turn, if any.
+    isRequired: true
+    types:
+    - <xref:typing.Iterable>[<xref:str>] | <xref:None>
+  keywordOnlyParameters:
+  - name: isolation
+    description: Isolation context for multi-tenant partitioning.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.IsolationContext> | <xref:None>
+  exceptions:
+  - type: azure.ai.agentserver.responses.FoundryApiError
+    description: On non-success HTTP response.
+- uid: azure.ai.agentserver.responses.FoundryStorageProvider.delete_response
+  name: delete_response
+  summary: Delete a stored response and its associated data.
+  signature: 'async delete_response(response_id: str, *, isolation: IsolationContext
+    | None = None) -> None'
+  parameters:
+  - name: response_id
+    description: The response identifier.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: isolation
+    description: Isolation context for multi-tenant partitioning.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.IsolationContext> | <xref:None>
+  exceptions:
+  - type: azure.ai.agentserver.responses.FoundryResourceNotFoundError
+    description: If the response does not exist.
+  - type: azure.ai.agentserver.responses.FoundryApiError
+    description: On other non-success HTTP response.
+- uid: azure.ai.agentserver.responses.FoundryStorageProvider.get_history_item_ids
+  name: get_history_item_ids
+  summary: Retrieve the ordered list of item IDs that form the conversation history.
+  signature: 'async get_history_item_ids(previous_response_id: str | None, conversation_id:
+    str | None, limit: int, *, isolation: IsolationContext | None = None) -> list[str]'
+  parameters:
+  - name: previous_response_id
+    description: The response whose prior turn should be the history anchor.
+    isRequired: true
+    types:
+    - <xref:str> | <xref:None>
+  - name: conversation_id
+    description: An explicit conversation scope identifier, if available.
+    isRequired: true
+    types:
+    - <xref:str> | <xref:None>
+  - name: limit
+    description: Maximum number of item IDs to return.
+    isRequired: true
+    types:
+    - <xref:int>
+  keywordOnlyParameters:
+  - name: isolation
+    description: Isolation context for multi-tenant partitioning.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.IsolationContext> | <xref:None>
+  return:
+    description: Ordered list of item ID strings.
+    types:
+    - <xref:list>[<xref:str>]
+  exceptions:
+  - type: azure.ai.agentserver.responses.FoundryApiError
+    description: On non-success HTTP response.
+- uid: azure.ai.agentserver.responses.FoundryStorageProvider.get_input_items
+  name: get_input_items
+  summary: Retrieve a page of input items for the given response.
+  signature: 'async get_input_items(response_id: str, limit: int = 20, ascending:
+    bool = False, after: str | None = None, before: str | None = None, *, isolation:
+    IsolationContext | None = None) -> list[OutputItem]'
+  parameters:
+  - name: response_id
+    description: The response whose input items are being listed.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: limit
+    description: Maximum number of items to return. Defaults to 20.
+    defaultValue: '20'
+    types:
+    - <xref:int>
+  - name: ascending
+    description: '`True` for oldest-first ordering; `False` (default) for newest-first.'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: after
+    description: Start the page after this item ID (cursor-based pagination).
+    defaultValue: None
+    types:
+    - <xref:str> | <xref:None>
+  - name: before
+    description: End the page before this item ID (cursor-based pagination).
+    defaultValue: None
+    types:
+    - <xref:str> | <xref:None>
+  keywordOnlyParameters:
+  - name: isolation
+    description: Isolation context for multi-tenant partitioning.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.IsolationContext> | <xref:None>
+  return:
+    description: A list of deserialized <xref:azure.ai.agentserver.responses.OutputItem>
+      instances.
+    types:
+    - <xref:list>[<xref:azure.ai.agentserver.responses.models.OutputItem>]
+  exceptions:
+  - type: azure.ai.agentserver.responses.FoundryResourceNotFoundError
+    description: If the response does not exist.
+  - type: azure.ai.agentserver.responses.FoundryApiError
+    description: On other non-success HTTP response.
+- uid: azure.ai.agentserver.responses.FoundryStorageProvider.get_items
+  name: get_items
+  summary: 'Retrieve multiple items by their IDs in a single batch request.
+
+
+    Positions in the returned list correspond to positions in *item_ids*.
+
+    Entries are `None` where no item was found for the given ID.'
+  signature: 'async get_items(item_ids: Iterable[str], *, isolation: IsolationContext
+    | None = None) -> list[OutputItem | None]'
+  parameters:
+  - name: item_ids
+    description: The item identifiers to retrieve.
+    isRequired: true
+    types:
+    - <xref:typing.Iterable>[<xref:str>]
+  keywordOnlyParameters:
+  - name: isolation
+    description: Isolation context for multi-tenant partitioning.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.IsolationContext> | <xref:None>
+  return:
+    description: A list of <xref:azure.ai.agentserver.responses.OutputItem> instances
+      (or `None` for missing items).
+    types:
+    - <xref:list>[<xref:azure.ai.agentserver.responses.models.OutputItem> | <xref:None>]
+  exceptions:
+  - type: azure.ai.agentserver.responses.FoundryApiError
+    description: On non-success HTTP response.
+- uid: azure.ai.agentserver.responses.FoundryStorageProvider.get_response
+  name: get_response
+  summary: Retrieve a stored response by its ID.
+  signature: 'async get_response(response_id: str, *, isolation: IsolationContext
+    | None = None) -> ResponseObject'
+  parameters:
+  - name: response_id
+    description: The response identifier.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: isolation
+    description: Isolation context for multi-tenant partitioning.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.IsolationContext> | <xref:None>
+  return:
+    description: The deserialized <xref:azure.ai.agentserver.responses.ResponseObject>
+      model.
+    types:
+    - <xref:azure.ai.agentserver.responses.ResponseObject>
+  exceptions:
+  - type: azure.ai.agentserver.responses.FoundryResourceNotFoundError
+    description: If the response does not exist.
+  - type: azure.ai.agentserver.responses.FoundryApiError
+    description: On other non-success HTTP response.
+- uid: azure.ai.agentserver.responses.FoundryStorageProvider.update_response
+  name: update_response
+  summary: Persist an updated response snapshot.
+  signature: 'async update_response(response: ResponseObject, *, isolation: IsolationContext
+    | None = None) -> None'
+  parameters:
+  - name: response
+    description: The updated response model.  Must contain a valid `id` field.
+    isRequired: true
+    types:
+    - <xref:azure.ai.agentserver.responses.ResponseObject>
+  keywordOnlyParameters:
+  - name: isolation
+    description: Isolation context for multi-tenant partitioning.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.IsolationContext> | <xref:None>
+  exceptions:
+  - type: azure.ai.agentserver.responses.FoundryResourceNotFoundError
+    description: If the response does not exist.
+  - type: azure.ai.agentserver.responses.FoundryApiError
+    description: On other non-success HTTP response.
