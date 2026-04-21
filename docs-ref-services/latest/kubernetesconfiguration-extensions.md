@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: kubernetesconfiguration-extensions
 ---
-# Azure Kubernetesconfiguration-Extensions SDK for Python - preview
-## Packages - preview
+# Azure Kubernetesconfiguration-Extensions SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](kubernetesconfiguration-extensions-index.md)]
