@@ -1,7 +1,7 @@
 ---
 title: Azure Resource-Features SDK for Python
 description: Reference for Azure Resource-Features SDK for Python
-ms.date: 04/21/2026
+ms.date: 04/22/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: resource-features
