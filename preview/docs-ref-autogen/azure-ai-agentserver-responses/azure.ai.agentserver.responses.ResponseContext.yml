@@ -11,7 +11,8 @@ constructor:
     | None = None, input_items: list[InputParam] | list[OutputItem] | None = None,
     previous_response_id: str | None = None, conversation_id: str | None = None, history_limit:
     int = 100, client_headers: dict[str, str] | None = None, query_parameters: dict[str,
-    str] | None = None, isolation: IsolationContext | None = None)'
+    str] | None = None, isolation: IsolationContext | None = None, prefetched_history_ids:
+    list[str] | None = None)'
   keywordOnlyParameters:
   - name: response_id
     isRequired: true
@@ -37,10 +38,19 @@ constructor:
     defaultValue: None
   - name: isolation
     defaultValue: None
+  - name: prefetched_history_ids
+    defaultValue: None
 methods:
 - uid: azure.ai.agentserver.responses.ResponseContext.get_history
   name: get_history
-  summary: Resolve and cache conversation history items via the provider.
+  summary: 'Resolve and cache conversation history items via the provider.
+
+
+    When prefetched history IDs are available (from eager validation),
+
+    the provider''s `get_history_item_ids` call is skipped and only
+
+    `get_items` is invoked to materialise the items.'
   signature: async get_history() -> Sequence[OutputItem]
   return:
     description: A tuple of conversation history items.

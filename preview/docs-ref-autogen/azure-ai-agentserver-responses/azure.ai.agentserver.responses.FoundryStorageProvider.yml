@@ -16,7 +16,7 @@ summary: "An HTTP-backed response storage provider that persists data via the Fo
   \   ````"
 constructor:
   syntax: 'FoundryStorageProvider(credential: AsyncTokenCredential, settings: FoundryStorageSettings
-    | None = None)'
+    | None = None, get_server_version: Callable[[], str] | None = None)'
   parameters:
   - name: credential
     description: An async credential used to obtain bearer tokens for the Foundry
@@ -32,6 +32,21 @@ constructor:
     defaultValue: None
     types:
     - <xref:azure.ai.agentserver.responses.FoundryStorageSettings> | <xref:None>
+  - name: get_server_version
+    description: 'Callable returning the server version string
+
+      to use as the `User-Agent` header on outgoing Foundry HTTP requests.
+
+      Evaluated lazily on each request so that it reflects the final
+
+      composed `x-platform-server` value.  When `None` (default),
+
+      this provider uses Azure Core''s default `UserAgentPolicy` with the
+
+      SDK moniker `ai-agentserver-responses/{VERSION}`.'
+    defaultValue: None
+    types:
+    - <xref:typing.Callable>[[], <xref:str>] | <xref:None>
 methods:
 - uid: azure.ai.agentserver.responses.FoundryStorageProvider.aclose
   name: aclose

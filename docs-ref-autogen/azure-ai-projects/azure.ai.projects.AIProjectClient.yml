@@ -51,12 +51,10 @@ constructor:
     - <xref:bool>
   keywordOnlyParameters:
   - name: api_version
-    description: 'The API version to use for this operation. Known values are "v1"
-      and
+    description: 'The API version to use for this operation. Known values are "v1".
+      Default
 
-      None. Default value is "v1". Note that overriding this default value may result
-      in unsupported
-
+      value is "v1". Note that overriding this default value may result in unsupported
       behavior.'
     types:
     - <xref:str>
@@ -97,39 +95,38 @@ methods:
   signature: close() -> None
 - uid: azure.ai.projects.AIProjectClient.get_openai_client
   name: get_openai_client
-  summary: 'Get an authenticated OpenAI client from the *openai* package.
+  summary: "Get an authenticated OpenAI client from the *openai* package.\n\nKeyword\
+    \ arguments are passed to the OpenAI client constructor.\n\nThe OpenAI client\
+    \ constructor is called with:\n\n* `base_url` set to the endpoint provided to\
+    \ the AIProjectClient constructor, with \"/openai/v1\" appended. If `agent_name`\
+    \ is provided (and `allow_preview=True` was set on the AIProjectClient), `base_url`\
+    \ is instead set to the Agent's endpoint `{endpoint}/agents/{agent_name}/endpoint/protocols/openai`.\
+    \ Can be overridden by passing `base_url` as a keyword argument. \n\n* `api_key`\
+    \ set to a get_bearer_token_provider() callable that uses the TokenCredential\
+    \ provided to the AIProjectClient constructor, with scope \"[https://ai.azure.com/.default](https://ai.azure.com/.default)\"\
+    . Can be overridden by passing `api_key` as a keyword argument."
+  signature: 'get_openai_client(*, agent_name: str | None = None, **kwargs: Any) ->
+    OpenAI'
+  keywordOnlyParameters:
+  - name: agent_name
+    description: 'Optional name of an Agent. When provided, the OpenAI client''s `base_url`
 
+      is pointed at the Agent''s endpoint. Requires `allow_preview=True` to have been
+      set on the
 
-    Keyword arguments are passed to the OpenAI client constructor.
-
-
-    The OpenAI client constructor is called with:
-
-    * `base_url` set to the endpoint provided to the AIProjectClient constructor,
-    with "/openai/v1" appended.
-
-    Can be overridden by passing `base_url` as a keyword argument.
-
-    * `api_key` set to a get_bearer_token_provider() callable that uses the TokenCredential
-    provided to the
-
-    AIProjectClient constructor, with scope "[https://ai.azure.com/.default](https://ai.azure.com/.default)".
-
-    Can be overridden by passing `api_key` as a keyword argument.
-
-
-    > [!NOTE]
-
-    > The packages openai and azure.identity must be installed prior to calling this
-    method.
-
-    >'
-  signature: 'get_openai_client(**kwargs: Any) -> OpenAI'
+      AIProjectClient constructor; otherwise a <xref:ValueError> is raised.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:None>
   return:
     description: An authenticated OpenAI client
     types:
     - <xref:openai.OpenAI>
   exceptions:
+  - type: ValueError
+    description: If `agent_name` is provided but `allow_preview=True` was not set
+      on the client.
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.ai.projects.AIProjectClient.send_request
   name: send_request
