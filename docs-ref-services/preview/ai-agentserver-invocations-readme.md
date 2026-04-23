@@ -1,12 +1,12 @@
 ---
 title: Azure AI Agent Server Invocations client library for Python
 keywords: Azure, python, SDK, API, azure-ai-agentserver-invocations, agentserver
-ms.date: 04/19/2026
+ms.date: 04/23/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: agentserver
 ---
-# Azure AI Agent Server Invocations client library for Python - version 1.0.0b2 
+# Azure AI Agent Server Invocations client library for Python - version 1.0.0b3 
 
 
 The `azure-ai-agentserver-invocations` package provides the invocation protocol endpoints for Azure AI Hosted Agent containers. It plugs into the [`azure-ai-agentserver-core`](https://pypi.org/project/azure-ai-agentserver-core/) host framework and adds the full invocation lifecycle: `POST /invocations`, `GET /invocations/{id}`, `POST /invocations/{id}/cancel`, and `GET /invocations/docs/openapi.json`.
@@ -199,12 +199,12 @@ To report an issue with the client library, or request additional features, plea
 
 ## Next steps
 
-Visit the [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.0.0b2/sdk/agentserver/azure-ai-agentserver-invocations/samples) folder for complete working examples:
+Visit the [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.0.0b3/sdk/agentserver/azure-ai-agentserver-invocations/samples) folder for complete working examples:
 
 | Sample | Description |
 |---|---|
-| [simple_invoke_agent](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.0.0b2/sdk/agentserver/azure-ai-agentserver-invocations/samples/simple_invoke_agent/) | Minimal synchronous request-response |
-| [async_invoke_agent](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.0.0b2/sdk/agentserver/azure-ai-agentserver-invocations/samples/async_invoke_agent/) | Long-running operations with polling and cancellation |
+| [simple_invoke_agent](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.0.0b3/sdk/agentserver/azure-ai-agentserver-invocations/samples/simple_invoke_agent/) | Minimal synchronous request-response |
+| [async_invoke_agent](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.0.0b3/sdk/agentserver/azure-ai-agentserver-invocations/samples/async_invoke_agent/) | Long-running operations with polling and cancellation |
 
 ## Contributing
 
