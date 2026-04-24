@@ -46,6 +46,40 @@ functions:
     description: A list of typed input items.
     types:
     - <xref:list>[<xref:azure.ai.agentserver.responses.models.Item>]
+- uid: azure.ai.agentserver.responses.to_output_item
+  name: to_output_item
+  summary: "Convert an <xref:azure.ai.agentserver.responses.Item> to the corresponding\
+    \ <xref:azure.ai.agentserver.responses.OutputItem>.\n\nGenerates a type-specific\
+    \ ID via <xref:IdGenerator.new_item_id> and\napplies status according to per-type\
+    \ rules:\n\n* **Completed** \u2014 explicitly listed types get `status = \"completed\"\
+    `. \n\n* **Preserve status** \u2014 types whose original status must be kept (`ItemOutputMessage`,\
+    \ `ApplyPatch*`). \n\n* **No status** \u2014 all other types (including any future\
+    \ types) receive no status value.  This opt-in design prevents newly-added item\
+    \ types from accidentally gaining a status field. \n\nReturns `None` for <xref:azure.ai.agentserver.responses.ItemReferenceParam>\
+    \ or unrecognised types.\n\nThe conversion leverages `_deserialize(OutputItem,\
+    \ data)` which\nresolves the correct subtype via the `type` discriminator.  All\
+    \ 24\ninput/output discriminator pairs share the same string values, so the\n\
+    dict representation produced by `dict(item)` is directly compatible\nwith `OutputItem`\
+    \ deserialization."
+  signature: 'to_output_item(item: Item, response_id: str | None = None) -> OutputItem
+    | None'
+  parameters:
+  - name: item
+    description: The input item to convert.
+    isRequired: true
+    types:
+    - <xref:azure.ai.agentserver.responses.models.Item>
+  - name: response_id
+    description: 'An existing ID (typically the response ID) used as
+
+      a partition-key hint for the generated item ID.'
+    defaultValue: None
+    types:
+    - <xref:str> | <xref:None>
+  return:
+    description: The converted output item, or `None` if non-convertible.
+    types:
+    - <xref:azure.ai.agentserver.responses.models.OutputItem> | <xref:None>
 classes:
 - azure.ai.agentserver.responses.CreateResponse
 - azure.ai.agentserver.responses.FoundryApiError
