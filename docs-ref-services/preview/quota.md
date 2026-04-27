@@ -1,7 +1,7 @@
 ---
 title: Azure Quota SDK for Python
 description: Reference for Azure Quota SDK for Python
-ms.date: 04/24/2026
+ms.date: 04/27/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: quota
