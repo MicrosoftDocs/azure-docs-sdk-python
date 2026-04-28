@@ -1,7 +1,7 @@
 ---
 title: Azure Auto Suggest SDK for Python
 description: Reference for Azure Auto Suggest SDK for Python
-ms.date: 04/27/2026
+ms.date: 04/28/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: autosuggest
