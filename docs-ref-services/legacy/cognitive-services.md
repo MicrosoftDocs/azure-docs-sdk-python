@@ -5,8 +5,8 @@ ms.date: 04/29/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: cognitiveservices
-manager: angerobe
 keywords: Azure, python, SDK, API, Cognitive Services
+manager: angerobe
 ---
 # Azure Cognitive Services modules for Python
 
