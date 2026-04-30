@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: planetarycomputer
 ---
-# Azure Planetarycomputer SDK for Python - preview
-## Packages - preview
+# Azure Planetarycomputer SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](planetarycomputer-index.md)]
