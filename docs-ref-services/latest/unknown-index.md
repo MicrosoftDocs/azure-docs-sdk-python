@@ -1,3 +1,3 @@
 | Reference | Package | Source |
 |---|---|---|
-|[unknown](ai-voicelive-readme.md)|[azure-ai-voicelive](https://pypi.org/project/azure-ai-voicelive)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/ai/azure-ai-voicelive)|
+|[unknown](postgresql-auth-readme.md)|[azure-postgresql-auth](https://pypi.org/project/azure-postgresql-auth)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/postgresql/azure-postgresql-auth)|
