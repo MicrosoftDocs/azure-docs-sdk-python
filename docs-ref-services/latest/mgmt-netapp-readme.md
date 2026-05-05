@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-netapp, netapp
-ms.date: 03/03/2026
+ms.date: 05/05/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: netapp
