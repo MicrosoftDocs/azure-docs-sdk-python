@@ -93,5 +93,5 @@ See the [ADAL to MSAL migration](/azure/active-directory/develop/migrate-python-
 - [Logging in MSAL Python](https://docs.microsoft.com/azure/active-directory/develop/msal-logging-python): Learn how to generate log messages that can help diagnose issues.
 
 <!--Reference-style links -->
-[azure_sub]: https://azure.microsoft.com/free/
+[azure_sub]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 

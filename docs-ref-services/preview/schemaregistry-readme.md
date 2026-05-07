@@ -487,7 +487,7 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 [pypi]: https://pypi.org/project/azure-schemaregistry
 [python]: https://www.python.org/downloads/
 [azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-schemaregistry_1.3.0b3/sdk/core/azure-core/README.md
-[azure_sub]: https://azure.microsoft.com/free/
+[azure_sub]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 [python_logging]: https://docs.python.org/3/library/logging.html
 [sr_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.3.0b3/sdk/schemaregistry/azure-schemaregistry/samples
 [api_reference]: /python/api/overview/azure/schemaregistry-readme

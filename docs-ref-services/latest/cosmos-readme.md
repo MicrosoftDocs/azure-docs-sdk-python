@@ -1192,7 +1192,7 @@ For more extensive documentation on the Cosmos DB service, see the [Azure Cosmos
 <!-- LINKS -->
 [azure_cli]: https://learn.microsoft.com/cli/azure
 [azure_portal]: https://portal.azure.com
-[azure_sub]: https://azure.microsoft.com/free/
+[azure_sub]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 [cloud_shell]: https://learn.microsoft.com/azure/cloud-shell/overview
 [cosmos_account_create]: https://learn.microsoft.com/azure/cosmos-db/how-to-manage-database-account
 [cosmos_account]: https://learn.microsoft.com/azure/cosmos-db/account-overview

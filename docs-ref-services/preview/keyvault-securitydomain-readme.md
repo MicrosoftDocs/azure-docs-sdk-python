@@ -190,7 +190,7 @@ additional questions or comments.
 [azure_identity_pypi]: https://pypi.org/project/azure-identity/
 [azure_keyvault]: https://learn.microsoft.com/azure/key-vault/
 [azure_managedhsm]: https://learn.microsoft.com/azure/key-vault/managed-hsm/
-[azure_sub]: https://azure.microsoft.com/free/
+[azure_sub]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 

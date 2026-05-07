@@ -356,7 +356,7 @@ contact opencode@microsoft.com with any additional questions or comments.
 [azure_identity_pypi]: https://pypi.org/project/azure-identity/
 [azure_keyvault]: https://learn.microsoft.com/azure/key-vault/general/overview
 [azure_keyvault_cli]: https://learn.microsoft.com/azure/key-vault/general/quick-create-cli
-[azure_sub]: https://azure.microsoft.com/free/
+[azure_sub]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 
 [backup_operations_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-secrets_4.10.0b1/sdk/keyvault/azure-keyvault-secrets/samples/backup_restore_operations.py
 [backup_operations_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-secrets_4.10.0b1/sdk/keyvault/azure-keyvault-secrets/samples/backup_restore_operations_async.py

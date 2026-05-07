@@ -161,7 +161,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [catalog_pypi]: https://aka.ms/azsdk/python/purviewcatalog/pypi
 [catalog_ref_docs]: https://aka.ms/azsdk/python/purviewcatalog/ref-docs
 [catalog_product_documentation]: https://azure.microsoft.com/services/purview/
-[azure_subscription]: https://azure.microsoft.com/free/
+[azure_subscription]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 [purview_resource]: /azure/purview/create-catalog-portal
 [pip]: https://pypi.org/project/pip/
 [authenticate_with_token]: /azure/cognitive-services/authentication?tabs=powershell#authenticate-with-an-authentication-token

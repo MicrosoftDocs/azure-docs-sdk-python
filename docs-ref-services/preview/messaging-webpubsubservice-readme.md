@@ -191,7 +191,7 @@ additional questions or comments.
 <!-- LINKS -->
 [webpubsubservice_docs]: https://aka.ms/awps/doc
 [azure_cli]: /cli/azure
-[azure_sub]: https://azure.microsoft.com/free/
+[azure_sub]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 [package]: https://pypi.org/project/azure-messaging-webpubsubservice/
 [default_cred_ref]: https://aka.ms/azsdk-python-identity-default-cred-ref
 [cla]: https://cla.microsoft.com

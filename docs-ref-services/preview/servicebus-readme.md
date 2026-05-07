@@ -576,7 +576,7 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 [api_docs]: /python/api/overview/azure/servicebus-readme
 [product_docs]: /azure/service-bus-messaging/
 [azure_portal]: https://portal.azure.com
-[azure_sub]: https://azure.microsoft.com/free/
+[azure_sub]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 [cloud_shell]: /azure/cloud-shell/overview
 [cloud_shell_bash]: https://shell.azure.com/bash
 [pip]: https://pypi.org/project/pip/

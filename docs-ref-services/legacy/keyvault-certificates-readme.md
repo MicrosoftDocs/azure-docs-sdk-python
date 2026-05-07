@@ -417,7 +417,7 @@ additional questions or comments.
 [azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-certificates_4.2.1/sdk/core/azure-core#azure-core-library-exceptions
 [azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-certificates_4.2.1/sdk/identity/azure-identity
 [azure_identity_pypi]: https://pypi.org/project/azure-identity/
-[azure_sub]: https://azure.microsoft.com/free/
+[azure_sub]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [backup_operations_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-certificates_4.2.1/sdk/keyvault/azure-keyvault-certificates/samples/backup_restore_operations.py
 [backup_operations_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-certificates_4.2.1/sdk/keyvault/azure-keyvault-certificates/samples/backup_restore_operations_async.py

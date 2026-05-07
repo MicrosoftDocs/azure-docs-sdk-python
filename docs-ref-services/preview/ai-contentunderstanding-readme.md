@@ -681,7 +681,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [python_cu_product_docs]: https://learn.microsoft.com/azure/ai-services/content-understanding/
 [python_cu_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.2.0b1/sdk/contentunderstanding/azure-ai-contentunderstanding/samples
 [python_cu_sample_to_llm_input]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.2.0b1/sdk/contentunderstanding/azure-ai-contentunderstanding/samples/sample_to_llm_input.py
-[azure_sub]: https://azure.microsoft.com/free/
+[azure_sub]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 [cu_quickstart]: https://learn.microsoft.com/azure/ai-services/content-understanding/quickstart/use-rest-api?tabs=portal%2Cdocument
 [cu_region_support]: https://learn.microsoft.com/azure/ai-services/content-understanding/language-region-support
 [azure_portal]: https://portal.azure.com/

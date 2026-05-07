@@ -337,7 +337,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [authenticate_with_token]: /azure/cognitive-services/authentication?tabs=powershell#authenticate-with-an-authentication-token
 [azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-agrifood-farming_1.0.0b2/sdk/identity/azure-identity#credentials
 [azure_identity_pip]: https://pypi.org/project/azure-identity/
-[azure_subscription]: https://azure.microsoft.com/free/
+[azure_subscription]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 [change_log]: https://github.com/Azure/azure-sdk-for-python/tree/azure-agrifood-farming_1.0.0b2/sdk/agrifood/azure-agrifood-farming/CHANGELOG.md
 [cla]: https://cla.microsoft.com
 [coc_contact]: mailto:opencode@microsoft.com

@@ -277,6 +277,6 @@ additional questions or comments.
 [azure_identity_pip]: https://pypi.org/project/azure-identity/
 [default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-developer-devcenter_1.0.0/sdk/identity/azure-identity#defaultazurecredential
 [pip]: https://pypi.org/project/pip/
-[azure_sub]: https://azure.microsoft.com/free/
+[azure_sub]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 [samples_folder]: https://github.com/Azure/azure-sdk-for-python/tree/azure-developer-devcenter_1.0.0/sdk/devcenter/azure-developer-devcenter/samples
 

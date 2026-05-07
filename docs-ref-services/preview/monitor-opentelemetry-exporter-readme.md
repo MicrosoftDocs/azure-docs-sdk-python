@@ -676,7 +676,7 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 [api_docs]: https://azure.github.io/azure-sdk-for-python/monitor.html#azure-monitor-opentelemetry-exporter
 [exporter_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry-exporter_1.0.0b51/sdk/monitor/azure-monitor-opentelemetry-exporter/samples
 [product_docs]: https://learn.microsoft.com/azure/azure-monitor/overview
-[azure_sub]: https://azure.microsoft.com/free/
+[azure_sub]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 [pip]: https://pypi.org/project/pip/
 [pypi]: https://pypi.org/project/azure-monitor-opentelemetry-exporter/
 [python]: https://www.python.org/downloads/

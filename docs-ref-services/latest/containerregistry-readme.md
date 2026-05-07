@@ -345,7 +345,7 @@ additional questions or comments.
 [container_registry_create_portal]: /azure/container-registry/container-registry-get-started-portal
 [container_registry_concepts]: /azure/container-registry/container-registry-concepts
 [azure_cli]: /cli/azure
-[azure_sub]: https://azure.microsoft.com/free/
+[azure_sub]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 [identity]: https://github.com/Azure/azure-sdk-for-python/blob/azure-containerregistry_1.2.0/sdk/identity/azure-identity/README.md
 [samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-containerregistry_1.2.0/sdk/containerregistry/azure-containerregistry/samples
 [cla]: https://cla.microsoft.com

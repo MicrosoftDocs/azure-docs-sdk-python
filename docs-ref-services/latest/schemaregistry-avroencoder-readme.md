@@ -335,7 +335,7 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 [pypi]: https://pypi.org/project/azure-schemaregistry-avroencoder/
 [python]: https://www.python.org/downloads/
 [azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-schemaregistry-avroencoder_1.0.0/sdk/core/azure-core/README.md
-[azure_sub]: https://azure.microsoft.com/free/
+[azure_sub]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 [python_logging]: https://docs.python.org/3/library/logging.html
 [sr_avro_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry-avroencoder_1.0.0/sdk/schemaregistry/azure-schemaregistry-avroencoder/samples
 [api_reference]: /python/api/overview/azure/schemaregistry-avroencoder-readme

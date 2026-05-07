@@ -18,7 +18,7 @@ The requested features were implemented in the new libraries. See change log for
 # Getting started
 ### Prerequisites
 * Python 2.7, or 3.5 or later is required to use this package.
-* You must have an [Azure subscription](https://azure.microsoft.com/free/)
+* You must have an [Azure subscription](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn)
 
 ### Install the package
 Install the Azure Communication Administration client library for Python with [pip](https://pypi.org/project/pip/):

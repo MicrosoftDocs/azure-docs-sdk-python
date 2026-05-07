@@ -424,7 +424,7 @@ additional questions or comments.
 [azure_core]: https://azuresdkdocs.z19.web.core.windows.net/python/azure-core/latest/azure.core.html#module-azure.core.exceptions
 [health_insights]: https://learn.microsoft.com/azure/azure-health-insights/overview
 [radiology_insights_docs]: https://learn.microsoft.com/azure/azure-health-insights/radiology-insights/
-[azure_sub]: https://azure.microsoft.com/free/
+[azure_sub]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 [cognitive_resource_cli]: /azure/cognitive-services/cognitive-services-apis-create-account-cli
 [inferences]: https://learn.microsoft.com/azure/azure-health-insights/radiology-insights/inferences
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/

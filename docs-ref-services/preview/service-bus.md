@@ -29,7 +29,7 @@ For documentation on the legacy HTTP-based operations please see [Using HTTP-bas
 
 ## Prerequisites
 
-* Azure subscription - [Create a free account](https://azure.microsoft.com/free/)
+* Azure subscription - [Create a free account](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn)
 * Azure [Service Bus namespace and management credentials](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal)
 * [Python 2.7-3.7](https://www.python.org/downloads/)
 

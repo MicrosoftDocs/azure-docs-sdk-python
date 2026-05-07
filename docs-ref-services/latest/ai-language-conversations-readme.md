@@ -470,7 +470,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 <!-- LINKS -->
 [azure_cli]: /cli/azure/
 [azure_portal]: https://portal.azure.com/
-[azure_subscription]: https://azure.microsoft.com/free/
+[azure_subscription]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 [language_resource]: https://portal.azure.com/#create/Microsoft.CognitiveServicesTextAnalytics
 [cla]: https://cla.microsoft.com
 [coc_contact]: mailto:opencode@microsoft.com

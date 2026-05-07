@@ -443,7 +443,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [pypi_package]: https://pypi.org/project/azure-ai-transcription/
 [api_reference]: https://learn.microsoft.com/python/api/azure-ai-transcription/azure.ai.transcription?view=azure-python-preview
 [product_docs]: https://learn.microsoft.com/azure/ai-services/speech-service/
-[azure_sub]: https://azure.microsoft.com/free/
+[azure_sub]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 [speech_resource]: https://learn.microsoft.com/azure/ai-services/speech-service/overview
 [pip]: https://pypi.org/project/pip/
 [azure_portal]: https://portal.azure.com

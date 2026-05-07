@@ -410,7 +410,7 @@ additional questions or comments.
 [azure_identity_pip]: https://pypi.org/project/azure-identity/
 [default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-health-deidentification_1.1.0b1/sdk/identity/azure-identity#defaultazurecredential
 [pip]: https://pypi.org/project/pip/
-[azure_sub]: https://azure.microsoft.com/free/
+[azure_sub]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 [deid_quickstart]: https://learn.microsoft.com/azure/healthcare-apis/deidentification/quickstart
 [string_index]: https://github.com/Azure/azure-sdk-for-python/blob/azure-health-deidentification_1.1.0b1/sdk/healthdataaiservices/azure-health-deidentification/azure/health/deidentification/models/_models.py#L548
 [character_encoding]: https://learn.microsoft.com/dotnet/standard/base-types/character-encoding-introduction

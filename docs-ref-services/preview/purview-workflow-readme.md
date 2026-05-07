@@ -102,7 +102,7 @@ additional questions or comments.
 [purview_resource]: /azure/purview/create-catalog-portal
 [azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-purview-workflow_1.0.0b2/sdk/identity/azure-identity#credentials
 [username_password_credential]: https://learn.microsoft.com/python/api/azure-identity/azure.identity.usernamepasswordcredential?view=azure-python
-[azure_sub]: https://azure.microsoft.com/free/
+[azure_sub]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [azure_identity_pip]: https://pypi.org/project/azure-identity/
 [pip]: https://pypi.org/project/pip/

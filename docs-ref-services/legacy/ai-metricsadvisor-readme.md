@@ -532,7 +532,7 @@ additional questions or comments.
 [reference_documentation]: https://aka.ms/azsdk/python/metricsadvisor/docs
 [ma_docs]: https://docs.microsoft.com/azure/cognitive-services/metrics-advisor/overview
 [azure_cli]: https://docs.microsoft.com/cli/azure
-[azure_sub]: https://azure.microsoft.com/free/
+[azure_sub]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 [package]: https://aka.ms/azsdk/python/metricsadvisor/pypi
 [ma_service]: https://go.microsoft.com/fwlink/?linkid=2142156
 [python_logging]: https://docs.python.org/3.5/library/logging.html

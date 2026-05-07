@@ -216,6 +216,6 @@ You can also find [more samples here](https://github.com/Azure/azure-webpubsub/t
 
 If you'd like to contribute to this library, please read the [contributing guide](https://github.com/Azure/azure-sdk-for-python/blob/azure-messaging-webpubsubclient_1.1.0/CONTRIBUTING.md) to learn more about how to build and test the code.
 
-[azure_sub]: https://azure.microsoft.com/free/
+[azure_sub]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 [create_instance]: https://learn.microsoft.com/azure/azure-web-pubsub/howto-develop-create-instance
 [pypi]: https://pypi.org/

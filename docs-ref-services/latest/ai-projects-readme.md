@@ -496,5 +496,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 <!-- LINKS -->
 [samples]: https://aka.ms/azsdk/azure-ai-projects-v2/python/samples/
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
-[azure_sub]: https://azure.microsoft.com/free/
+[azure_sub]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 

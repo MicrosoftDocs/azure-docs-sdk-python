@@ -172,7 +172,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [ml_ref_docs]: https://learn.microsoft.com/python/api/azure-ai-ml/?view=azure-python
 [ml_samples]: https://github.com/Azure/azureml-examples/tree/main/sdk/python
 [product_documentation]: https://learn.microsoft.com/azure/machine-learning/
-[azure_subscription]: https://azure.microsoft.com/free/
+[azure_subscription]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 [workspace]: https://learn.microsoft.com/azure/machine-learning/concept-workspace
 [python_logging]: https://docs.python.org/3/library/logging.html
 [sdk_logging_docs]: https://learn.microsoft.com/azure/developer/python/azure-sdk-logging

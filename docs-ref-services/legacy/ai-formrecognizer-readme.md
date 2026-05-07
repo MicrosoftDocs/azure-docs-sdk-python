@@ -462,7 +462,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 
 
 [training_data]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set
-[azure_subscription]: https://azure.microsoft.com/free/
+[azure_subscription]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 [FR_or_CS_resource]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
 [pip]: https://pypi.org/project/pip/
 [azure_portal_create_FR_resource]: https://ms.portal.azure.com/#create/Microsoft.CognitiveServicesFormRecognizer

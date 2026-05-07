@@ -14,7 +14,7 @@ The HDInsight SDK for Python provides classes and methods that allow you to mana
 
 ## Prerequisites
 
-* An Azure account. If you don't have one, [get a free trial](https://azure.microsoft.com/free/).
+* An Azure account. If you don't have one, [get a free trial](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn).
 * [Python](https://www.python.org/downloads/)
 * [pip](https://pypi.org/project/pip/#description)
 

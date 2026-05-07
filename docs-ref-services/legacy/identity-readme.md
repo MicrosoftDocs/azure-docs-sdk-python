@@ -30,7 +30,7 @@ pip install azure-identity
 
 ### Prerequisites
 
-- an [Azure subscription](https://azure.microsoft.com/free/)
+- an [Azure subscription](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn)
 - Python 2.7 or 3.5.3+
 
 ### Authenticating during local development

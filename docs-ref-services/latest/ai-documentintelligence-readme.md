@@ -1064,7 +1064,7 @@ additional questions or comments.
 
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-documentintelligence_1.0.2/sdk/identity/azure-identity#defaultazurecredential
-[azure_sub]: https://azure.microsoft.com/free/
+[azure_sub]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 [python-di-src]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-documentintelligence_1.0.2/sdk/documentintelligence/azure-ai-documentintelligence/azure/ai/documentintelligence
 [python-di-pypi]: https://pypi.org/project/azure-ai-documentintelligence/
 [python-di-product-docs]: https://learn.microsoft.com/azure/ai-services/document-intelligence/overview?view=doc-intel-4.0.0&viewFallbackFrom=form-recog-3.0.0

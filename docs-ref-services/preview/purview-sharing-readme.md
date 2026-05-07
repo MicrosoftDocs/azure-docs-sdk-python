@@ -581,7 +581,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [client_pypi_package]: https://aka.ms/azsdk/python/purviewsharing/pypi
 [sharing_ref_docs]: https://aka.ms/azsdk/python/purviewcatalog/ref-docs
 [sharing_product_documentation]: https://azure.microsoft.com/services/purview/
-[azure_subscription]: https://azure.microsoft.com/free/
+[azure_subscription]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 [purview_resource]: /azure/purview
 [pip]: https://pypi.org/project/pip/
 [authenticate_with_token]: /azure/cognitive-services/authentication?tabs=powershell#authenticate-with-an-authentication-token

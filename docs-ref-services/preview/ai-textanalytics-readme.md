@@ -1069,7 +1069,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [ta_ref_docs]: https://aka.ms/azsdk-python-textanalytics-ref-docs
 [ta_samples]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-textanalytics_6.0.0b2/sdk/cognitivelanguage/azure-ai-textanalytics/samples
 [language_product_documentation]: https://learn.microsoft.com/azure/cognitive-services/language-service
-[azure_subscription]: https://azure.microsoft.com/free/
+[azure_subscription]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 [ta_or_cs_resource]: https://learn.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
 [pip]: https://pypi.org/project/pip/
 [azure_portal_create_ta_resource]: https://ms.portal.azure.com/#create/Microsoft.CognitiveServicesTextAnalytics

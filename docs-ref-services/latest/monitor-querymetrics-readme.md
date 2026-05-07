@@ -249,7 +249,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [azure_core_exceptions]: https://aka.ms/azsdk/python/core/docs#module-azure.core.exceptions
 [azure_core_ref_docs]: https://aka.ms/azsdk/python/core/docs
 [azure_monitor_overview]: https://learn.microsoft.com/azure/azure-monitor/
-[azure_subscription]: https://azure.microsoft.com/free/python/
+[azure_subscription]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learnpython/
 [changelog]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-querymetrics_1.0.0/sdk/monitor/azure-monitor-querymetrics/CHANGELOG.md
 [metric_namespaces]: https://learn.microsoft.com/azure/azure-monitor/reference/supported-metrics/metrics-index#supported-metrics-and-log-categories-by-resource-type
 [package]: https://aka.ms/azsdk-python-monitor-querymetrics-pypi

@@ -21,7 +21,7 @@ This package has been deprecated and will no longer be maintained after 09-30-20
 ### Prerequisites
 
 - Python 3.8+ is required to use this package.
-- [Azure subscription](https://azure.microsoft.com/free/)
+- [Azure subscription](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn)
 
 ### Install the package
 

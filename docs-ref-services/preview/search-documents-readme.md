@@ -431,7 +431,7 @@ additional questions or comments.
 
 [azure_cli]: https://learn.microsoft.com/cli/azure
 [azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-search-documents_11.7.0b2/sdk/core/azure-core/README.md
-[azure_sub]: https://azure.microsoft.com/free/
+[azure_sub]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 [search_resource]: https://learn.microsoft.com/azure/search/search-create-service-portal
 [azure_portal]: https://portal.azure.com
 
