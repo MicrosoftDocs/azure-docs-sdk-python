@@ -3,6 +3,82 @@ uid: azure.ai.contentunderstanding
 name: contentunderstanding
 fullName: azure.ai.contentunderstanding
 type: rootImport
+functions:
+- uid: azure.ai.contentunderstanding.to_llm_input
+  name: to_llm_input
+  summary: "Convert a Content Understanding analysis result into LLM-friendly text.\n\
+    \nProduces a formatted text string from the analysis result,\nsuitable for injecting\
+    \ into an LLM prompt, storing in a vector\ndatabase, or passing as tool output.\n\
+    \nFor single-content results (documents, images), the output is a\nflat text block.\
+    \ For multi-segment results (video, audio), each\nsegment is rendered with its\
+    \ time range. For document\nclassification results (parent with nested segments),\
+    \ the\nhelper automatically expands the parent into per-segment blocks\nwith category\
+    \ labels and markdown slices.\n\nExample:\n\n<!-- literal_block {\"ids\": [],\
+    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\"\
+    : \"preserve\", \"language\": \"default\", \"force\": false, \"linenos\": false}\
+    \ -->\n\n````default\n\n   from azure.ai.contentunderstanding import (\n     \
+    \  ContentUnderstandingClient,\n       to_llm_input,\n   )\n   from azure.identity\
+    \ import DefaultAzureCredential\n\n   client = ContentUnderstandingClient(endpoint,\
+    \ DefaultAzureCredential())\n   poller = client.begin_analyze(\n       analyzer_id=\"\
+    prebuilt-invoice\",\n       inputs=[{\"source\": {\"kind\": \"url\", \"url\":\
+    \ url}}],\n   )\n   result = poller.result()\n   text = to_llm_input(result)\n\
+    \   ````"
+  signature: 'to_llm_input(result: AnalysisResult, *, include_fields: bool = True,
+    include_markdown: bool = True, metadata: Dict[str, Any] | None = None) -> str'
+  parameters:
+  - name: result
+    description: The `AnalysisResult` from a Content Understanding analyze operation.
+    isRequired: true
+    types:
+    - <xref:azure.ai.contentunderstanding.models.AnalysisResult>
+  keywordOnlyParameters:
+  - name: include_fields
+    description: 'Whether to include structured fields in the
+
+      output. Defaults to True. Set to False for markdown-only
+
+      output (smaller token footprint, no structured data).'
+    defaultValue: 'True'
+    types:
+    - <xref:bool>
+  - name: include_markdown
+    description: 'Whether to include markdown content in the
+
+      output. Defaults to True. Set to False for fields-only
+
+      output.'
+    defaultValue: 'True'
+    types:
+    - <xref:bool>
+  - name: metadata
+    description: 'Optional dict of user-supplied key-value pairs to
+
+      include in the YAML front matter. Common keys include
+
+      `"source"` (filename), `"department"`,
+
+      `"batch_id"`, etc. Metadata keys are placed after
+
+      `contentType` and before auto-detected keys
+
+      (`timeRange`, `category`, `pages`). Metadata keys must not
+
+      conflict with helper-generated front matter keys.'
+    defaultValue: None
+    types:
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:None>
+  return:
+    description: 'A formatted text string with YAML front matter followed
+
+      by markdown content.'
+    types:
+    - <xref:str>
+  exceptions:
+  - type: TypeError
+    description: If *result* is not an `AnalysisResult`
+  - type: ValueError
+    description: If *metadata* contains a reserved front matter key.
 classes:
 - azure.ai.contentunderstanding.ContentUnderstandingClient
 packages:

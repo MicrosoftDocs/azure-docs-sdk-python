@@ -5,213 +5,122 @@ fullName: azure.batch.models.ResourceFile
 module: azure.batch.models
 summary: A single file or multiple files to be downloaded to a Compute Node.
 constructor:
-  syntax: 'ResourceFile(*, auto_storage_container_name: str = None, storage_container_url:
-    str = None, http_url: str = None, blob_prefix: str = None, file_path: str = None,
-    file_mode: str = None, identity_reference=None, **kwargs)'
-  parameters:
-  - name: auto_storage_container_name
-    description: 'The autoStorageContainerName,
+  syntax: 'ResourceFile(*args: Any, **kwargs: Any)'
+variables:
+- description: 'The storage container name in the auto storage Account. The
 
-      storageContainerUrl and httpUrl properties are mutually exclusive and one
+    autoStorageContainerName, storageContainerUrl and httpUrl properties are mutually
+    exclusive and
 
-      of them must be specified.'
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: storage_container_url
-    description: 'The autoStorageContainerName,
+    one of them must be specified.'
+  name: auto_storage_container_name
+  types:
+  - <xref:str>
+- description: 'The URL of the blob container within Azure Blob Storage. The
 
-      storageContainerUrl and httpUrl properties are mutually exclusive and one
+    autoStorageContainerName, storageContainerUrl and httpUrl properties are mutually
+    exclusive and
 
-      of them must be specified. This URL must be readable and listable from
+    one of them must be specified. This URL must be readable and listable from compute
+    nodes. There
 
-      compute nodes. There are three ways to get such a URL for a container in
+    are three ways to get such a URL for a container in Azure storage: include a Shared
+    Access
 
-      Azure storage: include a Shared Access Signature (SAS) granting read and
+    Signature (SAS) granting read and list permissions on the container, use a managed
+    identity
 
-      list permissions on the container, use a managed identity with read and
+    with read and list permissions, or set the ACL for the container to allow public
+    access.'
+  name: storage_container_url
+  types:
+  - <xref:str>
+- description: 'The URL of the file to download. The autoStorageContainerName,
 
-      list permissions, or set the ACL for the container to allow public access.'
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: http_url
-    description: 'The autoStorageContainerName, storageContainerUrl and
+    storageContainerUrl and httpUrl properties are mutually exclusive and one of them
+    must be
 
-      httpUrl properties are mutually exclusive and one of them must be
+    specified. If the URL points to Azure Blob Storage, it must be readable from compute
+    nodes.
 
-      specified. If the URL points to Azure Blob Storage, it must be readable
+    There are three ways to get such a URL for a blob in Azure storage: include a
+    Shared Access
 
-      from compute nodes. There are three ways to get such a URL for a blob in
+    Signature (SAS) granting read permissions on the blob, use a managed identity
+    with read
 
-      Azure storage: include a Shared Access Signature (SAS) granting read
+    permission, or set the ACL for the blob or its container to allow public access.'
+  name: http_url
+  types:
+  - <xref:str>
+- description: 'The blob prefix to use when downloading blobs from an Azure Storage
 
-      permissions on the blob, use a managed identity with read permission, or
+    container. Only the blobs whose names begin with the specified prefix will be
+    downloaded. The
 
-      set the ACL for the blob or its container to allow public access.'
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: blob_prefix
-    description: 'The property is valid only when
+    property is valid only when autoStorageContainerName or storageContainerUrl is
+    used. This
 
-      autoStorageContainerName or storageContainerUrl is used. This prefix can
+    prefix can be a partial filename or a subdirectory. If a prefix is not specified,
+    all the files
 
-      be a partial filename or a subdirectory. If a prefix is not specified, all
+    in the container will be downloaded.'
+  name: blob_prefix
+  types:
+  - <xref:str>
+- description: 'The location on the Compute Node to which to download the file(s),
+    relative to
 
-      the files in the container will be downloaded.'
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: file_path
-    description: 'If the httpUrl property is specified, the filePath is
+    the Task''s working directory. If the httpUrl property is specified, the filePath
+    is required
 
-      required and describes the path which the file will be downloaded to,
+    and describes the path which the file will be downloaded to, including the filename.
+    Otherwise,
 
-      including the filename. Otherwise, if the autoStorageContainerName or
+    if the autoStorageContainerName or storageContainerUrl property is specified,
+    filePath is
 
-      storageContainerUrl property is specified, filePath is optional and is the
+    optional and is the directory to download the files to. In the case where filePath
+    is used as a
 
-      directory to download the files to. In the case where filePath is used as
+    directory, any directory structure already associated with the input data will
+    be retained in
 
-      a directory, any directory structure already associated with the input
+    full and appended to the specified filePath directory. The specified relative
+    path cannot break
 
-      data will be retained in full and appended to the specified filePath
+    out of the Task''s working directory (for example by using ''..'').'
+  name: file_path
+  types:
+  - <xref:str>
+- description: 'The file permission mode attribute in octal format. This property
+    applies only
 
-      directory. The specified relative path cannot break out of the Task''s
+    to files being downloaded to Linux Compute Nodes. It will be ignored if it is
+    specified for a
 
-      working directory (for example by using ''..'').'
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: file_mode
-    description: 'This property applies only to files being downloaded to
+    resourceFile which will be downloaded to a Windows Compute Node. If this property
+    is not
 
-      Linux Compute Nodes. It will be ignored if it is specified for a
+    specified for a Linux Compute Node, then a default value of 0770 is applied to
+    the file.'
+  name: file_mode
+  types:
+  - <xref:str>
+- description: 'The reference to the user assigned identity to use to access Azure
 
-      resourceFile which will be downloaded to a Windows Compute Node. If this
-
-      property is not specified for a Linux Compute Node, then a default value
-
-      of 0770 is applied to the file.'
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: identity_reference
-    description: 'The reference to the user assigned identity to
-
-      use to access Azure Blob Storage specified by storageContainerUrl or
-
-      httpUrl.'
-    isRequired: true
-    types:
-    - <xref:azure.batch.models.ComputeNodeIdentityReference>
-  keywordOnlyParameters:
-  - name: auto_storage_container_name
-    defaultValue: None
-  - name: storage_container_url
-    defaultValue: None
-  - name: http_url
-    defaultValue: None
-  - name: blob_prefix
-    defaultValue: None
-  - name: file_path
-    defaultValue: None
-  - name: file_mode
-    defaultValue: None
-  - name: identity_reference
-    defaultValue: None
+    Blob Storage specified by storageContainerUrl or httpUrl.'
+  name: identity_reference
+  types:
+  - <xref:azure.batch.models.BatchNodeIdentityReference>
 methods:
 - uid: azure.batch.models.ResourceFile.as_dict
   name: as_dict
-  summary: "Return a dict that can be JSONify using json.dump.\n\nAdvanced usage might\
-    \ optionally use a callback as parameter:\n\nKey is the attribute name used in\
-    \ Python. Attr_desc\nis a dict of metadata. Currently contains 'type' with the\n\
-    msrest type and 'key' with the RestAPI encoded key.\nValue is the current value\
-    \ in this object.\n\nThe string returned will be used to serialize the key.\n\
-    If the return type is a list, this is considered hierarchical\nresult dict.\n\n\
-    See the three examples in this file:\n\n* attribute_transformer \n\n* full_restapi_key_transformer\
-    \ \n\n* last_restapi_key_transformer \n\nIf you want XML serialization, you can\
-    \ pass the kwargs is_xml=True."
-  signature: as_dict(keep_readonly=True, key_transformer=<function attribute_transformer>,
-    **kwargs)
-  parameters:
-  - name: key_transformer
-    description: A key transformer function.
-    types:
-    - <xref:function>
-  - name: keep_readonly
-    defaultValue: 'True'
-  return:
-    description: A dict JSON compatible object
-    types:
-    - <xref:dict>
-- uid: azure.batch.models.ResourceFile.deserialize
-  name: deserialize
-  summary: Parse a str using the RestAPI syntax and return a model.
-  signature: deserialize(data, content_type=None)
-  parameters:
-  - name: data
-    description: A str using RestAPI structure. JSON by default.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: content_type
-    description: JSON by default, set application/xml if XML.
-    defaultValue: None
-    types:
-    - <xref:str>
-  return:
-    description: An instance of this model
-  exceptions:
-  - type: DeserializationError if something went wrong
-- uid: azure.batch.models.ResourceFile.enable_additional_properties_sending
-  name: enable_additional_properties_sending
-  signature: enable_additional_properties_sending()
-- uid: azure.batch.models.ResourceFile.from_dict
-  name: from_dict
-  summary: 'Parse a dict using given key extractor return a model.
-
-
-    By default consider key
-
-    extractors (rest_key_case_insensitive_extractor, attribute_key_case_insensitive_extractor
-
-    and last_rest_key_case_insensitive_extractor)'
-  signature: from_dict(data, key_extractors=None, content_type=None)
-  parameters:
-  - name: data
-    description: A dict using RestAPI structure
-    isRequired: true
-    types:
-    - <xref:dict>
-  - name: content_type
-    description: JSON by default, set application/xml if XML.
-    defaultValue: None
-    types:
-    - <xref:str>
-  - name: key_extractors
-    defaultValue: None
-  return:
-    description: An instance of this model
-  exceptions:
-  - type: DeserializationError if something went wrong
-- uid: azure.batch.models.ResourceFile.is_xml_model
-  name: is_xml_model
-  signature: is_xml_model()
-- uid: azure.batch.models.ResourceFile.serialize
-  name: serialize
-  summary: 'Return the JSON that would be sent to azure from this model.
-
-
-    This is an alias to *as_dict(full_restapi_key_transformer, keep_readonly=False)*.
-
-
-    If you want XML serialization, you can pass the kwargs is_xml=True.'
-  signature: serialize(keep_readonly=False, **kwargs)
-  parameters:
-  - name: keep_readonly
-    description: If you want to serialize the readonly attributes
+  summary: Return a dict that can be turned into json using json.dump.
+  signature: 'as_dict(*, exclude_readonly: bool = False) -> dict[str, Any]'
+  keywordOnlyParameters:
+  - name: exclude_readonly
+    description: Whether to remove the readonly properties.
     defaultValue: 'False'
     types:
     - <xref:bool>
@@ -219,11 +128,207 @@ methods:
     description: A dict JSON compatible object
     types:
     - <xref:dict>
-- uid: azure.batch.models.ResourceFile.validate
-  name: validate
-  summary: Validate this model recursively and return a list of ValidationError.
-  signature: validate()
+- uid: azure.batch.models.ResourceFile.clear
+  name: clear
+  summary: Remove all items from D.
+  signature: clear() -> None
+- uid: azure.batch.models.ResourceFile.copy
+  name: copy
+  signature: copy() -> Model
+- uid: azure.batch.models.ResourceFile.get
+  name: get
+  summary: 'Get the value for key if key is in the dictionary, else default.
+
+    :param str key: The key to look up.
+
+    :param any default: The value to return if key is not in the dictionary. Defaults
+    to None
+
+    :returns: D[k] if k in D, else d.
+
+    :rtype: any'
+  signature: 'get(key: str, default: Any = None) -> Any'
+  parameters:
+  - name: key
+    isRequired: true
+  - name: default
+    defaultValue: None
+- uid: azure.batch.models.ResourceFile.items
+  name: items
+  signature: items() -> ItemsView[str, Any]
   return:
-    description: A list of validation error
+    description: set-like object providing a view on D's items
     types:
-    - <xref:list>
+    - <xref:typing.ItemsView>
+- uid: azure.batch.models.ResourceFile.keys
+  name: keys
+  signature: keys() -> KeysView[str]
+  return:
+    description: a set-like object providing a view on D's keys
+    types:
+    - <xref:typing.KeysView>
+- uid: azure.batch.models.ResourceFile.pop
+  name: pop
+  summary: 'Removes specified key and return the corresponding value.
+
+    :param str key: The key to pop.
+
+    :param any default: The value to return if key is not in the dictionary
+
+    :returns: The value corresponding to the key.
+
+    :rtype: any
+
+    :raises KeyError: If key is not found and default is not given.'
+  signature: 'pop(key: str, default: ~typing.Any = <object object>) -> Any'
+  parameters:
+  - name: key
+    isRequired: true
+  - name: default
+- uid: azure.batch.models.ResourceFile.popitem
+  name: popitem
+  summary: 'Removes and returns some (key, value) pair
+
+    :returns: The (key, value) pair.
+
+    :rtype: tuple
+
+    :raises KeyError: if D is empty.'
+  signature: popitem() -> tuple[str, Any]
+- uid: azure.batch.models.ResourceFile.setdefault
+  name: setdefault
+  summary: 'Same as calling D.get(k, d), and setting D[k]=d if k not found
+
+    :param str key: The key to look up.
+
+    :param any default: The value to set if key is not in the dictionary
+
+    :returns: D[k] if k in D, else d.
+
+    :rtype: any'
+  signature: 'setdefault(key: str, default: ~typing.Any = <object object>) -> Any'
+  parameters:
+  - name: key
+    isRequired: true
+  - name: default
+- uid: azure.batch.models.ResourceFile.update
+  name: update
+  summary: 'Updates D from mapping/iterable E and F.
+
+    :param any args: Either a mapping object or an iterable of key-value pairs.'
+  signature: 'update(*args: Any, **kwargs: Any) -> None'
+- uid: azure.batch.models.ResourceFile.values
+  name: values
+  signature: values() -> ValuesView[Any]
+  return:
+    description: an object providing a view on D's values
+    types:
+    - <xref:typing.ValuesView>
+attributes:
+- uid: azure.batch.models.ResourceFile.auto_storage_container_name
+  name: auto_storage_container_name
+  summary: 'The storage container name in the auto storage Account. The autoStorageContainerName,
+
+    storageContainerUrl and httpUrl properties are mutually exclusive and one of them
+    must be
+
+    specified.'
+  signature: 'auto_storage_container_name: str | None'
+- uid: azure.batch.models.ResourceFile.blob_prefix
+  name: blob_prefix
+  summary: 'The blob prefix to use when downloading blobs from an Azure Storage container.
+    Only the blobs
+
+    whose names begin with the specified prefix will be downloaded. The property is
+    valid only when
+
+    autoStorageContainerName or storageContainerUrl is used. This prefix can be a
+    partial filename
+
+    or a subdirectory. If a prefix is not specified, all the files in the container
+    will be
+
+    downloaded.'
+  signature: 'blob_prefix: str | None'
+- uid: azure.batch.models.ResourceFile.file_mode
+  name: file_mode
+  summary: 'The file permission mode attribute in octal format. This property applies
+    only to files being
+
+    downloaded to Linux Compute Nodes. It will be ignored if it is specified for a
+    resourceFile
+
+    which will be downloaded to a Windows Compute Node. If this property is not specified
+    for a
+
+    Linux Compute Node, then a default value of 0770 is applied to the file.'
+  signature: 'file_mode: str | None'
+- uid: azure.batch.models.ResourceFile.file_path
+  name: file_path
+  summary: 'The location on the Compute Node to which to download the file(s), relative
+    to the Task''s
+
+    working directory. If the httpUrl property is specified, the filePath is required
+    and describes
+
+    the path which the file will be downloaded to, including the filename. Otherwise,
+    if the
+
+    autoStorageContainerName or storageContainerUrl property is specified, filePath
+    is optional and
+
+    is the directory to download the files to. In the case where filePath is used
+    as a directory,
+
+    any directory structure already associated with the input data will be retained
+    in full and
+
+    appended to the specified filePath directory. The specified relative path cannot
+    break out of
+
+    the Task''s working directory (for example by using ''..'').'
+  signature: 'file_path: str | None'
+- uid: azure.batch.models.ResourceFile.http_url
+  name: http_url
+  summary: 'The URL of the file to download. The autoStorageContainerName, storageContainerUrl
+    and httpUrl
+
+    properties are mutually exclusive and one of them must be specified. If the URL
+    points to Azure
+
+    Blob Storage, it must be readable from compute nodes. There are three ways to
+    get such a URL
+
+    for a blob in Azure storage: include a Shared Access Signature (SAS) granting
+    read permissions
+
+    on the blob, use a managed identity with read permission, or set the ACL for the
+    blob or its
+
+    container to allow public access.'
+  signature: 'http_url: str | None'
+- uid: azure.batch.models.ResourceFile.identity_reference
+  name: identity_reference
+  summary: 'The reference to the user assigned identity to use to access Azure Blob
+    Storage specified by
+
+    storageContainerUrl or httpUrl.'
+  signature: 'identity_reference: _models.BatchNodeIdentityReference | None'
+- uid: azure.batch.models.ResourceFile.storage_container_url
+  name: storage_container_url
+  summary: 'The URL of the blob container within Azure Blob Storage. The autoStorageContainerName,
+
+    storageContainerUrl and httpUrl properties are mutually exclusive and one of them
+    must be
+
+    specified. This URL must be readable and listable from compute nodes. There are
+    three ways to
+
+    get such a URL for a container in Azure storage: include a Shared Access Signature
+    (SAS)
+
+    granting read and list permissions on the container, use a managed identity with
+    read and list
+
+    permissions, or set the ACL for the container to allow public access.'
+  signature: 'storage_container_url: str | None'
