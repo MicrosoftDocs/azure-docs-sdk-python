@@ -1,7 +1,7 @@
 ---
 title: Azure Redis SDK for Python
 description: Reference for Azure Redis SDK for Python
-ms.date: 05/12/2026
+ms.date: 05/13/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: cache
