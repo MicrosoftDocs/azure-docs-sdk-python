@@ -21,7 +21,7 @@ def rewrite_yml(data):
 
 with open("toc.yml", 'r') as stream:
     try:
-        data_loaded = yaml.load(stream)
+        data_loaded = yaml.safe_load(stream)
         for node in data_loaded:
             if 'name' in node:
                 if node['name'].startswith('azure.') and node['name'] not in skipped_level2_packages:
