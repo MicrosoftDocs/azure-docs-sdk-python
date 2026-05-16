@@ -1,7 +1,5 @@
 | Reference | Package | Source |
 |---|---|---|
-|[AI Agent Server - Agent Framework](ai-agentserver-agentframework-readme.md)|[azure-ai-agentserver-agentframework](https://pypi.org/project/azure-ai-agentserver-agentframework)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/agentserver/azure-ai-agentserver-agentframework)|
-|[AI Agent Server - LangGraph](ai-agentserver-langgraph-readme.md)|[azure-ai-agentserver-langgraph](https://pypi.org/project/azure-ai-agentserver-langgraph)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/agentserver/azure-ai-agentserver-langgraph)|
 |[AI Agents](ai-agents-readme.md)|[azure-ai-agents](https://pypi.org/project/azure-ai-agents)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/ai/azure-ai-agents)|
 |[AI Agent Server - Core](ai-agentserver-core-readme.md)|[azure-ai-agentserver-core](https://pypi.org/project/azure-ai-agentserver-core)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/agentserver/azure-ai-agentserver-core)|
 |[Anomaly Detector](ai-anomalydetector-readme.md)|[azure-ai-anomalydetector](https://pypi.org/project/azure-ai-anomalydetector)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/anomalydetector/azure-ai-anomalydetector)|

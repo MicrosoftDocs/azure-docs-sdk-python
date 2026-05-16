@@ -1,11 +1,11 @@
 ---
 title: Azure Network SDK for Python
 description: Reference for Azure Network SDK for Python
-keywords: Azure, python, SDK, API, Network
-ms.date: 07/10/2017
+ms.date: 05/15/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: network
+keywords: Azure, python, SDK, API, Network
 manager: douge
 ---
 # Azure Network libraries for python
@@ -72,4 +72,3 @@ subnet_info = async_subnet_creation.result()
 * [Getting started with Azure Resource Manager for load balancers in Python](https://azure.microsoft.com/en-us/resources/samples/network-python-manage-loadbalancer/)
 
 View the [complete list](https://azure.microsoft.com/en-us/resources/samples/?platform=python&term=virtual%20network) of Azure Virtual Network samples.
-
