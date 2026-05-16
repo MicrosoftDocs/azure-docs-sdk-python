@@ -234,7 +234,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 <!-- LINKS -->
 
-[azure_sub]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learndotnet/
+[azure_sub]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 [azure_portal]: https://portal.azure.com
 [azure-key-credential]: https://aka.ms/azsdk-python-core-azurekeycredential
 [cla]: https://cla.microsoft.com

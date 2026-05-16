@@ -251,7 +251,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [azure_monitor_create_using_portal]: https://learn.microsoft.com/azure/azure-monitor/logs/quick-create-workspace
 [azure_monitor_overview]: https://learn.microsoft.com/azure/azure-monitor/
 [azure_monitor_query]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-ingestion_1.1.0/sdk/monitor/azure-monitor-query#readme
-[azure_subscription]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learnpython/
+[azure_subscription]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 [changelog]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-ingestion_1.1.0/sdk/monitor/azure-monitor-ingestion/CHANGELOG.md
 [data_collection_endpoint]: https://learn.microsoft.com/azure/azure-monitor/essentials/data-collection-endpoint-overview
 [data_collection_rule]: https://learn.microsoft.com/azure/azure-monitor/essentials/data-collection-rule-overview

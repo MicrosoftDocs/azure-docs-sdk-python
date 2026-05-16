@@ -341,7 +341,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 <!-- LINKS -->
 [azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-jobrouter_1.0.0/sdk/core/azure-core/README.md
-[azure_sub]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learnpython/
+[azure_sub]: https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
