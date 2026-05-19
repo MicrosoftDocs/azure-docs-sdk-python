@@ -11,6 +11,22 @@ variables:
   name: node_public_ip_tags
   types:
   - <xref:list>[<xref:azure.mgmt.containerservice.models.IPTag>]
+- description: 'The resource IDs of public IP prefixes for node public IPs.
+
+    At most one IPv4 and one IPv6 prefix may be specified. Order does not matter;
+    the RP determines
+
+    IP version from the referenced resource''s publicIPAddressVersion. Requires enableNodePublicIP
+
+    to be true on the agent pool. Mutually exclusive with the top-level nodePublicIPPrefixID
+
+    property. Immutable after node pool creation. To change prefixes, delete and recreate
+    the node
+
+    pool. For more information, see [https://aka.ms/aks/ipv6-ilpip](https://aka.ms/aks/ipv6-ilpip).'
+  name: node_public_ip_prefix_i_ds
+  types:
+  - <xref:list>[<xref:str>]
 - description: 'The port ranges that are allowed to access. The specified ranges are
 
     allowed to overlap.'
@@ -23,6 +39,30 @@ variables:
   name: application_security_groups
   types:
   - <xref:list>[<xref:str>]
+- description: 'Secondary network interface configurations for each VM in
+
+    the agent pool. Each entry is a template: one physical NIC per entry is provisioned
+    on every VM
+
+    instance. These interfaces are created at agent pool creation time and are immutable.
+    The
+
+    length of the list must be less than the NIC capacity minus 1 for the VM size
+    of the agent pool
+
+    (AKS manages the primary NIC). For example, a Standard_D8a_v4 VM supports up to
+    4 NICs, so the
+
+    maximum number of secondary interfaces allowed is 3. For mixed-SKU VM pools the
+    effective
+
+    capacity is the minimum across all SKUs: count(secondaryNetworkInterfaces) + 1
+    <= min(maxNICs).
+
+    For more information, see [https://aka.ms/aks/multi-nic](https://aka.ms/aks/multi-nic).'
+  name: secondary_network_interfaces
+  types:
+  - <xref:list>[<xref:azure.mgmt.containerservice.models.AgentPoolNetworkInterface>]
 attributes:
 - uid: azure.mgmt.containerservice.models.AgentPoolNetworkProfile.allowed_host_ports
   name: allowed_host_ports
@@ -34,7 +74,52 @@ attributes:
   summary: The IDs of the application security groups which agent pool will associate
     when created.
   signature: 'application_security_groups: list[str] | None'
+- uid: azure.mgmt.containerservice.models.AgentPoolNetworkProfile.node_public_ip_prefix_i_ds
+  name: node_public_ip_prefix_i_ds
+  summary: 'The resource IDs of public IP prefixes for node public IPs. At most one
+    IPv4 and one IPv6
+
+    prefix may be specified. Order does not matter; the RP determines IP version from
+    the
+
+    referenced resource''s publicIPAddressVersion. Requires enableNodePublicIP to
+    be true on the
+
+    agent pool. Mutually exclusive with the top-level nodePublicIPPrefixID property.
+    Immutable
+
+    after node pool creation. To change prefixes, delete and recreate the node pool.
+    For more
+
+    information, see [https://aka.ms/aks/ipv6-ilpip](https://aka.ms/aks/ipv6-ilpip).'
+  signature: 'node_public_ip_prefix_i_ds: list[str] | None'
 - uid: azure.mgmt.containerservice.models.AgentPoolNetworkProfile.node_public_ip_tags
   name: node_public_ip_tags
   summary: IPTags of instance-level public IPs.
   signature: 'node_public_ip_tags: list[''_models.IPTag''] | None'
+- uid: azure.mgmt.containerservice.models.AgentPoolNetworkProfile.secondary_network_interfaces
+  name: secondary_network_interfaces
+  summary: 'Secondary network interface configurations for each VM in the agent pool.
+    Each entry is a
+
+    template: one physical NIC per entry is provisioned on every VM instance. These
+    interfaces are
+
+    created at agent pool creation time and are immutable. The length of the list
+    must be less than
+
+    the NIC capacity minus 1 for the VM size of the agent pool (AKS manages the primary
+    NIC). For
+
+    example, a Standard_D8a_v4 VM supports up to 4 NICs, so the maximum number of
+    secondary
+
+    interfaces allowed is 3. For mixed-SKU VM pools the effective capacity is the
+    minimum across
+
+    all SKUs: count(secondaryNetworkInterfaces) + 1 <= min(maxNICs). For more information,
+    see
+
+    [https://aka.ms/aks/multi-nic](https://aka.ms/aks/multi-nic).'
+  signature: 'secondary_network_interfaces: list[''_models.AgentPoolNetworkInterface'']
+    | None'
