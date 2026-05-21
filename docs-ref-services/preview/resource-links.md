@@ -1,7 +1,7 @@
 ---
 title: Azure Resource-Links SDK for Python
 description: Reference for Azure Resource-Links SDK for Python
-ms.date: 05/20/2026
+ms.date: 05/21/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: resource-links
