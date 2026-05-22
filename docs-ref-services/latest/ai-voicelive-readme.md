@@ -1,10 +1,10 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-ai-voicelive, ai
-ms.date: 11/04/2025
+keywords: Azure, python, SDK, API, azure-ai-voicelive, voicelive
+ms.date: 05/22/2026
 ms.topic: reference
 ms.devlang: python
-ms.service: ai
+ms.service: voicelive
 ---
 Azure AI VoiceLive client library for Python
 ============================================
@@ -41,6 +41,9 @@ python -m pip install azure-ai-voicelive
 python -m pip install "azure-ai-voicelive[aiohttp]"
 
 # For voice samples (includes audio processing)
+# First install PyAudio dependencies for your platform:
+#   Linux: sudo apt-get install -y portaudio19-dev libasound2-dev
+#   macOS: brew install portaudio
 python -m pip install azure-ai-voicelive[aiohttp] pyaudio python-dotenv
 ```
 
