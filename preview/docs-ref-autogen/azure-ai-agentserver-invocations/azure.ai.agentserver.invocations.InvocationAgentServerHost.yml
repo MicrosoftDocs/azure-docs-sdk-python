@@ -5,17 +5,24 @@ fullName: azure.ai.agentserver.invocations.InvocationAgentServerHost
 module: azure.ai.agentserver.invocations
 summary: "Invocation protocol host for Azure AI Hosted Agents.\n\nA <xref:azure.ai.agentserver.core.AgentServerHost>\
   \ subclass that adds\nthe invocation protocol endpoints.  Use the decorator methods\
-  \ to wire\nhandler functions to the endpoints.\n\nFor multi-protocol agents, compose\
-  \ via cooperative inheritance:\n\n<!-- literal_block {\"ids\": [], \"classes\":\
-  \ [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\": \"preserve\"\
-  , \"language\": \"default\", \"force\": false, \"linenos\": false} -->\n\n````default\n\
-  \n   class MyHost(InvocationAgentServerHost, ResponsesAgentServerHost):\n      \
-  \ pass\n   ````\n\nUsage:\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
-  names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\": \"preserve\", \"\
-  language\": \"default\", \"force\": false, \"linenos\": false} -->\n\n````default\n\
-  \n   from azure.ai.agentserver.invocations import InvocationAgentServerHost\n\n\
-  \   app = InvocationAgentServerHost()\n\n   @app.invoke_handler\n   async def handle(request):\n\
-  \       return JSONResponse({\"ok\": True})\n\n   app.run()\n   ````"
+  \ to wire\nhandler functions to the endpoints.\n\nThe same host object also exposes\
+  \ the `invocations_ws` (WebSocket)\ntransport at [/invocations_ws](/invocations_ws)\
+  \ \u2014 register a handler with the\n<xref:azure.ai.agentserver.invocations.InvocationAgentServerHost.ws_handler>\
+  \ decorator.  Multi-protocol agents share a single\nhost, session, and process.\n\
+  \nFor multi-protocol agents, compose via cooperative inheritance:\n\n<!-- literal_block\
+  \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\":\
+  \ [], \"xml:space\": \"preserve\", \"language\": \"default\", \"force\": false,\
+  \ \"linenos\": false} -->\n\n````default\n\n   class MyHost(InvocationAgentServerHost,\
+  \ ResponsesAgentServerHost):\n       pass\n   ````\n\nUsage:\n\n<!-- literal_block\
+  \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\":\
+  \ [], \"xml:space\": \"preserve\", \"language\": \"default\", \"force\": false,\
+  \ \"linenos\": false} -->\n\n````default\n\n   from azure.ai.agentserver.invocations\
+  \ import InvocationAgentServerHost\n   from starlette.websockets import WebSocket\n\
+  \n   app = InvocationAgentServerHost()\n\n   @app.invoke_handler               \
+  \   # POST /invocations\n   async def handle(request):\n       return JSONResponse({\"\
+  ok\": True})\n\n   @app.ws_handler                      # /invocations_ws\n   async\
+  \ def ws(websocket: WebSocket) -> None:\n       async for message in websocket.iter_text():\n\
+  \           await websocket.send_text(message)\n\n   app.run()\n   ````"
 constructor:
   syntax: 'InvocationAgentServerHost(*, openapi_spec: dict[str, Any] | None = None,
     **kwargs: Any)'
@@ -175,52 +182,6 @@ methods:
   exceptions:
   - type: ValueError
     description: If *version_segment* is empty or whitespace-only.
-- uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.request_span
-  name: request_span
-  summary: 'Create a request-scoped span with this host''s identity attributes.
-
-
-    Delegates to <xref:_tracing.request_span> with pre-populated
-
-    agent identity from environment variables.'
-  signature: 'request_span(headers: Any, request_id: str, operation: str, *, operation_name:
-    str | None = None, session_id: str = '''', end_on_exit: bool = True) -> Any'
-  parameters:
-  - name: headers
-    description: HTTP request headers.
-    isRequired: true
-    types:
-    - <xref:any>
-  - name: request_id
-    description: The request/invocation ID.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: operation
-    description: Span operation (e.g. `"invoke_agent"`).
-    isRequired: true
-    types:
-    - <xref:str>
-  keywordOnlyParameters:
-  - name: operation_name
-    description: Optional `gen_ai.operation.name` value.
-    defaultValue: None
-    types:
-    - <xref:str>
-    - <xref:None>
-  - name: session_id
-    description: Session ID.
-    types:
-    - <xref:str>
-  - name: end_on_exit
-    description: Whether to end the span when the context exits.
-    defaultValue: 'True'
-    types:
-    - <xref:bool>
-  return:
-    description: Context manager yielding the OTel span.
-    types:
-    - <xref:any>
 - uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.run
   name: run
   summary: Start the server synchronously.
@@ -304,6 +265,48 @@ methods:
   positionalOnlyParameters:
   - name: name
     isRequired: true
+- uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.ws_handler
+  name: ws_handler
+  summary: "Register an async function as the `/invocations_ws` handler.\n\nThe SDK\
+    \ calls `await websocket.accept()` before invoking *fn* and\ncleanly closes the\
+    \ connection on return (code 1000) or maps an\nuncaught exception to close code\
+    \ 1011.\n\nUsage:\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\"\
+    : [], \"dupnames\": [], \"backrefs\": [], \"xml:space\": \"preserve\", \"language\"\
+    : \"default\", \"force\": false, \"linenos\": false} -->\n\n````default\n\n  \
+    \ from starlette.websockets import WebSocket\n\n   @app.ws_handler\n   async def\
+    \ handle(websocket: WebSocket) -> None:\n       async for msg in websocket.iter_text():\n\
+    \           await websocket.send_text(msg)\n   ````"
+  signature: 'ws_handler(fn: Callable[[WebSocket], Awaitable[None]]) -> Callable[[WebSocket],
+    Awaitable[None]]'
+  parameters:
+  - name: fn
+    description: 'An async function accepting a Starlette
+
+      <xref:starlette.websockets.WebSocket> and returning `None`.'
+    isRequired: true
+    types:
+    - <xref:typing.Callable>[[<xref:WebSocket>], <xref:typing.Awaitable>[<xref:None>]]
+  return:
+    description: The original function (unmodified).
+    types:
+    - <xref:typing.Callable>[[<xref:WebSocket>], <xref:typing.Awaitable>[<xref:None>]]
+  exceptions:
+  - type: TypeError
+    description: 'If *fn* is not an `async def` function, or its
+
+      signature cannot be invoked with a single positional argument
+
+      (the WebSocket).'
 attributes:
 - uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.routes
   name: routes
+- uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.ws_ping_interval
+  name: ws_ping_interval
+  summary: 'Configured WebSocket Ping interval in seconds (`0` = disabled).
+
+
+    Convenience alias for `self.config.ws_ping_interval`.'
+  return:
+    description: The configured interval, or `0` when keep-alive is disabled.
+    types:
+    - <xref:float>

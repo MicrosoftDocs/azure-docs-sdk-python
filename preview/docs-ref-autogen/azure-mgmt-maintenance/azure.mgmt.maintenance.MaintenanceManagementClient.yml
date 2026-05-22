@@ -6,10 +6,11 @@ module: azure.mgmt.maintenance
 summary: Azure Maintenance Management Client.
 constructor:
   syntax: 'MaintenanceManagementClient(credential: TokenCredential, subscription_id:
-    str, base_url: str = ''https://management.azure.com'', **kwargs: Any)'
+    str, base_url: str | None = None, *, cloud_setting: AzureClouds | None = None,
+    **kwargs: Any)'
   parameters:
   - name: credential
-    description: Credential needed for the client to connect to Azure. Required.
+    description: Credential used to authenticate requests to the service. Required.
     isRequired: true
     types:
     - <xref:azure.core.credentials.TokenCredential>
@@ -19,26 +20,40 @@ constructor:
     types:
     - <xref:str>
   - name: base_url
-    description: Service URL. Default value is "`https://management.azure.com`".
-    defaultValue: https://management.azure.com
+    description: Service host. Default value is None.
+    defaultValue: None
     types:
     - <xref:str>
   keywordOnlyParameters:
-  - name: api_version
-    description: 'Api Version. Default value is "2023-10-01-preview". Note that overriding
+  - name: cloud_setting
+    description: 'The cloud setting for which to get the ARM endpoint. Default value
+      is
 
-      this default value may result in unsupported behavior.'
+      None.'
+    defaultValue: None
+    types:
+    - <xref:azure.core.AzureClouds>
+  - name: api_version
+    description: 'The API version to use for this operation. Known values are
+
+      "2023-10-01-preview" and None. Default value is None. If not set, the operation''s
+      default API
+
+      version will be used. Note that overriding this default value may result in
+      unsupported
+
+      behavior.'
     types:
     - <xref:str>
 variables:
-- description: ScheduledEventOperations operations
-  name: scheduled_event
+- description: Operations operations
+  name: operations
   types:
-  - <xref:azure.mgmt.maintenance.operations.ScheduledEventOperations>
-- description: PublicMaintenanceConfigurationsOperations operations
-  name: public_maintenance_configurations
+  - <xref:azure.mgmt.maintenance.operations.Operations>
+- description: MaintenanceConfigurationsOperations operations
+  name: maintenance_configurations
   types:
-  - <xref:azure.mgmt.maintenance.operations.PublicMaintenanceConfigurationsOperations>
+  - <xref:azure.mgmt.maintenance.operations.MaintenanceConfigurationsOperations>
 - description: ApplyUpdatesOperations operations
   name: apply_updates
   types:
@@ -47,22 +62,6 @@ variables:
   name: configuration_assignments
   types:
   - <xref:azure.mgmt.maintenance.operations.ConfigurationAssignmentsOperations>
-- description: MaintenanceConfigurationsOperations operations
-  name: maintenance_configurations
-  types:
-  - <xref:azure.mgmt.maintenance.operations.MaintenanceConfigurationsOperations>
-- description: MaintenanceConfigurationsForResourceGroupOperations operations
-  name: maintenance_configurations_for_resource_group
-  types:
-  - <xref:azure.mgmt.maintenance.operations.MaintenanceConfigurationsForResourceGroupOperations>
-- description: ApplyUpdateForResourceGroupOperations operations
-  name: apply_update_for_resource_group
-  types:
-  - <xref:azure.mgmt.maintenance.operations.ApplyUpdateForResourceGroupOperations>
-- description: ConfigurationAssignmentsWithinSubscriptionOperations operations
-  name: configuration_assignments_within_subscription
-  types:
-  - <xref:azure.mgmt.maintenance.operations.ConfigurationAssignmentsWithinSubscriptionOperations>
 - description: ConfigurationAssignmentsForSubscriptionsOperations operations
   name: configuration_assignments_for_subscriptions
   types:
@@ -71,10 +70,26 @@ variables:
   name: configuration_assignments_for_resource_group
   types:
   - <xref:azure.mgmt.maintenance.operations.ConfigurationAssignmentsForResourceGroupOperations>
-- description: Operations operations
-  name: operations
+- description: PublicMaintenanceConfigurationsOperations operations
+  name: public_maintenance_configurations
   types:
-  - <xref:azure.mgmt.maintenance.operations.Operations>
+  - <xref:azure.mgmt.maintenance.operations.PublicMaintenanceConfigurationsOperations>
+- description: MaintenanceConfigurationsForResourceGroupOperations operations
+  name: maintenance_configurations_for_resource_group
+  types:
+  - <xref:azure.mgmt.maintenance.operations.MaintenanceConfigurationsForResourceGroupOperations>
+- description: ConfigurationAssignmentsWithinSubscriptionOperations operations
+  name: configuration_assignments_within_subscription
+  types:
+  - <xref:azure.mgmt.maintenance.operations.ConfigurationAssignmentsWithinSubscriptionOperations>
+- description: ScheduledEventOperations operations
+  name: scheduled_event
+  types:
+  - <xref:azure.mgmt.maintenance.operations.ScheduledEventOperations>
+- description: ApplyUpdateForResourceGroupOperations operations
+  name: apply_update_for_resource_group
+  types:
+  - <xref:azure.mgmt.maintenance.operations.ApplyUpdateForResourceGroupOperations>
 - description: UpdatesOperations operations
   name: updates
   types:
@@ -83,3 +98,44 @@ methods:
 - uid: azure.mgmt.maintenance.MaintenanceManagementClient.close
   name: close
   signature: close() -> None
+- uid: azure.mgmt.maintenance.MaintenanceManagementClient.send_request
+  name: send_request
+  summary: 'Runs the network request through the client''s chained policies.
+
+
+    ```
+
+
+    >>> from azure.core.rest import HttpRequest
+
+    >>> request = HttpRequest("GET", "https://www.example.org/")
+
+    <HttpRequest [GET], url: ''https://www.example.org/''>
+
+    >>> response = client.send_request(request)
+
+    <HttpResponse: 200 OK>
+
+    ```
+
+
+    For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> HttpResponse'
+  parameters:
+  - name: request
+    description: The network request you want to make. Required.
+    isRequired: true
+    types:
+    - <xref:azure.core.rest.HttpRequest>
+  keywordOnlyParameters:
+  - name: stream
+    description: Whether the response payload will be streamed. Defaults to False.
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  return:
+    description: The response of your network call. Does not do error handling on
+      your response.
+    types:
+    - <xref:azure.core.rest.HttpResponse>
