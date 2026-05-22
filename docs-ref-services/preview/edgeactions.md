@@ -1,7 +1,7 @@
 ---
 title: Azure Edgeactions SDK for Python
 description: Reference for Azure Edgeactions SDK for Python
-ms.date: 05/21/2026
+ms.date: 05/22/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: edgeactions
