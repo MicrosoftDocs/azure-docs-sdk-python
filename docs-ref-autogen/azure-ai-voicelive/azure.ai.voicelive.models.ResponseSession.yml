@@ -35,11 +35,8 @@ variables:
   name: instructions
   types:
   - <xref:str>
-- description: 'Input audio sampling rate in Hz. Available values:
-
-    * For pcm16: 8000, 16000, 24000
-
-    * For g711_alaw/g711_ulaw: 8000.'
+- description: "Input audio sampling rate in Hz. Available values:\n\n* For pcm16:\
+    \ 8000, 16000, 24000 \n\n* For g711_alaw/g711_ulaw: 8000."
   name: input_audio_sampling_rate
   types:
   - <xref:int>
@@ -52,7 +49,7 @@ variables:
   - <xref:azure.ai.voicelive.models.InputAudioFormat>
 - description: 'Output audio format. Default is ''pcm16''. Known values are: "pcm16",
 
-    "pcm16-8000hz", "pcm16-16000hz", "g711_ulaw", and "g711_alaw".'
+    "pcm16_8000hz", "pcm16_16000hz", "g711_ulaw", and "g711_alaw".'
   name: output_audio_format
   types:
   - <xref:str>
@@ -112,6 +109,51 @@ variables:
   types:
   - <xref:int>
   - <xref:str>
+- description: 'Constrains effort on reasoning for reasoning models. Check model
+
+    documentation for supported values for each model. Reducing reasoning effort can
+    result in
+
+    faster responses and fewer tokens used on reasoning in a response. Known values
+    are: "none",
+
+    "minimal", "low", "medium", "high", and "xhigh".'
+  name: reasoning_effort
+  types:
+  - <xref:str>
+  - <xref:azure.ai.voicelive.models.ReasoningEffort>
+- description: 'Configuration for interim response generation during latency or tool
+
+    calls. Is either a StaticInterimResponseConfig type or a LlmInterimResponseConfig
+    type.'
+  name: interim_response
+  types:
+  - <xref:azure.ai.voicelive.models.StaticInterimResponseConfig>
+  - <xref:azure.ai.voicelive.models.LlmInterimResponseConfig>
+- description: 'List of include options for the session (e.g., logprobs, phrases,
+    file search
+
+    results).'
+  name: include
+  types:
+  - <xref:list>[<xref:str>
+  - <xref:azure.ai.voicelive.models.SessionIncludeOption>]
+- description: 'Set of up to 16 key-value pairs that can be attached to the session.
+    This is
+
+    useful for storing additional information about the session in a structured format,
+    such as
+
+    tracking IDs, user context, or application-specific labels. These key-value pairs
+    are also
+
+    included in Foundry resource logs for tracing and diagnostics. Keys can be a maximum
+    of 64
+
+    characters long and values can be a maximum of 512 characters long.'
+  name: metadata
+  types:
+  - <xref:dict>[<xref:str>, <xref:str>]
 - description: The agent configuration for the session, if applicable.
   name: agent
   types:
@@ -248,6 +290,12 @@ attributes:
   name: id
   summary: The unique identifier for the session.
   signature: 'id: str | None'
+- uid: azure.ai.voicelive.models.ResponseSession.include
+  name: include
+  summary: List of include options for the session (e.g., logprobs, phrases, file
+    search results).
+  signature: 'include: list[typing.Union[str, ForwardRef(''_models.SessionIncludeOption'')]]
+    | None'
 - uid: azure.ai.voicelive.models.ResponseSession.input_audio_echo_cancellation
   name: input_audio_echo_cancellation
   summary: Configuration for echo cancellation during server-side audio processing.
@@ -264,11 +312,8 @@ attributes:
   signature: 'input_audio_noise_reduction: _models.AudioNoiseReduction | None'
 - uid: azure.ai.voicelive.models.ResponseSession.input_audio_sampling_rate
   name: input_audio_sampling_rate
-  summary: 'Input audio sampling rate in Hz. Available values:
-
-    * For pcm16: 8000, 16000, 24000
-
-    * For g711_alaw/g711_ulaw: 8000.'
+  summary: "Input audio sampling rate in Hz. Available values:\n\n* For pcm16: 8000,\
+    \ 16000, 24000 \n\n* For g711_alaw/g711_ulaw: 8000. "
   signature: 'input_audio_sampling_rate: int | None'
 - uid: azure.ai.voicelive.models.ResponseSession.input_audio_transcription
   name: input_audio_transcription
@@ -279,6 +324,13 @@ attributes:
   name: instructions
   summary: Optional instructions to guide the model's behavior throughout the session.
   signature: 'instructions: str | None'
+- uid: azure.ai.voicelive.models.ResponseSession.interim_response
+  name: interim_response
+  summary: 'Configuration for interim response generation during latency or tool calls.
+    Is either a
+
+    StaticInterimResponseConfig type or a LlmInterimResponseConfig type.'
+  signature: 'interim_response: _types.InterimResponseConfig | None'
 - uid: azure.ai.voicelive.models.ResponseSession.max_response_output_tokens
   name: max_response_output_tokens
   summary: 'Maximum number of tokens to generate in the response. Default is unlimited.
@@ -286,6 +338,22 @@ attributes:
 
     type or a Literal["inf"] type.'
   signature: 'max_response_output_tokens: int | Literal[''inf''] | None'
+- uid: azure.ai.voicelive.models.ResponseSession.metadata
+  name: metadata
+  summary: 'Set of up to 16 key-value pairs that can be attached to the session. This
+    is useful for storing
+
+    additional information about the session in a structured format, such as tracking
+    IDs, user
+
+    context, or application-specific labels. These key-value pairs are also included
+    in Foundry
+
+    resource logs for tracing and diagnostics. Keys can be a maximum of 64 characters
+    long and
+
+    values can be a maximum of 512 characters long.'
+  signature: 'metadata: dict[str, str] | None'
 - uid: azure.ai.voicelive.models.ResponseSession.modalities
   name: modalities
   summary: The modalities to be used in the session.
@@ -297,15 +365,27 @@ attributes:
   signature: 'model: str | None'
 - uid: azure.ai.voicelive.models.ResponseSession.output_audio_format
   name: output_audio_format
-  summary: '"pcm16", "pcm16-8000hz",
+  summary: '"pcm16", "pcm16_8000hz",
 
-    "pcm16-16000hz", "g711_ulaw", and "g711_alaw".'
+    "pcm16_16000hz", "g711_ulaw", and "g711_alaw".'
   signature: 'output_audio_format: str | _models.OutputAudioFormat | None'
 - uid: azure.ai.voicelive.models.ResponseSession.output_audio_timestamp_types
   name: output_audio_timestamp_types
   summary: Types of timestamps to include in audio response content.
   signature: 'output_audio_timestamp_types: list[typing.Union[str, ForwardRef(''_models.AudioTimestampType'')]]
     | None'
+- uid: azure.ai.voicelive.models.ResponseSession.reasoning_effort
+  name: reasoning_effort
+  summary: 'Constrains effort on reasoning for reasoning models. Check model documentation
+    for supported
+
+    values for each model. Reducing reasoning effort can result in faster responses
+    and fewer
+
+    tokens used on reasoning in a response. Known values are: "none", "minimal", "low",
+
+    "medium", "high", and "xhigh".'
+  signature: 'reasoning_effort: str | _models.ReasoningEffort | None'
 - uid: azure.ai.voicelive.models.ResponseSession.temperature
   name: temperature
   summary: 0.0 to 1.0. Default is 0.7.

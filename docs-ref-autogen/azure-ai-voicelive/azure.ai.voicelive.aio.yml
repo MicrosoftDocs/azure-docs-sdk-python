@@ -21,24 +21,32 @@ functions:
     - Automatically cleans up the connection when the context exits.
 
 
-    > [!NOTE]
+    Additional legacy keyword arguments are accepted for backward compatibility.
 
-    > Additional keyword arguments can be passed and will be forwarded to the underlying
-    connection.
-
-    >'
+    Unknown values are ignored.'
   signature: 'connect(*, credential: AzureKeyCredential | AsyncTokenCredential, endpoint:
-    str, api_version: str = ''2025-10-01'', model: str | None = None, query: Mapping[str,
+    str, api_version: str = ''2026-04-10'', model: str | None = None, agent_name:
+    str | None = None, project_name: str | None = None, agent_version: str | None
+    = None, conversation_id: str | None = None, authentication_identity_client_id:
+    str | None = None, foundry_resource_override: str | None = None, query: Mapping[str,
     Any] | None = None, headers: Mapping[str, Any] | None = None, connection_options:
-    WebsocketConnectionOptions | None = None, **kwargs: Any) -> AbstractAsyncContextManager[VoiceLiveConnection]'
+    WebsocketConnectionOptions | None = None, credential_scopes: str | Sequence[str]
+    | None = None, **kwargs: Any) -> AbstractAsyncContextManager[VoiceLiveConnection]'
   keywordOnlyParameters:
   - name: credential
     description: The credential used to authenticate with the service.
+    types:
+    - <xref:azure.core.credentials.AzureKeyCredential>
+    - <xref:azure.core.credentials.AsyncTokenCredential>
   - name: endpoint
     description: Service endpoint, e.g., `https://<region>.api.cognitive.microsoft.com`.
+    types:
+    - <xref:str>
   - name: api_version
-    description: The API version to use. Defaults to `"2025-10-01"`.
-    defaultValue: '2025-10-01'
+    description: The API version to use. Defaults to `"2026-04-10"`.
+    defaultValue: '2026-04-10'
+    types:
+    - <xref:str>
   - name: model
     description: 'Model identifier to use for the session.
 
@@ -50,19 +58,64 @@ functions:
     defaultValue: None
     types:
     - <xref:str>
+  - name: agent_name
+    description: Optional Azure AI Foundry agent name. When set, `project_name` is
+      also required.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: project_name
+    description: Azure AI Foundry project name. Required when `agent_name` is provided.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: agent_version
+    description: Optional Azure AI Foundry agent version.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: conversation_id
+    description: Optional Azure AI Foundry conversation ID to continue.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: authentication_identity_client_id
+    description: Optional client ID used for Foundry authentication identity.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: foundry_resource_override
+    description: Optional override for the Azure AI Foundry resource.
+    defaultValue: None
+    types:
+    - <xref:str>
   - name: query
     description: Optional query parameters to include in the WebSocket URL.
     defaultValue: None
+    types:
+    - <xref:typing.Mapping>[<xref:str>, <xref:typing.Any>]<xref:F>
   - name: headers
     description: Optional HTTP headers to include in the WebSocket handshake.
     defaultValue: None
+    types:
+    - <xref:typing.Mapping>[<xref:str>, <xref:typing.Any>]
   - name: connection_options
     description: Optional advanced WebSocket options compatible with [aiohttp](aiohttp).
     defaultValue: None
+    types:
+    - <xref:azure.ai.voicelive.aio.WebsocketConnectionOptions>
+  - name: credential_scopes
+    description: Optional scope override for token-based authentication.
+    defaultValue: None
+    types:
+    - <xref:str> | <xref:typing.Sequence>[<xref:str>]
   return:
     description: An async context manager yielding a connected <xref:azure.ai.voicelive.aio.VoiceLiveConnection>.
     types:
     - <xref:collections.abc.AsyncContextManager>[<xref:azure.ai.voicelive.aio.VoiceLiveConnection>]
+  exceptions:
+  - type: ValueError
+    description: If only one of `agent_name` or `project_name` is provided.
 classes:
 - azure.ai.voicelive.aio.ConnectionClosed
 - azure.ai.voicelive.aio.ConnectionError
