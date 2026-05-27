@@ -6,28 +6,40 @@ module: azure.mgmt.databoxedge
 summary: DataBoxEdgeManagementClient.
 constructor:
   syntax: 'DataBoxEdgeManagementClient(credential: TokenCredential, subscription_id:
-    str, base_url: str | None = None, **kwargs: Any)'
+    str, base_url: str | None = None, *, cloud_setting: AzureClouds | None = None,
+    **kwargs: Any)'
   parameters:
   - name: credential
-    description: Credential needed for the client to connect to Azure. Required.
+    description: Credential used to authenticate requests to the service. Required.
     isRequired: true
     types:
     - <xref:azure.core.credentials.TokenCredential>
   - name: subscription_id
-    description: The subscription ID. Required.
+    description: The ID of the target subscription. The value must be an UUID. Required.
     isRequired: true
     types:
     - <xref:str>
   - name: base_url
-    description: Service URL. Default value is None.
+    description: Service host. Default value is None.
     defaultValue: None
     types:
     - <xref:str>
   keywordOnlyParameters:
-  - name: api_version
-    description: 'Api Version. Default value is "2021-02-01-preview". Note that overriding
+  - name: cloud_setting
+    description: 'The cloud setting for which to get the ARM endpoint. Default value
+      is
 
-      this default value may result in unsupported behavior.'
+      None.'
+    defaultValue: None
+    types:
+    - <xref:azure.core.AzureClouds>
+  - name: api_version
+    description: 'The API version to use for this operation. Known values are "2023-12-01"
+
+      and None. Default value is None. If not set, the operation''s default API version
+      will be used.
+
+      Note that overriding this default value may result in unsupported behavior.'
     types:
     - <xref:str>
   - name: polling_interval
@@ -37,18 +49,18 @@ constructor:
     types:
     - <xref:int>
 variables:
-- description: Operations operations
-  name: operations
+- description: OperationsStatusOperations operations
+  name: operations_status
   types:
-  - <xref:azure.mgmt.databoxedge.operations.Operations>
-- description: AvailableSkusOperations operations
-  name: available_skus
-  types:
-  - <xref:azure.mgmt.databoxedge.operations.AvailableSkusOperations>
+  - <xref:azure.mgmt.databoxedge.operations.OperationsStatusOperations>
 - description: DevicesOperations operations
   name: devices
   types:
   - <xref:azure.mgmt.databoxedge.operations.DevicesOperations>
+- description: Operations operations
+  name: operations
+  types:
+  - <xref:azure.mgmt.databoxedge.operations.Operations>
 - description: AlertsOperations operations
   name: alerts
   types:
@@ -57,18 +69,14 @@ variables:
   name: bandwidth_schedules
   types:
   - <xref:azure.mgmt.databoxedge.operations.BandwidthSchedulesOperations>
+- description: DiagnosticSettingsOperations operations
+  name: diagnostic_settings
+  types:
+  - <xref:azure.mgmt.databoxedge.operations.DiagnosticSettingsOperations>
 - description: JobsOperations operations
   name: jobs
   types:
   - <xref:azure.mgmt.databoxedge.operations.JobsOperations>
-- description: NodesOperations operations
-  name: nodes
-  types:
-  - <xref:azure.mgmt.databoxedge.operations.NodesOperations>
-- description: OperationsStatusOperations operations
-  name: operations_status
-  types:
-  - <xref:azure.mgmt.databoxedge.operations.OperationsStatusOperations>
 - description: OrdersOperations operations
   name: orders
   types:
@@ -81,10 +89,6 @@ variables:
   name: addons
   types:
   - <xref:azure.mgmt.databoxedge.operations.AddonsOperations>
-- description: MonitoringConfigOperations operations
-  name: monitoring_config
-  types:
-  - <xref:azure.mgmt.databoxedge.operations.MonitoringConfigOperations>
 - description: SharesOperations operations
   name: shares
   types:
@@ -109,7 +113,72 @@ variables:
   name: users
   types:
   - <xref:azure.mgmt.databoxedge.operations.UsersOperations>
+- description: DeviceCapacityCheckOperations operations
+  name: device_capacity_check
+  types:
+  - <xref:azure.mgmt.databoxedge.operations.DeviceCapacityCheckOperations>
+- description: NodesOperations operations
+  name: nodes
+  types:
+  - <xref:azure.mgmt.databoxedge.operations.NodesOperations>
+- description: SupportPackagesOperations operations
+  name: support_packages
+  types:
+  - <xref:azure.mgmt.databoxedge.operations.SupportPackagesOperations>
+- description: DeviceCapacityInfoOperations operations
+  name: device_capacity_info
+  types:
+  - <xref:azure.mgmt.databoxedge.operations.DeviceCapacityInfoOperations>
+- description: MonitoringConfigOperations operations
+  name: monitoring_config
+  types:
+  - <xref:azure.mgmt.databoxedge.operations.MonitoringConfigOperations>
+- description: AvailableSkusOperations operations
+  name: available_skus
+  types:
+  - <xref:azure.mgmt.databoxedge.operations.AvailableSkusOperations>
 methods:
 - uid: azure.mgmt.databoxedge.DataBoxEdgeManagementClient.close
   name: close
   signature: close() -> None
+- uid: azure.mgmt.databoxedge.DataBoxEdgeManagementClient.send_request
+  name: send_request
+  summary: 'Runs the network request through the client''s chained policies.
+
+
+    ```
+
+
+    >>> from azure.core.rest import HttpRequest
+
+    >>> request = HttpRequest("GET", "https://www.example.org/")
+
+    <HttpRequest [GET], url: ''https://www.example.org/''>
+
+    >>> response = client.send_request(request)
+
+    <HttpResponse: 200 OK>
+
+    ```
+
+
+    For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> HttpResponse'
+  parameters:
+  - name: request
+    description: The network request you want to make. Required.
+    isRequired: true
+    types:
+    - <xref:azure.core.rest.HttpRequest>
+  keywordOnlyParameters:
+  - name: stream
+    description: Whether the response payload will be streamed. Defaults to False.
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  return:
+    description: The response of your network call. Does not do error handling on
+      your response.
+    types:
+    - <xref:azure.core.rest.HttpResponse>
