@@ -1,7 +1,7 @@
 ---
 title: Azure Dellstorage SDK for Python
 description: Reference for Azure Dellstorage SDK for Python
-ms.date: 05/27/2026
+ms.date: 05/28/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: dellstorage
