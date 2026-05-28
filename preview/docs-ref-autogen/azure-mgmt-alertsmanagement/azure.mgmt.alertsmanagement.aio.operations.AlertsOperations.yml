@@ -11,9 +11,63 @@ constructor:
 methods:
 - uid: azure.mgmt.alertsmanagement.aio.operations.AlertsOperations.change_state
   name: change_state
+  summary: 'Change the state of an alert. If scope is a deleted resource then please
+    use scope as parent
+
+    resource of the delete resource. For example if my alert id is
+
+    ''/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/virtualMachines/vm1/providers/Microsoft.AlertsManagement/alerts/{alertId}''
+
+    and ''vm1'' is deleted then if you want to change state of this particular alert
+    then use parent
+
+    resource of scope. So in this example change state call will look like this:
+
+    ''/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AlertsManagement/alerts/{alertId}''.'
+  signature: 'async change_state(scope: str, alert_id: str, comment: _models.Comments
+    | None = None, *, new_state: str | _models.AlertState, content_type: str = ''application/json'',
+    **kwargs: Any) -> _models.Alert'
+  parameters:
+  - name: scope
+    description: undefined. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: alert_id
+    description: Unique ID of an alert instance. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: comment
+    description: 'reason of change alert state. Is one of the following types: Comments,
+      JSON,
+
+      IO[bytes] Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:azure.mgmt.alertsmanagement.models.Comments>
+    - <xref:JSON>
+    - <xref:typing.IO>[<xref:bytes>]
+  keywordOnlyParameters:
+  - name: new_state
+    description: 'New state of the alert. Known values are: "New", "Acknowledged",
+      and
+
+      "Closed". Required.'
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.alertsmanagement.models.AlertState>
+  return:
+    description: Alert. The Alert is compatible with MutableMapping
+    types:
+    - <xref:azure.mgmt.alertsmanagement.models.Alert>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.mgmt.alertsmanagement.aio.operations.AlertsOperations.change_state_tenant
+  name: change_state_tenant
   summary: Change the state of an alert.
-  signature: 'async change_state(alert_id: str, new_state: str | _models.AlertState,
-    comment: _models.Comments | None = None, *, content_type: str = ''application/json'',
+  signature: 'async change_state_tenant(alert_id: str, comment: _models.Comments |
+    None = None, *, new_state: str | _models.AlertState, content_type: str = ''application/json'',
     **kwargs: Any) -> _models.Alert'
   parameters:
   - name: alert_id
@@ -21,37 +75,27 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  - name: comment
+    description: 'reason of change alert state. Is one of the following types: Comments,
+      JSON,
+
+      IO[bytes] Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:azure.mgmt.alertsmanagement.models.Comments>
+    - <xref:JSON>
+    - <xref:typing.IO>[<xref:bytes>]
+  keywordOnlyParameters:
   - name: new_state
     description: 'New state of the alert. Known values are: "New", "Acknowledged",
       and
 
       "Closed". Required.'
-    isRequired: true
     types:
     - <xref:str>
     - <xref:azure.mgmt.alertsmanagement.models.AlertState>
-  - name: comment
-    description: 'reason of change alert state. Is either a model type or a IO type.
-      Default
-
-      value is None.'
-    defaultValue: None
-    types:
-    - <xref:azure.mgmt.alertsmanagement.models.Comments>
-    - <xref:typing.IO>
-  keywordOnlyParameters:
-  - name: content_type
-    description: 'Body Parameter content-type. Known values are: ''application/json''.
-
-      Default value is None.'
-    types:
-    - <xref:str>
-  - name: cls
-    description: A custom type or function that will be passed the direct response
-    types:
-    - <xref:callable>
   return:
-    description: Alert or the result of cls(response)
+    description: Alert. The Alert is compatible with MutableMapping
     types:
     - <xref:azure.mgmt.alertsmanagement.models.Alert>
   exceptions:
@@ -65,17 +109,23 @@ methods:
     with the
 
     default being lastModifiedDateTime.'
-  signature: 'get_all(target_resource: str | None = None, target_resource_type: str
-    | None = None, target_resource_group: str | None = None, monitor_service: str
-    | MonitorService | None = None, monitor_condition: str | MonitorCondition | None
-    = None, severity: str | Severity | None = None, alert_state: str | AlertState
+  signature: 'get_all(scope: str, *, target_resource: str | None = None, target_resource_type:
+    str | None = None, target_resource_group: str | None = None, monitor_service:
+    str | MonitorService | None = None, monitor_condition: str | MonitorCondition
+    | None = None, severity: str | Severity | None = None, alert_state: str | AlertState
     | None = None, alert_rule: str | None = None, smart_group_id: str | None = None,
     include_context: bool | None = None, include_egress_config: bool | None = None,
     page_count: int | None = None, sort_by: str | AlertsSortByFields | None = None,
     sort_order: str | SortOrder | None = None, select: str | None = None, time_range:
     str | TimeRange | None = None, custom_time_range: str | None = None, **kwargs:
-    Any) -> AsyncIterable[Alert]'
+    Any) -> AsyncItemPaged[Alert]'
   parameters:
+  - name: scope
+    description: undefined. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
   - name: target_resource
     description: 'Filter by target resource( which is full ARM ID) Default value is
 
@@ -109,7 +159,7 @@ methods:
       Autoscale", "Log Analytics", "Nagios", "Platform", "SCOM", "ServiceHealth",
       "SmartDetector",
 
-      "VM Insights", and "Zabbix". Default value is None.'
+      "VM Insights", "Zabbix", and "Resource Health". Default value is None.'
     defaultValue: None
     types:
     - <xref:str>
@@ -174,12 +224,11 @@ methods:
     - <xref:bool>
   - name: page_count
     description: 'Determines number of alerts returned per page in response. Permissible
-      value
 
-      is between 1 to 250. When the "includeContent"  filter is selected, maximum
-      value allowed is
+      value is between 1 to 250. When the "includeContent"  filter is selected, maximum
+      value allowed
 
-      25. Default value is 25. Default value is None.'
+      is 25. Default value is 25. Default value is None.'
     defaultValue: None
     types:
     - <xref:int>
@@ -231,24 +280,212 @@ methods:
     - <xref:str>
     - <xref:azure.mgmt.alertsmanagement.models.TimeRange>
   - name: custom_time_range
-    description: 'Filter by custom time range in the format
+    description: 'Filter by custom time range in the format <start-time>/<end-time>
 
-      `<start-time>`/`<end-time>`  where time is in (ISO-8601 format)''. Permissible
+      where time is in (ISO-8601 format)''. Permissible values is within 30 days from  query
+      time.
 
-      values is within 30 days from  query time. Either timeRange or customTimeRange
-      could be used
+      Either timeRange or customTimeRange could be used but not both. Default is none.
+      Default value
 
-      but not both. Default is none. Default value is None.'
+      is None.'
     defaultValue: None
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: cls
-    description: A custom type or function that will be passed the direct response
-    types:
-    - <xref:callable>
   return:
-    description: An iterator like instance of either Alert or the result of cls(response)
+    description: An iterator like instance of Alert
+    types:
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.mgmt.alertsmanagement.models.Alert>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.mgmt.alertsmanagement.aio.operations.AlertsOperations.get_all_tenant
+  name: get_all_tenant
+  summary: 'List all existing alerts, where the results can be filtered on the basis
+    of multiple parameters
+
+    (e.g. time range). The results can then be sorted on the basis specific fields,
+    with the
+
+    default being lastModifiedDateTime.'
+  signature: 'get_all_tenant(*, target_resource: str | None = None, target_resource_type:
+    str | None = None, target_resource_group: str | None = None, monitor_service:
+    str | MonitorService | None = None, monitor_condition: str | MonitorCondition
+    | None = None, severity: str | Severity | None = None, alert_state: str | AlertState
+    | None = None, alert_rule: str | None = None, smart_group_id: str | None = None,
+    include_context: bool | None = None, include_egress_config: bool | None = None,
+    page_count: int | None = None, sort_by: str | AlertsSortByFields | None = None,
+    sort_order: str | SortOrder | None = None, select: str | None = None, time_range:
+    str | TimeRange | None = None, custom_time_range: str | None = None, **kwargs:
+    Any) -> AsyncItemPaged[Alert]'
+  keywordOnlyParameters:
+  - name: target_resource
+    description: 'Filter by target resource( which is full ARM ID) Default value is
+
+      select all. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: target_resource_type
+    description: 'Filter by target resource type. Default value is select all.
+
+      Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: target_resource_group
+    description: 'Filter by target resource group name. Default value is select
+
+      all. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: monitor_service
+    description: 'Filter by monitor service which generates the alert instance. Default
+
+      value is select all. Known values are: "Application Insights", "ActivityLog
+      Administrative",
+
+      "ActivityLog Security", "ActivityLog Recommendation", "ActivityLog Policy",
+      "ActivityLog
+
+      Autoscale", "Log Analytics", "Nagios", "Platform", "SCOM", "ServiceHealth",
+      "SmartDetector",
+
+      "VM Insights", "Zabbix", and "Resource Health". Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.alertsmanagement.models.MonitorService>
+  - name: monitor_condition
+    description: 'Filter by monitor condition which is either ''Fired'' or ''Resolved''.
+
+      Default value is to select all. Known values are: "Fired" and "Resolved". Default
+      value is
+
+      None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.alertsmanagement.models.MonitorCondition>
+  - name: severity
+    description: 'Filter by severity.  Default value is select all. Known values are:
+      "Sev0",
+
+      "Sev1", "Sev2", "Sev3", and "Sev4". Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.alertsmanagement.models.Severity>
+  - name: alert_state
+    description: 'Filter by state of the alert instance. Default value is to select
+      all.
+
+      Known values are: "New", "Acknowledged", and "Closed". Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.alertsmanagement.models.AlertState>
+  - name: alert_rule
+    description: 'Filter by specific alert rule.  Default value is to select all.
+      Default
+
+      value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: smart_group_id
+    description: 'Filter the alerts list by the Smart Group Id. Default value is none.
+
+      Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: include_context
+    description: 'Include context which has contextual data specific to the monitor
+
+      service. Default value is false''. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:bool>
+  - name: include_egress_config
+    description: 'Include egress config which would be used for displaying the
+
+      content in portal.  Default value is ''false''. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:bool>
+  - name: page_count
+    description: 'Determines number of alerts returned per page in response. Permissible
+
+      value is between 1 to 250. When the "includeContent"  filter is selected, maximum
+      value allowed
+
+      is 25. Default value is 25. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: sort_by
+    description: 'Sort the query results by input field,  Default value is
+
+      ''lastModifiedDateTime''. Known values are: "name", "severity", "alertState",
+      "monitorCondition",
+
+      "targetResource", "targetResourceName", "targetResourceGroup", "targetResourceType",
+
+      "startDateTime", and "lastModifiedDateTime". Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.alertsmanagement.models.AlertsSortByFields>
+  - name: sort_order
+    description: 'Sort the query results order in either ascending or descending.  Default
+
+      value is ''desc'' for time fields and ''asc'' for others. Known values are:
+      "asc" and "desc".
+
+      Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.alertsmanagement.models.SortOrder>
+  - name: select
+    description: 'This filter allows to selection of the fields(comma separated) which
+      would  be
+
+      part of the essential section. This would allow to project only the  required
+      fields rather
+
+      than getting entire content.  Default is to fetch all the fields in the essentials
+      section.
+
+      Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: time_range
+    description: 'Filter by time range by below listed values. Default value is 1
+      day. Known
+
+      values are: "1h", "1d", "7d", and "30d". Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.alertsmanagement.models.TimeRange>
+  - name: custom_time_range
+    description: 'Filter by custom time range in the format <start-time>/<end-time>
+
+      where time is in (ISO-8601 format)''. Permissible values is within 30 days from  query
+      time.
+
+      Either timeRange or customTimeRange could be used but not both. Default is none.
+      Default value
+
+      is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: An iterator like instance of Alert
     types:
     - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.mgmt.alertsmanagement.models.Alert>]
   exceptions:
@@ -258,45 +495,135 @@ methods:
   summary: 'Get a specific alert.
 
 
+    Get information related to a specific alert. If scope is a deleted resource then
+    please use
+
+    scope as parent resource of the delete resource. For example if my alert id is
+
+    ''/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/virtualMachines/vm1/providers/Microsoft.AlertsManagement/alerts/{alertId}''
+
+    and ''vm1'' is deleted then if you want to get alert by id then use parent resource
+    of scope. So
+
+    in this example get alert by id call will look like this:
+
+    ''/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AlertsManagement/alerts/{alertId}''.'
+  signature: 'async get_by_id(scope: str, alert_id: str, **kwargs: Any) -> Alert'
+  parameters:
+  - name: scope
+    description: undefined. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: alert_id
+    description: Unique ID of an alert instance. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: Alert. The Alert is compatible with MutableMapping
+    types:
+    - <xref:azure.mgmt.alertsmanagement.models.Alert>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.mgmt.alertsmanagement.aio.operations.AlertsOperations.get_by_id_tenant
+  name: get_by_id_tenant
+  summary: 'Get a specific alert.
+
+
     Get information related to a specific alert.'
-  signature: 'async get_by_id(alert_id: str, **kwargs: Any) -> Alert'
+  signature: 'async get_by_id_tenant(alert_id: str, **kwargs: Any) -> Alert'
   parameters:
   - name: alert_id
     description: Unique ID of an alert instance. Required.
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: cls
-    description: A custom type or function that will be passed the direct response
-    types:
-    - <xref:callable>
   return:
-    description: Alert or the result of cls(response)
+    description: Alert. The Alert is compatible with MutableMapping
     types:
     - <xref:azure.mgmt.alertsmanagement.models.Alert>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.mgmt.alertsmanagement.aio.operations.AlertsOperations.get_enrichments
+  name: get_enrichments
+  summary: Get the enrichments of an alert. It returns a collection of one object
+    named default.
+  signature: 'get_enrichments(scope: str, alert_id: str, **kwargs: Any) -> AsyncItemPaged[AlertEnrichmentResponse]'
+  parameters:
+  - name: scope
+    description: undefined. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: alert_id
+    description: Unique ID of an alert instance. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: An iterator like instance of AlertEnrichmentResponse
+    types:
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.mgmt.alertsmanagement.models.AlertEnrichmentResponse>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.mgmt.alertsmanagement.aio.operations.AlertsOperations.get_history
   name: get_history
   summary: 'Get the history of an alert, which captures any monitor condition changes
-    (Fired/Resolved) and
+    (Fired/Resolved),
 
-    alert state changes (New/Acknowledged/Closed).'
-  signature: 'async get_history(alert_id: str, **kwargs: Any) -> AlertModification'
+    alert state changes (New/Acknowledged/Closed) and applied action rules for that
+    particular
+
+    alert. If scope is a deleted resource then please use scope as parent resource
+    of the delete
+
+    resource. For example if my alert id is
+
+    ''/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/virtualMachines/vm1/providers/Microsoft.AlertsManagement/alerts/{alertId}''
+
+    and ''vm1'' is deleted then if you want to get history of this particular alert
+    then use parent
+
+    resource of scope. So in this example get history call will look like this:
+
+    ''/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AlertsManagement/alerts/{alertId}/history''.'
+  signature: 'async get_history(scope: str, alert_id: str, **kwargs: Any) -> AlertModification'
+  parameters:
+  - name: scope
+    description: undefined. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: alert_id
+    description: Unique ID of an alert instance. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: AlertModification. The AlertModification is compatible with MutableMapping
+    types:
+    - <xref:azure.mgmt.alertsmanagement.models.AlertModification>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.mgmt.alertsmanagement.aio.operations.AlertsOperations.get_history_tenant
+  name: get_history_tenant
+  summary: 'Get the history of an alert, which captures any monitor condition changes
+    (Fired/Resolved),
+
+    alert state changes (New/Acknowledged/Closed) and applied action rules for that
+    particular
+
+    alert.'
+  signature: 'async get_history_tenant(alert_id: str, **kwargs: Any) -> AlertModification'
   parameters:
   - name: alert_id
     description: Unique ID of an alert instance. Required.
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: cls
-    description: A custom type or function that will be passed the direct response
-    types:
-    - <xref:callable>
   return:
-    description: AlertModification or the result of cls(response)
+    description: AlertModification. The AlertModification is compatible with MutableMapping
     types:
     - <xref:azure.mgmt.alertsmanagement.models.AlertModification>
   exceptions:
@@ -307,24 +634,29 @@ methods:
     grouping by
 
     ''Severity'' returns the count of alerts for each severity).'
-  signature: 'async get_summary(groupby: str | AlertsSummaryGroupByFields, include_smart_groups_count:
-    bool | None = None, target_resource: str | None = None, target_resource_type:
-    str | None = None, target_resource_group: str | None = None, monitor_service:
-    str | MonitorService | None = None, monitor_condition: str | MonitorCondition
-    | None = None, severity: str | Severity | None = None, alert_state: str | AlertState
-    | None = None, alert_rule: str | None = None, time_range: str | TimeRange | None
-    = None, custom_time_range: str | None = None, **kwargs: Any) -> AlertsSummary'
+  signature: 'async get_summary(scope: str, *, groupby: str | AlertsSummaryGroupByFields,
+    include_smart_groups_count: bool | None = None, target_resource: str | None =
+    None, target_resource_type: str | None = None, target_resource_group: str | None
+    = None, monitor_service: str | MonitorService | None = None, monitor_condition:
+    str | MonitorCondition | None = None, severity: str | Severity | None = None,
+    alert_state: str | AlertState | None = None, alert_rule: str | None = None, time_range:
+    str | TimeRange | None = None, custom_time_range: str | None = None, **kwargs:
+    Any) -> AlertsSummary'
   parameters:
-  - name: groupby
-    description: 'This parameter allows the result set to be grouped by input fields
-      (Maximum 2
-
-      comma separated fields supported). For example, groupby=severity or
-
-      groupby=severity,alertstate. Known values are: "severity", "alertState", "monitorCondition",
-
-      "monitorService", "signalType", and "alertRule". Required.'
+  - name: scope
+    description: The fully qualified Azure Resource manager identifier of the resource.
+      Required.
     isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: groupby
+    description: 'This parameter allows the result set to be grouped by input fields.
+      For
+
+      example, groupby=severity,alertstate. Known values are: "severity", "alertState",
+
+      "monitorCondition", "monitorService", "signalType", and "alertRule". Required.'
     types:
     - <xref:str>
     - <xref:azure.mgmt.alertsmanagement.models.AlertsSummaryGroupByFields>
@@ -368,7 +700,7 @@ methods:
       Autoscale", "Log Analytics", "Nagios", "Platform", "SCOM", "ServiceHealth",
       "SmartDetector",
 
-      "VM Insights", and "Zabbix". Default value is None.'
+      "VM Insights", "Zabbix", and "Resource Health". Default value is None.'
     defaultValue: None
     types:
     - <xref:str>
@@ -420,24 +752,20 @@ methods:
     - <xref:str>
     - <xref:azure.mgmt.alertsmanagement.models.TimeRange>
   - name: custom_time_range
-    description: 'Filter by custom time range in the format
+    description: 'Filter by custom time range in the format <start-time>/<end-time>
 
-      `<start-time>`/`<end-time>`  where time is in (ISO-8601 format)''. Permissible
+      where time is in (ISO-8601 format)''. Permissible values is within 30 days from  query
+      time.
 
-      values is within 30 days from  query time. Either timeRange or customTimeRange
-      could be used
+      Either timeRange or customTimeRange could be used but not both. Default is none.
+      Default value
 
-      but not both. Default is none. Default value is None.'
+      is None.'
     defaultValue: None
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: cls
-    description: A custom type or function that will be passed the direct response
-    types:
-    - <xref:callable>
   return:
-    description: AlertsSummary or the result of cls(response)
+    description: AlertsSummary. The AlertsSummary is compatible with MutableMapping
     types:
     - <xref:azure.mgmt.alertsmanagement.models.AlertsSummary>
   exceptions:
@@ -445,28 +773,18 @@ methods:
 - uid: azure.mgmt.alertsmanagement.aio.operations.AlertsOperations.meta_data
   name: meta_data
   summary: List alerts meta data information based on value of identifier parameter.
-  signature: 'async meta_data(identifier: str | Identifier, **kwargs: Any) -> AlertsMetaData'
-  parameters:
+  signature: 'async meta_data(*, identifier: str | Identifier, **kwargs: Any) -> AlertsMetaData'
+  keywordOnlyParameters:
   - name: identifier
     description: 'Identification of the information to be retrieved by API call.
 
       "MonitorServiceList" Required.'
-    isRequired: true
     types:
     - <xref:str>
     - <xref:azure.mgmt.alertsmanagement.models.Identifier>
-  keywordOnlyParameters:
-  - name: cls
-    description: A custom type or function that will be passed the direct response
-    types:
-    - <xref:callable>
   return:
-    description: AlertsMetaData or the result of cls(response)
+    description: AlertsMetaData. The AlertsMetaData is compatible with MutableMapping
     types:
     - <xref:azure.mgmt.alertsmanagement.models.AlertsMetaData>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-attributes:
-- uid: azure.mgmt.alertsmanagement.aio.operations.AlertsOperations.models
-  name: models
-  signature: models = <module 'azure.mgmt.alertsmanagement.models' from 'C:\\ToolCache\\Python\\3.12.10\\x64\\Lib\\site-packages\\py2docfx\\venv\\venv74\\Lib\\site-packages\\azure\\mgmt\\alertsmanagement\\models\\__init__.py'>
