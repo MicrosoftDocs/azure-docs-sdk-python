@@ -1,24 +1,24 @@
 ---
 title: Azure Key Vault Keys client library for Python
 keywords: Azure, python, SDK, API, azure-keyvault-keys, keyvault
-ms.date: 05/26/2026
+ms.date: 05/29/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: keyvault
 ---
-# Azure Key Vault Keys client library for Python - version 4.12.0b1 
+# Azure Key Vault Keys client library for Python - version 4.12.0b2 
 
 Azure Key Vault helps solve the following problems:
 - Cryptographic key management (this library) - create, store, and control
 access to the keys used to encrypt your data
 - Secrets management
-([azure-keyvault-secrets](https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-keys_4.12.0b1/sdk/keyvault/azure-keyvault-secrets)) -
+([azure-keyvault-secrets](https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-keys_4.12.0b2/sdk/keyvault/azure-keyvault-secrets)) -
 securely store and control access to tokens, passwords, certificates, API keys,
 and other secrets
 - Certificate management
-([azure-keyvault-certificates](https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-keys_4.12.0b1/sdk/keyvault/azure-keyvault-certificates)) -
+([azure-keyvault-certificates](https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-keys_4.12.0b2/sdk/keyvault/azure-keyvault-certificates)) -
 create, manage, and deploy public and private SSL/TLS certificates
-- Vault administration ([azure-keyvault-administration](https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-keys_4.12.0b1/sdk/keyvault/azure-keyvault-administration)) - role-based access control (RBAC), and vault-level backup and restore options
+- Vault administration ([azure-keyvault-administration](https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-keys_4.12.0b2/sdk/keyvault/azure-keyvault-administration)) - role-based access control (RBAC), and vault-level backup and restore options
 
 [Source code][library_src]
 | [Package (PyPI)][pypi_package_keys]
@@ -31,7 +31,7 @@ create, manage, and deploy public and private SSL/TLS certificates
 
 _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_.
 
-_Python 3.9 or later is required to use this package. For more details, please refer to [Azure SDK for Python version support policy](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.12.0b1/doc/python_version_support_policy.md)._
+_Python 3.9 or later is required to use this package. For more details, please refer to [Azure SDK for Python version support policy](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.12.0b2/doc/python_version_support_policy.md)._
 
 ## Getting started
 ### Install the package
@@ -95,6 +95,7 @@ This section contains code snippets covering common tasks:
 * [Update an existing key](#update-an-existing-key)
 * [Delete a key](#delete-a-key)
 * [Configure automatic key rotation](#configure-automatic-key-rotation)
+* [Register external keys](#register-external-keys-managed-hsm-only)
 * [List keys](#list-keys)
 * [Perform cryptographic operations](#cryptographic-operations)
 * [Async API](#async-api)
@@ -213,6 +214,29 @@ print(f"Rotated the key on-demand; new version is {rotated_key.properties.versio
 
 <!-- END SNIPPET -->
 
+### Register external keys (Managed HSM only)
+[create_external_key](https://aka.ms/azsdk/python/keyvault-keys/docs#azure.keyvault.keys.KeyClient.create_external_key)
+registers an external key with a Managed HSM that is configured to use External Key Management (EKM). The external HSM
+owns the key material; the Managed HSM stores only a reference to the key.
+
+> **NOTE:** External keys are only supported on Managed HSM, not regular Key Vault. The Managed HSM must be configured
+> with an external HSM source.
+
+```python
+from azure.identity import DefaultAzureCredential
+from azure.keyvault.keys import ExternalKey, KeyClient
+
+credential = DefaultAzureCredential()
+
+key_client = KeyClient(vault_url="https://my-managed-hsm.managedhsm.azure.net/", credential=credential)
+
+external_key = ExternalKey(id="external-key-reference-id")
+key = key_client.create_external_key("external-key-name", external_key=external_key)
+
+print(key.name)
+print(key.properties.external_key.id)
+```
+
 ### List keys
 [list_properties_of_keys](https://aka.ms/azsdk/python/keyvault-keys/docs#azure.keyvault.keys.KeyClient.list_properties_of_keys)
 lists the properties of all of the keys in the client's vault.
@@ -259,7 +283,7 @@ for more details of the cryptography API.
 This library includes a complete set of async APIs. To use them, you must
 first install an async transport, such as [aiohttp](https://pypi.org/project/aiohttp/).
 See
-[azure-core documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.12.0b1/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport)
+[azure-core documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.12.0b2/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport)
 for more information.
 
 Async clients and credentials should be closed when they're no longer needed. These
@@ -328,7 +352,7 @@ async for key in keys:
 ## Troubleshooting
 
 See the `azure-keyvault-keys`
-[troubleshooting guide](https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-keys_4.12.0b1/sdk/keyvault/azure-keyvault-keys/TROUBLESHOOTING.md)
+[troubleshooting guide](https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-keys_4.12.0b2/sdk/keyvault/azure-keyvault-keys/TROUBLESHOOTING.md)
 for details on how to diagnose various failure scenarios.
 
 ### General
@@ -417,32 +441,32 @@ contact opencode@microsoft.com with any additional questions or comments.
 
 
 <!-- LINKS -->
-[azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-keys_4.12.0b1/sdk/core/azure-core#azure-core-library-exceptions
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-keys_4.12.0b1/sdk/identity/azure-identity
+[azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-keys_4.12.0b2/sdk/core/azure-core#azure-core-library-exceptions
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-keys_4.12.0b2/sdk/identity/azure-identity
 [azure_identity_pypi]: https://pypi.org/project/azure-identity/
 [azure_keyvault]: https://learn.microsoft.com/azure/key-vault/
 [azure_keyvault_cli]: https://learn.microsoft.com/azure/key-vault/general/quick-create-cli
 [azure_sub]: https://azure.microsoft.com/free/
 
-[backup_operations_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.12.0b1/sdk/keyvault/azure-keyvault-keys/samples/backup_restore_operations.py
-[backup_operations_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.12.0b1/sdk/keyvault/azure-keyvault-keys/samples/backup_restore_operations_async.py
+[backup_operations_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.12.0b2/sdk/keyvault/azure-keyvault-keys/samples/backup_restore_operations.py
+[backup_operations_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.12.0b2/sdk/keyvault/azure-keyvault-keys/samples/backup_restore_operations_async.py
 
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [crypto_client_docs]: https://aka.ms/azsdk/python/keyvault-keys/crypto/docs
 
 [default_cred_ref]: https://aka.ms/azsdk/python/identity/docs#azure.identity.DefaultAzureCredential
 
-[hello_world_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.12.0b1/sdk/keyvault/azure-keyvault-keys/samples/hello_world.py
-[hello_world_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.12.0b1/sdk/keyvault/azure-keyvault-keys/samples/hello_world_async.py
+[hello_world_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.12.0b2/sdk/keyvault/azure-keyvault-keys/samples/hello_world.py
+[hello_world_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.12.0b2/sdk/keyvault/azure-keyvault-keys/samples/hello_world_async.py
 
 [key_client_docs]: https://aka.ms/azsdk/python/keyvault-keys/docs#azure.keyvault.keys.KeyClient
-[key_rotation_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-keys_4.12.0b1/sdk/keyvault/azure-keyvault-keys/samples/key_rotation.py
-[key_rotation_async_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-keys_4.12.0b1/sdk/keyvault/azure-keyvault-keys/samples/key_rotation_async.py
-[key_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-keys_4.12.0b1/sdk/keyvault/azure-keyvault-keys/samples
+[key_rotation_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-keys_4.12.0b2/sdk/keyvault/azure-keyvault-keys/samples/key_rotation.py
+[key_rotation_async_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-keys_4.12.0b2/sdk/keyvault/azure-keyvault-keys/samples/key_rotation_async.py
+[key_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-keys_4.12.0b2/sdk/keyvault/azure-keyvault-keys/samples
 
-[library_src]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-keys_4.12.0b1/sdk/keyvault/azure-keyvault-keys/azure/keyvault/keys
-[list_operations_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.12.0b1/sdk/keyvault/azure-keyvault-keys/samples/list_operations.py
-[list_operations_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.12.0b1/sdk/keyvault/azure-keyvault-keys/samples/list_operations_async.py
+[library_src]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-keys_4.12.0b2/sdk/keyvault/azure-keyvault-keys/azure/keyvault/keys
+[list_operations_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.12.0b2/sdk/keyvault/azure-keyvault-keys/samples/list_operations.py
+[list_operations_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.12.0b2/sdk/keyvault/azure-keyvault-keys/samples/list_operations_async.py
 
 [managed_hsm]: https://learn.microsoft.com/azure/key-vault/managed-hsm/overview
 [managed_hsm_cli]: https://learn.microsoft.com/azure/key-vault/managed-hsm/quick-create-cli
@@ -451,11 +475,11 @@ contact opencode@microsoft.com with any additional questions or comments.
 [pip]: https://pypi.org/project/pip/
 [pypi_package_keys]: https://pypi.org/project/azure-keyvault-keys/
 
-[recover_purge_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.12.0b1/sdk/keyvault/azure-keyvault-keys/samples/recover_purge_operations.py
-[recover_purge_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.12.0b1/sdk/keyvault/azure-keyvault-keys/samples/recover_purge_operations_async.py
+[recover_purge_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.12.0b2/sdk/keyvault/azure-keyvault-keys/samples/recover_purge_operations.py
+[recover_purge_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.12.0b2/sdk/keyvault/azure-keyvault-keys/samples/recover_purge_operations_async.py
 [reference_docs]: https://aka.ms/azsdk/python/keyvault-keys/docs
 
-[send_request_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-keys_4.12.0b1/sdk/keyvault/azure-keyvault-keys/samples/send_request.py
+[send_request_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-keys_4.12.0b2/sdk/keyvault/azure-keyvault-keys/samples/send_request.py
 [soft_delete]: https://learn.microsoft.com/azure/key-vault/general/soft-delete-overview
 
 
