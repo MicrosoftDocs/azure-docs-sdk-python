@@ -4,7 +4,7 @@ name: EntitiesOperations
 fullName: azure.mgmt.securityinsight.operations.EntitiesOperations
 module: azure.mgmt.securityinsight.operations
 summary: "> [!WARNING]\n> DO NOT instantiate this class directly.\n>\n> \n>\n> Instead,\
-  \ you should access the following operations through\n>\n> <xref:azure.mgmt.securityinsight.SecurityInsights>'s\n\
+  \ you should access the following operations through\n>\n> <xref:azure.mgmt.securityinsight.SecurityInsightsMgmtClient>'s\n\
   >\n> <xref:entities> attribute.\n>"
 constructor:
   syntax: EntitiesOperations(*args, **kwargs)
@@ -37,24 +37,15 @@ methods:
     description: 'The parameters required to execute an expand operation on the given
       entity.
 
-      Is either a model type or a IO type. Required.'
+      Is one of the following types: EntityExpandParameters, JSON, IO[bytes] Required.'
     isRequired: true
     types:
     - <xref:azure.mgmt.securityinsight.models.EntityExpandParameters>
-    - <xref:typing.IO>
-  keywordOnlyParameters:
-  - name: content_type
-    description: 'Body Parameter content-type. Known values are: ''application/json''.
-
-      Default value is None.'
-    types:
-    - <xref:str>
-  - name: cls
-    description: A custom type or function that will be passed the direct response
-    types:
-    - <xref:callable>
+    - <xref:JSON>
+    - <xref:typing.IO>[<xref:bytes>]
   return:
-    description: EntityExpandResponse or the result of cls(response)
+    description: EntityExpandResponse. The EntityExpandResponse is compatible with
+      MutableMapping
     types:
     - <xref:azure.mgmt.securityinsight.models.EntityExpandResponse>
   exceptions:
@@ -82,13 +73,8 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: cls
-    description: A custom type or function that will be passed the direct response
-    types:
-    - <xref:callable>
   return:
-    description: Entity or the result of cls(response)
+    description: Entity. The Entity is compatible with MutableMapping
     types:
     - <xref:azure.mgmt.securityinsight.models.Entity>
   exceptions:
@@ -119,26 +105,19 @@ methods:
     - <xref:str>
   - name: parameters
     description: 'The parameters required to execute insights on the given entity.
-      Is either a
+      Is one of
 
-      model type or a IO type. Required.'
+      the following types: EntityGetInsightsParameters, JSON, IO[bytes] Required.'
     isRequired: true
     types:
     - <xref:azure.mgmt.securityinsight.models.EntityGetInsightsParameters>
-    - <xref:typing.IO>
-  keywordOnlyParameters:
-  - name: content_type
-    description: 'Body Parameter content-type. Known values are: ''application/json''.
-
-      Default value is None.'
-    types:
-    - <xref:str>
-  - name: cls
-    description: A custom type or function that will be passed the direct response
-    types:
-    - <xref:callable>
+    - <xref:JSON>
+    - <xref:typing.IO>[<xref:bytes>]
   return:
-    description: EntityGetInsightsResponse or the result of cls(response)
+    description: 'EntityGetInsightsResponse. The EntityGetInsightsResponse is compatible
+      with
+
+      MutableMapping'
     types:
     - <xref:azure.mgmt.securityinsight.models.EntityGetInsightsResponse>
   exceptions:
@@ -147,7 +126,7 @@ methods:
   name: list
   summary: Gets all entities.
   signature: 'list(resource_group_name: str, workspace_name: str, **kwargs: Any) ->
-    Iterable[Entity]'
+    ItemPaged[Entity]'
   parameters:
   - name: resource_group_name
     description: 'The name of the resource group. The name is case insensitive.
@@ -161,13 +140,8 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: cls
-    description: A custom type or function that will be passed the direct response
-    types:
-    - <xref:callable>
   return:
-    description: An iterator like instance of either Entity or the result of cls(response)
+    description: An iterator like instance of Entity
     types:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.mgmt.securityinsight.models.Entity>]
   exceptions:
@@ -176,7 +150,7 @@ methods:
   name: queries
   summary: Get Insights and Activities for an entity.
   signature: 'queries(resource_group_name: str, workspace_name: str, entity_id: str,
-    kind: str | EntityItemQueryKind, **kwargs: Any) -> GetQueriesResponse'
+    *, kind: str | EntityItemQueryKind, **kwargs: Any) -> ItemPaged[EntityQueryItem]'
   parameters:
   - name: resource_group_name
     description: 'The name of the resource group. The name is case insensitive.
@@ -195,24 +169,56 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
   - name: kind
     description: The Kind parameter for queries. "Insight" Required.
-    isRequired: true
     types:
     - <xref:str>
     - <xref:azure.mgmt.securityinsight.models.EntityItemQueryKind>
-  keywordOnlyParameters:
-  - name: cls
-    description: A custom type or function that will be passed the direct response
-    types:
-    - <xref:callable>
   return:
-    description: GetQueriesResponse or the result of cls(response)
+    description: An iterator like instance of EntityQueryItem
     types:
-    - <xref:azure.mgmt.securityinsight.models.GetQueriesResponse>
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.mgmt.securityinsight.models.EntityQueryItem>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-attributes:
-- uid: azure.mgmt.securityinsight.operations.EntitiesOperations.models
-  name: models
-  signature: models = <module 'azure.mgmt.securityinsight.models' from 'C:\\ToolCache\\Python\\3.12.10\\x64\\Lib\\site-packages\\py2docfx\\venv\\venv274\\Lib\\site-packages\\azure\\mgmt\\securityinsight\\models\\__init__.py'>
+- uid: azure.mgmt.securityinsight.operations.EntitiesOperations.run_playbook
+  name: run_playbook
+  summary: Triggers playbook on a specific entity.
+  signature: 'run_playbook(resource_group_name: str, workspace_name: str, entity_identifier:
+    str, request_body: _models.EntityManualTriggerRequestBody | None = None, *, content_type:
+    str = ''application/json'', **kwargs: Any) -> None'
+  parameters:
+  - name: resource_group_name
+    description: 'The name of the resource group. The name is case insensitive.
+
+      Required.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: workspace_name
+    description: The name of the workspace. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: entity_identifier
+    description: entity ID. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: request_body
+    description: 'Describes the request body for triggering a playbook on an entity.
+      Is one
+
+      of the following types: EntityManualTriggerRequestBody, JSON, IO[bytes] Default
+      value is None.'
+    defaultValue: None
+    types:
+    - <xref:azure.mgmt.securityinsight.models.EntityManualTriggerRequestBody>
+    - <xref:JSON>
+    - <xref:typing.IO>[<xref:bytes>]
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError

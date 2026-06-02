@@ -968,12 +968,13 @@ methods:
     None, partition_key: PartitionKeyType | None = None, enable_cross_partition_query:
     bool | None = None, max_item_count: int | None = None, enable_scan_in_query: bool
     | None = None, populate_query_metrics: bool | None = None, *, continuation_token_limit:
-    int | None = None, initial_headers: dict[str, str] | None = None, max_integrated_cache_staleness_in_ms:
-    int | None = None, populate_index_metrics: bool | None = None, priority: Literal[''High'',
-    ''Low''] | None = None, response_hook: Callable[[Mapping[str, str], dict[str,
-    Any]], None] | None = None, session_token: str | None = None, throughput_bucket:
-    int | None = None, availability_strategy: bool | dict[str, Any] | None = None,
-    **kwargs: Any) -> ItemPaged[dict[str, Any]]'
+    int | None = None, full_text_score_scope: Literal[''Local'', ''Global''] | None
+    = None, initial_headers: dict[str, str] | None = None, max_integrated_cache_staleness_in_ms:
+    int | None = None, populate_index_metrics: bool | None = None, populate_query_advice:
+    bool | None = None, priority: Literal[''High'', ''Low''] | None = None, response_hook:
+    Callable[[Mapping[str, str], dict[str, Any]], None] | None = None, session_token:
+    str | None = None, throughput_bucket: int | None = None, availability_strategy:
+    bool | dict[str, Any] | None = None, **kwargs: Any) -> CosmosItemPaged'
   parameters:
   - name: args
     description: args
@@ -1052,6 +1053,18 @@ methods:
       keys, see [here](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cosmos/azure-cosmos/docs/PartitionKeys.md).'
     types:
     - <xref:azure.cosmos.partition_key.PartitionKeyType>
+  - name: full_text_score_scope
+    description: 'Sets the scope for computing BM25 statistics used
+
+      by FullTextScore in hybrid search queries. When set to "Global" (default), BM25
+      statistics are computed
+
+      across all documents in the container. When set to "Local", statistics are computed
+      only over the subset
+
+      of documents within the partition key values specified in the query.'
+    types:
+    - <xref:typing.Literal>["Local", "Global"]
   - name: populate_index_metrics
     description: 'Used to obtain the index metrics to understand how the query engine
       used
@@ -1064,6 +1077,16 @@ methods:
     - <xref:bool>
   - name: populate_query_metrics
     description: Enable returning query metrics in response headers.
+    types:
+    - <xref:bool>
+  - name: populate_query_advice
+    description: 'Used to obtain the query advice to understand aspects of the query
+      that can
+
+      be optimized. Please note that this option will incur additional latency overhead,
+      so it should be enabled
+
+      when debugging queries.'
     types:
     - <xref:bool>
   - name: priority
@@ -1110,12 +1133,12 @@ methods:
   return:
     description: An Iterable of items (dicts).
     types:
-    - <xref:ItemPaged>[<xref:dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:CosmosItemPaged>
   examples:
   - "Get all products that have not been discontinued:<!--[!code-python[Main](les\\\
     examples.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\"\
     : [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\
-    \\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\48\\\\azure_cosmos-4.15.0\\\
+    \\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\48\\\\azure_cosmos-4.16.0\\\
     \\samples\\\\examples.py\", \"xml:space\": \"preserve\", \"force\": false, \"\
     language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   import json\n\n   for queried_item in container.query_items(\n\
@@ -1125,7 +1148,7 @@ methods:
     \ been discontinued:<!--[!code-python[Main](les\\examples.py )]-->\n\n<!-- literal_block\
     \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
     : [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\48\\\\azure_cosmos-4.15.0\\\\samples\\\\examples.py\"\
+    \\py2docfx\\\\dist_temp\\\\48\\\\azure_cosmos-4.16.0\\\\samples\\\\examples.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   discontinued_items = container.query_items(\n       query='SELECT * FROM\
@@ -1535,7 +1558,7 @@ methods:
   - "Get an item from the database and update one of its properties:<!--[!code-python[Main](les\\\
     examples.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\"\
     : [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\
-    \\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\48\\\\azure_cosmos-4.15.0\\\
+    \\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\48\\\\azure_cosmos-4.16.0\\\
     \\samples\\\\examples.py\", \"xml:space\": \"preserve\", \"force\": false, \"\
     language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   item = container.read_item(\"item2\", partition_key=\"\

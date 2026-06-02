@@ -1,0 +1,80 @@
+### YamlMime:PythonPackage
+uid: azure.ai.agentserver.optimization
+name: optimization
+fullName: azure.ai.agentserver.optimization
+summary: "Agent Optimization \u2014 Config loader for optimization-ready hosted agents.\n\
+  \n\nOne import, one call::\n\n\n    from azure.ai.agentserver.optimization import\
+  \ load_config\n\n\n    config = load_config()                          # uses .agent_configs/baseline/\n\
+  \    config = load_config(config_dir=\"my_configs\")   # custom directory\n\n\n\
+  Resolution order (first match wins):\n    1. OPTIMIZATION_CONFIG env var   \u2192\
+  \ inline JSON (used by temp agent versions)\n    2. OPTIMIZATION_CANDIDATE_ID +\
+  \ ENDPOINT \u2192 resolver API \u2192 full config + skills\n    3. Local directory\
+  \ (config_dir or .agent_configs/)\n       \u2192 metadata.yaml + instructions.md\
+  \ + tools.json + skills/\n    4. No config found \u2192 returns ``None``."
+type: rootImport
+functions:
+- uid: azure.ai.agentserver.optimization.load_config
+  name: load_config
+  summary: "Load optimization config with graceful fallback.\n\nResolution order (first\
+    \ match wins):\n\n1. **Inline JSON** \u2014 `OPTIMIZATION_CONFIG` env var contains\
+    \ the full config as a JSON string.  Used by temporary agent versions during evaluation;\
+    \ this path is being deprecated. \n\n2. **Resolver API** \u2014 `OPTIMIZATION_CANDIDATE_ID`\
+    \ and `OPTIMIZATION_RESOLVE_ENDPOINT` are both set.  The endpoint should be the\
+    \ full job-scoped URL.  Fetches the candidate config from the remote optimization\
+    \ service and persists it to the local directory. \n\n3. **Local directory** \u2014\
+    \ reads from `<config_dir>/<candidate_id>/` (or `<config_dir>/baseline/` as fallback).\
+    \  Defaults to `.agent_configs/` relative to the main script, overridable via\
+    \ `OPTIMIZATION_LOCAL_DIR` env var. \n\n4. When none of the above match, returns\
+    \ `None`."
+  signature: 'load_config(*, config_dir: str | Path | None = None, credential: TokenCredential
+    | None = None) -> OptimizationConfig | None'
+  keywordOnlyParameters:
+  - name: config_dir
+    description: 'Path to the agent config directory.  When `None`,
+
+      falls back to the `OPTIMIZATION_LOCAL_DIR` env var, then
+
+      to `.agent_configs/` next to the main script.'
+    defaultValue: None
+    types:
+    - <xref:str> | <xref:Path> | <xref:None>
+  - name: credential
+    description: 'Optional credential for resolver API authentication.
+
+      If omitted, resolver will not use authentication.'
+    defaultValue: None
+    types:
+    - <xref:azure.core.credentials.TokenCredential> | <xref:None>
+  return:
+    description: 'The resolved optimization config, or `None` when no
+
+      config source is found.'
+    types:
+    - <xref:azure.ai.agentserver.optimization.OptimizationConfig> | <xref:None>
+  exceptions:
+  - type: ValueError
+    description: 'When a discovered config source is invalid
+
+      (e.g. malformed JSON env var, unreadable metadata.yaml).'
+- uid: azure.ai.agentserver.optimization.load_skills_from_dir
+  name: load_skills_from_dir
+  summary: "Load skills from a directory of skill folders.\n\nExpected layout:\n\n\
+    <!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"language\": \"default\"\
+    , \"force\": false, \"linenos\": false} -->\n\n````default\n\n   skills/\n   \u2514\
+    \u2500\u2500 <skill_name>/\n       \u2514\u2500\u2500 SKILL.md\n   ````"
+  signature: 'load_skills_from_dir(skills_dir: Path) -> list[azure.ai.agentserver.optimization._models.Skill]'
+  parameters:
+  - name: skills_dir
+    description: Path to the skills directory.
+    isRequired: true
+    types:
+    - <xref:Path>
+  return:
+    description: List of loaded skills.
+    types:
+    - <xref:list>[<xref:azure.ai.agentserver.optimization.Skill>]
+classes:
+- azure.ai.agentserver.optimization.CandidateConfig
+- azure.ai.agentserver.optimization.OptimizationConfig
+- azure.ai.agentserver.optimization.Skill

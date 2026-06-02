@@ -14,7 +14,8 @@ methods:
   summary: Create a new agent version.
   signature: 'async create_version(agent_name: str, *, definition: _models.AgentDefinition,
     content_type: str = ''application/json'', metadata: dict[str, str] | None = None,
-    description: str | None = None, **kwargs: Any) -> _models.AgentVersionDetails'
+    description: str | None = None, blueprint_reference: _models.AgentBlueprintReference
+    | None = None, **kwargs: Any) -> _models.AgentVersionDetails'
   parameters:
   - name: agent_name
     description: "The unique name that identifies the agent. Name can be used to\n\
@@ -35,7 +36,7 @@ methods:
       simple
 
       agent definition. Required.'
-    defaultValue: <object object at 0x000001C90201B9B0>
+    defaultValue: <object object at 0x0000020BF1D55E60>
     types:
     - <xref:azure.ai.projects.models.AgentDefinition>
   - name: metadata
@@ -58,6 +59,11 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
+  - name: blueprint_reference
+    description: The blueprint reference for the agent. Default value is None.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.projects.models.AgentBlueprintReference>
   return:
     description: AgentVersionDetails. The AgentVersionDetails is compatible with MutableMapping
     types:
@@ -89,14 +95,14 @@ methods:
   keywordOnlyParameters:
   - name: manifest_id
     description: The manifest ID to import the agent version from. Required.
-    defaultValue: <object object at 0x000001C90201B9B0>
+    defaultValue: <object object at 0x0000020BF1D55E60>
     types:
     - <xref:str>
   - name: parameter_values
     description: 'The inputs to the manifest that will result in a fully materialized
 
       Agent. Required.'
-    defaultValue: <object object at 0x000001C90201B9B0>
+    defaultValue: <object object at 0x0000020BF1D55E60>
     types:
     - <xref:dict>[<xref:str>, <xref:any>]
   - name: metadata
@@ -127,14 +133,36 @@ methods:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.ai.projects.aio.operations.AgentsOperations.delete
   name: delete
-  summary: Deletes an agent.
-  signature: 'async delete(agent_name: str, **kwargs: Any) -> DeleteAgentResponse'
+  summary: 'Deletes an agent. For hosted agents, if any version has active sessions,
+    the request is
+
+    rejected with HTTP 409 unless `force` is set to true. When force is true, all
+    associated
+
+    sessions are cascade-deleted along with the agent and its versions.'
+  signature: 'async delete(agent_name: str, *, force: bool | None = None, **kwargs:
+    Any) -> DeleteAgentResponse'
   parameters:
   - name: agent_name
     description: The name of the agent to delete. Required.
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
+  - name: force
+    description: 'For Hosted Agents, if `true`, force-deletes the agent even if its
+      versions
+
+      have active sessions, cascading deletion to all associated sessions. The service
+      defaults to
+
+      `false` if a value is not specified by the caller. This value is not relevant
+      for other Agent
+
+      types. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:bool>
   return:
     description: DeleteAgentResponse. The DeleteAgentResponse is compatible with MutableMapping
     types:
@@ -143,9 +171,15 @@ methods:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.ai.projects.aio.operations.AgentsOperations.delete_version
   name: delete_version
-  summary: Deletes a specific version of an agent.
-  signature: 'async delete_version(agent_name: str, agent_version: str, **kwargs:
-    Any) -> DeleteAgentVersionResponse'
+  summary: 'Deletes a specific version of an agent. For hosted agents, if the version
+    has active sessions,
+
+    the request is rejected with HTTP 409 unless `force` is set to true. When force
+    is true, all
+
+    sessions associated with this version are cascade-deleted.'
+  signature: 'async delete_version(agent_name: str, agent_version: str, *, force:
+    bool | None = None, **kwargs: Any) -> DeleteAgentVersionResponse'
   parameters:
   - name: agent_name
     description: The name of the agent to delete. Required.
@@ -157,6 +191,21 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
+  - name: force
+    description: 'For Hosted Agents, if `true`, force-deletes the version even if
+      it has active
+
+      sessions, cascading deletion to all associated sessions. The service defaults
+      to `false` if a
+
+      value is not specified by the caller. This value is not relevant for other Agent
+      types. Default
+
+      value is None.'
+    defaultValue: None
+    types:
+    - <xref:bool>
   return:
     description: 'DeleteAgentVersionResponse. The DeleteAgentVersionResponse is compatible
       with
@@ -215,7 +264,7 @@ methods:
     description: 'Filter agents by kind. If not provided, all agents are returned.
       Known values
 
-      are: "prompt", "hosted", and "workflow". Default value is None.'
+      are: "prompt", "hosted", "workflow", and "external". Default value is None.'
     defaultValue: None
     types:
     - <xref:str>

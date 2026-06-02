@@ -937,15 +937,15 @@ methods:
 
     the WHERE clause.'
   signature: 'query_items(query: str, *, continuation_token_limit: int | None = None,
-    enable_scan_in_query: bool | None = None, initial_headers: dict[str, str] | None
-    = None, max_integrated_cache_staleness_in_ms: int | None = None, max_item_count:
-    int | None = None, parameters: list[dict[str, object]] | None = None, partition_key:
-    PartitionKeyType, populate_index_metrics: bool | None = None, populate_query_metrics:
+    enable_scan_in_query: bool | None = None, full_text_score_scope: Literal[''Local'',
+    ''Global''] | None = None, initial_headers: dict[str, str] | None = None, max_integrated_cache_staleness_in_ms:
+    int | None = None, max_item_count: int | None = None, parameters: list[dict[str,
+    object]] | None = None, partition_key: PartitionKeyType, populate_index_metrics:
+    bool | None = None, populate_query_metrics: bool | None = None, populate_query_advice:
     bool | None = None, priority: Literal[''High'', ''Low''] | None = None, response_hook:
     Callable[[Mapping[str, str], dict[str, Any]], None] | None = None, session_token:
     str | None = None, throughput_bucket: int | None = None, availability_strategy:
-    bool | dict[str, Any] | None = None, **kwargs: Any) -> AsyncItemPaged[dict[str,
-    Any]]'
+    bool | dict[str, Any] | None = None, **kwargs: Any) -> CosmosAsyncItemPaged'
   parameters:
   - name: args
     description: args
@@ -1024,6 +1024,18 @@ methods:
       keys, see [here](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cosmos/azure-cosmos/docs/PartitionKeys.md).'
     types:
     - <xref:azure.cosmos.partition_key.PartitionKeyType>
+  - name: full_text_score_scope
+    description: 'Sets the scope for computing BM25 statistics used
+
+      by FullTextScore in hybrid search queries. When set to "Global" (default), BM25
+      statistics are computed
+
+      across all documents in the container. When set to "Local", statistics are computed
+      only over the subset
+
+      of documents within the partition key values specified in the query.'
+    types:
+    - <xref:typing.Literal>["Local", "Global"]
   - name: populate_index_metrics
     description: 'Used to obtain the index metrics to understand how the query engine
       used
@@ -1032,6 +1044,16 @@ methods:
       this option will incur
 
       overhead, so it should be enabled only when debugging slow queries.'
+    types:
+    - <xref:bool>
+  - name: populate_query_advice
+    description: 'Used to obtain the query advice to understand aspects of the query
+      that can
+
+      be optimized. Please note that this option will incur additional latency overhead,
+      so it should be enabled
+
+      when debugging queries.'
     types:
     - <xref:bool>
   - name: populate_query_metrics
@@ -1078,13 +1100,13 @@ methods:
   return:
     description: An Iterable of items (dicts).
     types:
-    - <xref:AsyncItemPaged>[<xref:dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:CosmosAsyncItemPaged>
   examples:
   - "Get all products that have not been discontinued:<!--[!code-python[Main](les\\\
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\
     \\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    48\\\\azure_cosmos-4.15.0\\\\samples\\\\examples_async.py\", \"xml:space\": \"\
+    48\\\\azure_cosmos-4.16.0\\\\samples\\\\examples_async.py\", \"xml:space\": \"\
     preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
     linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           async for\
     \ queried_item in container.query_items(\n                   query='SELECT * FROM\
@@ -1094,7 +1116,7 @@ methods:
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\
     \\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    48\\\\azure_cosmos-4.15.0\\\\samples\\\\examples_async.py\", \"xml:space\": \"\
+    48\\\\azure_cosmos-4.16.0\\\\samples\\\\examples_async.py\", \"xml:space\": \"\
     preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
     linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           discontinued_items\
     \ = container.query_items(\n               query='SELECT * FROM products p WHERE\
@@ -1478,7 +1500,7 @@ methods:
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\
     \\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    48\\\\azure_cosmos-4.15.0\\\\samples\\\\examples_async.py\", \"xml:space\": \"\
+    48\\\\azure_cosmos-4.16.0\\\\samples\\\\examples_async.py\", \"xml:space\": \"\
     preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
     linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           item =\
     \ await container.read_item(\"item2\", partition_key=\"Widget\")\n           item[\"\

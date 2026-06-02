@@ -9,6 +9,61 @@ summary: "> [!WARNING]\n> DO NOT instantiate this class directly.\n>\n> \n>\n> I
 constructor:
   syntax: BetaAgentsOperations(*args, **kwargs)
 methods:
+- uid: azure.ai.projects.operations.BetaAgentsOperations.cancel_optimization_job
+  name: cancel_optimization_job
+  summary: 'Cancels an agent optimization job.
+
+
+    Request cancellation. Idempotent on terminal states.'
+  signature: 'cancel_optimization_job(job_id: str, **kwargs: Any) -> OptimizationJob'
+  parameters:
+  - name: job_id
+    description: The ID of the job to cancel. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: OptimizationJob. The OptimizationJob is compatible with MutableMapping
+    types:
+    - <xref:azure.ai.projects.models.OptimizationJob>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaAgentsOperations.create_optimization_job
+  name: create_optimization_job
+  summary: 'Creates an agent optimization job.
+
+
+    Create an optimization job. Returns 201 with the queued job. Honours `Operation-Id`
+    for
+
+    idempotent retry.'
+  signature: 'create_optimization_job(inputs: OptimizationJobInputs | MutableMapping[str,
+    Any] | IO[bytes], *, operation_id: str | None = None, **kwargs: Any) -> OptimizationJob'
+  parameters:
+  - name: inputs
+    description: 'The optimization job inputs. Is one of the following types:
+
+      OptimizationJobInputs, JSON, IO[bytes] Required.'
+    isRequired: true
+    types:
+    - <xref:azure.ai.projects.models.OptimizationJobInputs>
+    - <xref:JSON>
+    - <xref:typing.IO>[<xref:bytes>]
+  keywordOnlyParameters:
+  - name: operation_id
+    description: 'Client-generated unique ID for idempotent retries. When absent,
+      the
+
+      server creates the job unconditionally. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: OptimizationJob. The OptimizationJob is compatible with MutableMapping
+    types:
+    - <xref:azure.ai.projects.models.OptimizationJob>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.ai.projects.operations.BetaAgentsOperations.create_session
   name: create_session
   summary: 'Creates a new session for an agent endpoint. The endpoint resolves the
@@ -19,9 +74,9 @@ methods:
 
     session-mutating operations.'
   signature: 'create_session(agent_name: str, body: ~collections.abc.MutableMapping[str,
-    ~typing.Any] | ~typing.IO[bytes] = <object object>, *, isolation_key: str, version_indicator:
-    ~azure.ai.projects.models._models.VersionIndicator = <object object>, agent_session_id:
-    str | None = None, **kwargs: ~typing.Any) -> AgentSessionResource'
+    ~typing.Any] | ~typing.IO[bytes] = <object object>, *, version_indicator: ~azure.ai.projects.models._models.VersionIndicator
+    = <object object>, user_isolation_key: str | None = None, agent_session_id: str
+    | None = None, **kwargs: ~typing.Any) -> AgentSessionResource'
   parameters:
   - name: agent_name
     description: The name of the agent to create a session for. Required.
@@ -34,17 +89,19 @@ methods:
     - <xref:JSON>
     - <xref:typing.IO>[<xref:bytes>]
   keywordOnlyParameters:
-  - name: isolation_key
-    description: 'Isolation key used by the agent endpoint to enforce session ownership
-
-      for session-mutating operations. Required.'
-    types:
-    - <xref:str>
   - name: version_indicator
     description: Determines which agent version backs the session. Required.
-    defaultValue: <object object at 0x000001C902019430>
+    defaultValue: <object object at 0x0000020BF5381A50>
     types:
     - <xref:azure.ai.projects.models.VersionIndicator>
+  - name: user_isolation_key
+    description: 'Opaque per-user isolation key used to scope endpoint-scoped data
+
+      (responses, conversations, sessions) to a specific end user. Default value is
+      None.'
+    defaultValue: None
+    types:
+    - <xref:str>
   - name: agent_session_id
     description: 'Optional caller-provided session ID. If specified, it must be unique
 
@@ -59,14 +116,77 @@ methods:
     - <xref:azure.ai.projects.models.AgentSessionResource>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaAgentsOperations.create_version_from_code
+  name: create_version_from_code
+  summary: create_version_from_code.
+  signature: 'create_version_from_code(agent_name: str, content: CreateAgentVersionFromCodeContent
+    | MutableMapping[str, Any], *, code_zip_sha256: str, **kwargs: Any) -> AgentVersionDetails'
+  parameters:
+  - name: agent_name
+    description: "The unique name that identifies the agent. Name can be used to\n\
+      retrieve/update/delete the agent.\n\n* Must start and end with alphanumeric\
+      \ characters, \n\n* Can contain hyphens in the middle \n\n* Must not exceed\
+      \ 63 characters. Required."
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: content
+    description: Is either a CreateAgentVersionFromCodeContent type or a JSON type.
+      Required.
+    isRequired: true
+    types:
+    - <xref:azure.ai.projects.models.CreateAgentVersionFromCodeContent>
+    - <xref:JSON>
+  keywordOnlyParameters:
+  - name: code_zip_sha256
+    description: 'SHA-256 hex digest of the uploaded code zip. Used for change
+
+      detection (dedup) and integrity verification. Required.'
+    types:
+    - <xref:str>
+  return:
+    description: AgentVersionDetails. The AgentVersionDetails is compatible with MutableMapping
+    types:
+    - <xref:azure.ai.projects.models.AgentVersionDetails>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaAgentsOperations.delete_optimization_job
+  name: delete_optimization_job
+  summary: 'Deletes an agent optimization job.
+
+
+    Delete the job and its candidate artifacts. Cancels first if non-terminal.'
+  signature: 'delete_optimization_job(job_id: str, *, force: bool | None = None, **kwargs:
+    Any) -> None'
+  parameters:
+  - name: job_id
+    description: The ID of the job to delete. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: force
+    description: 'When true, force-delete even if the job is in a non-terminal state.
+      Default
+
+      value is None.'
+    defaultValue: None
+    types:
+    - <xref:bool>
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.ai.projects.operations.BetaAgentsOperations.delete_session
   name: delete_session
   summary: 'Deletes a session synchronously. Returns 204 No Content when the session
     is deleted or does not
 
     exist.'
-  signature: 'delete_session(agent_name: str, session_id: str, *, isolation_key: str,
-    **kwargs: Any) -> None'
+  signature: 'delete_session(agent_name: str, session_id: str, *, user_isolation_key:
+    str | None = None, **kwargs: Any) -> None'
   parameters:
   - name: agent_name
     description: The name of the agent. Required.
@@ -79,10 +199,12 @@ methods:
     types:
     - <xref:str>
   keywordOnlyParameters:
-  - name: isolation_key
-    description: 'Isolation key used by the agent endpoint to enforce session ownership
+  - name: user_isolation_key
+    description: 'Opaque per-user isolation key used to scope endpoint-scoped data
 
-      for session-mutating operations. Required.'
+      (responses, conversations, sessions) to a specific end user. Default value is
+      None.'
+    defaultValue: None
     types:
     - <xref:str>
   return:
@@ -98,7 +220,8 @@ methods:
 
     the target is a non-empty directory, the API returns 409 Conflict.'
   signature: 'delete_session_file(agent_name: str, agent_session_id: str, *, path:
-    str, recursive: bool | None = None, **kwargs: Any) -> None'
+    str, recursive: bool | None = None, user_isolation_key: str | None = None, **kwargs:
+    Any) -> None'
   parameters:
   - name: agent_name
     description: The name of the agent. Required.
@@ -119,23 +242,69 @@ methods:
     types:
     - <xref:str>
   - name: recursive
-    description: 'Whether to recursively delete directory contents. Defaults to false.
+    description: 'Whether to recursively delete directory contents. The service defaults
+      to
 
-      Default value is None.'
+      `false` if a value is not specified by the caller. Default value is None.'
     defaultValue: None
     types:
     - <xref:bool>
+  - name: user_isolation_key
+    description: 'Opaque per-user isolation key used to scope endpoint-scoped data
+
+      (responses, conversations, sessions) to a specific end user. Default value is
+      None.'
+    defaultValue: None
+    types:
+    - <xref:str>
   return:
     description: None
     types:
     - <xref:None>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaAgentsOperations.download_code
+  name: download_code
+  summary: 'Download the code zip for a code-based hosted agent.
+
+    Returns the previously-uploaded zip (`application/zip`).
+
+
+    If `agent_version` is supplied, returns that version''s code zip; otherwise
+
+    returns the latest version''s code zip.
+
+
+    The SHA-256 digest of the returned bytes matches the `content_hash` on the
+
+    resolved version''s `code_configuration`.'
+  signature: 'download_code(agent_name: str, *, agent_version: str | None = None,
+    **kwargs: Any) -> Iterator[bytes]'
+  parameters:
+  - name: agent_name
+    description: The name of the agent. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: agent_version
+    description: 'The version of the agent whose code zip should be downloaded.
+
+      If omitted, the latest version''s code zip is returned. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: Iterator[bytes]
+    types:
+    - <xref:typing.Iterator>[<xref:bytes>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.ai.projects.operations.BetaAgentsOperations.download_session_file
   name: download_session_file
   summary: Download a file from the session sandbox as a binary stream.
   signature: 'download_session_file(agent_name: str, agent_session_id: str, *, path:
-    str, **kwargs: Any) -> Iterator[bytes]'
+    str, user_isolation_key: str | None = None, **kwargs: Any) -> Iterator[bytes]'
   parameters:
   - name: agent_name
     description: The name of the agent. Required.
@@ -155,16 +324,154 @@ methods:
       directory. Required.'
     types:
     - <xref:str>
+  - name: user_isolation_key
+    description: 'Opaque per-user isolation key used to scope endpoint-scoped data
+
+      (responses, conversations, sessions) to a specific end user. Default value is
+      None.'
+    defaultValue: None
+    types:
+    - <xref:str>
   return:
     description: Iterator[bytes]
     types:
     - <xref:typing.Iterator>[<xref:bytes>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaAgentsOperations.get_candidate_file
+  name: get_candidate_file
+  summary: 'Get a candidate file.
+
+
+    Stream a specific file from the candidate''s blob directory.'
+  signature: 'get_candidate_file(job_id: str, candidate_id: str, *, path: str, **kwargs:
+    Any) -> Iterator[bytes]'
+  parameters:
+  - name: job_id
+    description: The optimization job id. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: candidate_id
+    description: The candidate id. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: path
+    description: Relative path of the file to download (e.g. 'files/examples.jsonl').
+      Required.
+    types:
+    - <xref:str>
+  return:
+    description: Iterator[bytes]
+    types:
+    - <xref:typing.Iterator>[<xref:bytes>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaAgentsOperations.get_optimization_candidate
+  name: get_optimization_candidate
+  summary: 'Get a candidate by id.
+
+
+    Get a single candidate''s metadata, manifest, and promotion info.'
+  signature: 'get_optimization_candidate(job_id: str, candidate_id: str, **kwargs:
+    Any) -> CandidateMetadata'
+  parameters:
+  - name: job_id
+    description: The optimization job id. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: candidate_id
+    description: The candidate id. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: CandidateMetadata. The CandidateMetadata is compatible with MutableMapping
+    types:
+    - <xref:azure.ai.projects.models.CandidateMetadata>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaAgentsOperations.get_optimization_candidate_config
+  name: get_optimization_candidate_config
+  summary: 'Get candidate deploy config.
+
+
+    Get the candidate''s deploy config JSON. Used to compose `agents.create_version(...)`
+    from a
+
+    candidate.'
+  signature: 'get_optimization_candidate_config(job_id: str, candidate_id: str, **kwargs:
+    Any) -> CandidateDeployConfig'
+  parameters:
+  - name: job_id
+    description: The optimization job id. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: candidate_id
+    description: The candidate id. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: CandidateDeployConfig. The CandidateDeployConfig is compatible with
+      MutableMapping
+    types:
+    - <xref:azure.ai.projects.models.CandidateDeployConfig>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaAgentsOperations.get_optimization_candidate_results
+  name: get_optimization_candidate_results
+  summary: 'Get candidate evaluation results.
+
+
+    Get full per-task evaluation results for a candidate.'
+  signature: 'get_optimization_candidate_results(job_id: str, candidate_id: str, **kwargs:
+    Any) -> CandidateResults'
+  parameters:
+  - name: job_id
+    description: The optimization job id. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: candidate_id
+    description: The candidate id. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: CandidateResults. The CandidateResults is compatible with MutableMapping
+    types:
+    - <xref:azure.ai.projects.models.CandidateResults>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaAgentsOperations.get_optimization_job
+  name: get_optimization_job
+  summary: 'Get info about an agent optimization job.
+
+
+    Get an optimization job by id. Returns 202 while in progress, 200 when terminal.'
+  signature: 'get_optimization_job(job_id: str, **kwargs: Any) -> OptimizationJob'
+  parameters:
+  - name: job_id
+    description: The ID of the job. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: OptimizationJob. The OptimizationJob is compatible with MutableMapping
+    types:
+    - <xref:azure.ai.projects.models.OptimizationJob>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.ai.projects.operations.BetaAgentsOperations.get_session
   name: get_session
   summary: Retrieves a session by ID.
-  signature: 'get_session(agent_name: str, session_id: str, **kwargs: Any) -> AgentSessionResource'
+  signature: 'get_session(agent_name: str, session_id: str, *, user_isolation_key:
+    str | None = None, **kwargs: Any) -> AgentSessionResource'
   parameters:
   - name: agent_name
     description: The name of the agent. Required.
@@ -176,45 +483,20 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
+  - name: user_isolation_key
+    description: 'Opaque per-user isolation key used to scope endpoint-scoped data
+
+      (responses, conversations, sessions) to a specific end user. Default value is
+      None.'
+    defaultValue: None
+    types:
+    - <xref:str>
   return:
     description: AgentSessionResource. The AgentSessionResource is compatible with
       MutableMapping
     types:
     - <xref:azure.ai.projects.models.AgentSessionResource>
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
-- uid: azure.ai.projects.operations.BetaAgentsOperations.get_session_files
-  name: get_session_files
-  summary: 'List files and directories at a given path in the session sandbox. Returns
-    only the immediate
-
-    children of the specified directory (non-recursive).'
-  signature: 'get_session_files(agent_name: str, agent_session_id: str, *, path: str,
-    **kwargs: Any) -> SessionDirectoryListResponse'
-  parameters:
-  - name: agent_name
-    description: The name of the agent. Required.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: agent_session_id
-    description: The session ID. Required.
-    isRequired: true
-    types:
-    - <xref:str>
-  keywordOnlyParameters:
-  - name: path
-    description: The directory path to list, relative to the session home directory.
-      Required.
-    types:
-    - <xref:str>
-  return:
-    description: 'SessionDirectoryListResponse. The SessionDirectoryListResponse is
-      compatible with
-
-      MutableMapping'
-    types:
-    - <xref:azure.ai.projects.models.SessionDirectoryListResponse>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.ai.projects.operations.BetaAgentsOperations.get_session_log_stream
@@ -261,11 +543,238 @@ methods:
     - <xref:azure.ai.projects.models.SessionLogEvent>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaAgentsOperations.list_optimization_candidates
+  name: list_optimization_candidates
+  summary: 'Returns a list of candidates for an optimization job.
+
+
+    List candidates produced by a job.'
+  signature: 'list_optimization_candidates(job_id: str, *, limit: int | None = None,
+    order: str | PageOrder | None = None, after: str | None = None, before: str |
+    None = None, **kwargs: Any) -> AgentsPagedResultOptimizationCandidate'
+  parameters:
+  - name: job_id
+    description: The optimization job id. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: limit
+    description: 'A limit on the number of objects to be returned. Limit can range
+      between 1 and
+
+      100, and the
+
+      default is 20. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: order
+    description: 'Sort order by the `created_at` timestamp of the objects. `asc` for
+
+      ascending order and``desc``
+
+      for descending order. Known values are: "asc" and "desc". Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.ai.projects.models.PageOrder>
+  - name: after
+    description: 'A cursor for use in pagination. `after` is an object ID that defines
+      your
+
+      place in the list.
+
+      For instance, if you make a list request and receive 100 objects, ending with
+      obj_foo, your
+
+      subsequent call can include after=obj_foo in order to fetch the next page of
+      the list. Default
+
+      value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: before
+    description: 'A cursor for use in pagination. `before` is an object ID that defines
+      your
+
+      place in the list.
+
+      For instance, if you make a list request and receive 100 objects, ending with
+      obj_foo, your
+
+      subsequent call can include before=obj_foo in order to fetch the previous page
+      of the list.
+
+      Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: 'AgentsPagedResultOptimizationCandidate. The AgentsPagedResultOptimizationCandidate
+      is
+
+      compatible with MutableMapping'
+    types:
+    - <xref:azure.ai.projects.models.AgentsPagedResultOptimizationCandidate>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaAgentsOperations.list_optimization_jobs
+  name: list_optimization_jobs
+  summary: 'Returns a list of agent optimization jobs.
+
+
+    List optimization jobs. Supports cursor pagination and optional status / agent_name
+    filters.'
+  signature: 'list_optimization_jobs(*, limit: int | None = None, order: str | PageOrder
+    | None = None, before: str | None = None, status: str | JobStatus | None = None,
+    agent_name: str | None = None, **kwargs: Any) -> ItemPaged[OptimizationJob]'
+  keywordOnlyParameters:
+  - name: limit
+    description: 'A limit on the number of objects to be returned. Limit can range
+      between 1 and
+
+      100, and the
+
+      default is 20. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: order
+    description: 'Sort order by the `created_at` timestamp of the objects. `asc` for
+
+      ascending order and``desc``
+
+      for descending order. Known values are: "asc" and "desc". Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.ai.projects.models.PageOrder>
+  - name: before
+    description: 'A cursor for use in pagination. `before` is an object ID that defines
+      your
+
+      place in the list.
+
+      For instance, if you make a list request and receive 100 objects, ending with
+      obj_foo, your
+
+      subsequent call can include before=obj_foo in order to fetch the previous page
+      of the list.
+
+      Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: status
+    description: 'Filter to jobs in this lifecycle state. Known values are: "queued",
+
+      "in_progress", "succeeded", "failed", and "cancelled". Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.ai.projects.models.JobStatus>
+  - name: agent_name
+    description: Filter to jobs targeting this agent name. Default value is None.
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: An iterator like instance of OptimizationJob
+    types:
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.ai.projects.models.OptimizationJob>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaAgentsOperations.list_session_files
+  name: list_session_files
+  summary: 'List files and directories at a given path in the session sandbox. Returns
+    only the immediate
+
+    children of the specified directory (non-recursive). If path is not provided,
+    lists the session
+
+    home directory.'
+  signature: 'list_session_files(agent_name: str, agent_session_id: str, *, path:
+    str | None = None, user_isolation_key: str | None = None, limit: int | None =
+    None, order: str | PageOrder | None = None, before: str | None = None, **kwargs:
+    Any) -> ItemPaged[SessionDirectoryEntry]'
+  parameters:
+  - name: agent_name
+    description: The name of the agent. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: agent_session_id
+    description: The session ID. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: path
+    description: 'The directory path to list, relative to the session home directory.
+      Defaults to
+
+      the home directory if not provided. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: user_isolation_key
+    description: 'Opaque per-user isolation key used to scope endpoint-scoped data
+
+      (responses, conversations, sessions) to a specific end user. Default value is
+      None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: limit
+    description: 'A limit on the number of objects to be returned. Limit can range
+      between 1 and
+
+      100, and the
+
+      default is 20. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: order
+    description: 'Sort order by the `created_at` timestamp of the objects. `asc` for
+
+      ascending order and``desc``
+
+      for descending order. Known values are: "asc" and "desc". Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.ai.projects.models.PageOrder>
+  - name: before
+    description: 'A cursor for use in pagination. `before` is an object ID that defines
+      your
+
+      place in the list.
+
+      For instance, if you make a list request and receive 100 objects, ending with
+      obj_foo, your
+
+      subsequent call can include before=obj_foo in order to fetch the previous page
+      of the list.
+
+      Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: An iterator like instance of SessionDirectoryEntry
+    types:
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.ai.projects.models.SessionDirectoryEntry>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.ai.projects.operations.BetaAgentsOperations.list_sessions
   name: list_sessions
   summary: Returns a list of sessions for the specified agent.
-  signature: 'list_sessions(agent_name: str, *, limit: int | None = None, order: str
-    | PageOrder | None = None, before: str | None = None, **kwargs: Any) -> ItemPaged[AgentSessionResource]'
+  signature: 'list_sessions(agent_name: str, *, user_isolation_key: str | None = None,
+    limit: int | None = None, order: str | PageOrder | None = None, before: str |
+    None = None, **kwargs: Any) -> ItemPaged[AgentSessionResource]'
   parameters:
   - name: agent_name
     description: The name of the agent. Required.
@@ -273,6 +782,14 @@ methods:
     types:
     - <xref:str>
   keywordOnlyParameters:
+  - name: user_isolation_key
+    description: 'Opaque per-user isolation key used to scope endpoint-scoped data
+
+      (responses, conversations, sessions) to a specific end user. Default value is
+      None.'
+    defaultValue: None
+    types:
+    - <xref:str>
   - name: limit
     description: 'A limit on the number of objects to be returned. Limit can range
       between 1 and
@@ -319,7 +836,7 @@ methods:
   name: patch_agent_details
   summary: Updates an agent endpoint.
   signature: 'patch_agent_details(agent_name: str, body: ~collections.abc.MutableMapping[str,
-    ~typing.Any] | ~typing.IO[bytes] = <object object>, *, agent_endpoint: ~azure.ai.projects.models._models.AgentEndpoint
+    ~typing.Any] | ~typing.IO[bytes] = <object object>, *, agent_endpoint: ~azure.ai.projects.models._models.AgentEndpointConfig
     | None = None, agent_card: ~azure.ai.projects.models._models.AgentCard | None
     = None, **kwargs: ~typing.Any) -> AgentDetails'
   parameters:
@@ -338,7 +855,7 @@ methods:
     description: The endpoint configuration for the agent. Default value is None.
     defaultValue: None
     types:
-    - <xref:azure.ai.projects.models.AgentEndpoint>
+    - <xref:azure.ai.projects.models.AgentEndpointConfig>
   - name: agent_card
     description: Optional agent card for the agent. Default value is None.
     defaultValue: None
@@ -348,6 +865,65 @@ methods:
     description: AgentDetails. The AgentDetails is compatible with MutableMapping
     types:
     - <xref:azure.ai.projects.models.AgentDetails>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaAgentsOperations.promote_candidate
+  name: promote_candidate
+  summary: 'Promote a candidate.
+
+
+    Promotes a candidate, recording the deployment timestamp and target agent version.'
+  signature: 'promote_candidate(job_id: str, candidate_id: str, candidate_request:
+    PromoteCandidateRequest | MutableMapping[str, Any] | IO[bytes], **kwargs: Any)
+    -> PromoteCandidateResponse'
+  parameters:
+  - name: job_id
+    description: The optimization job id. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: candidate_id
+    description: The candidate id to promote. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: candidate_request
+    description: 'Promotion details. Is one of the following types:
+
+      PromoteCandidateRequest, JSON, IO[bytes] Required.'
+    isRequired: true
+    types:
+    - <xref:azure.ai.projects.models.PromoteCandidateRequest>
+    - <xref:JSON>
+    - <xref:typing.IO>[<xref:bytes>]
+  return:
+    description: 'PromoteCandidateResponse. The PromoteCandidateResponse is compatible
+      with
+
+      MutableMapping'
+    types:
+    - <xref:azure.ai.projects.models.PromoteCandidateResponse>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaAgentsOperations.stop_session
+  name: stop_session
+  summary: Stops a session. Returns 204 No Content when the stop succeeds.
+  signature: 'stop_session(agent_name: str, session_id: str, **kwargs: Any) -> None'
+  parameters:
+  - name: agent_name
+    description: The name of the agent. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: session_id
+    description: The session identifier. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: None
+    types:
+    - <xref:None>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.ai.projects.operations.BetaAgentsOperations.upload_session_file
@@ -363,7 +939,7 @@ methods:
 
     exceeding this limit return 413 Payload Too Large.'
   signature: 'upload_session_file(agent_name: str, session_id: str, content_or_file_path:
-    bytes | str, *, path: str, **kwargs: Any) -> SessionFileWriteResponse'
+    bytes | str, *, path: str, **kwargs: Any) -> SessionFileWriteResult'
   parameters:
   - name: agent_name
     description: The name of the agent. Required.
@@ -392,12 +968,12 @@ methods:
     types:
     - <xref:str>
   return:
-    description: 'SessionFileWriteResponse. The SessionFileWriteResponse is compatible
+    description: 'SessionFileWriteResult. The SessionFileWriteResult is compatible
       with
 
       MutableMapping'
     types:
-    - <xref:azure.ai.projects.models.SessionFileWriteResponse>
+    - <xref:azure.ai.projects.models.SessionFileWriteResult>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   - type: FileNotFoundError

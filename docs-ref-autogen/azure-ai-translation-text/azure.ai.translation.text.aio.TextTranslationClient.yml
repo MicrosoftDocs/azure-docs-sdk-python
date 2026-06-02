@@ -3,122 +3,85 @@ uid: azure.ai.translation.text.aio.TextTranslationClient
 name: TextTranslationClient
 fullName: azure.ai.translation.text.aio.TextTranslationClient
 module: azure.ai.translation.text.aio
-summary: 'Text translation is a cloud-based REST API feature of the Translator service
-  that uses neural
-
-  machine translation technology to enable quick and accurate source-to-target text
-  translation
-
-  in real time across all supported languages.
-
-
-  The following methods are supported by the Text Translation feature:
-
-
-  Languages. Returns a list of languages supported by Translate, Transliterate, and
-  Dictionary
-
-  Lookup operations.
-
-
-  Translate. Renders single source-language text to multiple target-language texts
-  with a single
-
-  request.
-
-
-  Transliterate. Converts characters or letters of a source language to the corresponding
-
-  characters or letters of a target language.
-
-
-  Detect. Returns the source code language code and a boolean variable denoting whether
-  the
-
-  detected language is supported for text translation and transliteration.
-
-
-  Dictionary lookup. Returns equivalent words for the source term in the target language.
-
-
-  Dictionary example Returns grammatical structure and context examples for the source
-  term and
-
-  target term pair.
-
-
-  Combinations of endpoint and credential values:
-
-  str + AzureKeyCredential - used custom domain translator endpoint
-
-  str + AzureKeyCredential + Region - used for global translator endpoint
-
-  str + AsyncTokenCredential - used for regional endpoint with token authentication
-
-  str + None - used with text translation on-prem container
-
-  None + AzureKeyCredential - used for global translator endpoint with global Translator
-  resource
-
-  None + AsyncTokenCredential - general translator endpoint with token authentication
-
-  None + AsyncTokenCredential + Region - general translator endpoint with regional
-  Translator resource'
+summary: "Azure Translator is a cloud-based, multilingual, neural machine translation\
+  \ service. The Text\nTranslation API enables robust and scalable translation capabilities\
+  \ suitable for diverse\napplications.\n\nCombinations of endpoint and credential\
+  \ values:\n\n* (no args) - global endpoint, no auth (get_languages only) \n\n* endpoint\
+  \ only - custom endpoint or container, no auth \n\n* AzureKeyCredential + region\
+  \ - global endpoint with subscription key \n\n* AsyncTokenCredential + audience\
+  \ - global endpoint with Cognitive Services token \n\n* AsyncTokenCredential + resource_id\
+  \ - global endpoint with Entra ID (global resource) \n\n* AsyncTokenCredential +\
+  \ region + resource_id - global endpoint with Entra ID (regional resource) \n\n\
+  * endpoint + AzureKeyCredential - custom endpoint with subscription key \n\n* endpoint\
+  \ + AsyncTokenCredential - custom endpoint with Entra ID"
 constructor:
-  syntax: 'TextTranslationClient(*, credential: AsyncTokenCredential, region: str
-    | None = None, endpoint: str | None = None, resource_id: str | None = None, audience:
-    str | None = None, api_version: str = ''3.0'', **kwargs)'
-  keywordOnlyParameters:
+  syntax: 'TextTranslationClient(endpoint: str = ''https://api.cognitive.microsofttranslator.com'',
+    credential: AzureKeyCredential | AsyncTokenCredential | None = None, *, region:
+    str | None = None, resource_id: str | None = None, audience: str | None = None,
+    api_version: str = ''2026-06-06'', **kwargs: Any)'
+  parameters:
   - name: endpoint
     description: 'Supported Text Translation endpoints (protocol and hostname, for
       example:
 
       [https://api.cognitive.microsofttranslator.com](https://api.cognitive.microsofttranslator.com)).
-      If not provided, global translator endpoint will be used.'
+      Defaults to the global translator endpoint.'
+    defaultValue: https://api.cognitive.microsofttranslator.com
     types:
     - <xref:str>
   - name: credential
-    description: Credential used to authenticate with the Translator service
+    description: 'Credential used to authenticate with the Translator service. Optional
+      for
+
+      unauthenticated operations like get_languages.'
+    defaultValue: None
     types:
-    - <xref:typing.Union>[<xref:AzureKeyCredential>, <xref:AsyncTokenCredential>]
+    - <xref:azure.core.credentials.AzureKeyCredential>
+    - <xref:azure.core.credentials_async.AsyncTokenCredential>
+    - <xref:None>
   - name: region
-    description: Used for National Clouds.
+    description: 'Azure region of the Translator resource. Required for AzureKeyCredential,
+
+      optional for Entra ID regional resources.'
+    isRequired: true
     types:
     - <xref:str>
+    - <xref:None>
   - name: resource_id
-    description: Used with both a TokenCredential combined with a region.
+    description: 'Azure resource ID for Entra ID authentication. Required when using
+
+      TokenCredential with global endpoint.'
+    isRequired: true
     types:
     - <xref:str>
+    - <xref:None>
   - name: audience
     description: Scopes of the credentials.
+    isRequired: true
     types:
     - <xref:str>
+    - <xref:None>
   - name: api_version
-    description: 'Default value is "3.0". Note that overriding this default value
-      may
+    description: 'Default value is "2026-06-06". Note that overriding this default
+      value may
 
       result in unsupported behavior.'
+    isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
+  - name: region
+    defaultValue: None
+  - name: resource_id
+    defaultValue: None
+  - name: audience
+    defaultValue: None
+  - name: api_version
+    defaultValue: '2026-06-06'
 methods:
 - uid: azure.ai.translation.text.aio.TextTranslationClient.close
   name: close
   signature: async close() -> None
-- uid: azure.ai.translation.text.aio.TextTranslationClient.find_sentence_boundaries
-  name: find_sentence_boundaries
-  signature: 'async find_sentence_boundaries(body: List[str] | List[InputTextItem]
-    | IO[bytes], *, client_trace_id: str | None = None, language: str | None = None,
-    script: str | None = None, **kwargs: Any) -> List[BreakSentenceItem]'
-  parameters:
-  - name: body
-    isRequired: true
-  keywordOnlyParameters:
-  - name: client_trace_id
-    defaultValue: None
-  - name: language
-    defaultValue: None
-  - name: script
-    defaultValue: None
 - uid: azure.ai.translation.text.aio.TextTranslationClient.get_supported_languages
   name: get_supported_languages
   summary: 'Gets the set of languages currently supported by other operations of the
@@ -202,160 +165,6 @@ methods:
     - <xref:azure.ai.translation.text.models.GetSupportedLanguagesResult>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  examples:
-  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # response body for status code(s): 200\n   response == {\n       \"dictionary\"\
-    : {\n           \"str\": {\n               \"dir\": \"str\",  # Directionality,\
-    \ which is rtl for\n                 right-to-left languages or ltr for left-to-right\
-    \ languages. Required.\n                 Known values are: \"ltr\" and \"rtl\"\
-    .\n               \"name\": \"str\",  # Display name of the language in the locale\n\
-    \                 requested via Accept-Language header. Required.\n          \
-    \     \"nativeName\": \"str\",  # Display name of the language in the\n      \
-    \           locale native for this language. Required.\n               \"translations\"\
-    : [\n                   {\n                       \"code\": \"str\",  # Language\
-    \ code identifying\n                         the target language. Required.\n\
-    \                       \"dir\": \"str\",  # Directionality, which is rtl\n  \
-    \                       for right-to-left languages or ltr for left-to-right languages.\n\
-    \                         Required. Known values are: \"ltr\" and \"rtl\".\n \
-    \                      \"name\": \"str\",  # Display name of the\n           \
-    \              language in the locale requested via Accept-Language header.\n\
-    \                         Required.\n                       \"nativeName\": \"\
-    str\"  # Display name of the\n                         language in the locale\
-    \ native for this language. Required.\n                   }\n               ]\n\
-    \           }\n       },\n       \"translation\": {\n           \"str\": {\n \
-    \              \"dir\": \"str\",  # Directionality, which is rtl for\n       \
-    \          right-to-left languages or ltr for left-to-right languages. Required.\n\
-    \                 Known values are: \"ltr\" and \"rtl\".\n               \"name\"\
-    : \"str\",  # Display name of the language in the locale\n                 requested\
-    \ via Accept-Language header. Required.\n               \"nativeName\": \"str\"\
-    \  # Display name of the language in the\n                 locale native for this\
-    \ language. Required.\n           }\n       },\n       \"transliteration\": {\n\
-    \           \"str\": {\n               \"name\": \"str\",  # Display name of the\
-    \ language in the locale\n                 requested via Accept-Language header.\
-    \ Required.\n               \"nativeName\": \"str\",  # Display name of the language\
-    \ in the\n                 locale native for this language. Required.\n      \
-    \         \"scripts\": [\n                   {\n                       \"code\"\
-    : \"str\",  # Code identifying the\n                         script. Required.\n\
-    \                       \"dir\": \"str\",  # Directionality, which is rtl\n  \
-    \                       for right-to-left languages or ltr for left-to-right languages.\n\
-    \                         Required. Known values are: \"ltr\" and \"rtl\".\n \
-    \                      \"name\": \"str\",  # Display name of the script\n    \
-    \                     in the locale requested via Accept-Language header. Required.\n\
-    \                       \"nativeName\": \"str\",  # Display name of the\n    \
-    \                     language in the locale native for the language. Required.\n\
-    \                       \"toScripts\": [\n                           {\n     \
-    \                          \"code\": \"str\",  # Code\n                      \
-    \           identifying the script. Required.\n                              \
-    \ \"dir\": \"str\",  #\n                                 Directionality, which\
-    \ is rtl for right-to-left languages\n                                 or ltr\
-    \ for left-to-right languages. Required. Known\n                             \
-    \    values are: \"ltr\" and \"rtl\".\n                               \"name\"\
-    : \"str\",  # Display\n                                 name of the script in\
-    \ the locale requested via\n                                 Accept-Language header.\
-    \ Required.\n                               \"nativeName\": \"str\"  #\n     \
-    \                            Display name of the language in the locale native\
-    \ for the\n                                 language. Required.\n            \
-    \               }\n                       ]\n                   }\n          \
-    \     ]\n           }\n       }\n   }\n   ````\n"
-- uid: azure.ai.translation.text.aio.TextTranslationClient.lookup_dictionary_entries
-  name: lookup_dictionary_entries
-  signature: 'async lookup_dictionary_entries(body: List[str] | List[InputTextItem]
-    | IO[bytes], *, from_language: str, to_language: str, client_trace_id: str | None
-    = None, **kwargs: Any) -> List[DictionaryLookupItem]'
-  parameters:
-  - name: body
-    isRequired: true
-  keywordOnlyParameters:
-  - name: from_language
-    isRequired: true
-  - name: to_language
-    isRequired: true
-  - name: client_trace_id
-    defaultValue: None
-- uid: azure.ai.translation.text.aio.TextTranslationClient.lookup_dictionary_examples
-  name: lookup_dictionary_examples
-  summary: 'Lookup Dictionary Examples.
-
-
-    Lookup Dictionary Examples.'
-  signature: 'async lookup_dictionary_examples(body: List[DictionaryExampleTextItem]
-    | IO[bytes], *, from_language: str, to_language: str, client_trace_id: str | None
-    = None, **kwargs: Any) -> List[DictionaryExampleItem]'
-  parameters:
-  - name: body
-    description: 'Defines the content of the request. Is either a [DictionaryExampleTextItem]
-      type
-
-      or a IO[bytes] type. Required.'
-    isRequired: true
-    types:
-    - <xref:list>[<xref:azure.ai.translation.text.models.DictionaryExampleTextItem>]
-    - <xref:typing.IO>[<xref:bytes>]
-  keywordOnlyParameters:
-  - name: from_language
-    description: 'Specifies the language of the input text.
-
-      The source language must be one of the supported languages included in the dictionary
-      scope.
-
-      Required.'
-    types:
-    - <xref:str>
-  - name: to_language
-    description: 'Specifies the language of the output text.
-
-      The target language must be one of the supported languages included in the dictionary
-      scope.
-
-      Required.'
-    types:
-    - <xref:str>
-  - name: client_trace_id
-    description: 'A client-generated GUID to uniquely identify the request. Default
-
-      value is None.'
-    defaultValue: None
-    types:
-    - <xref:str>
-  return:
-    description: list of DictionaryExampleItem
-    types:
-    - <xref:list>[<xref:azure.ai.translation.text.models.DictionaryExampleItem>]
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
-  examples:
-  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # response body for status code(s): 200\n   response == [\n       {\n    \
-    \       \"examples\": [\n               {\n                   \"sourcePrefix\"\
-    : \"str\",  # The string to concatenate\n                     before the value\
-    \ of sourceTerm to form a complete example. Do not add\n                     a\
-    \ space character, since it is already there when it should be. This\n       \
-    \              value may be an empty string. Required.\n                   \"\
-    sourceSuffix\": \"str\",  # The string to concatenate\n                     after\
-    \ the value of sourceTerm to form a complete example. Do not add\n           \
-    \          a space character, since it is already there when it should be. This\n\
-    \                     value may be an empty string. Required.\n              \
-    \     \"sourceTerm\": \"str\",  # A string equal to the actual\n             \
-    \        term looked up. The string is added with sourcePrefix and\n         \
-    \            sourceSuffix to form the complete example. Its value is separated\
-    \ so\n                     it can be marked in a user interface, e.g., by bolding\
-    \ it. Required.\n                   \"targetPrefix\": \"str\",  # A string similar\
-    \ to\n                     sourcePrefix but for the target. Required.\n      \
-    \             \"targetSuffix\": \"str\",  # A string similar to\n            \
-    \         sourceSuffix but for the target. Required.\n                   \"targetTerm\"\
-    : \"str\"  # A string similar to sourceTerm\n                     but for the\
-    \ target. Required.\n               }\n           ],\n           \"normalizedSource\"\
-    : \"str\",  # A string giving the normalized form of\n             the source\
-    \ term. Generally, this should be identical to the value of the Text\n       \
-    \      field at the matching list index in the body of the request. Required.\n\
-    \           \"normalizedTarget\": \"str\"  # A string giving the normalized form\
-    \ of\n             the target term. Generally, this should be identical to the\
-    \ value of the\n             Translation field at the matching list index in the\
-    \ body of the request.\n             Required.\n       }\n   ]\n   ````\n"
 - uid: azure.ai.translation.text.aio.TextTranslationClient.send_request
   name: send_request
   summary: 'Runs the network request through the client''s chained policies.
@@ -399,49 +208,28 @@ methods:
     - <xref:azure.core.rest.AsyncHttpResponse>
 - uid: azure.ai.translation.text.aio.TextTranslationClient.translate
   name: translate
-  signature: 'async translate(body: List[str] | List[InputTextItem] | IO[bytes], *,
-    to_language: List[str], client_trace_id: str | None = None, from_language: str
-    | None = None, text_type: str | TextType | None = None, category: str | None =
-    None, profanity_action: str | ProfanityAction | None = None, profanity_marker:
-    str | ProfanityMarker | None = None, include_alignment: bool | None = None, include_sentence_length:
-    bool | None = None, suggested_from: str | None = None, from_script: str | None
-    = None, to_script: str | None = None, allow_fallback: bool | None = None, **kwargs:
-    Any) -> List[TranslatedTextItem]'
+  signature: 'async translate(body: List[str] | List[TranslateInputItem] | MutableMapping[str,
+    Any] | IO[bytes], *, to_language: List[str] | None = None, from_language: str
+    | None = None, client_trace_id: str | None = None, content_type: str = ''application/json'',
+    **kwargs: Any) -> List[TranslatedTextItem]'
   parameters:
   - name: body
     isRequired: true
   keywordOnlyParameters:
   - name: to_language
-    isRequired: true
-  - name: client_trace_id
     defaultValue: None
   - name: from_language
     defaultValue: None
-  - name: text_type
+  - name: client_trace_id
     defaultValue: None
-  - name: category
-    defaultValue: None
-  - name: profanity_action
-    defaultValue: None
-  - name: profanity_marker
-    defaultValue: None
-  - name: include_alignment
-    defaultValue: None
-  - name: include_sentence_length
-    defaultValue: None
-  - name: suggested_from
-    defaultValue: None
-  - name: from_script
-    defaultValue: None
-  - name: to_script
-    defaultValue: None
-  - name: allow_fallback
-    defaultValue: None
+  - name: content_type
+    defaultValue: application/json
 - uid: azure.ai.translation.text.aio.TextTranslationClient.transliterate
   name: transliterate
-  signature: 'async transliterate(body: List[str] | List[InputTextItem] | IO[bytes],
-    *, language: str, from_script: str, to_script: str, client_trace_id: str | None
-    = None, **kwargs: Any) -> List[TransliteratedText]'
+  signature: 'async transliterate(body: List[str] | List[InputTextItem] | MutableMapping[str,
+    Any] | IO[bytes], *, language: str, from_script: str, to_script: str, client_trace_id:
+    str | None = None, content_type: str = ''application/json'', **kwargs: Any) ->
+    List[TransliteratedText]'
   parameters:
   - name: body
     isRequired: true
@@ -454,3 +242,5 @@ methods:
     isRequired: true
   - name: client_trace_id
     defaultValue: None
+  - name: content_type
+    defaultValue: application/json

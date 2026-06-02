@@ -1,0 +1,319 @@
+### YamlMime:PythonClass
+uid: azure.ai.projects.operations.BetaModelsOperations
+name: BetaModelsOperations
+fullName: azure.ai.projects.operations.BetaModelsOperations
+module: azure.ai.projects.operations
+summary: "> [!WARNING]\n> DO NOT instantiate this class directly.\n>\n> \n>\n> Instead,\
+  \ you should access the following operations through\n>\n> <xref:azure.ai.projects.AIProjectClient>'s\n\
+  >\n> <xref:azure.ai.projects.operations.BetaOperations.models> attribute.\n>"
+constructor:
+  syntax: BetaModelsOperations(*args, **kwargs)
+methods:
+- uid: azure.ai.projects.operations.BetaModelsOperations.create
+  name: create
+  summary: "Register a local model by running the full upload-first sequence.\n\n\
+    This wraps the three mandatory steps of the model-registration spec\ninto a single\
+    \ call:\n\n1. <xref:azure.ai.projects.operations.BetaModelsOperations.pending_upload>\
+    \ \u2014 provision a project-managed blob container and obtain a SAS URI. \n\n\
+    2. `azcopy copy` \u2014 upload the local weight files directly to the SAS container.\
+    \ \n\n3. <xref:azure.ai.projects.operations.BetaModelsOperations.pending_create_version>\
+    \ \u2014 finalize registration with the `ModelVersion` body (`blob_uri`, `weight_type`,\
+    \ `base_model`, `description`, `tags`)."
+  signature: 'create(*, name: str, version: str, source: str | ''os.PathLike[str]'',
+    weight_type: str | None = None, base_model: str | None = None, description: str
+    | None = None, tags: ''dict[str, str]'' | None = None, azcopy_path: str | None
+    = None, wait_for_commit: Literal[True] = True, polling_timeout: float = 300.0,
+    polling_interval: float = 2.0, **kwargs: Any) -> ModelVersion'
+  keywordOnlyParameters:
+  - name: name
+    description: Name of the model to register. Required.
+    types:
+    - <xref:str>
+  - name: version
+    description: Version identifier for the model. Required.
+    types:
+    - <xref:str>
+  - name: source
+    description: 'Local file or directory containing the model weights.
+
+      If a directory, its contents are uploaded recursively to the SAS
+
+      container root. Required.'
+    types:
+    - <xref:str>
+    - <xref:os.PathLike>[<xref:str>]
+  - name: weight_type
+    description: 'Optional weight type (e.g. `"FullWeight"`,
+
+      `"LoRA"`, `"DraftModel"`).'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: base_model
+    description: Optional base model asset ID.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: description
+    description: Optional asset description.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: tags
+    description: Optional asset tags.
+    defaultValue: None
+    types:
+    - <xref:dict>[<xref:str>, <xref:str>]
+  - name: azcopy_path
+    description: 'Optional explicit path to the azcopy executable.
+
+      Defaults to `shutil.which("azcopy")`.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: wait_for_commit
+    description: 'When True (default) poll <xref:azure.ai.projects.operations.BetaModelsOperations.get>
+      until
+
+      the committed `ModelVersion` is observable, and return it.
+
+      When False, return `None` after the async commit is accepted.'
+    defaultValue: 'True'
+    types:
+    - <xref:bool>
+  - name: polling_timeout
+    description: Total seconds to poll for commit completion.
+    defaultValue: '300.0'
+    types:
+    - <xref:float>
+  - name: polling_interval
+    description: Seconds between poll attempts.
+    defaultValue: '2.0'
+    types:
+    - <xref:float>
+  return:
+    description: 'The committed <xref:azure.ai.projects.models.ModelVersion>
+
+      when `wait_for_commit` is True, otherwise `None`.'
+    types:
+    - <xref:azure.ai.projects.models.ModelVersion>
+    - <xref:None>
+  exceptions:
+  - type: ValueError
+    description: 'If `name` `version` are empty, `source` does
+
+      not exist or is empty, polling parameters are non-positive, or the
+
+      pending-upload response is missing the SAS / blob URI.'
+  - type: RuntimeError
+    description: 'If `azcopy` is not on PATH or exits with a
+
+      non-zero status, or the registration does not commit before `polling_timeout`
+      elapses.'
+- uid: azure.ai.projects.operations.BetaModelsOperations.delete
+  name: delete
+  summary: 'Delete the specific version of the ModelVersion. The service returns 200
+    OK if the ModelVersion
+
+    was deleted successfully or if the ModelVersion does not exist.'
+  signature: 'delete(name: str, version: str, **kwargs: Any) -> None'
+  parameters:
+  - name: name
+    description: The name of the resource. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: version
+    description: The version of the ModelVersion to delete. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaModelsOperations.get
+  name: get
+  summary: 'Get the specific version of the ModelVersion. The service returns 404
+    Not Found error if the
+
+    ModelVersion does not exist.'
+  signature: 'get(name: str, version: str, **kwargs: Any) -> ModelVersion'
+  parameters:
+  - name: name
+    description: The name of the resource. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: version
+    description: The specific version id of the ModelVersion to retrieve. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: ModelVersion. The ModelVersion is compatible with MutableMapping
+    types:
+    - <xref:azure.ai.projects.models.ModelVersion>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaModelsOperations.get_credentials
+  name: get_credentials
+  summary: Get credentials for a model version asset.
+  signature: 'get_credentials(name: str, version: str, credential_request: ModelCredentialRequest
+    | MutableMapping[str, Any] | IO[bytes], **kwargs: Any) -> DatasetCredential'
+  parameters:
+  - name: name
+    description: Name of the model. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: version
+    description: Version of the model. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: credential_request
+    description: 'Is one of the following types: ModelCredentialRequest, JSON,
+
+      IO[bytes] Required.'
+    isRequired: true
+    types:
+    - <xref:azure.ai.projects.models.ModelCredentialRequest>
+    - <xref:JSON>
+    - <xref:typing.IO>[<xref:bytes>]
+  return:
+    description: DatasetCredential. The DatasetCredential is compatible with MutableMapping
+    types:
+    - <xref:azure.ai.projects.models.DatasetCredential>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaModelsOperations.list
+  name: list
+  summary: List the latest version of each ModelVersion.
+  signature: 'list(**kwargs: Any) -> ItemPaged[ModelVersion]'
+  return:
+    description: An iterator like instance of ModelVersion
+    types:
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.ai.projects.models.ModelVersion>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaModelsOperations.list_versions
+  name: list_versions
+  summary: List all versions of the given ModelVersion.
+  signature: 'list_versions(name: str, **kwargs: Any) -> ItemPaged[ModelVersion]'
+  parameters:
+  - name: name
+    description: The name of the resource. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: An iterator like instance of ModelVersion
+    types:
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.ai.projects.models.ModelVersion>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaModelsOperations.pending_create_version
+  name: pending_create_version
+  summary: 'Creates a model version asynchronously with blob content validation. Returns
+    202 Accepted with
+
+    a Location header for polling.'
+  signature: 'pending_create_version(name: str, version: str, model_version: ModelVersion
+    | MutableMapping[str, Any] | IO[bytes], **kwargs: Any) -> CreateAsyncResponse'
+  parameters:
+  - name: name
+    description: Name of the model. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: version
+    description: Version of the model. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: model_version
+    description: 'Model version to create. Is one of the following types: ModelVersion,
+
+      JSON, IO[bytes] Required.'
+    isRequired: true
+    types:
+    - <xref:azure.ai.projects.models.ModelVersion>
+    - <xref:JSON>
+    - <xref:typing.IO>[<xref:bytes>]
+  return:
+    description: CreateAsyncResponse. The CreateAsyncResponse is compatible with MutableMapping
+    types:
+    - <xref:azure.ai.projects.models.CreateAsyncResponse>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaModelsOperations.pending_upload
+  name: pending_upload
+  summary: Start or retrieve a pending upload for a model version.
+  signature: 'pending_upload(name: str, version: str, pending_upload_request: ModelPendingUploadRequest
+    | MutableMapping[str, Any] | IO[bytes], **kwargs: Any) -> ModelPendingUploadResponse'
+  parameters:
+  - name: name
+    description: Name of the model. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: version
+    description: Version of the model. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: pending_upload_request
+    description: 'Is one of the following types: ModelPendingUploadRequest, JSON,
+
+      IO[bytes] Required.'
+    isRequired: true
+    types:
+    - <xref:azure.ai.projects.models.ModelPendingUploadRequest>
+    - <xref:JSON>
+    - <xref:typing.IO>[<xref:bytes>]
+  return:
+    description: 'ModelPendingUploadResponse. The ModelPendingUploadResponse is compatible
+      with
+
+      MutableMapping'
+    types:
+    - <xref:azure.ai.projects.models.ModelPendingUploadResponse>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaModelsOperations.update
+  name: update
+  summary: Update an existing ModelVersion with the given version id.
+  signature: 'update(name: str, version: str, model_version_update: UpdateModelVersionRequest
+    | MutableMapping[str, Any] | IO[bytes], **kwargs: Any) -> ModelVersion'
+  parameters:
+  - name: name
+    description: The name of the resource. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: version
+    description: 'The specific version id of the UpdateModelVersionRequest to create
+      or update.
+
+      Required.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: model_version_update
+    description: 'The UpdateModelVersionRequest to create or update. Is one of the
+
+      following types: UpdateModelVersionRequest, JSON, IO[bytes] Required.'
+    isRequired: true
+    types:
+    - <xref:azure.ai.projects.models.UpdateModelVersionRequest>
+    - <xref:JSON>
+    - <xref:typing.IO>[<xref:bytes>]
+  return:
+    description: ModelVersion. The ModelVersion is compatible with MutableMapping
+    types:
+    - <xref:azure.ai.projects.models.ModelVersion>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
