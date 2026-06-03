@@ -3,27 +3,87 @@ uid: azure.mgmt.resourcegraph.ResourceGraphClient
 name: ResourceGraphClient
 fullName: azure.mgmt.resourcegraph.ResourceGraphClient
 module: azure.mgmt.resourcegraph
-summary: Azure Resource Graph API Reference.
+summary: ResourceGraphClient.
 constructor:
-  syntax: 'ResourceGraphClient(credential: TokenCredential, base_url: str = ''https://management.azure.com'',
-    **kwargs: Any)'
+  syntax: 'ResourceGraphClient(credential: TokenCredential, subscription_id: str,
+    base_url: str | None = None, *, cloud_setting: AzureClouds | None = None, **kwargs:
+    Any)'
   parameters:
   - name: credential
-    description: Credential needed for the client to connect to Azure. Required.
+    description: Credential used to authenticate requests to the service. Required.
     isRequired: true
     types:
     - <xref:azure.core.credentials.TokenCredential>
-  - name: base_url
-    description: Service URL. Default value is "`https://management.azure.com`".
-    defaultValue: https://management.azure.com
+  - name: subscription_id
+    description: The ID of the target subscription. The value must be an UUID. Required.
+    isRequired: true
     types:
     - <xref:str>
+  - name: base_url
+    description: Service host. Default value is None.
+    defaultValue: None
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: cloud_setting
+    description: 'The cloud setting for which to get the ARM endpoint. Default value
+      is
+
+      None.'
+    defaultValue: None
+    types:
+    - <xref:azure.core.AzureClouds>
 variables:
 - description: Operations operations
   name: operations
   types:
   - <xref:azure.mgmt.resourcegraph.operations.Operations>
+- description: GraphQueryOperations operations
+  name: graph_query
+  types:
+  - <xref:azure.mgmt.resourcegraph.operations.GraphQueryOperations>
 methods:
 - uid: azure.mgmt.resourcegraph.ResourceGraphClient.close
   name: close
   signature: close() -> None
+- uid: azure.mgmt.resourcegraph.ResourceGraphClient.send_request
+  name: send_request
+  summary: 'Runs the network request through the client''s chained policies.
+
+
+    ```
+
+
+    >>> from azure.core.rest import HttpRequest
+
+    >>> request = HttpRequest("GET", "https://www.example.org/")
+
+    <HttpRequest [GET], url: ''https://www.example.org/''>
+
+    >>> response = client.send_request(request)
+
+    <HttpResponse: 200 OK>
+
+    ```
+
+
+    For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> HttpResponse'
+  parameters:
+  - name: request
+    description: The network request you want to make. Required.
+    isRequired: true
+    types:
+    - <xref:azure.core.rest.HttpRequest>
+  keywordOnlyParameters:
+  - name: stream
+    description: Whether the response payload will be streamed. Defaults to False.
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  return:
+    description: The response of your network call. Does not do error handling on
+      your response.
+    types:
+    - <xref:azure.core.rest.HttpResponse>

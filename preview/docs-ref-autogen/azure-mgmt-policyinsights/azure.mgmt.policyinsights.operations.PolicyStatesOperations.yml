@@ -17,7 +17,7 @@ methods:
     str, **kwargs: Any) -> LROPoller[None]'
   parameters:
   - name: subscription_id
-    description: Microsoft Azure subscription ID. Required.
+    description: The ID of the target subscription. The value must be an UUID. Required.
     isRequired: true
     types:
     - <xref:str>
@@ -27,8 +27,7 @@ methods:
     types:
     - <xref:str>
   return:
-    description: An instance of LROPoller that returns either None or the result of
-      cls(response)
+    description: An instance of LROPoller that returns None
     types:
     - <xref:azure.core.polling.LROPoller>[<xref:None>]
   exceptions:
@@ -40,13 +39,12 @@ methods:
     Any) -> LROPoller[None]'
   parameters:
   - name: subscription_id
-    description: Microsoft Azure subscription ID. Required.
+    description: The ID of the target subscription. The value must be an UUID. Required.
     isRequired: true
     types:
     - <xref:str>
   return:
-    description: An instance of LROPoller that returns either None or the result of
-      cls(response)
+    description: An instance of LROPoller that returns None
     types:
     - <xref:azure.core.polling.LROPoller>[<xref:None>]
   exceptions:
@@ -55,8 +53,10 @@ methods:
   name: list_query_results_for_management_group
   summary: Queries policy states for the resources under the management group.
   signature: 'list_query_results_for_management_group(policy_states_resource: str
-    | PolicyStatesResource, management_group_name: str, query_options: QueryOptions
-    | None = None, **kwargs: Any) -> ItemPaged[PolicyState]'
+    | PolicyStatesResource, management_group_name: str, *, top: int | None = None,
+    order_by: str | None = None, select: str | None = None, from_parameter: datetime
+    | None = None, to: datetime | None = None, filter: str | None = None, apply: str
+    | None = None, skip_token: str | None = None, **kwargs: Any) -> ItemPaged[PolicyState]'
   parameters:
   - name: policy_states_resource
     description: 'The virtual resource under PolicyStates resource type. In a
@@ -74,14 +74,66 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  - name: query_options
-    description: Parameter group. Default value is None.
+  keywordOnlyParameters:
+  - name: top
+    description: Maximum number of records to return. Default value is None.
     defaultValue: None
     types:
-    - <xref:azure.mgmt.policyinsights.models.QueryOptions>
+    - <xref:int>
+  - name: order_by
+    description: 'Ordering expression using OData notation. One or more comma-separated
+      column
+
+      names with an optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId,
+
+      ResourceId asc". Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: select
+    description: 'Select expression using OData notation. Limits the columns on each
+      record to
+
+      just those requested, e.g. "$select=PolicyAssignmentId, ResourceId". Default
+      value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: from_parameter
+    description: 'ISO 8601 formatted timestamp specifying the start time of the interval
+
+      to query. When not specified, the service uses ($to - 1-day). Default value
+      is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: to
+    description: 'ISO 8601 formatted timestamp specifying the end time of the interval
+      to query.
+
+      When not specified, the service uses request time. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: filter
+    description: OData filter expression. Default value is None.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: apply
+    description: OData apply expression for aggregations. Default value is None.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: skip_token
+    description: 'Skiptoken is only provided if a previous response returned a partial
+
+      result as a part of nextLink element. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
   return:
-    description: An iterator like instance of either PolicyState or the result of
-      cls(response)
+    description: An iterator like instance of PolicyState
     types:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.mgmt.policyinsights.models.PolicyState>]
   exceptions:
@@ -89,10 +141,17 @@ methods:
 - uid: azure.mgmt.policyinsights.operations.PolicyStatesOperations.list_query_results_for_policy_definition
   name: list_query_results_for_policy_definition
   summary: Queries policy states for the subscription level policy definition.
-  signature: 'list_query_results_for_policy_definition(policy_states_resource: str
-    | PolicyStatesResource, subscription_id: str, policy_definition_name: str, query_options:
-    QueryOptions | None = None, **kwargs: Any) -> ItemPaged[PolicyState]'
+  signature: 'list_query_results_for_policy_definition(subscription_id: str, policy_states_resource:
+    str | PolicyStatesResource, policy_definition_name: str, *, top: int | None =
+    None, order_by: str | None = None, select: str | None = None, from_parameter:
+    datetime | None = None, to: datetime | None = None, filter: str | None = None,
+    apply: str | None = None, skip_token: str | None = None, **kwargs: Any) -> ItemPaged[PolicyState]'
   parameters:
+  - name: subscription_id
+    description: The ID of the target subscription. The value must be an UUID. Required.
+    isRequired: true
+    types:
+    - <xref:str>
   - name: policy_states_resource
     description: 'The virtual resource under PolicyStates resource type. In a
 
@@ -104,24 +163,71 @@ methods:
     types:
     - <xref:str>
     - <xref:azure.mgmt.policyinsights.models.PolicyStatesResource>
-  - name: subscription_id
-    description: Microsoft Azure subscription ID. Required.
-    isRequired: true
-    types:
-    - <xref:str>
   - name: policy_definition_name
     description: Policy definition name. Required.
     isRequired: true
     types:
     - <xref:str>
-  - name: query_options
-    description: Parameter group. Default value is None.
+  keywordOnlyParameters:
+  - name: top
+    description: Maximum number of records to return. Default value is None.
     defaultValue: None
     types:
-    - <xref:azure.mgmt.policyinsights.models.QueryOptions>
+    - <xref:int>
+  - name: order_by
+    description: 'Ordering expression using OData notation. One or more comma-separated
+      column
+
+      names with an optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId,
+
+      ResourceId asc". Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: select
+    description: 'Select expression using OData notation. Limits the columns on each
+      record to
+
+      just those requested, e.g. "$select=PolicyAssignmentId, ResourceId". Default
+      value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: from_parameter
+    description: 'ISO 8601 formatted timestamp specifying the start time of the interval
+
+      to query. When not specified, the service uses ($to - 1-day). Default value
+      is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: to
+    description: 'ISO 8601 formatted timestamp specifying the end time of the interval
+      to query.
+
+      When not specified, the service uses request time. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: filter
+    description: OData filter expression. Default value is None.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: apply
+    description: OData apply expression for aggregations. Default value is None.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: skip_token
+    description: 'Skiptoken is only provided if a previous response returned a partial
+
+      result as a part of nextLink element. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
   return:
-    description: An iterator like instance of either PolicyState or the result of
-      cls(response)
+    description: An iterator like instance of PolicyState
     types:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.mgmt.policyinsights.models.PolicyState>]
   exceptions:
@@ -129,10 +235,17 @@ methods:
 - uid: azure.mgmt.policyinsights.operations.PolicyStatesOperations.list_query_results_for_policy_set_definition
   name: list_query_results_for_policy_set_definition
   summary: Queries policy states for the subscription level policy set definition.
-  signature: 'list_query_results_for_policy_set_definition(policy_states_resource:
-    str | PolicyStatesResource, subscription_id: str, policy_set_definition_name:
-    str, query_options: QueryOptions | None = None, **kwargs: Any) -> ItemPaged[PolicyState]'
+  signature: 'list_query_results_for_policy_set_definition(subscription_id: str, policy_states_resource:
+    str | PolicyStatesResource, policy_set_definition_name: str, *, top: int | None
+    = None, order_by: str | None = None, select: str | None = None, from_parameter:
+    datetime | None = None, to: datetime | None = None, filter: str | None = None,
+    apply: str | None = None, skip_token: str | None = None, **kwargs: Any) -> ItemPaged[PolicyState]'
   parameters:
+  - name: subscription_id
+    description: The ID of the target subscription. The value must be an UUID. Required.
+    isRequired: true
+    types:
+    - <xref:str>
   - name: policy_states_resource
     description: 'The virtual resource under PolicyStates resource type. In a
 
@@ -144,24 +257,71 @@ methods:
     types:
     - <xref:str>
     - <xref:azure.mgmt.policyinsights.models.PolicyStatesResource>
-  - name: subscription_id
-    description: Microsoft Azure subscription ID. Required.
-    isRequired: true
-    types:
-    - <xref:str>
   - name: policy_set_definition_name
     description: Policy set definition name. Required.
     isRequired: true
     types:
     - <xref:str>
-  - name: query_options
-    description: Parameter group. Default value is None.
+  keywordOnlyParameters:
+  - name: top
+    description: Maximum number of records to return. Default value is None.
     defaultValue: None
     types:
-    - <xref:azure.mgmt.policyinsights.models.QueryOptions>
+    - <xref:int>
+  - name: order_by
+    description: 'Ordering expression using OData notation. One or more comma-separated
+      column
+
+      names with an optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId,
+
+      ResourceId asc". Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: select
+    description: 'Select expression using OData notation. Limits the columns on each
+      record to
+
+      just those requested, e.g. "$select=PolicyAssignmentId, ResourceId". Default
+      value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: from_parameter
+    description: 'ISO 8601 formatted timestamp specifying the start time of the interval
+
+      to query. When not specified, the service uses ($to - 1-day). Default value
+      is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: to
+    description: 'ISO 8601 formatted timestamp specifying the end time of the interval
+      to query.
+
+      When not specified, the service uses request time. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: filter
+    description: OData filter expression. Default value is None.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: apply
+    description: OData apply expression for aggregations. Default value is None.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: skip_token
+    description: 'Skiptoken is only provided if a previous response returned a partial
+
+      result as a part of nextLink element. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
   return:
-    description: An iterator like instance of either PolicyState or the result of
-      cls(response)
+    description: An iterator like instance of PolicyState
     types:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.mgmt.policyinsights.models.PolicyState>]
   exceptions:
@@ -170,8 +330,10 @@ methods:
   name: list_query_results_for_resource
   summary: Queries policy states for the resource.
   signature: 'list_query_results_for_resource(policy_states_resource: str | PolicyStatesResource,
-    resource_id: str, query_options: QueryOptions | None = None, **kwargs: Any) ->
-    ItemPaged[PolicyState]'
+    resource_id: str, *, top: int | None = None, order_by: str | None = None, select:
+    str | None = None, from_parameter: datetime | None = None, to: datetime | None
+    = None, filter: str | None = None, apply: str | None = None, expand: str | None
+    = None, skip_token: str | None = None, **kwargs: Any) -> ItemPaged[PolicyState]'
   parameters:
   - name: policy_states_resource
     description: 'The virtual resource under PolicyStates resource type. In a
@@ -189,14 +351,73 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  - name: query_options
-    description: Parameter group. Default value is None.
+  keywordOnlyParameters:
+  - name: top
+    description: Maximum number of records to return. Default value is None.
     defaultValue: None
     types:
-    - <xref:azure.mgmt.policyinsights.models.QueryOptions>
+    - <xref:int>
+  - name: order_by
+    description: 'Ordering expression using OData notation. One or more comma-separated
+      column
+
+      names with an optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId,
+
+      ResourceId asc". Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: select
+    description: 'Select expression using OData notation. Limits the columns on each
+      record to
+
+      just those requested, e.g. "$select=PolicyAssignmentId, ResourceId". Default
+      value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: from_parameter
+    description: 'ISO 8601 formatted timestamp specifying the start time of the interval
+
+      to query. When not specified, the service uses ($to - 1-day). Default value
+      is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: to
+    description: 'ISO 8601 formatted timestamp specifying the end time of the interval
+      to query.
+
+      When not specified, the service uses request time. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: filter
+    description: OData filter expression. Default value is None.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: apply
+    description: OData apply expression for aggregations. Default value is None.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: expand
+    description: 'The $expand query parameter. For example, to expand components use
+
+      $expand=components. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: skip_token
+    description: 'Skiptoken is only provided if a previous response returned a partial
+
+      result as a part of nextLink element. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
   return:
-    description: An iterator like instance of either PolicyState or the result of
-      cls(response)
+    description: An iterator like instance of PolicyState
     types:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.mgmt.policyinsights.models.PolicyState>]
   exceptions:
@@ -204,10 +425,24 @@ methods:
 - uid: azure.mgmt.policyinsights.operations.PolicyStatesOperations.list_query_results_for_resource_group
   name: list_query_results_for_resource_group
   summary: Queries policy states for the resources under the resource group.
-  signature: 'list_query_results_for_resource_group(policy_states_resource: str |
-    PolicyStatesResource, subscription_id: str, resource_group_name: str, query_options:
-    QueryOptions | None = None, **kwargs: Any) -> ItemPaged[PolicyState]'
+  signature: 'list_query_results_for_resource_group(subscription_id: str, resource_group_name:
+    str, policy_states_resource: str | PolicyStatesResource, *, top: int | None =
+    None, order_by: str | None = None, select: str | None = None, from_parameter:
+    datetime | None = None, to: datetime | None = None, filter: str | None = None,
+    apply: str | None = None, skip_token: str | None = None, **kwargs: Any) -> ItemPaged[PolicyState]'
   parameters:
+  - name: subscription_id
+    description: The ID of the target subscription. The value must be an UUID. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: resource_group_name
+    description: 'The name of the resource group. The name is case insensitive.
+
+      Required.'
+    isRequired: true
+    types:
+    - <xref:str>
   - name: policy_states_resource
     description: 'The virtual resource under PolicyStates resource type. In a
 
@@ -219,24 +454,66 @@ methods:
     types:
     - <xref:str>
     - <xref:azure.mgmt.policyinsights.models.PolicyStatesResource>
-  - name: subscription_id
-    description: Microsoft Azure subscription ID. Required.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: resource_group_name
-    description: Resource group name. Required.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: query_options
-    description: Parameter group. Default value is None.
+  keywordOnlyParameters:
+  - name: top
+    description: Maximum number of records to return. Default value is None.
     defaultValue: None
     types:
-    - <xref:azure.mgmt.policyinsights.models.QueryOptions>
+    - <xref:int>
+  - name: order_by
+    description: 'Ordering expression using OData notation. One or more comma-separated
+      column
+
+      names with an optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId,
+
+      ResourceId asc". Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: select
+    description: 'Select expression using OData notation. Limits the columns on each
+      record to
+
+      just those requested, e.g. "$select=PolicyAssignmentId, ResourceId". Default
+      value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: from_parameter
+    description: 'ISO 8601 formatted timestamp specifying the start time of the interval
+
+      to query. When not specified, the service uses ($to - 1-day). Default value
+      is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: to
+    description: 'ISO 8601 formatted timestamp specifying the end time of the interval
+      to query.
+
+      When not specified, the service uses request time. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: filter
+    description: OData filter expression. Default value is None.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: apply
+    description: OData apply expression for aggregations. Default value is None.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: skip_token
+    description: 'Skiptoken is only provided if a previous response returned a partial
+
+      result as a part of nextLink element. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
   return:
-    description: An iterator like instance of either PolicyState or the result of
-      cls(response)
+    description: An iterator like instance of PolicyState
     types:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.mgmt.policyinsights.models.PolicyState>]
   exceptions:
@@ -244,23 +521,15 @@ methods:
 - uid: azure.mgmt.policyinsights.operations.PolicyStatesOperations.list_query_results_for_resource_group_level_policy_assignment
   name: list_query_results_for_resource_group_level_policy_assignment
   summary: Queries policy states for the resource group level policy assignment.
-  signature: 'list_query_results_for_resource_group_level_policy_assignment(policy_states_resource:
-    str | PolicyStatesResource, subscription_id: str, resource_group_name: str, policy_assignment_name:
-    str, query_options: QueryOptions | None = None, **kwargs: Any) -> ItemPaged[PolicyState]'
+  signature: 'list_query_results_for_resource_group_level_policy_assignment(subscription_id:
+    str, resource_group_name: str, policy_states_resource: str | PolicyStatesResource,
+    policy_assignment_name: str, *, top: int | None = None, order_by: str | None =
+    None, select: str | None = None, from_parameter: datetime | None = None, to: datetime
+    | None = None, filter: str | None = None, apply: str | None = None, skip_token:
+    str | None = None, **kwargs: Any) -> ItemPaged[PolicyState]'
   parameters:
-  - name: policy_states_resource
-    description: 'The virtual resource under PolicyStates resource type. In a
-
-      given time range, ''latest'' represents the latest policy state(s), whereas
-      ''default'' represents
-
-      all policy state(s). Known values are: "default" and "latest". Required.'
-    isRequired: true
-    types:
-    - <xref:str>
-    - <xref:azure.mgmt.policyinsights.models.PolicyStatesResource>
   - name: subscription_id
-    description: Microsoft Azure subscription ID. Required.
+    description: The ID of the target subscription. The value must be an UUID. Required.
     isRequired: true
     types:
     - <xref:str>
@@ -269,19 +538,82 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  - name: policy_states_resource
+    description: 'The virtual resource under PolicyStates resource type. In a
+
+      given time range, ''latest'' represents the latest policy state(s), whereas
+      ''default'' represents
+
+      all policy state(s). Known values are: "default" and "latest". Required.'
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.policyinsights.models.PolicyStatesResource>
   - name: policy_assignment_name
     description: Policy assignment name. Required.
     isRequired: true
     types:
     - <xref:str>
-  - name: query_options
-    description: Parameter group. Default value is None.
+  keywordOnlyParameters:
+  - name: top
+    description: Maximum number of records to return. Default value is None.
     defaultValue: None
     types:
-    - <xref:azure.mgmt.policyinsights.models.QueryOptions>
+    - <xref:int>
+  - name: order_by
+    description: 'Ordering expression using OData notation. One or more comma-separated
+      column
+
+      names with an optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId,
+
+      ResourceId asc". Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: select
+    description: 'Select expression using OData notation. Limits the columns on each
+      record to
+
+      just those requested, e.g. "$select=PolicyAssignmentId, ResourceId". Default
+      value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: from_parameter
+    description: 'ISO 8601 formatted timestamp specifying the start time of the interval
+
+      to query. When not specified, the service uses ($to - 1-day). Default value
+      is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: to
+    description: 'ISO 8601 formatted timestamp specifying the end time of the interval
+      to query.
+
+      When not specified, the service uses request time. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: filter
+    description: OData filter expression. Default value is None.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: apply
+    description: OData apply expression for aggregations. Default value is None.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: skip_token
+    description: 'Skiptoken is only provided if a previous response returned a partial
+
+      result as a part of nextLink element. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
   return:
-    description: An iterator like instance of either PolicyState or the result of
-      cls(response)
+    description: An iterator like instance of PolicyState
     types:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.mgmt.policyinsights.models.PolicyState>]
   exceptions:
@@ -289,10 +621,17 @@ methods:
 - uid: azure.mgmt.policyinsights.operations.PolicyStatesOperations.list_query_results_for_subscription
   name: list_query_results_for_subscription
   summary: Queries policy states for the resources under the subscription.
-  signature: 'list_query_results_for_subscription(policy_states_resource: str | PolicyStatesResource,
-    subscription_id: str, query_options: QueryOptions | None = None, **kwargs: Any)
-    -> ItemPaged[PolicyState]'
+  signature: 'list_query_results_for_subscription(subscription_id: str, policy_states_resource:
+    str | PolicyStatesResource, *, top: int | None = None, order_by: str | None =
+    None, select: str | None = None, from_parameter: datetime | None = None, to: datetime
+    | None = None, filter: str | None = None, apply: str | None = None, skip_token:
+    str | None = None, **kwargs: Any) -> ItemPaged[PolicyState]'
   parameters:
+  - name: subscription_id
+    description: The ID of the target subscription. The value must be an UUID. Required.
+    isRequired: true
+    types:
+    - <xref:str>
   - name: policy_states_resource
     description: 'The virtual resource under PolicyStates resource type. In a
 
@@ -304,19 +643,66 @@ methods:
     types:
     - <xref:str>
     - <xref:azure.mgmt.policyinsights.models.PolicyStatesResource>
-  - name: subscription_id
-    description: Microsoft Azure subscription ID. Required.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: query_options
-    description: Parameter group. Default value is None.
+  keywordOnlyParameters:
+  - name: top
+    description: Maximum number of records to return. Default value is None.
     defaultValue: None
     types:
-    - <xref:azure.mgmt.policyinsights.models.QueryOptions>
+    - <xref:int>
+  - name: order_by
+    description: 'Ordering expression using OData notation. One or more comma-separated
+      column
+
+      names with an optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId,
+
+      ResourceId asc". Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: select
+    description: 'Select expression using OData notation. Limits the columns on each
+      record to
+
+      just those requested, e.g. "$select=PolicyAssignmentId, ResourceId". Default
+      value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: from_parameter
+    description: 'ISO 8601 formatted timestamp specifying the start time of the interval
+
+      to query. When not specified, the service uses ($to - 1-day). Default value
+      is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: to
+    description: 'ISO 8601 formatted timestamp specifying the end time of the interval
+      to query.
+
+      When not specified, the service uses request time. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: filter
+    description: OData filter expression. Default value is None.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: apply
+    description: OData apply expression for aggregations. Default value is None.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: skip_token
+    description: 'Skiptoken is only provided if a previous response returned a partial
+
+      result as a part of nextLink element. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
   return:
-    description: An iterator like instance of either PolicyState or the result of
-      cls(response)
+    description: An iterator like instance of PolicyState
     types:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.mgmt.policyinsights.models.PolicyState>]
   exceptions:
@@ -324,10 +710,18 @@ methods:
 - uid: azure.mgmt.policyinsights.operations.PolicyStatesOperations.list_query_results_for_subscription_level_policy_assignment
   name: list_query_results_for_subscription_level_policy_assignment
   summary: Queries policy states for the subscription level policy assignment.
-  signature: 'list_query_results_for_subscription_level_policy_assignment(policy_states_resource:
-    str | PolicyStatesResource, subscription_id: str, policy_assignment_name: str,
-    query_options: QueryOptions | None = None, **kwargs: Any) -> ItemPaged[PolicyState]'
+  signature: 'list_query_results_for_subscription_level_policy_assignment(subscription_id:
+    str, policy_states_resource: str | PolicyStatesResource, policy_assignment_name:
+    str, *, top: int | None = None, order_by: str | None = None, select: str | None
+    = None, from_parameter: datetime | None = None, to: datetime | None = None, filter:
+    str | None = None, apply: str | None = None, skip_token: str | None = None, **kwargs:
+    Any) -> ItemPaged[PolicyState]'
   parameters:
+  - name: subscription_id
+    description: The ID of the target subscription. The value must be an UUID. Required.
+    isRequired: true
+    types:
+    - <xref:str>
   - name: policy_states_resource
     description: 'The virtual resource under PolicyStates resource type. In a
 
@@ -339,24 +733,71 @@ methods:
     types:
     - <xref:str>
     - <xref:azure.mgmt.policyinsights.models.PolicyStatesResource>
-  - name: subscription_id
-    description: Microsoft Azure subscription ID. Required.
-    isRequired: true
-    types:
-    - <xref:str>
   - name: policy_assignment_name
     description: Policy assignment name. Required.
     isRequired: true
     types:
     - <xref:str>
-  - name: query_options
-    description: Parameter group. Default value is None.
+  keywordOnlyParameters:
+  - name: top
+    description: Maximum number of records to return. Default value is None.
     defaultValue: None
     types:
-    - <xref:azure.mgmt.policyinsights.models.QueryOptions>
+    - <xref:int>
+  - name: order_by
+    description: 'Ordering expression using OData notation. One or more comma-separated
+      column
+
+      names with an optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId,
+
+      ResourceId asc". Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: select
+    description: 'Select expression using OData notation. Limits the columns on each
+      record to
+
+      just those requested, e.g. "$select=PolicyAssignmentId, ResourceId". Default
+      value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: from_parameter
+    description: 'ISO 8601 formatted timestamp specifying the start time of the interval
+
+      to query. When not specified, the service uses ($to - 1-day). Default value
+      is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: to
+    description: 'ISO 8601 formatted timestamp specifying the end time of the interval
+      to query.
+
+      When not specified, the service uses request time. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: filter
+    description: OData filter expression. Default value is None.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: apply
+    description: OData apply expression for aggregations. Default value is None.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: skip_token
+    description: 'Skiptoken is only provided if a previous response returned a partial
+
+      result as a part of nextLink element. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
   return:
-    description: An iterator like instance of either PolicyState or the result of
-      cls(response)
+    description: An iterator like instance of PolicyState
     types:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.mgmt.policyinsights.models.PolicyState>]
   exceptions:
@@ -365,8 +806,9 @@ methods:
   name: summarize_for_management_group
   summary: Summarizes policy states for the resources under the management group.
   signature: 'summarize_for_management_group(policy_states_summary_resource: str |
-    PolicyStatesSummaryResourceType, management_group_name: str, query_options: QueryOptions
-    | None = None, **kwargs: Any) -> SummarizeResults'
+    PolicyStatesSummaryResourceType, management_group_name: str, *, top: int | None
+    = None, from_parameter: datetime | None = None, to: datetime | None = None, filter:
+    str | None = None, **kwargs: Any) -> SummarizeResults'
   parameters:
   - name: policy_states_summary_resource
     description: 'The virtual resource under PolicyStates resource type
@@ -384,13 +826,35 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  - name: query_options
-    description: Parameter group. Default value is None.
+  keywordOnlyParameters:
+  - name: top
+    description: Maximum number of records to return. Default value is None.
     defaultValue: None
     types:
-    - <xref:azure.mgmt.policyinsights.models.QueryOptions>
+    - <xref:int>
+  - name: from_parameter
+    description: 'ISO 8601 formatted timestamp specifying the start time of the interval
+
+      to query. When not specified, the service uses ($to - 1-day). Default value
+      is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: to
+    description: 'ISO 8601 formatted timestamp specifying the end time of the interval
+      to query.
+
+      When not specified, the service uses request time. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: filter
+    description: OData filter expression. Default value is None.
+    defaultValue: None
+    types:
+    - <xref:str>
   return:
-    description: SummarizeResults or the result of cls(response)
+    description: SummarizeResults. The SummarizeResults is compatible with MutableMapping
     types:
     - <xref:azure.mgmt.policyinsights.models.SummarizeResults>
   exceptions:
@@ -398,10 +862,16 @@ methods:
 - uid: azure.mgmt.policyinsights.operations.PolicyStatesOperations.summarize_for_policy_definition
   name: summarize_for_policy_definition
   summary: Summarizes policy states for the subscription level policy definition.
-  signature: 'summarize_for_policy_definition(policy_states_summary_resource: str
-    | PolicyStatesSummaryResourceType, subscription_id: str, policy_definition_name:
-    str, query_options: QueryOptions | None = None, **kwargs: Any) -> SummarizeResults'
+  signature: 'summarize_for_policy_definition(subscription_id: str, policy_states_summary_resource:
+    str | PolicyStatesSummaryResourceType, policy_definition_name: str, *, top: int
+    | None = None, from_parameter: datetime | None = None, to: datetime | None = None,
+    filter: str | None = None, **kwargs: Any) -> SummarizeResults'
   parameters:
+  - name: subscription_id
+    description: The ID of the target subscription. The value must be an UUID. Required.
+    isRequired: true
+    types:
+    - <xref:str>
   - name: policy_states_summary_resource
     description: 'The virtual resource under PolicyStates resource type
 
@@ -413,23 +883,40 @@ methods:
     types:
     - <xref:str>
     - <xref:azure.mgmt.policyinsights.models.PolicyStatesSummaryResourceType>
-  - name: subscription_id
-    description: Microsoft Azure subscription ID. Required.
-    isRequired: true
-    types:
-    - <xref:str>
   - name: policy_definition_name
     description: Policy definition name. Required.
     isRequired: true
     types:
     - <xref:str>
-  - name: query_options
-    description: Parameter group. Default value is None.
+  keywordOnlyParameters:
+  - name: top
+    description: Maximum number of records to return. Default value is None.
     defaultValue: None
     types:
-    - <xref:azure.mgmt.policyinsights.models.QueryOptions>
+    - <xref:int>
+  - name: from_parameter
+    description: 'ISO 8601 formatted timestamp specifying the start time of the interval
+
+      to query. When not specified, the service uses ($to - 1-day). Default value
+      is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: to
+    description: 'ISO 8601 formatted timestamp specifying the end time of the interval
+      to query.
+
+      When not specified, the service uses request time. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: filter
+    description: OData filter expression. Default value is None.
+    defaultValue: None
+    types:
+    - <xref:str>
   return:
-    description: SummarizeResults or the result of cls(response)
+    description: SummarizeResults. The SummarizeResults is compatible with MutableMapping
     types:
     - <xref:azure.mgmt.policyinsights.models.SummarizeResults>
   exceptions:
@@ -437,10 +924,16 @@ methods:
 - uid: azure.mgmt.policyinsights.operations.PolicyStatesOperations.summarize_for_policy_set_definition
   name: summarize_for_policy_set_definition
   summary: Summarizes policy states for the subscription level policy set definition.
-  signature: 'summarize_for_policy_set_definition(policy_states_summary_resource:
-    str | PolicyStatesSummaryResourceType, subscription_id: str, policy_set_definition_name:
-    str, query_options: QueryOptions | None = None, **kwargs: Any) -> SummarizeResults'
+  signature: 'summarize_for_policy_set_definition(subscription_id: str, policy_states_summary_resource:
+    str | PolicyStatesSummaryResourceType, policy_set_definition_name: str, *, top:
+    int | None = None, from_parameter: datetime | None = None, to: datetime | None
+    = None, filter: str | None = None, **kwargs: Any) -> SummarizeResults'
   parameters:
+  - name: subscription_id
+    description: The ID of the target subscription. The value must be an UUID. Required.
+    isRequired: true
+    types:
+    - <xref:str>
   - name: policy_states_summary_resource
     description: 'The virtual resource under PolicyStates resource type
 
@@ -452,23 +945,40 @@ methods:
     types:
     - <xref:str>
     - <xref:azure.mgmt.policyinsights.models.PolicyStatesSummaryResourceType>
-  - name: subscription_id
-    description: Microsoft Azure subscription ID. Required.
-    isRequired: true
-    types:
-    - <xref:str>
   - name: policy_set_definition_name
     description: Policy set definition name. Required.
     isRequired: true
     types:
     - <xref:str>
-  - name: query_options
-    description: Parameter group. Default value is None.
+  keywordOnlyParameters:
+  - name: top
+    description: Maximum number of records to return. Default value is None.
     defaultValue: None
     types:
-    - <xref:azure.mgmt.policyinsights.models.QueryOptions>
+    - <xref:int>
+  - name: from_parameter
+    description: 'ISO 8601 formatted timestamp specifying the start time of the interval
+
+      to query. When not specified, the service uses ($to - 1-day). Default value
+      is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: to
+    description: 'ISO 8601 formatted timestamp specifying the end time of the interval
+      to query.
+
+      When not specified, the service uses request time. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: filter
+    description: OData filter expression. Default value is None.
+    defaultValue: None
+    types:
+    - <xref:str>
   return:
-    description: SummarizeResults or the result of cls(response)
+    description: SummarizeResults. The SummarizeResults is compatible with MutableMapping
     types:
     - <xref:azure.mgmt.policyinsights.models.SummarizeResults>
   exceptions:
@@ -477,7 +987,8 @@ methods:
   name: summarize_for_resource
   summary: Summarizes policy states for the resource.
   signature: 'summarize_for_resource(policy_states_summary_resource: str | PolicyStatesSummaryResourceType,
-    resource_id: str, query_options: QueryOptions | None = None, **kwargs: Any) ->
+    resource_id: str, *, top: int | None = None, from_parameter: datetime | None =
+    None, to: datetime | None = None, filter: str | None = None, **kwargs: Any) ->
     SummarizeResults'
   parameters:
   - name: policy_states_summary_resource
@@ -496,13 +1007,35 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  - name: query_options
-    description: Parameter group. Default value is None.
+  keywordOnlyParameters:
+  - name: top
+    description: Maximum number of records to return. Default value is None.
     defaultValue: None
     types:
-    - <xref:azure.mgmt.policyinsights.models.QueryOptions>
+    - <xref:int>
+  - name: from_parameter
+    description: 'ISO 8601 formatted timestamp specifying the start time of the interval
+
+      to query. When not specified, the service uses ($to - 1-day). Default value
+      is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: to
+    description: 'ISO 8601 formatted timestamp specifying the end time of the interval
+      to query.
+
+      When not specified, the service uses request time. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: filter
+    description: OData filter expression. Default value is None.
+    defaultValue: None
+    types:
+    - <xref:str>
   return:
-    description: SummarizeResults or the result of cls(response)
+    description: SummarizeResults. The SummarizeResults is compatible with MutableMapping
     types:
     - <xref:azure.mgmt.policyinsights.models.SummarizeResults>
   exceptions:
@@ -510,10 +1043,23 @@ methods:
 - uid: azure.mgmt.policyinsights.operations.PolicyStatesOperations.summarize_for_resource_group
   name: summarize_for_resource_group
   summary: Summarizes policy states for the resources under the resource group.
-  signature: 'summarize_for_resource_group(policy_states_summary_resource: str | PolicyStatesSummaryResourceType,
-    subscription_id: str, resource_group_name: str, query_options: QueryOptions |
-    None = None, **kwargs: Any) -> SummarizeResults'
+  signature: 'summarize_for_resource_group(subscription_id: str, resource_group_name:
+    str, policy_states_summary_resource: str | PolicyStatesSummaryResourceType, *,
+    top: int | None = None, from_parameter: datetime | None = None, to: datetime |
+    None = None, filter: str | None = None, **kwargs: Any) -> SummarizeResults'
   parameters:
+  - name: subscription_id
+    description: The ID of the target subscription. The value must be an UUID. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: resource_group_name
+    description: 'The name of the resource group. The name is case insensitive.
+
+      Required.'
+    isRequired: true
+    types:
+    - <xref:str>
   - name: policy_states_summary_resource
     description: 'The virtual resource under PolicyStates resource type
 
@@ -525,23 +1071,35 @@ methods:
     types:
     - <xref:str>
     - <xref:azure.mgmt.policyinsights.models.PolicyStatesSummaryResourceType>
-  - name: subscription_id
-    description: Microsoft Azure subscription ID. Required.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: resource_group_name
-    description: Resource group name. Required.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: query_options
-    description: Parameter group. Default value is None.
+  keywordOnlyParameters:
+  - name: top
+    description: Maximum number of records to return. Default value is None.
     defaultValue: None
     types:
-    - <xref:azure.mgmt.policyinsights.models.QueryOptions>
+    - <xref:int>
+  - name: from_parameter
+    description: 'ISO 8601 formatted timestamp specifying the start time of the interval
+
+      to query. When not specified, the service uses ($to - 1-day). Default value
+      is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: to
+    description: 'ISO 8601 formatted timestamp specifying the end time of the interval
+      to query.
+
+      When not specified, the service uses request time. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: filter
+    description: OData filter expression. Default value is None.
+    defaultValue: None
+    types:
+    - <xref:str>
   return:
-    description: SummarizeResults or the result of cls(response)
+    description: SummarizeResults. The SummarizeResults is compatible with MutableMapping
     types:
     - <xref:azure.mgmt.policyinsights.models.SummarizeResults>
   exceptions:
@@ -549,24 +1107,14 @@ methods:
 - uid: azure.mgmt.policyinsights.operations.PolicyStatesOperations.summarize_for_resource_group_level_policy_assignment
   name: summarize_for_resource_group_level_policy_assignment
   summary: Summarizes policy states for the resource group level policy assignment.
-  signature: 'summarize_for_resource_group_level_policy_assignment(policy_states_summary_resource:
-    str | PolicyStatesSummaryResourceType, subscription_id: str, resource_group_name:
-    str, policy_assignment_name: str, query_options: QueryOptions | None = None, **kwargs:
+  signature: 'summarize_for_resource_group_level_policy_assignment(subscription_id:
+    str, resource_group_name: str, policy_states_summary_resource: str | PolicyStatesSummaryResourceType,
+    policy_assignment_name: str, *, top: int | None = None, from_parameter: datetime
+    | None = None, to: datetime | None = None, filter: str | None = None, **kwargs:
     Any) -> SummarizeResults'
   parameters:
-  - name: policy_states_summary_resource
-    description: 'The virtual resource under PolicyStates resource type
-
-      for summarize action. In a given time range, ''latest'' represents the latest
-      policy state(s) and
-
-      is the only allowed value. "latest" Required.'
-    isRequired: true
-    types:
-    - <xref:str>
-    - <xref:azure.mgmt.policyinsights.models.PolicyStatesSummaryResourceType>
   - name: subscription_id
-    description: Microsoft Azure subscription ID. Required.
+    description: The ID of the target subscription. The value must be an UUID. Required.
     isRequired: true
     types:
     - <xref:str>
@@ -575,18 +1123,51 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  - name: policy_states_summary_resource
+    description: 'The virtual resource under PolicyStates resource type
+
+      for summarize action. In a given time range, ''latest'' represents the latest
+      policy state(s) and
+
+      is the only allowed value. "latest" Required.'
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.policyinsights.models.PolicyStatesSummaryResourceType>
   - name: policy_assignment_name
     description: Policy assignment name. Required.
     isRequired: true
     types:
     - <xref:str>
-  - name: query_options
-    description: Parameter group. Default value is None.
+  keywordOnlyParameters:
+  - name: top
+    description: Maximum number of records to return. Default value is None.
     defaultValue: None
     types:
-    - <xref:azure.mgmt.policyinsights.models.QueryOptions>
+    - <xref:int>
+  - name: from_parameter
+    description: 'ISO 8601 formatted timestamp specifying the start time of the interval
+
+      to query. When not specified, the service uses ($to - 1-day). Default value
+      is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: to
+    description: 'ISO 8601 formatted timestamp specifying the end time of the interval
+      to query.
+
+      When not specified, the service uses request time. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: filter
+    description: OData filter expression. Default value is None.
+    defaultValue: None
+    types:
+    - <xref:str>
   return:
-    description: SummarizeResults or the result of cls(response)
+    description: SummarizeResults. The SummarizeResults is compatible with MutableMapping
     types:
     - <xref:azure.mgmt.policyinsights.models.SummarizeResults>
   exceptions:
@@ -594,10 +1175,16 @@ methods:
 - uid: azure.mgmt.policyinsights.operations.PolicyStatesOperations.summarize_for_subscription
   name: summarize_for_subscription
   summary: Summarizes policy states for the resources under the subscription.
-  signature: 'summarize_for_subscription(policy_states_summary_resource: str | PolicyStatesSummaryResourceType,
-    subscription_id: str, query_options: QueryOptions | None = None, **kwargs: Any)
-    -> SummarizeResults'
+  signature: 'summarize_for_subscription(subscription_id: str, policy_states_summary_resource:
+    str | PolicyStatesSummaryResourceType, *, top: int | None = None, from_parameter:
+    datetime | None = None, to: datetime | None = None, filter: str | None = None,
+    **kwargs: Any) -> SummarizeResults'
   parameters:
+  - name: subscription_id
+    description: The ID of the target subscription. The value must be an UUID. Required.
+    isRequired: true
+    types:
+    - <xref:str>
   - name: policy_states_summary_resource
     description: 'The virtual resource under PolicyStates resource type
 
@@ -609,18 +1196,35 @@ methods:
     types:
     - <xref:str>
     - <xref:azure.mgmt.policyinsights.models.PolicyStatesSummaryResourceType>
-  - name: subscription_id
-    description: Microsoft Azure subscription ID. Required.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: query_options
-    description: Parameter group. Default value is None.
+  keywordOnlyParameters:
+  - name: top
+    description: Maximum number of records to return. Default value is None.
     defaultValue: None
     types:
-    - <xref:azure.mgmt.policyinsights.models.QueryOptions>
+    - <xref:int>
+  - name: from_parameter
+    description: 'ISO 8601 formatted timestamp specifying the start time of the interval
+
+      to query. When not specified, the service uses ($to - 1-day). Default value
+      is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: to
+    description: 'ISO 8601 formatted timestamp specifying the end time of the interval
+      to query.
+
+      When not specified, the service uses request time. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: filter
+    description: OData filter expression. Default value is None.
+    defaultValue: None
+    types:
+    - <xref:str>
   return:
-    description: SummarizeResults or the result of cls(response)
+    description: SummarizeResults. The SummarizeResults is compatible with MutableMapping
     types:
     - <xref:azure.mgmt.policyinsights.models.SummarizeResults>
   exceptions:
@@ -628,10 +1232,16 @@ methods:
 - uid: azure.mgmt.policyinsights.operations.PolicyStatesOperations.summarize_for_subscription_level_policy_assignment
   name: summarize_for_subscription_level_policy_assignment
   summary: Summarizes policy states for the subscription level policy assignment.
-  signature: 'summarize_for_subscription_level_policy_assignment(policy_states_summary_resource:
-    str | PolicyStatesSummaryResourceType, subscription_id: str, policy_assignment_name:
-    str, query_options: QueryOptions | None = None, **kwargs: Any) -> SummarizeResults'
+  signature: 'summarize_for_subscription_level_policy_assignment(subscription_id:
+    str, policy_states_summary_resource: str | PolicyStatesSummaryResourceType, policy_assignment_name:
+    str, *, top: int | None = None, from_parameter: datetime | None = None, to: datetime
+    | None = None, filter: str | None = None, **kwargs: Any) -> SummarizeResults'
   parameters:
+  - name: subscription_id
+    description: The ID of the target subscription. The value must be an UUID. Required.
+    isRequired: true
+    types:
+    - <xref:str>
   - name: policy_states_summary_resource
     description: 'The virtual resource under PolicyStates resource type
 
@@ -643,28 +1253,41 @@ methods:
     types:
     - <xref:str>
     - <xref:azure.mgmt.policyinsights.models.PolicyStatesSummaryResourceType>
-  - name: subscription_id
-    description: Microsoft Azure subscription ID. Required.
-    isRequired: true
-    types:
-    - <xref:str>
   - name: policy_assignment_name
     description: Policy assignment name. Required.
     isRequired: true
     types:
     - <xref:str>
-  - name: query_options
-    description: Parameter group. Default value is None.
+  keywordOnlyParameters:
+  - name: top
+    description: Maximum number of records to return. Default value is None.
     defaultValue: None
     types:
-    - <xref:azure.mgmt.policyinsights.models.QueryOptions>
+    - <xref:int>
+  - name: from_parameter
+    description: 'ISO 8601 formatted timestamp specifying the start time of the interval
+
+      to query. When not specified, the service uses ($to - 1-day). Default value
+      is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: to
+    description: 'ISO 8601 formatted timestamp specifying the end time of the interval
+      to query.
+
+      When not specified, the service uses request time. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: filter
+    description: OData filter expression. Default value is None.
+    defaultValue: None
+    types:
+    - <xref:str>
   return:
-    description: SummarizeResults or the result of cls(response)
+    description: SummarizeResults. The SummarizeResults is compatible with MutableMapping
     types:
     - <xref:azure.mgmt.policyinsights.models.SummarizeResults>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-attributes:
-- uid: azure.mgmt.policyinsights.operations.PolicyStatesOperations.models
-  name: models
-  signature: models = <module 'azure.mgmt.policyinsights.models' from 'C:\\ToolCache\\Python\\3.12.10\\x64\\Lib\\site-packages\\py2docfx\\venv\\venv232\\Lib\\site-packages\\azure\\mgmt\\policyinsights\\models\\__init__.py'>
