@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: trustedsigning
 ---
-# Azure Trusted Signing SDK for Python - preview
-## Packages - preview
+# Azure Trusted Signing SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](trusted-signing-index.md)]
