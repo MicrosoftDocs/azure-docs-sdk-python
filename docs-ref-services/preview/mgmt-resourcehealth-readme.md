@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-resourcehealth, resourcehealth
-ms.date: 06/02/2026
+ms.date: 06/08/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: resourcehealth
