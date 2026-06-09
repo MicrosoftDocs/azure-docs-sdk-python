@@ -1,6 +1,6 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-frontdoor, network
+keywords: Azure, python, SDK, API, azure-mgmt-dns, network
 ms.date: 06/09/2026
 ms.topic: reference
 ms.devlang: python
@@ -8,7 +8,7 @@ ms.service: network
 ---
 # Microsoft Azure SDK for Python
 
-This is the Microsoft Azure Front Door Service Client Library.
+This is the Microsoft Azure DNS Management Client Library.
 This package has been tested with Python 3.9+.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
@@ -26,7 +26,7 @@ _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For
 ### Install the package
 
 ```bash
-pip install azure-mgmt-frontdoor
+pip install azure-mgmt-dns
 pip install azure-identity
 ```
 
@@ -44,17 +44,17 @@ With above configuration, client can be authenticated by following code:
 
 ```python
 from azure.identity import DefaultAzureCredential
-from azure.mgmt.frontdoor import FrontDoorManagementClient
+from azure.mgmt.dns import DnsManagementClient
 import os
 
 sub_id = os.getenv("AZURE_SUBSCRIPTION_ID")
-client = FrontDoorManagementClient(credential=DefaultAzureCredential(), subscription_id=sub_id)
+client = DnsManagementClient(credential=DefaultAzureCredential(), subscription_id=sub_id)
 ```
 
 ## Examples
 
 Code samples for this package can be found at:
-- [Search Front Door Service](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
+- [Search DNS Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
 - [Azure Python Mgmt SDK Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
