@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-apimanagement, apimanagement
-ms.date: 03/30/2026
+ms.date: 06/09/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: apimanagement
