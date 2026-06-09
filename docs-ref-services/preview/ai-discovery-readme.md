@@ -1,12 +1,12 @@
 ---
 title: Azure AI Discovery client library for Python
 keywords: Azure, python, SDK, API, azure-ai-discovery, discovery
-ms.date: 06/03/2026
+ms.date: 06/09/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: discovery
 ---
-# Azure AI Discovery client library for Python - version 1.0.0b1 
+# Azure AI Discovery client library for Python - version 1.0.0a20260609001 
 
 
 The Azure AI Discovery client library for Python provides two clients for interacting with Azure AI Discovery services:
@@ -271,8 +271,8 @@ with any additional questions or comments.
 [azure_identity]: https://learn.microsoft.com/python/api/overview/azure/identity-readme
 [azure_core_exceptions]: https://learn.microsoft.com/python/api/azure-core/azure.core.exceptions
 [python_logging]: https://docs.python.org/3/library/logging.html
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-discovery_1.0.0b1/sdk/discovery/azure-ai-discovery
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/discovery/azure-ai-discovery
 [pypi]: https://pypi.org/project/azure-ai-discovery/
-[samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-discovery_1.0.0b1/sdk/discovery/azure-ai-discovery/samples
+[samples]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/discovery/azure-ai-discovery/samples
 [product_docs]: https://learn.microsoft.com/azure/microsoft-discovery/
 
