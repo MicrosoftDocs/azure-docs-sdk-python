@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-discovery, discovery
-ms.date: 06/01/2026
+ms.date: 06/10/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: discovery
