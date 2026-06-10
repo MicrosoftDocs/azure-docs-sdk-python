@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-resource, resources
-ms.date: 07/17/2025
+ms.date: 06/10/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: resources
@@ -9,7 +9,7 @@ ms.service: resources
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Resource Management Client Library.
-This package has been tested with Python 3.9+.
+This package has been tested with Python 3.10+.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
 ## _Disclaimer_
@@ -20,7 +20,7 @@ _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For
 
 ### Prerequisites
 
-- Python 3.9+ is required to use this package.
+- Python 3.10+ is required to use this package.
 - [Azure subscription](https://azure.microsoft.com/free/)
 
 ### Install the package
@@ -32,7 +32,7 @@ pip install azure-identity
 
 ### Authentication
 
-By default, [Azure Active Directory](https://aka.ms/awps/aad) token authentication depends on correct configuration of the following environment variables.
+By default, [Microsoft Entra](https://learn.microsoft.com/entra/fundamentals/what-is-entra) token authentication depends on correct configuration of the following environment variables.
 
 - `AZURE_CLIENT_ID` for Azure client ID.
 - `AZURE_TENANT_ID` for Azure tenant ID.
@@ -44,7 +44,7 @@ With above configuration, client can be authenticated by following code:
 
 ```python
 from azure.identity import DefaultAzureCredential
-from azure.mgmt.resource import ResourceManagementClient
+from azure.mgmt.resource.resources import ResourceManagementClient
 import os
 
 sub_id = os.getenv("AZURE_SUBSCRIPTION_ID")
