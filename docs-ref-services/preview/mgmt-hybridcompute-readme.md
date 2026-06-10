@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-hybridcompute, hybridcompute
-ms.date: 06/04/2026
+ms.date: 06/10/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: hybridcompute
