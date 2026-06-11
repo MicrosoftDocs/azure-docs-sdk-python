@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-servicefabricmanagedclusters, servicefabricmanagedclusters
-ms.date: 11/26/2025
+ms.date: 06/11/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: servicefabricmanagedclusters
@@ -9,7 +9,7 @@ ms.service: servicefabricmanagedclusters
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Service Fabric Managed Clusters Management Client Library.
-This package has been tested with Python 3.9+.
+This package has been tested with Python 3.10+.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
 ## _Disclaimer_
@@ -20,7 +20,7 @@ _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For
 
 ### Prerequisites
 
-- Python 3.9+ is required to use this package.
+- Python 3.10+ is required to use this package.
 - [Azure subscription](https://azure.microsoft.com/free/)
 
 ### Install the package
