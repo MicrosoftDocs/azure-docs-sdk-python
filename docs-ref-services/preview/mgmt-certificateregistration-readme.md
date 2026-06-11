@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-certificateregistration, certificateregistration
-ms.date: 04/29/2026
+ms.date: 06/11/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: certificateregistration
