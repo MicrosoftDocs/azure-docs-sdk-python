@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-eventgrid, azure-event-grid
-ms.date: 05/12/2026
+ms.date: 06/11/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: azure-event-grid
