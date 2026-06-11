@@ -1,12 +1,12 @@
 ---
 title: Azure AI Content Understanding client library for Python
 keywords: Azure, python, SDK, API, azure-ai-contentunderstanding, contentunderstanding
-ms.date: 04/30/2026
+ms.date: 06/11/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: contentunderstanding
 ---
-# Azure AI Content Understanding client library for Python - version 1.2.0b1 
+# Azure AI Content Understanding client library for Python - version 1.2.0b2 
 
 
 Azure AI Content Understanding is a multimodal AI service that extracts semantic content from documents, video, audio, and image files. It transforms unstructured content into structured, machine-readable data optimized for retrieval-augmented generation (RAG) and automated workflows.
@@ -19,6 +19,8 @@ Use the client library for Azure AI Content Understanding to:
 * **Leverage prebuilt analyzers** - Use production-ready prebuilt analyzers across industries including finance and tax (invoices, receipts, tax forms), identity verification (passports, driver's licenses), mortgage and lending (loan applications, appraisals), procurement and contracts (purchase orders, agreements), and utilities (billing statements)
 * **Create custom analyzers** - Build domain-specific analyzers for specialized content extraction needs across all four modalities (documents, video, audio, and images)
 * **Classify documents and video** - Automatically categorize and extract information from documents and video by type
+
+If you have encountered issues or want to suggest features, please [file an issue][file_issue].
 
 [Source code][python_cu_src] | [Package (PyPI)][python_cu_pypi] | [Product documentation][python_cu_product_docs] | [Samples][python_cu_samples]
 
@@ -66,6 +68,7 @@ This table shows the relationship between SDK versions and supported API service
 
 | SDK version | Supported API service version |
 | ----------- | ----------------------------- |
+| 1.2.0b2     | 2025-11-01                    |
 | 1.2.0b1     | 2025-11-01                    |
 | 1.1.0       | 2025-11-01                    |
 | 1.0.1       | 2025-11-01                    |
@@ -233,7 +236,7 @@ python samples/sample_update_defaults.py
 
 **Verification**
 
-After the script runs successfully, you can use prebuilt analyzers like `prebuilt-invoice` or `prebuilt-documentSearch`. For more examples and sample code, see the [Examples](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-contentunderstanding_1.2.0b1/sdk/contentunderstanding/azure-ai-contentunderstanding/README.md#examples) section.
+After the script runs successfully, you can use prebuilt analyzers like `prebuilt-invoice` or `prebuilt-documentSearch`. For more examples and sample code, see the [Examples](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-contentunderstanding_1.2.0b2/sdk/contentunderstanding/azure-ai-contentunderstanding/README.md#examples) section.
 
 If you encounter errors:
 - **Deployment Not Found**: Check that deployment names in environment variables match exactly what you created in Foundry.
@@ -529,6 +532,9 @@ asyncio.run(analyze_invoice())
 
 #### Convert results to LLM-ready text
 
+> **Note:** `to_llm_input()` is currently in preview and may change in future
+> releases. We welcome feedback — please [file an issue][file_issue].
+
 Use the `to_llm_input()` helper to convert any analysis result into a text format that LLMs
 can consume directly — YAML front matter with extracted fields followed by the markdown body.
 This works with all content types (documents, images, audio, video) and handles multi-segment
@@ -561,7 +567,7 @@ print(text)
 #       figure illustrating monthly values, and describes the AI Document
 #       Intelligence service...
 #   ---
-#   <!-- page 1 -->
+#   <!-- InputPageNumber: 1 -->
 #   # ==This is title==
 #   ## 1. Text
 #   [Latin](https://en.wikipedia.org/wiki/Latin) refers to an ancient Italic language...
@@ -575,6 +581,43 @@ print(text)
 #   ```
 #   ...
 ```
+
+> **About `<!-- InputPageNumber: N -->`**
+>
+> The helper emits `<!-- InputPageNumber: N -->` markers at page boundaries in
+> the markdown body. `N` is the **original 1-based page number from the source
+> document** (i.e., the page index in the analyzed PDF), not a counter that
+> restarts at 1 for each call. Downstream consumers (RAG indexers, page-citation
+> prompts) can rely on the marker value to cite the correct source page even
+> when only a subset of pages was analyzed.
+>
+> **Why this matters when a page range is specified**
+>
+> Use `content_range` on the analyze input to analyze only a subset of pages in
+> a multi-page document. The markers in the rendered output preserve the
+> original page identity:
+>
+> ```python
+> # Analyze pages 2-3 and page 5 of a 10-page PDF.
+> poller = client.begin_analyze(
+>     analyzer_id="prebuilt-documentSearch",
+>     inputs=[AnalysisInput(url=multi_page_url, content_range="2-3,5")],
+> )
+> result = poller.result()
+> text = to_llm_input(result)
+> # Output contains markers for the *original* page numbers, not 1, 2, 3:
+> #   pages: 2-3, 5
+> #   ...
+> #   <!-- InputPageNumber: 2 -->
+> #   ...page 2 content...
+> #   <!-- InputPageNumber: 3 -->
+> #   ...page 3 content...
+> #   <!-- InputPageNumber: 5 -->
+> #   ...page 5 content...
+> ```
+>
+> An LLM or RAG indexer can therefore cite "see page 5" with the correct page
+> number, even though page 5 is the *third* segment in the response.
 
 See the [advanced sample][python_cu_sample_to_llm_input] for output options (fields-only,
 markdown-only, custom metadata), multi-page content ranges, and multi-segment video.
@@ -676,34 +719,35 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 
 <!-- LINKS -->
 
-[python_cu_src]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.2.0b1/sdk/contentunderstanding/azure-ai-contentunderstanding/azure/ai/contentunderstanding
+[python_cu_src]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.2.0b2/sdk/contentunderstanding/azure-ai-contentunderstanding/azure/ai/contentunderstanding
 [python_cu_pypi]: https://pypi.org/project/azure-ai-contentunderstanding/
 [python_cu_product_docs]: https://learn.microsoft.com/azure/ai-services/content-understanding/
-[python_cu_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.2.0b1/sdk/contentunderstanding/azure-ai-contentunderstanding/samples
-[python_cu_sample_to_llm_input]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.2.0b1/sdk/contentunderstanding/azure-ai-contentunderstanding/samples/sample_to_llm_input.py
+[python_cu_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.2.0b2/sdk/contentunderstanding/azure-ai-contentunderstanding/samples
+[python_cu_sample_to_llm_input]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.2.0b2/sdk/contentunderstanding/azure-ai-contentunderstanding/samples/sample_to_llm_input.py
 [azure_sub]: https://azure.microsoft.com/free/
 [cu_quickstart]: https://learn.microsoft.com/azure/ai-services/content-understanding/quickstart/use-rest-api?tabs=portal%2Cdocument
 [cu_region_support]: https://learn.microsoft.com/azure/ai-services/content-understanding/language-region-support
 [azure_portal]: https://portal.azure.com/
 [deploy_models_docs]: https://learn.microsoft.com/azure/ai-studio/how-to/deploy-models-openai
-[azure_identity_readme]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.2.0b1/sdk/identity/azure-identity/README.md
+[azure_identity_readme]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.2.0b2/sdk/identity/azure-identity/README.md
 [cu_prebuilt_analyzers]: https://learn.microsoft.com/azure/ai-services/content-understanding/concepts/prebuilt-analyzers
-[client_options]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-contentunderstanding_1.2.0b1/sdk/core/azure-core/README.md#configurations
-[handling_failures]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-contentunderstanding_1.2.0b1/sdk/core/azure-core/README.md#azure-core-library-exceptions
-[diagnostics]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-contentunderstanding_1.2.0b1/sdk/core/azure-core/README.md#logging
+[client_options]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-contentunderstanding_1.2.0b2/sdk/core/azure-core/README.md#configurations
+[handling_failures]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-contentunderstanding_1.2.0b2/sdk/core/azure-core/README.md#azure-core-library-exceptions
+[diagnostics]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-contentunderstanding_1.2.0b2/sdk/core/azure-core/README.md#logging
 [python_logging]: https://docs.python.org/3/library/logging.html
 [sdk_logging_docs]: https://learn.microsoft.com/azure/developer/python/sdk/azure-sdk-logging
-[sample_readme]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.2.0b1/sdk/contentunderstanding/azure-ai-contentunderstanding/samples/README.md
-[sample_update_defaults]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-contentunderstanding_1.2.0b1/sdk/contentunderstanding/azure-ai-contentunderstanding/samples/sample_update_defaults.py
-[sample_analyze_binary]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-contentunderstanding_1.2.0b1/sdk/contentunderstanding/azure-ai-contentunderstanding/samples/sample_analyze_binary.py
-[cu_sdk_setup_skill]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.2.0b1/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/cu-sdk-setup
-[cu_sdk_sample_run_skill]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.2.0b1/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/cu-sdk-sample-run
-[cu_sdk_common_knowledge_skill]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.2.0b1/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/cu-sdk-common-knowledge
-[tests_readme]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.2.0b1/sdk/contentunderstanding/azure-ai-contentunderstanding/tests/README.md
-[azure_sdk_testing_guide]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-contentunderstanding_1.2.0b1/doc/dev/tests.md
+[sample_readme]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.2.0b2/sdk/contentunderstanding/azure-ai-contentunderstanding/samples/README.md
+[sample_update_defaults]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-contentunderstanding_1.2.0b2/sdk/contentunderstanding/azure-ai-contentunderstanding/samples/sample_update_defaults.py
+[sample_analyze_binary]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-contentunderstanding_1.2.0b2/sdk/contentunderstanding/azure-ai-contentunderstanding/samples/sample_analyze_binary.py
+[cu_sdk_setup_skill]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.2.0b2/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/cu-sdk-setup
+[cu_sdk_sample_run_skill]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.2.0b2/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/cu-sdk-sample-run
+[cu_sdk_common_knowledge_skill]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.2.0b2/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/cu-sdk-common-knowledge
+[tests_readme]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.2.0b2/sdk/contentunderstanding/azure-ai-contentunderstanding/tests/README.md
+[azure_sdk_testing_guide]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-contentunderstanding_1.2.0b2/doc/dev/tests.md
 [pip]: https://pypi.org/project/pip/
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
+[file_issue]: https://github.com/Azure/azure-sdk-for-python/issues/new?labels=Cognitive%20-%20Content%20Understanding&title=[ContentUnderstanding]%20&body=%23%23%20Library%20Version%0A%0A%23%23%20Repro%20Steps%0A%0A%23%23%20Expected%20Result%0A%0A%23%23%20Actual%20Result
 [code_of_conduct_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [opencode_email]: mailto:opencode@microsoft.com
 [aiohttp]: https://pypi.org/project/aiohttp/
