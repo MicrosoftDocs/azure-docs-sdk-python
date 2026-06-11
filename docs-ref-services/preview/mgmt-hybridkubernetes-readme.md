@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-hybridkubernetes, hybridkubernetes
-ms.date: 05/21/2026
+ms.date: 06/11/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: hybridkubernetes
