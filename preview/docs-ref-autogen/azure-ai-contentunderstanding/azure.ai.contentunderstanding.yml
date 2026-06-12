@@ -13,7 +13,17 @@ functions:
     \ For multi-segment results (video, audio), each\nsegment is rendered with its\
     \ time range. For document\nclassification results (parent with nested segments),\
     \ the\nhelper automatically expands the parent into per-segment blocks\nwith category\
-    \ labels and markdown slices.\n\nExample:\n\n<!-- literal_block {\"ids\": [],\
+    \ labels and markdown slices.\n\nFor document content, the helper emits `<!--\
+    \ InputPageNumber: N -->`\nmarkers at page boundaries when the service result\
+    \ does not already\ninclude them. `N` is the **original 1-based page number from\
+    \ the\nsource document** (i.e., the page index in the analyzed PDF), not a\ncounter\
+    \ that restarts at 1 for each call. This is important when the\nanalyze request\
+    \ specifies a `content_range` (e.g., `\"2-3, 5\"`):\nthe markers in the output\
+    \ will read `InputPageNumber: 2`, `3`,\n`5` \u2014 not `1`, `2`, `3`. Downstream\
+    \ consumers (RAG indexers,\npage-citation prompts) can rely on the marker value\
+    \ to cite the\ncorrect source page even when only a subset of pages was analyzed.\n\
+    Internal telemetry messages such as `LLMStats: ...` are filtered\nfrom the rendered\
+    \ `rai_warnings` front matter.\n\nExample:\n\n<!-- literal_block {\"ids\": [],\
     \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\"\
     : \"preserve\", \"language\": \"default\", \"force\": false, \"linenos\": false}\
     \ -->\n\n````default\n\n   from azure.ai.contentunderstanding import (\n     \
