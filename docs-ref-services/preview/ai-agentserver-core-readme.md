@@ -1,12 +1,12 @@
 ---
 title: Azure AI Agent Server Core client library for Python
 keywords: Azure, python, SDK, API, azure-ai-agentserver-core, agentserver
-ms.date: 05/25/2026
+ms.date: 06/12/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: agentserver
 ---
-# Azure AI Agent Server Core client library for Python - version 2.0.0b5 
+# Azure AI Agent Server Core client library for Python - version 2.0.0a20260612002 
 
 
 The `azure-ai-agentserver-core` package provides the foundation host framework for building Azure AI Hosted Agent containers. It handles the protocol-agnostic infrastructure — health probes, graceful shutdown, OpenTelemetry tracing, and ASGI serving — so that protocol packages can focus on their endpoint logic.
@@ -139,7 +139,7 @@ To report an issue with the client library, or request additional features, plea
 ## Next steps
 
 - Install [`azure-ai-agentserver-invocations`](https://pypi.org/project/azure-ai-agentserver-invocations/) to add the invocation protocol endpoints.
-- See the [container image spec](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-core_2.0.0b5/sdk/agentserver) for the full hosted agent contract.
+- See the [container image spec](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/agentserver) for the full hosted agent contract.
 
 ## Contributing
 
