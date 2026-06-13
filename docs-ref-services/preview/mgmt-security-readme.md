@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-security, security
-ms.date: 05/17/2026
+ms.date: 06/13/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: security
