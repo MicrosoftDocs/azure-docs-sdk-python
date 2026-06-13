@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-kubernetesconfiguration-extensiontypes, kubernetesconfiguration
-ms.date: 03/19/2026
+ms.date: 06/13/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: kubernetesconfiguration
