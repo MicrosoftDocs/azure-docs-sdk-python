@@ -1,12 +1,12 @@
 ---
 title: Azure AI Speech Transcription client library for Python
-keywords: Azure, python, SDK, API, azure-ai-transcription, cognitive-services
-ms.date: 04/22/2026
+keywords: Azure, python, SDK, API, azure-ai-transcription, transcription
+ms.date: 06/13/2026
 ms.topic: reference
 ms.devlang: python
-ms.service: cognitive-services
+ms.service: transcription
 ---
-# Azure AI Speech Transcription client library for Python - version 1.0.0b4 
+# Azure AI Speech Transcription client library for Python - version 1.0.1a20260612001 
 
 
 Azure AI Speech Transcription is a service that provides advanced speech-to-text capabilities, allowing you to transcribe audio content into text with high accuracy. This client library enables developers to integrate speech transcription features into their Python applications.
@@ -299,6 +299,8 @@ with open(audio_file_path, "rb") as audio_file:
 
 <!-- END SNIPPET -->
 
+> **Note:** `locales` is honored in Enhanced Mode. Enhanced Mode operates in multilingual mode by default; if `locales` is specified, the first locale is used as a hint to guide recognition.
+
 ### Using async client
 
 The library also provides an async client for asynchronous operations:
@@ -439,7 +441,7 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][code_of_conduct]. For more information, see the [Code of Conduct FAQ][code_of_conduct_faq] or contact [opencode@microsoft.com][opencode_email] with any additional questions or comments.
 
 <!-- LINKS -->
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-transcription_1.0.0b4/sdk/transcription/azure-ai-transcription
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/transcription/azure-ai-transcription
 [pypi_package]: https://pypi.org/project/azure-ai-transcription/
 [api_reference]: https://learn.microsoft.com/python/api/azure-ai-transcription/azure.ai.transcription?view=azure-python-preview
 [product_docs]: https://learn.microsoft.com/azure/ai-services/speech-service/
@@ -448,12 +450,12 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [pip]: https://pypi.org/project/pip/
 [azure_portal]: https://portal.azure.com
 [azure_cli]: https://learn.microsoft.com/cli/azure
-[transcription_client]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-transcription_1.0.0b4/sdk/transcription/azure-ai-transcription/azure/ai/transcription/_client.py
+[transcription_client]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/transcription/azure-ai-transcription/azure/ai/transcription/_client.py
 [azure_core_exceptions]: https://aka.ms/azsdk/python/core/docs#module-azure.core.exceptions
 [python_logging]: https://docs.python.org/3/library/logging.html
 [rest_api]: https://learn.microsoft.com/azure/ai-services/speech-service/rest-speech-to-text
-[samples_directory]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-transcription_1.0.0b4/sdk/transcription/azure-ai-transcription/samples
-[azure_sdk_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-transcription_1.0.0b4/sdk/transcription/azure-ai-transcription/samples
+[samples_directory]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/transcription/azure-ai-transcription/samples
+[azure_sdk_samples]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/transcription/azure-ai-transcription/samples
 [speech_docs]: https://learn.microsoft.com/azure/ai-services/speech-service/
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
