@@ -100,7 +100,8 @@ methods:
   summary: Create a snapshot of the configuration settings.
   signature: 'begin_create_snapshot(name: str, filters: List[ConfigurationSettingsFilter],
     *, composition_type: str | SnapshotComposition | None = None, retention_period:
-    int | None = None, tags: Dict[str, str] | None = None, **kwargs: Any) -> LROPoller[ConfigurationSnapshot]'
+    int | None = None, tags: Dict[str, str] | None = None, description: str | None
+    = None, **kwargs: Any) -> LROPoller[ConfigurationSnapshot]'
   parameters:
   - name: name
     description: The name of the configuration snapshot to create.
@@ -152,6 +153,12 @@ methods:
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
     - <xref:None>
+  - name: description
+    description: The description of the configuration snapshot.
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:None>
   return:
     description: 'A poller for create configuration snapshot operation. Call *result()*
       on this object to wait for the
@@ -161,6 +168,65 @@ methods:
     - <xref:azure.core.polling.LROPoller>[<xref:azure.appconfiguration.ConfigurationSnapshot>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+- uid: azure.appconfiguration.AzureAppConfigurationClient.check_configuration_settings
+  name: check_configuration_settings
+  summary: "Check configuration settings using a HEAD request, returning only headers\
+    \ without the\nresponse body. This is useful for efficiently checking if settings\
+    \ have changed by comparing ETags.\n\nExample\n\n<!-- literal_block {\"ids\":\
+    \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {}, \"linenos\": false} -->\n\n````python\n\n   items = client.check_configuration_settings(key_filter=\"\
+    my_key*\")\n   for page in items.by_page():\n       print(page.etag)  # etag for\
+    \ this page\n   ````"
+  signature: 'check_configuration_settings(*, key_filter: str | None = None, label_filter:
+    str | None = None, tags_filter: List[str] | None = None, accept_datetime: datetime
+    | str | None = None, **kwargs: Any) -> ConfigurationSettingPaged'
+  keywordOnlyParameters:
+  - name: key_filter
+    description: 'Filter results based on their keys. ''*'' can be used as wildcard
+      at the end
+
+      of the filter.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:None>
+  - name: label_filter
+    description: 'Filter results based on their label. ''*'' can be used as wildcard
+      at the end
+
+      of the filter.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:None>
+  - name: tags_filter
+    description: Filter results based on their tags.
+    defaultValue: None
+    types:
+    - <xref:list>[<xref:str>]
+    - <xref:None>
+  - name: accept_datetime
+    description: Retrieve ConfigurationSetting that existed at this datetime
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+    - <xref:str>
+    - <xref:None>
+  return:
+    description: 'A pager intended for <xref:azure.appconfiguration.AzureAppConfigurationClient.by_page>
+      iteration to inspect page headers (for example, `etag`)
+
+      and detect changed pages. This operation issues HEAD requests and does not return
+      full
+
+      <xref:azure.appconfiguration.ConfigurationSetting> bodies when iterated item
+      by item.'
+    types:
+    - <xref:azure.appconfiguration.ConfigurationSettingPaged>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  - type: azure.core.exceptions.ClientAuthenticationError
 - uid: azure.appconfiguration.AzureAppConfigurationClient.close
   name: close
   summary: Close all connections made by the client
@@ -326,7 +392,7 @@ methods:
   signature: 'list_configuration_settings(*, key_filter: str | None = None, label_filter:
     str | None = None, tags_filter: List[str] | None = None, accept_datetime: datetime
     | str | None = None, fields: List[str | ConfigurationSettingFields] | None = None,
-    **kwargs: Any) -> ItemPaged[ConfigurationSetting]'
+    **kwargs: Any) -> ConfigurationSettingPaged'
 - uid: azure.appconfiguration.AzureAppConfigurationClient.list_labels
   name: list_labels
   summary: Gets a list of labels.
@@ -402,7 +468,7 @@ methods:
   parameters:
   - name: key_filter
     description: 'Filter results based on their keys. ''*'' can be used as wildcard
-      in the beginning or end
+      at the end
 
       of the filter.'
     defaultValue: None
@@ -411,7 +477,7 @@ methods:
     - <xref:None>
   - name: label_filter
     description: 'Filter results based on their label. ''*'' can be used as wildcard
-      in the beginning or end
+      at the end
 
       of the filter.'
     defaultValue: None
