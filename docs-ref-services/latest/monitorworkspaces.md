@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: monitorworkspaces
 ---
-# Azure Monitorworkspaces SDK for Python - preview
-## Packages - preview
+# Azure Monitorworkspaces SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](monitorworkspaces-index.md)]

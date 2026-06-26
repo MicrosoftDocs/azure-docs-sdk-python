@@ -1,7 +1,7 @@
 ---
 title: Azure Napsteromniagentapi SDK for Python
 description: Reference for Azure Napsteromniagentapi SDK for Python
-ms.date: 06/25/2026
+ms.date: 06/26/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: napsteromniagentapi
