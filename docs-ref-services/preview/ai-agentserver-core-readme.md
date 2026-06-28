@@ -1,12 +1,12 @@
 ---
 title: Azure AI Agent Server Core client library for Python
 keywords: Azure, python, SDK, API, azure-ai-agentserver-core, agentserver
-ms.date: 06/12/2026
+ms.date: 06/28/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: agentserver
 ---
-# Azure AI Agent Server Core client library for Python - version 2.0.0b6 
+# Azure AI Agent Server Core client library for Python - version 2.0.0b7 
 
 
 The `azure-ai-agentserver-core` package provides the foundation host framework for building Azure AI Hosted Agent containers. It handles the protocol-agnostic infrastructure — health probes, graceful shutdown, OpenTelemetry tracing, and ASGI serving — so that protocol packages can focus on their endpoint logic.
@@ -67,6 +67,36 @@ async def handle(request):
     return JSONResponse({"greeting": f"Hello, {body['name']}!"})
 
 app.run()
+```
+
+### Per-request identity (multi-user sessions)
+
+On container protocol `2.0.0` a single agent session can serve **multiple users**. Each request carries `x-agent-user-id` (the user — partition state by it) and an opaque `x-agent-foundry-call-id` (the per-request caller identity). Read both via `get_request_context()`; the SDK forwards **only** the call ID on outbound Foundry calls — `x-agent-user-id` is never echoed. Forwarding the call ID lets a tool server resolve which user made the request and act on their behalf.
+
+```python
+import os
+
+import httpx
+from azure.ai.agentserver.core import get_request_context
+
+
+def foundry_headers() -> dict[str, str]:
+    # Echoes x-agent-foundry-call-id only; x-agent-user-id is never forwarded.
+    return dict(get_request_context().platform_headers())
+
+
+async def call_toolbox(query: str) -> str:
+    user_id = get_request_context().user_id  # for the container's OWN per-user state
+    # Attach the call ID PER CALL — a toolbox MCP session is long-lived and serves many
+    # users/turns, so never bake one call's ID into the client's static headers.
+    async with httpx.AsyncClient() as mcp:
+        resp = await mcp.post(
+            f"{os.environ['FOUNDRY_PROJECT_ENDPOINT']}/toolboxes/github/mcp",
+            headers={"Authorization": f"Bearer {get_agent_token()}", **foundry_headers()},
+            json={"jsonrpc": "2.0", "method": "tools/call",
+                  "params": {"name": "list_my_assigned_issues", "arguments": {}}},
+        )
+    return resp.text  # the toolbox resolved the caller from the call ID and acted as that user
 ```
 
 ### Subclassing AgentServerHost
@@ -139,7 +169,7 @@ To report an issue with the client library, or request additional features, plea
 ## Next steps
 
 - Install [`azure-ai-agentserver-invocations`](https://pypi.org/project/azure-ai-agentserver-invocations/) to add the invocation protocol endpoints.
-- See the [container image spec](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-core_2.0.0b6/sdk/agentserver) for the full hosted agent contract.
+- See the [container image spec](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-core_2.0.0b7/sdk/agentserver) for the full hosted agent contract.
 
 ## Contributing
 
