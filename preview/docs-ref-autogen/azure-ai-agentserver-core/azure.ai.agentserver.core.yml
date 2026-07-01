@@ -5,9 +5,10 @@ fullName: azure.ai.agentserver.core
 summary: "Azure AI AgentServerHost core framework.\n\n\nProvides the <xref:AgentServerHost>\
   \ base class and shared utilities for\nbuilding Azure AI Hosted Agent containers.\n\
   \n\nPublic API::\n\n\n    from azure.ai.agentserver.core import (\n        AgentConfig,\n\
-  \        AgentServerHost,\n        configure_observability,\n        create_error_response,\n\
-  \        detach_context,\n        end_span,\n        flush_spans,\n        record_error,\n\
-  \        set_current_span,\n        trace_stream,\n    )"
+  \        AgentServerHost,\n        FoundryAgentRequestContext,\n        configure_observability,\n\
+  \        create_error_response,\n        detach_context,\n        end_span,\n  \
+  \      flush_spans,\n        get_request_context,\n        record_error,\n     \
+  \   set_current_span,\n        trace_stream,\n    )"
 type: rootImport
 functions:
 - uid: azure.ai.agentserver.core.build_server_version
@@ -183,6 +184,22 @@ functions:
     defaultValue: '5000'
     types:
     - <xref:int>
+- uid: azure.ai.agentserver.core.get_request_context
+  name: get_request_context
+  summary: 'Return the platform context for the current request.
+
+
+    Safe to call from anywhere during request processing.  When no context has
+
+    been established (e.g. outside a request, or local development), an empty
+
+    <xref:azure.ai.agentserver.core.FoundryAgentRequestContext> with all-`None` fields
+    is returned.'
+  signature: get_request_context() -> FoundryAgentRequestContext
+  return:
+    description: The current request-scoped platform context.
+    types:
+    - <xref:azure.ai.agentserver.core.FoundryAgentRequestContext>
 - uid: azure.ai.agentserver.core.record_error
   name: record_error
   summary: 'Record an exception and ERROR status on a span.
@@ -203,6 +220,16 @@ functions:
     isRequired: true
     types:
     - <xref:BaseException>
+- uid: azure.ai.agentserver.core.reset_request_context
+  name: reset_request_context
+  summary: Restore the request context to its previous value (internal).
+  signature: 'reset_request_context(token: Token[FoundryAgentRequestContext]) -> None'
+  parameters:
+  - name: token
+    description: The token returned by <xref:azure.ai.agentserver.core.set_request_context>.
+    isRequired: true
+    types:
+    - <xref:contextvars.Token>
 - uid: azure.ai.agentserver.core.set_current_span
   name: set_current_span
   summary: 'Set a span as the current span in the OTel context.
@@ -234,6 +261,28 @@ functions:
     description: A context token, or *None*.
     types:
     - <xref:typing.Any>
+- uid: azure.ai.agentserver.core.set_request_context
+  name: set_request_context
+  summary: 'Bind `context` as the current request context (internal).
+
+
+    Called by protocol endpoints at the start of request handling.  The returned
+
+    token should be passed to <xref:azure.ai.agentserver.core.reset_request_context>
+    when the request
+
+    completes to avoid leaking context across requests on the same task.'
+  signature: 'set_request_context(context: FoundryAgentRequestContext) -> Token[FoundryAgentRequestContext]'
+  parameters:
+  - name: context
+    description: The request context to bind.
+    isRequired: true
+    types:
+    - <xref:azure.ai.agentserver.core.FoundryAgentRequestContext>
+  return:
+    description: A reset token for restoring the previous value.
+    types:
+    - <xref:contextvars.Token>
 - uid: azure.ai.agentserver.core.trace_stream
   name: trace_stream
   summary: 'Wrap a streaming body so the span covers the full transmission.
@@ -266,5 +315,6 @@ functions:
 classes:
 - azure.ai.agentserver.core.AgentConfig
 - azure.ai.agentserver.core.AgentServerHost
+- azure.ai.agentserver.core.FoundryAgentRequestContext
 - azure.ai.agentserver.core.InboundRequestLoggingMiddleware
 - azure.ai.agentserver.core.RequestIdMiddleware

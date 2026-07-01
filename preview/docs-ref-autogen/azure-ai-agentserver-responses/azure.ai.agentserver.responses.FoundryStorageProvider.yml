@@ -56,8 +56,8 @@ methods:
   name: create_response
   summary: Persist a new response with its associated input items and history.
   signature: 'async create_response(response: ResponseObject, input_items: Iterable[OutputItem]
-    | None, history_item_ids: Iterable[str] | None, *, isolation: IsolationContext
-    | None = None) -> None'
+    | None, history_item_ids: Iterable[str] | None, *, context: PlatformContext |
+    None = None) -> None'
   parameters:
   - name: response
     description: The initial response snapshot.
@@ -76,18 +76,18 @@ methods:
     types:
     - <xref:typing.Iterable>[<xref:str>] | <xref:None>
   keywordOnlyParameters:
-  - name: isolation
-    description: Isolation context for multi-tenant partitioning.
+  - name: context
+    description: Platform context for multi-tenant partitioning.
     defaultValue: None
     types:
-    - <xref:azure.ai.agentserver.responses.IsolationContext> | <xref:None>
+    - <xref:azure.ai.agentserver.responses.PlatformContext> | <xref:None>
   exceptions:
   - type: azure.ai.agentserver.responses.FoundryApiError
     description: On non-success HTTP response.
 - uid: azure.ai.agentserver.responses.FoundryStorageProvider.delete_response
   name: delete_response
   summary: Delete a stored response and its associated data.
-  signature: 'async delete_response(response_id: str, *, isolation: IsolationContext
+  signature: 'async delete_response(response_id: str, *, context: PlatformContext
     | None = None) -> None'
   parameters:
   - name: response_id
@@ -96,11 +96,11 @@ methods:
     types:
     - <xref:str>
   keywordOnlyParameters:
-  - name: isolation
-    description: Isolation context for multi-tenant partitioning.
+  - name: context
+    description: Platform context for multi-tenant partitioning.
     defaultValue: None
     types:
-    - <xref:azure.ai.agentserver.responses.IsolationContext> | <xref:None>
+    - <xref:azure.ai.agentserver.responses.PlatformContext> | <xref:None>
   exceptions:
   - type: azure.ai.agentserver.responses.FoundryResourceNotFoundError
     description: If the response does not exist.
@@ -110,7 +110,7 @@ methods:
   name: get_history_item_ids
   summary: Retrieve the ordered list of item IDs that form the conversation history.
   signature: 'async get_history_item_ids(previous_response_id: str | None, conversation_id:
-    str | None, limit: int, *, isolation: IsolationContext | None = None) -> list[str]'
+    str | None, limit: int, *, context: PlatformContext | None = None) -> list[str]'
   parameters:
   - name: previous_response_id
     description: The response whose prior turn should be the history anchor.
@@ -128,11 +128,11 @@ methods:
     types:
     - <xref:int>
   keywordOnlyParameters:
-  - name: isolation
-    description: Isolation context for multi-tenant partitioning.
+  - name: context
+    description: Platform context for multi-tenant partitioning.
     defaultValue: None
     types:
-    - <xref:azure.ai.agentserver.responses.IsolationContext> | <xref:None>
+    - <xref:azure.ai.agentserver.responses.PlatformContext> | <xref:None>
   return:
     description: Ordered list of item ID strings.
     types:
@@ -144,8 +144,8 @@ methods:
   name: get_input_items
   summary: Retrieve a page of input items for the given response.
   signature: 'async get_input_items(response_id: str, limit: int = 20, ascending:
-    bool = False, after: str | None = None, before: str | None = None, *, isolation:
-    IsolationContext | None = None) -> list[OutputItem]'
+    bool = False, after: str | None = None, before: str | None = None, *, context:
+    PlatformContext | None = None) -> list[OutputItem]'
   parameters:
   - name: response_id
     description: The response whose input items are being listed.
@@ -173,11 +173,11 @@ methods:
     types:
     - <xref:str> | <xref:None>
   keywordOnlyParameters:
-  - name: isolation
-    description: Isolation context for multi-tenant partitioning.
+  - name: context
+    description: Platform context for multi-tenant partitioning.
     defaultValue: None
     types:
-    - <xref:azure.ai.agentserver.responses.IsolationContext> | <xref:None>
+    - <xref:azure.ai.agentserver.responses.PlatformContext> | <xref:None>
   return:
     description: A list of deserialized <xref:azure.ai.agentserver.responses.OutputItem>
       instances.
@@ -196,7 +196,7 @@ methods:
     Positions in the returned list correspond to positions in *item_ids*.
 
     Entries are `None` where no item was found for the given ID.'
-  signature: 'async get_items(item_ids: Iterable[str], *, isolation: IsolationContext
+  signature: 'async get_items(item_ids: Iterable[str], *, context: PlatformContext
     | None = None) -> list[OutputItem | None]'
   parameters:
   - name: item_ids
@@ -205,11 +205,11 @@ methods:
     types:
     - <xref:typing.Iterable>[<xref:str>]
   keywordOnlyParameters:
-  - name: isolation
-    description: Isolation context for multi-tenant partitioning.
+  - name: context
+    description: Platform context for multi-tenant partitioning.
     defaultValue: None
     types:
-    - <xref:azure.ai.agentserver.responses.IsolationContext> | <xref:None>
+    - <xref:azure.ai.agentserver.responses.PlatformContext> | <xref:None>
   return:
     description: A list of <xref:azure.ai.agentserver.responses.OutputItem> instances
       (or `None` for missing items).
@@ -221,8 +221,8 @@ methods:
 - uid: azure.ai.agentserver.responses.FoundryStorageProvider.get_response
   name: get_response
   summary: Retrieve a stored response by its ID.
-  signature: 'async get_response(response_id: str, *, isolation: IsolationContext
-    | None = None) -> ResponseObject'
+  signature: 'async get_response(response_id: str, *, context: PlatformContext | None
+    = None) -> ResponseObject'
   parameters:
   - name: response_id
     description: The response identifier.
@@ -230,11 +230,11 @@ methods:
     types:
     - <xref:str>
   keywordOnlyParameters:
-  - name: isolation
-    description: Isolation context for multi-tenant partitioning.
+  - name: context
+    description: Platform context for multi-tenant partitioning.
     defaultValue: None
     types:
-    - <xref:azure.ai.agentserver.responses.IsolationContext> | <xref:None>
+    - <xref:azure.ai.agentserver.responses.PlatformContext> | <xref:None>
   return:
     description: The deserialized <xref:azure.ai.agentserver.responses.ResponseObject>
       model.
@@ -248,7 +248,7 @@ methods:
 - uid: azure.ai.agentserver.responses.FoundryStorageProvider.update_response
   name: update_response
   summary: Persist an updated response snapshot.
-  signature: 'async update_response(response: ResponseObject, *, isolation: IsolationContext
+  signature: 'async update_response(response: ResponseObject, *, context: PlatformContext
     | None = None) -> None'
   parameters:
   - name: response
@@ -257,11 +257,11 @@ methods:
     types:
     - <xref:azure.ai.agentserver.responses.ResponseObject>
   keywordOnlyParameters:
-  - name: isolation
-    description: Isolation context for multi-tenant partitioning.
+  - name: context
+    description: Platform context for multi-tenant partitioning.
     defaultValue: None
     types:
-    - <xref:azure.ai.agentserver.responses.IsolationContext> | <xref:None>
+    - <xref:azure.ai.agentserver.responses.PlatformContext> | <xref:None>
   exceptions:
   - type: azure.ai.agentserver.responses.FoundryResourceNotFoundError
     description: If the response does not exist.
