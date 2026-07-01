@@ -1,7 +1,7 @@
 ---
 title: Azure Planetarycomputer SDK for Python
 description: Reference for Azure Planetarycomputer SDK for Python
-ms.date: 06/30/2026
+ms.date: 07/01/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: planetarycomputer
