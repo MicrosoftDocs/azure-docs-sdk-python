@@ -1,7 +1,7 @@
 ---
 title: Azure Container Apps SDK for Python
 description: Reference for Azure Container Apps SDK for Python
-ms.date: 07/02/2026
+ms.date: 07/03/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: containerapps
