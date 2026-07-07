@@ -1,7 +1,7 @@
 ---
 title: Azure Reservations SDK for Python
 description: Reference for Azure Reservations SDK for Python
-ms.date: 07/06/2026
+ms.date: 07/07/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: reservations

@@ -1,7 +1,7 @@
 ---
 title: Azure Relay SDK for Python
 description: Reference for Azure Relay SDK for Python
-ms.date: 07/06/2026
+ms.date: 07/07/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: azure-relay
