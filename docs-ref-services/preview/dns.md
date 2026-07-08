@@ -1,6 +1,7 @@
 ---
 title: Azure DNS SDK for Python
 description: Reference for Azure DNS SDK for Python
+ms.date: 07/08/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: dns
@@ -85,4 +86,3 @@ record_set = dns_client.record_sets.create_or_update(
 
 > [!div class="nextstepaction"]
 > [Explore the Management APIs](/python/api/azure-mgmt-dns)
-
