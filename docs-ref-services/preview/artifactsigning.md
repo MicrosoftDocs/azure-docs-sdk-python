@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: artifactsigning
 ---
-# Azure Artifactsigning SDK for Python - latest
-## Packages - latest
+# Azure Artifactsigning SDK for Python - preview
+## Packages - preview
 [!INCLUDE [packages](artifactsigning-index.md)]
