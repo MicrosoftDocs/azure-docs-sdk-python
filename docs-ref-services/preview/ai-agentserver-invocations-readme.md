@@ -1,17 +1,17 @@
 ---
 title: Azure AI Agent Server Invocations client library for Python
 keywords: Azure, python, SDK, API, azure-ai-agentserver-invocations, agentserver
-ms.date: 06/28/2026
+ms.date: 07/22/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: agentserver
 ---
-# Azure AI Agent Server Invocations client library for Python - version 1.0.0b6 
+# Azure AI Agent Server Invocations client library for Python - version 1.0.0b7 
 
 
 The `azure-ai-agentserver-invocations` package provides the invocation protocol endpoints for Azure AI Hosted Agent containers. It plugs into the [`azure-ai-agentserver-core`](https://pypi.org/project/azure-ai-agentserver-core/) host framework and supports two transports on the same host:
 
-- **HTTP** (`invocations` protocol) — `POST /invocations`, `GET /invocations/{id}`, `POST /invocations/{id}/cancel`, `GET /invocations/docs/openapi.json`.
+- **HTTP** (`invocations` protocol) — `POST /invocations`, `GET /invocations/{id}`, `POST /invocations/{id}/cancel`, `GET /invocations/docs/openapi.json`, `GET /invocations/docs/asyncapi.{json,yaml}`.
 - **WebSocket** (`invocations_ws` protocol) — full-duplex streaming at `/invocations_ws`, registered with `@app.ws_handler`.
 
 ## Getting started
@@ -47,6 +47,8 @@ This automatically installs `azure-ai-agentserver-core` as a dependency.
 | `GET` | `/invocations/{invocation_id}` | No | Retrieve invocation status or result |
 | `POST` | `/invocations/{invocation_id}/cancel` | No | Cancel a running invocation |
 | `GET` | `/invocations/docs/openapi.json` | No | Serve the agent's OpenAPI 3.x spec |
+| `GET` | `/invocations/docs/asyncapi.json` | No | Serve the agent's AsyncAPI 3.x spec (JSON) |
+| `GET` | `/invocations/docs/asyncapi.yaml` | No | Serve the agent's AsyncAPI 3.x spec (YAML) |
 | `WS`   | `/invocations_ws` | No | Full-duplex WebSocket transport (`invocations_ws` protocol) |
 
 ### Request and response headers
@@ -234,6 +236,39 @@ app = InvocationAgentServerHost(openapi_spec={
 })
 ```
 
+### Serving an AsyncAPI spec
+
+AsyncAPI is the companion to OpenAPI for streaming/bidirectional surfaces (e.g. the
+`invocations_ws` WebSocket protocol) that OpenAPI cannot express. Pass either or both
+representations to enable the discovery endpoints:
+
+```python
+app = InvocationAgentServerHost(
+    asyncapi_spec_json={
+        "asyncapi": "3.0.0",
+        "info": {"title": "My Agent", "version": "1.0.0"},
+        "channels": { ... },
+        "operations": { ... },
+    },
+    asyncapi_spec_yaml="""asyncapi: 3.0.0
+info:
+  title: My Agent
+  version: 1.0.0
+channels:
+  ...
+""",
+)
+```
+
+Each representation is served at its own path:
+
+- `GET /invocations/docs/asyncapi.json` — `application/json`
+- `GET /invocations/docs/asyncapi.yaml` — `application/yaml`
+
+The path extension is authoritative for the returned content type (no `Accept`
+negotiation, no format conversion). If you only pass one, the other returns `404`.
+Serving both is recommended for tooling compatibility.
+
 ## WebSocket protocol (`invocations_ws`)
 
 The same `InvocationAgentServerHost` object also exposes a WebSocket transport at `/invocations_ws`. Container authors do not install or import a second package — registering an `@app.ws_handler` is the only step. A multi-protocol agent shares one host, one session, and one process.
@@ -305,14 +340,14 @@ To report an issue with the client library, or request additional features, plea
 
 ## Next steps
 
-Visit the [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.0.0b6/sdk/agentserver/azure-ai-agentserver-invocations/samples) folder for complete working examples:
+Visit the [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.0.0b7/sdk/agentserver/azure-ai-agentserver-invocations/samples) folder for complete working examples:
 
 | Sample | Description |
 |---|---|
-| [simple_invoke_agent](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.0.0b6/sdk/agentserver/azure-ai-agentserver-invocations/samples/simple_invoke_agent/) | Minimal synchronous request-response |
-| [async_invoke_agent](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.0.0b6/sdk/agentserver/azure-ai-agentserver-invocations/samples/async_invoke_agent/) | Long-running operations with polling and cancellation |
-| [ws_invoke_agent](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.0.0b6/sdk/agentserver/azure-ai-agentserver-invocations/samples/ws_invoke_agent/) | Combined `POST /invocations` (HTTP) and `/invocations_ws` (WebSocket) host |
-| [ws_bidirectional_streaming_agent](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.0.0b6/sdk/agentserver/azure-ai-agentserver-invocations/samples/ws_bidirectional_streaming_agent/) | Full-duplex `/invocations_ws` agent: concurrent token streams + mid-flight cancel (relies on the SDK's WS protocol Ping/Pong keep-alive, not application-level heartbeats) |
+| [simple_invoke_agent](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.0.0b7/sdk/agentserver/azure-ai-agentserver-invocations/samples/simple_invoke_agent/) | Minimal synchronous request-response |
+| [async_invoke_agent](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.0.0b7/sdk/agentserver/azure-ai-agentserver-invocations/samples/async_invoke_agent/) | Long-running operations with polling and cancellation |
+| [ws_invoke_agent](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.0.0b7/sdk/agentserver/azure-ai-agentserver-invocations/samples/ws_invoke_agent/) | Combined `POST /invocations` (HTTP) and `/invocations_ws` (WebSocket) host |
+| [ws_bidirectional_streaming_agent](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.0.0b7/sdk/agentserver/azure-ai-agentserver-invocations/samples/ws_bidirectional_streaming_agent/) | Full-duplex `/invocations_ws` agent: concurrent token streams + mid-flight cancel (relies on the SDK's WS protocol Ping/Pong keep-alive, not application-level heartbeats) |
 
 ## Contributing
 
