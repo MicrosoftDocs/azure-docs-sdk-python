@@ -1,12 +1,12 @@
 ---
 title: Azure AI Agent Server Core client library for Python
 keywords: Azure, python, SDK, API, azure-ai-agentserver-core, agentserver
-ms.date: 06/28/2026
+ms.date: 07/22/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: agentserver
 ---
-# Azure AI Agent Server Core client library for Python - version 2.0.0b7 
+# Azure AI Agent Server Core client library for Python - version 2.0.0b8 
 
 
 The `azure-ai-agentserver-core` package provides the foundation host framework for building Azure AI Hosted Agent containers. It handles the protocol-agnostic infrastructure — health probes, graceful shutdown, OpenTelemetry tracing, and ASGI serving — so that protocol packages can focus on their endpoint logic.
@@ -135,6 +135,39 @@ async def on_shutdown():
     pass
 ```
 
+### Durable state storage
+
+`FoundryStateStore` is a durable, server-backed key-value store for agent state
+— session memory, per-user preferences, counters, and checkpoints — bound to
+one explicit, caller-named store, with single-item optimistic concurrency,
+tag-filtered key listing, and store-level TTL.
+
+```python
+from azure.ai.agentserver.core.storage import FoundryStateStore
+
+# Endpoint and credential resolve from FOUNDRY_PROJECT_ENDPOINT + DefaultAzureCredential.
+# get_or_create() resolves (or creates, on first use) the store in one call.
+store = await FoundryStateStore.get_or_create("checkpoints/thread-abc", user_isolation=True)
+async with store:
+    await store.set_item("step-1", {"done": False})
+    item = await store.get_item("step-1")
+    print(item.value)  # {"done": False}
+```
+
+> The default credential path uses `DefaultAzureCredential`, which requires the
+> optional `azure-identity` package (`pip install azure-identity`). Alternatively,
+> pass any `azure.core.credentials_async.AsyncTokenCredential` explicitly to
+> `get_or_create()` and `azure-identity` is not needed.
+
+Reads return typed `StateStoreItem` values; writes return typed item metadata and use
+single-item `If-Match` concurrency. Session/conversation scoping is expressed in
+the store name itself, and item expiry is controlled by the store's
+`item_ttl_seconds` setting. See the [Durable State Store Guide](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agentserver-core_2.0.0b8/sdk/agentserver/azure-ai-agentserver-core/docs/state-store-guide.md)
+for the full API, the store lifecycle, and common gotchas, and
+[state_store_sample.py](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agentserver-core_2.0.0b8/sdk/agentserver/azure-ai-agentserver-core/samples/state_store_sample.py)
+for a runnable end-to-end example.
+
+
 ### Configuring tracing
 
 Tracing is enabled automatically when an Application Insights connection string is available:
@@ -169,7 +202,7 @@ To report an issue with the client library, or request additional features, plea
 ## Next steps
 
 - Install [`azure-ai-agentserver-invocations`](https://pypi.org/project/azure-ai-agentserver-invocations/) to add the invocation protocol endpoints.
-- See the [container image spec](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-core_2.0.0b7/sdk/agentserver) for the full hosted agent contract.
+- See the [container image spec](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-core_2.0.0b8/sdk/agentserver) for the full hosted agent contract.
 
 ## Contributing
 
