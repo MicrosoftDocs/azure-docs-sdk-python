@@ -1,7 +1,7 @@
 ---
 title: Azure Compute Schedule SDK for Python
 description: Reference for Azure Compute Schedule SDK for Python
-ms.date: 07/21/2026
+ms.date: 07/22/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: computeschedule
