@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-domainservices, domainservices
-ms.date: 07/09/2026
+ms.date: 07/27/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: domainservices
