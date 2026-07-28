@@ -1,12 +1,12 @@
 ---
 title: Azure AI Agent Server Activity client library for Python
 keywords: Azure, python, SDK, API, azure-ai-agentserver-activity, agentserver
-ms.date: 07/22/2026
+ms.date: 07/28/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: agentserver
 ---
-# Azure AI Agent Server Activity client library for Python - version 1.0.0b1 
+# Azure AI Agent Server Activity client library for Python - version 1.0.0a20260728002 
 
 
 The `azure-ai-agentserver-activity` package provides the Foundry container integration host for Activity Protocol traffic in Azure AI Hosted Agent containers. It plugs into [`azure-ai-agentserver-core`](https://pypi.org/project/azure-ai-agentserver-core/) and exposes a protocol endpoint with Foundry-required header, tracing, and error behavior.
@@ -124,7 +124,7 @@ host.run()
 
 ## Examples
 
-See the [samples directory](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-activity_1.0.0b1/sdk/agentserver/azure-ai-agentserver-activity/samples) for runnable scenarios, ordered as a learning path:
+See the [samples directory](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/agentserver/azure-ai-agentserver-activity/samples) for runnable scenarios, ordered as a learning path:
 
 - `01-echo` — the simplest agent: the host builds the M365 stack and you register handlers directly on it to echo the user's message back.
 - `02-custom-components` — override one or more M365 components (storage, connection manager, adapter, authorization, config) while the host builds the rest.
@@ -142,7 +142,7 @@ The M365 Agents SDK ships as a dependency of this package, so a standard
 packages from your environment, reinstall them:
 
 ```bash
-pip install microsoft-agents-hosting-core microsoft-agents-authentication-msal microsoft-agents-activity azure-identity
+pip install microsoft-agents-hosting-core microsoft-agents-authentication-msal microsoft-agents-activity
 ```
 
 Alternatively, use `ActivityAgentServerHost(request_handler=...)`, which does

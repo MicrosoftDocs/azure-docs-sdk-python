@@ -1,12 +1,12 @@
 ---
 title: Azure AI Agent Server Core client library for Python
 keywords: Azure, python, SDK, API, azure-ai-agentserver-core, agentserver
-ms.date: 07/22/2026
+ms.date: 07/28/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: agentserver
 ---
-# Azure AI Agent Server Core client library for Python - version 2.0.0b8 
+# Azure AI Agent Server Core client library for Python - version 2.0.0a20260728002 
 
 
 The `azure-ai-agentserver-core` package provides the foundation host framework for building Azure AI Hosted Agent containers. It handles the protocol-agnostic infrastructure — health probes, graceful shutdown, OpenTelemetry tracing, and ASGI serving — so that protocol packages can focus on their endpoint logic.
@@ -162,9 +162,9 @@ async with store:
 Reads return typed `StateStoreItem` values; writes return typed item metadata and use
 single-item `If-Match` concurrency. Session/conversation scoping is expressed in
 the store name itself, and item expiry is controlled by the store's
-`item_ttl_seconds` setting. See the [Durable State Store Guide](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agentserver-core_2.0.0b8/sdk/agentserver/azure-ai-agentserver-core/docs/state-store-guide.md)
+`item_ttl_seconds` setting. See the [Durable State Store Guide](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/agentserver/azure-ai-agentserver-core/docs/state-store-guide.md)
 for the full API, the store lifecycle, and common gotchas, and
-[state_store_sample.py](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agentserver-core_2.0.0b8/sdk/agentserver/azure-ai-agentserver-core/samples/state_store_sample.py)
+[state_store_sample.py](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/agentserver/azure-ai-agentserver-core/samples/state_store_sample.py)
 for a runnable end-to-end example.
 
 
@@ -185,6 +185,29 @@ export APPLICATIONINSIGHTS_CONNECTION_STRING="InstrumentationKey=..."
 python my_agent.py
 ```
 
+### Resilient long-running agents
+
+The `@task` decorator builds crash-resilient agents that survive container restarts, OOM kills, and redeployments. Task state is persisted to a task store, enabling automatic recovery and multi-turn suspend/resume patterns.
+
+```python
+from azure.ai.agentserver.core.tasks import task, TaskContext
+
+@task(name="process_document")
+async def process_document(ctx: TaskContext[dict]) -> dict:
+    # ctx.entry_mode is "fresh" | "resumed" | "recovered".
+    # The framework re-invokes the handler from the top after a
+    # crash; ctx.input survives, so the handler picks up.
+    summary = await analyze(ctx.input["document_url"])
+    return {"summary": summary}
+
+result = await process_document.run(
+    task_id="doc-42", input={"document_url": "..."},
+)
+print(result)  # {"summary": "..."}
+```
+
+See the [Developer Guide](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/agentserver/azure-ai-agentserver-core/docs/tasks-guide.md) for streaming, multi-turn suspend/resume, retries, timeouts, steering, and the patterns reference.
+
 ## Troubleshooting
 
 ### Logging
@@ -202,7 +225,8 @@ To report an issue with the client library, or request additional features, plea
 ## Next steps
 
 - Install [`azure-ai-agentserver-invocations`](https://pypi.org/project/azure-ai-agentserver-invocations/) to add the invocation protocol endpoints.
-- See the [container image spec](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-core_2.0.0b8/sdk/agentserver) for the full hosted agent contract.
+- Read the [Resilient Task Developer Guide](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/agentserver/azure-ai-agentserver-core/docs/tasks-guide.md) for crash-resilient long-running agents.
+- See the [container image spec](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/agentserver) for the full hosted agent contract.
 
 ## Contributing
 
