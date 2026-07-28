@@ -1,7 +1,7 @@
 ---
 title: Azure Computerecommender SDK for Python
 description: Reference for Azure Computerecommender SDK for Python
-ms.date: 07/27/2026
+ms.date: 07/28/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: computerecommender
