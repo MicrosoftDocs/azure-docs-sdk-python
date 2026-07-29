@@ -1,12 +1,12 @@
 ---
 title: Azure AI Content Understanding client library for Python
 keywords: Azure, python, SDK, API, azure-ai-contentunderstanding, contentunderstanding
-ms.date: 06/11/2026
+ms.date: 07/29/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: contentunderstanding
 ---
-# Azure AI Content Understanding client library for Python - version 1.2.0b2 
+# Azure AI Content Understanding client library for Python - version 1.2.0a20260729001 
 
 
 Azure AI Content Understanding is a multimodal AI service that extracts semantic content from documents, video, audio, and image files. It transforms unstructured content into structured, machine-readable data optimized for retrieval-augmented generation (RAG) and automated workflows.
@@ -42,6 +42,7 @@ If you have encountered issues or want to suggest features, please [file an issu
   - [Running the samples](#running-the-samples)
   - [Example code](#example-code)
 - [Troubleshooting](#troubleshooting)
+- [What's New](#whats-new)
 - [GitHub Copilot Skills](#github-copilot-skills)
   - [Available Skills](#available-skills)
   - [Using Skills in VS Code](#using-skills-in-vs-code)
@@ -236,7 +237,7 @@ python samples/sample_update_defaults.py
 
 **Verification**
 
-After the script runs successfully, you can use prebuilt analyzers like `prebuilt-invoice` or `prebuilt-documentSearch`. For more examples and sample code, see the [Examples](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-contentunderstanding_1.2.0b2/sdk/contentunderstanding/azure-ai-contentunderstanding/README.md#examples) section.
+After the script runs successfully, you can use prebuilt analyzers like `prebuilt-invoice` or `prebuilt-documentSearch`. For more examples and sample code, see the [Examples](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/contentunderstanding/azure-ai-contentunderstanding/README.md#examples) section.
 
 If you encounter errors:
 - **Deployment Not Found**: Check that deployment names in environment variables match exactly what you created in Foundry.
@@ -663,6 +664,23 @@ client = ContentUnderstandingClient(
 
 For more information about logging, see the [Azure SDK Python logging documentation][sdk_logging_docs].
 
+## What's New
+
+See [CHANGELOG.md][changelog] for the full release history.
+
+Recent highlights:
+
+- **Authoring skills for GitHub Copilot.** Two new skills,
+  [`cu-sdk-author-analyzer`][cu_sdk_author_analyzer_skill] (single document
+  type) and
+  [`cu-sdk-author-analyzer-classify-route`][cu_sdk_author_analyzer_classify_route_skill]
+  (mixed-document packets), guide the user and Copilot through an iterative
+  schema → test → review cycle for authoring custom Content Understanding
+  analyzers. See the [GitHub Copilot Skills](#github-copilot-skills) section
+  below.
+- **`to_llm_input` helper** for converting `AnalysisResult` into
+  LLM-friendly Markdown with YAML front matter. See [`sample_create_classifier.py`][python_cu_sample_create_classifier].
+
 ## GitHub Copilot Skills
 
 This package includes [GitHub Copilot][github_copilot] skills under `.github/skills/` that provide interactive, AI-assisted workflows for common tasks. In VS Code, Copilot can use these skills to help with setup, running samples, and understanding the service.
@@ -674,6 +692,8 @@ This package includes [GitHub Copilot][github_copilot] skills under `.github/ski
 | [**cu-sdk-setup**][cu_sdk_setup_skill] | Interactive environment setup wizard — creates virtual environment, installs the SDK, configures `.env`, helps set up model deployments, and runs model defaults | In VS Code Copilot Chat, ask: *"Help me set up the Content Understanding Python SDK"* or reference the skill directly |
 | [**cu-sdk-sample-run**][cu_sdk_sample_run_skill] | Guided sample runner — helps you choose and run sync/async samples with troubleshooting | Ask: *"Run a Content Understanding sample"* or *"Run sample_analyze_invoice"* |
 | [**cu-sdk-common-knowledge**][cu_sdk_common_knowledge_skill] | Domain knowledge reference — answers questions about Content Understanding concepts, analyzers, field schemas, API operations, and SDK usage | Ask: *"What prebuilt analyzers are available?"* or *"How do I create a custom analyzer?"* |
+| [**cu-sdk-author-analyzer**][cu_sdk_author_analyzer_skill] | Iteratively author and test a custom analyzer for a single **document** type — layout extraction, schema drafting, local validation, batch test, agent review, and refine cycle. Document modality only today; audio/video/image are planned. | Ask: *"Help me author a custom analyzer for these invoices"* |
+| [**cu-sdk-author-analyzer-classify-route**][cu_sdk_author_analyzer_classify_route_skill] | Iteratively author and test a classify-and-route pipeline for mixed-document packets (e.g. invoice + bank statement + loan application in one PDF). Includes per-category agent review and refinement of both classifier descriptions and inner-schema field descriptions. | Ask: *"Help me author an analyzer for this mixed financial packet"* |
 
 ### Using Skills in VS Code
 
@@ -719,31 +739,35 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 
 <!-- LINKS -->
 
-[python_cu_src]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.2.0b2/sdk/contentunderstanding/azure-ai-contentunderstanding/azure/ai/contentunderstanding
+[python_cu_src]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/azure/ai/contentunderstanding
 [python_cu_pypi]: https://pypi.org/project/azure-ai-contentunderstanding/
 [python_cu_product_docs]: https://learn.microsoft.com/azure/ai-services/content-understanding/
-[python_cu_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.2.0b2/sdk/contentunderstanding/azure-ai-contentunderstanding/samples
-[python_cu_sample_to_llm_input]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.2.0b2/sdk/contentunderstanding/azure-ai-contentunderstanding/samples/sample_to_llm_input.py
+[python_cu_samples]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/samples
+[python_cu_sample_to_llm_input]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/samples/sample_to_llm_input.py
+[python_cu_sample_create_classifier]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/samples/sample_create_classifier.py
 [azure_sub]: https://azure.microsoft.com/free/
 [cu_quickstart]: https://learn.microsoft.com/azure/ai-services/content-understanding/quickstart/use-rest-api?tabs=portal%2Cdocument
 [cu_region_support]: https://learn.microsoft.com/azure/ai-services/content-understanding/language-region-support
 [azure_portal]: https://portal.azure.com/
 [deploy_models_docs]: https://learn.microsoft.com/azure/ai-studio/how-to/deploy-models-openai
-[azure_identity_readme]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.2.0b2/sdk/identity/azure-identity/README.md
+[azure_identity_readme]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity/README.md
 [cu_prebuilt_analyzers]: https://learn.microsoft.com/azure/ai-services/content-understanding/concepts/prebuilt-analyzers
-[client_options]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-contentunderstanding_1.2.0b2/sdk/core/azure-core/README.md#configurations
-[handling_failures]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-contentunderstanding_1.2.0b2/sdk/core/azure-core/README.md#azure-core-library-exceptions
-[diagnostics]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-contentunderstanding_1.2.0b2/sdk/core/azure-core/README.md#logging
+[client_options]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md#configurations
+[handling_failures]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md#azure-core-library-exceptions
+[diagnostics]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md#logging
 [python_logging]: https://docs.python.org/3/library/logging.html
 [sdk_logging_docs]: https://learn.microsoft.com/azure/developer/python/sdk/azure-sdk-logging
-[sample_readme]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.2.0b2/sdk/contentunderstanding/azure-ai-contentunderstanding/samples/README.md
-[sample_update_defaults]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-contentunderstanding_1.2.0b2/sdk/contentunderstanding/azure-ai-contentunderstanding/samples/sample_update_defaults.py
-[sample_analyze_binary]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-contentunderstanding_1.2.0b2/sdk/contentunderstanding/azure-ai-contentunderstanding/samples/sample_analyze_binary.py
-[cu_sdk_setup_skill]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.2.0b2/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/cu-sdk-setup
-[cu_sdk_sample_run_skill]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.2.0b2/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/cu-sdk-sample-run
-[cu_sdk_common_knowledge_skill]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.2.0b2/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/cu-sdk-common-knowledge
-[tests_readme]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentunderstanding_1.2.0b2/sdk/contentunderstanding/azure-ai-contentunderstanding/tests/README.md
-[azure_sdk_testing_guide]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-contentunderstanding_1.2.0b2/doc/dev/tests.md
+[sample_readme]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/samples/README.md
+[sample_update_defaults]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/contentunderstanding/azure-ai-contentunderstanding/samples/sample_update_defaults.py
+[sample_analyze_binary]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/contentunderstanding/azure-ai-contentunderstanding/samples/sample_analyze_binary.py
+[cu_sdk_setup_skill]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/cu-sdk-setup
+[cu_sdk_sample_run_skill]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/cu-sdk-sample-run
+[cu_sdk_common_knowledge_skill]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/cu-sdk-common-knowledge
+[cu_sdk_author_analyzer_skill]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/cu-sdk-author-analyzer
+[cu_sdk_author_analyzer_classify_route_skill]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/cu-sdk-author-analyzer-classify-route
+[changelog]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/contentunderstanding/azure-ai-contentunderstanding/CHANGELOG.md
+[tests_readme]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/tests/README.md
+[azure_sdk_testing_guide]: https://github.com/Azure/azure-sdk-for-python/blob/main/doc/dev/tests.md
 [pip]: https://pypi.org/project/pip/
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
