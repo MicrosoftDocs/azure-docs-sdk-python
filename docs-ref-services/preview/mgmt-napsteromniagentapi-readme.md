@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-napsteromniagentapi, napsteromniagentapi
-ms.date: 06/15/2026
+ms.date: 07/29/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: napsteromniagentapi
