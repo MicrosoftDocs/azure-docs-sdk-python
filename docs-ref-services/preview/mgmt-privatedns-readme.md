@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-privatedns, network
-ms.date: 07/07/2026
+ms.date: 07/31/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: network
