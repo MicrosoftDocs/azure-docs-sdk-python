@@ -1,0 +1,191 @@
+### YamlMime:PythonClass
+uid: azure.ai.agentserver.core.tasks.Task
+name: Task
+fullName: azure.ai.agentserver.core.tasks.Task
+module: azure.ai.agentserver.core.tasks
+summary: 'A decorated resilient task function. Not callable directly.
+
+
+  Use <xref:azure.ai.agentserver.core.tasks.Task.run> (invoke-and-wait), <xref:azure.ai.agentserver.core.tasks.Task.start>
+  (fire-and-forget),
+
+  or <xref:azure.ai.agentserver.core.tasks.Task.options> (per-call overrides).'
+constructor:
+  syntax: 'Task(fn: Callable[[TaskContext[Input]], Awaitable[Output]], opts: TaskOptions,
+    input_type: type[Input], output_type: type[Output])'
+  parameters:
+  - name: fn
+    description: The decorated async function.
+    isRequired: true
+  - name: opts
+    description: Frozen task options.
+    isRequired: true
+  - name: input_type
+    description: Extracted input type.
+    isRequired: true
+  - name: output_type
+    description: Extracted output type.
+    isRequired: true
+methods:
+- uid: azure.ai.agentserver.core.tasks.Task.get_active_run
+  name: get_active_run
+  summary: "Return a TaskRun handle for an active (in-progress) task.\n\n: consults\
+    \ the store, not only\n   in-memory state. If the record is in-progress with a\
+    \ dead\n   lease, performs inline reclaim as a hidden side effect and\n   returns\
+    \ a usable <xref:azure.ai.agentserver.core.tasks.TaskRun> bound to the new lifetime.\n\
+    \   Terminal records return `None`. Eviction returns `None`.\n\n   Enables late-join\
+    \ consumers to iterate a running task's stream\n   without being the original\
+    \ caller of `start()`/`run()`,\n   AND covers the orphan-resurrection case where\
+    \ the previous\n   lifetime crashed without notice.\n\n   param task_id:\n   \
+    \   The task identifier.\n\n   type task_id:\n      str\n\n   return:\n      A\
+    \ TaskRun bound to the active task's stream handler,\n      or `None` if not active\
+    \ / terminal / evicted.\n\n   rtype:\n      TaskRun[Output] | None\n\n   Example:\n\
+    \n   <!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"language\": \"default\"\
+    , \"force\": false, \"linenos\": false} -->\n\n   ````default\n\n      # In another\
+    \ coroutine or request handler:\n      run = await my_task.get_active_run(\"task-123\"\
+    )\n      if run is not None:\n          async for chunk in run:\n            \
+    \  print(chunk, end=\"\")\n      ````"
+  signature: 'async get_active_run(task_id: str) -> TaskRun[Output] | None'
+  parameters:
+  - name: task_id
+    isRequired: true
+- uid: azure.ai.agentserver.core.tasks.Task.run
+  name: run
+  summary: "Run a lifecycle-aware resilient task and return the result.\n\nAutomatically\
+    \ starts, resumes, or recovers the task based on its\ncurrent state:\n\n* No task\
+    \ / pending \u2192 create and start (`entry_mode=\"fresh\"`) \n\n* Suspended \u2192\
+    \ resume with new input (`entry_mode=\"resumed\"`) \n\n* In-progress (stale) \u2192\
+    \ recover (`entry_mode=\"recovered\"`) \n\n* In-progress (not stale) \u2192 raise\
+    \ <xref:azure.ai.agentserver.core.tasks.TaskConflictError> \n\n* Completed \u2192\
+    \ raise <xref:azure.ai.agentserver.core.tasks.TaskConflictError> \n\n> [!NOTE]\n\
+    > title, tags, retry, are\n>\n> configured on the @task(...)\n>\n> decorator (or\
+    \ via <xref:Task.options>), not per-call. This\n>\n> is enforced so the values\
+    \ survive crash recovery: after the\n>\n> container crashes and the framework\
+    \ re-enters the task, it\n>\n> has only the registered decorator's options to\
+    \ work with \u2014 a\n>\n> per-call override would silently disappear at the crash\n\
+    >\n> boundary. Session identity is platform-derived from the\n>\n> FOUNDRY_AGENT_SESSION_ID\
+    \ environment variable.\n>"
+  signature: 'async run(*, task_id: str | None = None, input: Input, input_id: str
+    | None = None, if_last_input_id: str | None = None) -> Output'
+  keywordOnlyParameters:
+  - name: task_id
+    description: Unique task identifier.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: input
+    description: Typed input value.
+    types:
+    - <xref:Input>
+  - name: input_id
+    description: "Optional identifier for the input being accepted. When\nsupplied,\
+      \ the framework records it as the task's most-recently-accepted\ninput id in\
+      \ a framework-reserved slot (`payload[\"last_input_id\"]`).\n\nTwo modes:\n\n\
+      * **Idempotency-only** (`input_id` set, `if_last_input_id` unset): advances\
+      \ the stored chain head unconditionally. Always succeeds; no precondition check.\
+      \ Use this when chain ordering is enforced by another mechanism (e.g. `task_id`\
+      \ collapse + `TaskConflictError` / steering-queue sequencing for conversation-grouped\
+      \ multi-turn). \n\n* **Chain-extension** (paired with `if_last_input_id`): implements\
+      \ HTTP If-Match-style optimistic concurrency on the input queue \u2014 see `if_last_input_id`\
+      \ below."
+    defaultValue: None
+    types:
+    - <xref:str> | <xref:None>
+  - name: if_last_input_id
+    description: "Optional precondition. When supplied, the framework\nverifies that\
+      \ the task's currently-stored last input id equals this value\nbefore accepting\
+      \ the new input. If the precondition does not hold (a\nconcurrent caller advanced\
+      \ the queue, or the caller's view is stale),\nraises <xref:azure.ai.agentserver.core.tasks.LastInputIdPreconditionFailed>\
+      \ before any state mutation.\nModelled on HTTP `If-Match: <etag>` semantics.\
+      \ Requires `input_id`\nto also be supplied (raises <xref:TypeError> otherwise\
+      \ \u2014 a\nprecondition without an advancing id is not meaningful)."
+    defaultValue: None
+    types:
+    - <xref:str> | <xref:None>
+  return:
+    description: The task result wrapper with output, status, and suspension info.
+    types:
+    - <xref:azure.ai.agentserver.core.tasks.TaskResult>[<xref:Output>]
+  exceptions:
+  - type: azure.ai.agentserver.core.tasks.TaskFailed
+    description: On unhandled exception.
+  - type: azure.ai.agentserver.core.tasks.TaskConflictError
+    description: 'If the
+
+      task is already in-progress or completed.'
+  - type: azure.ai.agentserver.core.tasks.LastInputIdPreconditionFailed
+    description: 'If
+
+      the `if_last_input_id` precondition does not match the stored
+
+      last input id.'
+  - type: TypeError
+    description: If `if_last_input_id` is supplied without `input_id`
+- uid: azure.ai.agentserver.core.tasks.Task.start
+  name: start
+  summary: "Start a lifecycle-aware resilient task and return a handle.\n\nFollows\
+    \ the same lifecycle rules as <xref:azure.ai.agentserver.core.tasks.Task.run>\
+    \ but returns\nimmediately with a <xref:azure.ai.agentserver.core.tasks.TaskRun>\
+    \ handle instead of blocking.\n\n> [!NOTE]\n> title, tags, retry, are\n>\n> configured\
+    \ on the @task(...)\n>\n> decorator (or via <xref:Task.options>), not per-call\
+    \ \u2014\n>\n> see <xref:azure.ai.agentserver.core.tasks.Task.run> for the rationale.\
+    \ Session identity is\n>\n> platform-derived from the FOUNDRY_AGENT_SESSION_ID\n\
+    >\n> environment variable.\n>"
+  signature: 'async start(*, task_id: str | None = None, input: Input, input_id: str
+    | None = None, if_last_input_id: str | None = None) -> TaskRun[Output]'
+  keywordOnlyParameters:
+  - name: task_id
+    description: Unique task identifier.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: input
+    description: Typed input value.
+    types:
+    - <xref:Input>
+  - name: input_id
+    description: "Optional identifier for the input being accepted. When\nsupplied,\
+      \ the framework records it as the task's most-recently-accepted\ninput id in\
+      \ a framework-reserved slot (`payload[\"last_input_id\"]`).\n\nTwo modes:\n\n\
+      * **Idempotency-only** (`input_id` set, `if_last_input_id` unset): advances\
+      \ the stored chain head unconditionally. Always succeeds; no precondition check.\
+      \ Use this when chain ordering is enforced by another mechanism (e.g. `task_id`\
+      \ collapse + `TaskConflictError` / steering-queue sequencing for conversation-grouped\
+      \ multi-turn). \n\n* **Chain-extension** (paired with `if_last_input_id`): implements\
+      \ HTTP If-Match-style optimistic concurrency on the input queue \u2014 see `if_last_input_id`\
+      \ below."
+    defaultValue: None
+    types:
+    - <xref:str> | <xref:None>
+  - name: if_last_input_id
+    description: "Optional precondition. When supplied, the framework\nverifies that\
+      \ the task's currently-stored last input id equals this value\nbefore accepting\
+      \ the new input. If the precondition does not hold (a\nconcurrent caller advanced\
+      \ the queue, or the caller's view is stale),\nraises <xref:azure.ai.agentserver.core.tasks.LastInputIdPreconditionFailed>\
+      \ before any state mutation.\nModelled on HTTP `If-Match: <etag>` semantics.\
+      \ Requires `input_id`\nto also be supplied (raises <xref:TypeError> otherwise\
+      \ \u2014 a\nprecondition without an advancing id is not meaningful)."
+    defaultValue: None
+    types:
+    - <xref:str> | <xref:None>
+  return:
+    description: A handle to the running task.
+    types:
+    - <xref:azure.ai.agentserver.core.tasks.TaskRun>[<xref:Output>]
+  exceptions:
+  - type: azure.ai.agentserver.core.tasks.TaskConflictError
+    description: 'If the
+
+      task is already in-progress or completed.'
+  - type: azure.ai.agentserver.core.tasks.LastInputIdPreconditionFailed
+    description: 'If
+
+      the `if_last_input_id` precondition does not match the stored
+
+      last input id.'
+  - type: TypeError
+    description: If `if_last_input_id` is supplied without `input_id`
+attributes:
+- uid: azure.ai.agentserver.core.tasks.Task.name
+  name: name

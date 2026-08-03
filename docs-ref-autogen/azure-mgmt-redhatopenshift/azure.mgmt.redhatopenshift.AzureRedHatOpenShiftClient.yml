@@ -10,7 +10,7 @@ constructor:
     **kwargs: Any)'
   parameters:
   - name: credential
-    description: Credential needed for the client to connect to Azure. Required.
+    description: Credential used to authenticate requests to the service. Required.
     isRequired: true
     types:
     - <xref:azure.core.credentials.TokenCredential>
@@ -20,7 +20,7 @@ constructor:
     types:
     - <xref:str>
   - name: base_url
-    description: Service URL. Default value is None.
+    description: Service host. Default value is None.
     defaultValue: None
     types:
     - <xref:str>
@@ -34,10 +34,12 @@ constructor:
     types:
     - <xref:azure.core.AzureClouds>
   - name: api_version
-    description: 'Api Version. Default value is "2025-07-25". Note that overriding
-      this
+    description: 'The API version to use for this operation. Known values are "2025-07-25"
 
-      default value may result in unsupported behavior.'
+      and None. Default value is None. If not set, the operation''s default API version
+      will be used.
+
+      Note that overriding this default value may result in unsupported behavior.'
     types:
     - <xref:str>
   - name: polling_interval
@@ -61,15 +63,56 @@ variables:
   name: platform_workload_identity_role_sets
   types:
   - <xref:azure.mgmt.redhatopenshift.operations.PlatformWorkloadIdentityRoleSetsOperations>
-- description: PlatformWorkloadIdentityRoleSetOperations operations
-  name: platform_workload_identity_role_set
-  types:
-  - <xref:azure.mgmt.redhatopenshift.operations.PlatformWorkloadIdentityRoleSetOperations>
 - description: OpenShiftClustersOperations operations
   name: open_shift_clusters
   types:
   - <xref:azure.mgmt.redhatopenshift.operations.OpenShiftClustersOperations>
+- description: PlatformWorkloadIdentityRoleSetOperations operations
+  name: platform_workload_identity_role_set
+  types:
+  - <xref:azure.mgmt.redhatopenshift.operations.PlatformWorkloadIdentityRoleSetOperations>
 methods:
 - uid: azure.mgmt.redhatopenshift.AzureRedHatOpenShiftClient.close
   name: close
   signature: close() -> None
+- uid: azure.mgmt.redhatopenshift.AzureRedHatOpenShiftClient.send_request
+  name: send_request
+  summary: 'Runs the network request through the client''s chained policies.
+
+
+    ```
+
+
+    >>> from azure.core.rest import HttpRequest
+
+    >>> request = HttpRequest("GET", "https://www.example.org/")
+
+    <HttpRequest [GET], url: ''https://www.example.org/''>
+
+    >>> response = client.send_request(request)
+
+    <HttpResponse: 200 OK>
+
+    ```
+
+
+    For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> HttpResponse'
+  parameters:
+  - name: request
+    description: The network request you want to make. Required.
+    isRequired: true
+    types:
+    - <xref:azure.core.rest.HttpRequest>
+  keywordOnlyParameters:
+  - name: stream
+    description: Whether the response payload will be streamed. Defaults to False.
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  return:
+    description: The response of your network call. Does not do error handling on
+      your response.
+    types:
+    - <xref:azure.core.rest.HttpResponse>

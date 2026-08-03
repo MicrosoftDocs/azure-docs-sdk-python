@@ -6,29 +6,43 @@ module: azure.mgmt.paloaltonetworksngfw
 summary: PaloAltoNetworksNgfwMgmtClient.
 constructor:
   syntax: 'PaloAltoNetworksNgfwMgmtClient(credential: TokenCredential, subscription_id:
-    str, base_url: str = ''https://management.azure.com'', **kwargs: Any)'
+    str, base_url: str | None = None, *, cloud_setting: AzureClouds | None = None,
+    **kwargs: Any)'
   parameters:
   - name: credential
-    description: Credential needed for the client to connect to Azure. Required.
+    description: Credential used to authenticate requests to the service. Required.
     isRequired: true
     types:
     - <xref:azure.core.credentials.TokenCredential>
   - name: subscription_id
-    description: The ID of the target subscription. Required.
+    description: The ID of the target subscription. The value must be an UUID. Required.
     isRequired: true
     types:
     - <xref:str>
   - name: base_url
-    description: Service URL. Default value is "`https://management.azure.com`".
-    defaultValue: https://management.azure.com
+    description: Service host. Default value is None.
+    defaultValue: None
     types:
     - <xref:str>
   keywordOnlyParameters:
-  - name: api_version
-    description: 'Api Version. Default value is "2023-09-01". Note that overriding
-      this
+  - name: cloud_setting
+    description: 'The cloud setting for which to get the ARM endpoint. Default value
+      is
 
-      default value may result in unsupported behavior.'
+      None.'
+    defaultValue: None
+    types:
+    - <xref:azure.core.AzureClouds>
+  - name: api_version
+    description: 'The API version to use for this operation. Known values are
+
+      "2026-05-11-preview" and None. Default value is None. If not set, the operation''s
+      default API
+
+      version will be used. Note that overriding this default value may result in
+      unsupported
+
+      behavior.'
     types:
     - <xref:str>
   - name: polling_interval
@@ -38,6 +52,14 @@ constructor:
     types:
     - <xref:int>
 variables:
+- description: Operations operations
+  name: operations
+  types:
+  - <xref:azure.mgmt.paloaltonetworksngfw.operations.Operations>
+- description: CustomCaptureConfigurationsFirewallResourcesOperations operations
+  name: custom_capture_configurations_firewall_resources
+  types:
+  - <xref:azure.mgmt.paloaltonetworksngfw.operations.CustomCaptureConfigurationsFirewallResourcesOperations>
 - description: GlobalRulestackOperations operations
   name: global_rulestack
   types:
@@ -64,10 +86,6 @@ variables:
   name: pre_rules
   types:
   - <xref:azure.mgmt.paloaltonetworksngfw.operations.PreRulesOperations>
-- description: Operations operations
-  name: operations
-  types:
-  - <xref:azure.mgmt.paloaltonetworksngfw.operations.Operations>
 - description: FirewallsOperations operations
   name: firewalls
   types:
@@ -76,6 +94,10 @@ variables:
   name: local_rulestacks
   types:
   - <xref:azure.mgmt.paloaltonetworksngfw.operations.LocalRulestacksOperations>
+- description: MetricsObjectFirewallOperations operations
+  name: metrics_object_firewall
+  types:
+  - <xref:azure.mgmt.paloaltonetworksngfw.operations.MetricsObjectFirewallOperations>
 - description: FirewallStatusOperations operations
   name: firewall_status
   types:
@@ -96,7 +118,54 @@ variables:
   name: prefix_list_local_rulestack
   types:
   - <xref:azure.mgmt.paloaltonetworksngfw.operations.PrefixListLocalRulestackOperations>
+- description: 'PaloAltoNetworksCloudngfwOperationsOperations
+
+    operations'
+  name: palo_alto_networks_cloudngfw_operations
+  types:
+  - <xref:azure.mgmt.paloaltonetworksngfw.operations.PaloAltoNetworksCloudngfwOperationsOperations>
 methods:
 - uid: azure.mgmt.paloaltonetworksngfw.PaloAltoNetworksNgfwMgmtClient.close
   name: close
   signature: close() -> None
+- uid: azure.mgmt.paloaltonetworksngfw.PaloAltoNetworksNgfwMgmtClient.send_request
+  name: send_request
+  summary: 'Runs the network request through the client''s chained policies.
+
+
+    ```
+
+
+    >>> from azure.core.rest import HttpRequest
+
+    >>> request = HttpRequest("GET", "https://www.example.org/")
+
+    <HttpRequest [GET], url: ''https://www.example.org/''>
+
+    >>> response = client.send_request(request)
+
+    <HttpResponse: 200 OK>
+
+    ```
+
+
+    For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> HttpResponse'
+  parameters:
+  - name: request
+    description: The network request you want to make. Required.
+    isRequired: true
+    types:
+    - <xref:azure.core.rest.HttpRequest>
+  keywordOnlyParameters:
+  - name: stream
+    description: Whether the response payload will be streamed. Defaults to False.
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  return:
+    description: The response of your network call. Does not do error handling on
+      your response.
+    types:
+    - <xref:azure.core.rest.HttpResponse>

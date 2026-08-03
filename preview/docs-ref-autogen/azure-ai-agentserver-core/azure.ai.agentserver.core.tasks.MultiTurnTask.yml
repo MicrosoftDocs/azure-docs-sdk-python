@@ -1,0 +1,114 @@
+### YamlMime:PythonClass
+uid: azure.ai.agentserver.core.tasks.MultiTurnTask
+name: MultiTurnTask
+fullName: azure.ai.agentserver.core.tasks.MultiTurnTask
+module: azure.ai.agentserver.core.tasks
+summary: "A decorated multi-turn resilient task chain.\n\nDistinct public class:class:*Task*\
+  \ \u2014 NOT a subclass.\nThe type checker enforces \"no `.delete()` on one-shot\"\
+  \ and\n\"multi-turn `get_active_run` takes both `task_id` AND `input_id`\"\nstatically.\n\
+  \nReturned by the <xref:azure.ai.agentserver.core.tasks.multi_turn_task> decorator.\n\
+  \nThis class wraps an internal <xref:azure.ai.agentserver.core.tasks.Task> (same\
+  \ execution model) but\nexposes a strictly-typed multi-turn surface. The wrapped\
+  \ Task carries\n`ephemeral=False` so the framework knows the chain semantics."
+constructor:
+  syntax: 'MultiTurnTask(fn: Callable[[...], Any], opts: TaskOptions, input_type:
+    type | None = None, output_type: type | None = None)'
+  parameters:
+  - name: fn
+    isRequired: true
+  - name: opts
+    isRequired: true
+  - name: input_type
+    defaultValue: None
+  - name: output_type
+    defaultValue: None
+methods:
+- uid: azure.ai.agentserver.core.tasks.MultiTurnTask.delete
+  name: delete
+  summary: "Force-delete the chain record + any queued inputs.\n\n, removes the chain\
+    \ record and all queued\n   steerers; resolves active + queued callers' `.result()`\
+    \ futures\n   with <xref:azure.ai.agentserver.core.tasks.TaskCancelled>. Idempotent\
+    \ (no-op when the chain is\n   already gone).\n\n   param task_id:\n      The\
+    \ chain task_id to delete.\n\n   type task_id:\n      str"
+  signature: 'async delete(task_id: str) -> None'
+  parameters:
+  - name: task_id
+    isRequired: true
+- uid: azure.ai.agentserver.core.tasks.MultiTurnTask.get_active_run
+  name: get_active_run
+  summary: "Multi-turn variant of `get_active_run` \u2014 REQUIRES `input_id`.\n\n\
+    The current turn's input_id is the match key; mismatch returns\n`None`."
+  signature: 'async get_active_run(task_id: str, input_id: str) -> TaskRun[Output]
+    | None'
+  parameters:
+  - name: task_id
+    description: The chain task_id.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: input_id
+    description: The exact input_id of the currently in-flight turn.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: 'The TaskRun handle bound to the currently in-flight turn
+
+      iff `(task_id, input_id)` exactly matches; `None` otherwise.'
+    types:
+    - <xref:azure.ai.agentserver.core.tasks.TaskRun>[<xref:Output>] | <xref:None>
+- uid: azure.ai.agentserver.core.tasks.MultiTurnTask.run
+  name: run
+  summary: Run one turn on the chain identified by `task_id`.
+  signature: 'async run(*, task_id: str, input: Any, input_id: str | None = None,
+    if_last_input_id: str | None = None) -> Output'
+  keywordOnlyParameters:
+  - name: task_id
+    description: The chain identifier (mandatory).
+  - name: input
+    description: The turn's input value.
+  - name: input_id
+    description: 'Optional per-turn identifier; auto-generated
+
+      when omitted.'
+    defaultValue: None
+  - name: if_last_input_id
+    description: 'Optional `If-Match`-style
+
+      precondition on the chain''s last-accepted `input_id`.'
+    defaultValue: None
+  return:
+    description: The handler's return value for this turn.
+    types:
+    - <xref:Output>
+- uid: azure.ai.agentserver.core.tasks.MultiTurnTask.start
+  name: start
+  summary: 'Start one turn on the chain identified by `task_id` and
+
+    return a <xref:azure.ai.agentserver.core.tasks.TaskRun> handle for that turn.'
+  signature: 'async start(*, task_id: str, input: Any, input_id: str | None = None,
+    if_last_input_id: str | None = None) -> TaskRun[Output]'
+  keywordOnlyParameters:
+  - name: task_id
+    description: The chain identifier (mandatory).
+  - name: input
+    description: The turn's input value.
+  - name: input_id
+    description: Optional per-turn identifier.
+    defaultValue: None
+  - name: if_last_input_id
+    description: Optional `If-Match`-style precondition.
+    defaultValue: None
+  return:
+    description: A <xref:azure.ai.agentserver.core.tasks.TaskRun> handle bound to
+      the turn.
+    types:
+    - <xref:azure.ai.agentserver.core.tasks.TaskRun>[<xref:Output>]
+attributes:
+- uid: azure.ai.agentserver.core.tasks.MultiTurnTask.name
+  name: name
+  summary: The registered task name (proxy of the wrapped Task).
+  return:
+    description: The registered task name.
+    types:
+    - <xref:str>

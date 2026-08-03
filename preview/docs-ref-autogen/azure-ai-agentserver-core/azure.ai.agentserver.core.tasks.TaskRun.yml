@@ -1,0 +1,126 @@
+### YamlMime:PythonClass
+uid: azure.ai.agentserver.core.tasks.TaskRun
+name: TaskRun
+fullName: azure.ai.agentserver.core.tasks.TaskRun
+module: azure.ai.agentserver.core.tasks
+summary: 'Handle to a running or completed resilient task.
+
+
+  Returned by <xref:azure.ai.agentserver.core.tasks.Task.start>. Provides external
+  observation
+
+  and control of the task lifecycle.'
+constructor:
+  syntax: 'TaskRun(task_id: str, *, provider: Any = None, result_future: Future[Any],
+    metadata: TaskMetadata | None = None, cancel_event: Event | None = None, status:
+    Any = None, terminate_event: Event | None = None, execution_task: Task[Any] |
+    None = None, terminate_reason_ref: list[str | None] | None = None, lease_expiry_count:
+    int = 0, cancel_ctx_ref: Any = None, input_id: str | None = None, queued_cancel_callback:
+    Any = None)'
+  parameters:
+  - name: task_id
+    description: The task identifier.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: provider
+    description: Storage provider for refresh/delete operations.
+    isRequired: true
+    types:
+    - <xref:TaskProvider>
+  - name: result_future
+    description: Future that resolves with the task output.
+    isRequired: true
+    types:
+    - <xref:asyncio.Future>[<xref:Output>]
+  - name: metadata
+    description: The task's metadata instance.
+    isRequired: true
+    types:
+    - <xref:azure.ai.agentserver.core.tasks.TaskMetadata>
+  - name: cancel_event
+    description: Event to signal cancellation.
+    isRequired: true
+    types:
+    - <xref:asyncio.Event>
+  - name: status
+    description: Initial task status.
+    isRequired: true
+    types:
+    - <xref:TaskStatus>
+  keywordOnlyParameters:
+  - name: provider
+    defaultValue: None
+  - name: result_future
+    isRequired: true
+  - name: metadata
+    defaultValue: None
+  - name: cancel_event
+    defaultValue: None
+  - name: status
+    defaultValue: None
+  - name: terminate_event
+    defaultValue: None
+  - name: execution_task
+    defaultValue: None
+  - name: terminate_reason_ref
+    defaultValue: None
+  - name: lease_expiry_count
+    defaultValue: '0'
+  - name: cancel_ctx_ref
+    defaultValue: None
+  - name: input_id
+    defaultValue: None
+  - name: queued_cancel_callback
+    defaultValue: None
+methods:
+- uid: azure.ai.agentserver.core.tasks.TaskRun.cancel
+  name: cancel
+  summary: "Signal cancellation to the running task.\n\n: sets `ctx.cancel_requested\
+    \ = True`\n   BEFORE setting `ctx.cancel`, so a handler observing\n   `ctx.cancel.is_set()\
+    \ == True` is guaranteed to see at least\n   one cause boolean already `True`.\n\
+    \n   The handler should check `ctx.cancel.is_set()` (and optionally\n   branch\
+    \ on which cause boolean is set) to wind down cleanly.\n\nFor a queued (not-yet-promoted)\
+    \ steering input, `cancel()`\nremoves the queued slot from the chain's pending-inputs\
+    \ queue\nand resolves <xref:azure.ai.agentserver.core.tasks.TaskRun.result> with\
+    \ `TaskCancelled`. The active\nturn (if any) is not affected."
+  signature: async cancel() -> None
+- uid: azure.ai.agentserver.core.tasks.TaskRun.result
+  name: result
+  summary: "Await task completion and return the raw output value.\n\n: returns `Output`\
+    \ directly (not a wrapper).\n   Failures, cancellation, deferral are raised as\
+    \ exceptions.\n\n   return:\n      The task's output value.\n\n   rtype:\n   \
+    \   Output\n\n   raises TaskFailed:\n      If the function raised an exception\
+    \ (one-shot).\n\n   raises TaskCancelled:\n      If the task was cancelled.\n\n\
+    \   raises TaskDeferred:\n      If the task called `ctx.exit_for_recovery()`."
+  signature: async result() -> Output
+attributes:
+- uid: azure.ai.agentserver.core.tasks.TaskRun.input_id
+  name: input_id
+  signature: 'input_id: str'
+- uid: azure.ai.agentserver.core.tasks.TaskRun.is_queued
+  name: is_queued
+  summary: "Whether this handle represents a *queued* steering input.\n\n`True` when\
+    \ this <xref:azure.ai.agentserver.core.tasks.TaskRun> is a queued (not-yet-promoted)\n\
+    steering input on a steerable chain \u2014 i.e. the request landed while a\nturn\
+    \ was already in flight and is awaiting drain \u2014 and `False` for a\nfreshly-started\
+    \ or active run. A queued run's <xref:azure.ai.agentserver.core.tasks.TaskRun.cancel>\
+    \ removes the\nqueued slot and resolves <xref:azure.ai.agentserver.core.tasks.TaskRun.result>\
+    \ with `TaskCancelled` without\naffecting the active turn.\n\nThis is the supported,\
+    \ public way to distinguish a queued steering\nhandle from a freshly-started one."
+  return:
+    description: '`True` if this handle is a queued steering input.'
+    types:
+    - <xref:bool>
+- uid: azure.ai.agentserver.core.tasks.TaskRun.metadata
+  name: metadata
+  summary: 'The task''s metadata.
+
+
+    For in-process handles, this is the live metadata reference.'
+  return:
+    description: The task metadata instance.
+    types:
+    - <xref:azure.ai.agentserver.core.tasks.TaskMetadata>
+- uid: azure.ai.agentserver.core.tasks.TaskRun.task_id
+  name: task_id

@@ -25,7 +25,8 @@ summary: "Invocation protocol host for Azure AI Hosted Agents.\n\nA <xref:azure.
   \           await websocket.send_text(message)\n\n   app.run()\n   ````"
 constructor:
   syntax: 'InvocationAgentServerHost(*, openapi_spec: dict[str, Any] | None = None,
-    **kwargs: Any)'
+    asyncapi_spec_json: dict[str, Any] | None = None, asyncapi_spec_yaml: str | None
+    = None, **kwargs: Any)'
   parameters:
   - name: openapi_spec
     description: 'Optional OpenAPI spec dict.  When provided, the spec
@@ -34,8 +35,32 @@ constructor:
     isRequired: true
     types:
     - <xref:typing.Optional>[<xref:dict>[<xref:str>, <xref:typing.Any>]]
+  - name: asyncapi_spec_json
+    description: 'Optional AsyncAPI spec dict.  When provided, the spec
+
+      is served at `GET /invocations/docs/asyncapi.json`.  AsyncAPI is the companion
+
+      to OpenAPI for streaming/bidirectional surfaces (e.g. `invocations_ws`).'
+    isRequired: true
+    types:
+    - <xref:typing.Optional>[<xref:dict>[<xref:str>, <xref:typing.Any>]]
+  - name: asyncapi_spec_yaml
+    description: 'Optional AsyncAPI spec as raw YAML text.  When provided,
+
+      the spec is served verbatim at `GET /invocations/docs/asyncapi.yaml`.  The
+
+      path extension is authoritative for the returned content type (no `Accept`
+
+      negotiation); the platform never converts between JSON and YAML.'
+    isRequired: true
+    types:
+    - <xref:typing.Optional>[<xref:str>]
   keywordOnlyParameters:
   - name: openapi_spec
+    defaultValue: None
+  - name: asyncapi_spec_json
+    defaultValue: None
+  - name: asyncapi_spec_yaml
     defaultValue: None
 methods:
 - uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.add_exception_handler
@@ -49,11 +74,32 @@ methods:
     isRequired: true
 - uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.add_middleware
   name: add_middleware
-  signature: 'add_middleware(middleware_class: ~starlette.middleware._MiddlewareFactory[~P],
+  summary: 'Add middleware to the host.
+
+
+    This exposes Starlette''s middleware extension point without leaking
+
+    Starlette''s private type aliases in this package''s public API.'
+  signature: 'add_middleware(middleware_class: ~collections.abc.Callable[[~typing.Concatenate[~collections.abc.Callable[[~collections.abc.MutableMapping[str,
+    ~typing.Any], ~collections.abc.Callable[[], ~collections.abc.Awaitable[~collections.abc.MutableMapping[str,
+    ~typing.Any]]], ~collections.abc.Callable[[~collections.abc.MutableMapping[str,
+    ~typing.Any]], ~collections.abc.Awaitable[None]]], ~collections.abc.Awaitable[None]],
+    ~P]], ~collections.abc.Callable[[~collections.abc.MutableMapping[str, ~typing.Any],
+    ~collections.abc.Callable[[], ~collections.abc.Awaitable[~collections.abc.MutableMapping[str,
+    ~typing.Any]]], ~collections.abc.Callable[[~collections.abc.MutableMapping[str,
+    ~typing.Any]], ~collections.abc.Awaitable[None]]], ~collections.abc.Awaitable[None]]],
     *args: ~typing.~P, **kwargs: ~typing.~P) -> None'
   parameters:
   - name: middleware_class
+    description: Middleware class or factory to add.
     isRequired: true
+    types:
+    - <xref:MiddlewareFactory>
+  - name: args
+    description: Positional arguments forwarded to the middleware.
+    isRequired: true
+    types:
+    - <xref:typing.Any>
 - uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.add_route
   name: add_route
   signature: 'add_route(path: str, route: Callable[[Request], Awaitable[Response]
@@ -93,6 +139,14 @@ methods:
   exceptions:
   - type: TypeError
     description: If *fn* is not an async function.
+- uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.get_asyncapi_spec_json
+  name: get_asyncapi_spec_json
+  summary: Return the stored AsyncAPI spec (JSON representation), or None.
+  signature: get_asyncapi_spec_json() -> dict[str, Any] | None
+- uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.get_asyncapi_spec_yaml
+  name: get_asyncapi_spec_yaml
+  summary: Return the stored AsyncAPI spec as raw YAML text, or None.
+  signature: get_asyncapi_spec_yaml() -> str | None
 - uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.get_invocation_handler
   name: get_invocation_handler
   summary: Register a function as the get-invocation handler.
@@ -161,6 +215,28 @@ methods:
     isRequired: true
   - name: name
     defaultValue: None
+- uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.register_pre_shutdown_callback
+  name: register_pre_shutdown_callback
+  summary: "Register a synchronous callback to run on SIGTERM signal receipt.\n\n\
+    Callbacks run from inside the SIGTERM signal handler,\nBEFORE Hypercorn begins\
+    \ its graceful drain. Use this to\nset asyncio events that long-running request\
+    \ handlers observe via\ntheir cancellation-polling loops, so they can return before\n\
+    Hypercorn waits the full `graceful_shutdown_timeout` for the\nrequest to complete.\n\
+    \nCallbacks MUST be non-blocking and signal-safe \u2014 they execute\nsynchronously\
+    \ on the main thread inside the signal handler. The\ntypical pattern is:\n\n<!--\
+    \ literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
+    \ \"backrefs\": [], \"xml:space\": \"preserve\", \"language\": \"default\", \"\
+    force\": false, \"linenos\": false} -->\n\n````default\n\n   shutdown_event =\
+    \ asyncio.Event()\n   app.register_pre_shutdown_callback(shutdown_event.set)\n\
+    \   ````\n\nNote: `asyncio.Event.set()` is safe to call from a signal\nhandler\
+    \ when the event loop is running on the same thread."
+  signature: 'register_pre_shutdown_callback(fn: Callable[[], None]) -> None'
+  parameters:
+  - name: fn
+    description: A synchronous, non-blocking callable.
+    isRequired: true
+    types:
+    - <xref:typing.Callable>[[], <xref:None>]
 - uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.register_server_version
   name: register_server_version
   summary: "Register a version segment for the `x-platform-server` header.\n\nProtocol\
@@ -245,9 +321,7 @@ methods:
     description: The async iterable to wrap.
     isRequired: true
     types:
-    - <xref:typing.AsyncIterable>[<xref:str>
-    - <xref:bytes>
-    - <xref:memoryview>]
+    - <xref:typing.AsyncIterable>[<xref:azure.ai.agentserver.core.StreamContent>]
   - name: interval
     description: Seconds between keep-alive frames. Must be > 0.
     isRequired: true
@@ -256,9 +330,7 @@ methods:
   return:
     description: An async iterator with interleaved keep-alive frames.
     types:
-    - <xref:typing.AsyncIterator>[<xref:str>
-    - <xref:bytes>
-    - <xref:memoryview>]
+    - <xref:typing.AsyncIterator>[<xref:azure.ai.agentserver.core.StreamContent>]
 - uid: azure.ai.agentserver.invocations.InvocationAgentServerHost.url_path_for
   name: url_path_for
   signature: 'url_path_for(name: str, /, **path_params: Any) -> URLPath'
