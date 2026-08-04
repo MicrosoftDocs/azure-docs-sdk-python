@@ -1,0 +1,63 @@
+### YamlMime:PythonPackage
+uid: azure.ai.agentserver.activity
+name: activity
+fullName: azure.ai.agentserver.activity
+summary: "Activity protocol host for Azure AI Hosted Agents.\n\n\nThis package provides\
+  \ an activity protocol host as a subclass of\n<xref:azure.ai.agentserver.core.AgentServerHost>.\n\
+  \n\nDefault usage \u2014 the M365 Agents SDK is initialized during construction\
+  \ and the\nbuilt ``AgentApplication`` is exposed as the ``agent_app`` property (register\n\
+  handlers on it and reach the full M365 surface)::\n\n\n    from azure.ai.agentserver.activity\
+  \ import ActivityAgentServerHost\n\n\n    host = ActivityAgentServerHost()\n   \
+  \ app = host.agent_app\n\n\n    @app.activity(\"message\")\n    async def on_message(context,\
+  \ state):\n        await context.send_activity(f\"Echo: {context.activity.text}\"\
+  )\n\n\n    host.run()\n\n\nThe default path also accepts optional overrides \u2014\
+  \ pass any of ``storage`` /\n``connection_manager`` / ``adapter`` / ``authorization``\
+  \ / ``connection_config``\n(or ``digital_worker=True``) and the host builds the\
+  \ rest from the environment::\n\n\n    from microsoft_agents.hosting.core import\
+  \ MemoryStorage\n\n\n    # Override just the storage backend; the host builds the\
+  \ rest.\n    host = ActivityAgentServerHost(storage=MemoryStorage())\n    app =\
+  \ host.agent_app\n\n\nInjected ``AgentApplication`` usage \u2014 host a pre-built\
+  \ M365 ``AgentApplication``\nyou constructed yourself (the adapter is taken from\
+  \ ``agent_app.adapter``)::\n\n\n    from azure.ai.agentserver.activity import ActivityAgentServerHost\n\
+  \n\n    # agent_app: a fully-built microsoft_agents AgentApplication (with an adapter)\n\
+  \    host = ActivityAgentServerHost(agent_app=agent_app)\n    host.run()\n\n\nCustom\
+  \ handler usage \u2014 the M365 SDK is not initialized; you own the pipeline::\n\
+  \n\n    from starlette.responses import Response\n\n\n    from azure.ai.agentserver.activity\
+  \ import ActivityAgentServerHost\n\n\n    async def handle(request):\n        activity\
+  \ = request.state.activity\n        # Custom processing...\n        return Response(status_code=202)\n\
+  \n\n    host = ActivityAgentServerHost(request_handler=handle)\n    host.run()"
+type: rootImport
+functions:
+- uid: azure.ai.agentserver.activity.get_hosted_agent_env
+  name: get_hosted_agent_env
+  summary: "Return a config mapping with the `CONNECTIONS__*` settings the M365 SDK\
+    \ needs.\n\nBuilds and returns a **new** mapping \u2014 a copy of the process\
+    \ environment\noverlaid with the `CONNECTIONS__*` connection settings derived\
+    \ from the\nFoundry-native identity. It **never mutates** `os.environ`; existing\n\
+    explicit values are preserved (never overwritten). Pass the result straight\n\
+    to `load_configuration_from_env(...)`:\n\n<!-- literal_block {\"ids\": [], \"\
+    classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\"\
+    : \"preserve\", \"language\": \"default\", \"force\": false, \"linenos\": false}\
+    \ -->\n\n````default\n\n   from azure.ai.agentserver.activity import get_hosted_agent_env\n\
+    \   from microsoft_agents.activity import load_configuration_from_env\n\n   env\
+    \ = get_hosted_agent_env()\n   agents_sdk_config = load_configuration_from_env(env)\n\
+    \   ````\n\nThe identity source differs by auth model:\n\n* **Simple** (`digital_worker=False`,\
+    \ default): the instance client id (`FOUNDRY_AGENT_INSTANCE_CLIENT_ID`), scoped\
+    \ to the Bot Framework. \n\n* **Digital worker** (`digital_worker=True`): the\
+    \ blueprint client id (via `resolve_agent_blueprint_id`), scoped to the agentic\
+    \ resource."
+  signature: 'get_hosted_agent_env(*, digital_worker: bool = False) -> dict[str, str]'
+  keywordOnlyParameters:
+  - name: digital_worker
+    description: 'Selects the outbound-auth model to derive settings
+
+      for. Defaults to the simple model.'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  return:
+    description: A new mapping `{**os.environ, **derived CONNECTIONS__*}`.
+    types:
+    - <xref:dict>[<xref:str>, <xref:str>]
+classes:
+- azure.ai.agentserver.activity.ActivityAgentServerHost

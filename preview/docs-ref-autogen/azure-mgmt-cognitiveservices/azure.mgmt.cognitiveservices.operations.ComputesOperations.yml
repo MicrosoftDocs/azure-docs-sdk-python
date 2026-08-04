@@ -3,15 +3,49 @@ uid: azure.mgmt.cognitiveservices.operations.ComputesOperations
 name: ComputesOperations
 fullName: azure.mgmt.cognitiveservices.operations.ComputesOperations
 module: azure.mgmt.cognitiveservices.operations
-summary: "> [!WARNING]\n> DO NOT instantiate this class directly.\n>\n> \n>\n> Instead,\
-  \ you should access the following operations through\n>\n> <xref:azure.mgmt.cognitiveservices.CognitiveServicesManagementClient>'s\n\
-  >\n> <xref:computes> attribute.\n>"
+summary: "Customized `ComputesOperations` that tracks compute creation via the `list`\
+  \ API.\n\nThe generated <xref:azure.mgmt.cognitiveservices.operations.ComputesOperations.begin_create_or_update>\
+  \ has two problems against the current service:\n\n* <xref:azure.mgmt.cognitiveservices.operations.ComputesOperations._create_or_update_initial>\
+  \ rejects the `202 Accepted` the service returns for the async create with \"Operation\
+  \ returned an invalid status 'Accepted'\"; and \n\n* its poller follows the `Azure-AsyncOperation`\
+  \ header to `.../locations/{location}/computeOperations/{operationId}`, which requires\
+  \ the `Microsoft.CognitiveServices/locations/computeOperations/read` permission.\
+  \ Many callers who are allowed to create a compute lack that permission, so the\
+  \ poll fails with `AuthorizationFailed` even though the create itself succeeded.\
+  \ \n\nThis override keeps the generated method's public shape (overloads, api-version\
+  \ validation and\n`continuation_token` resume path) unchanged. It (1) accepts the\
+  \ `202` in\n<xref:azure.mgmt.cognitiveservices.operations.ComputesOperations._create_or_update_initial>\
+  \ and (2) blocks on a <xref:azure.mgmt.cognitiveservices.operations._ComputeListPolling>\
+  \ poller that\nreads `provisioningState` from the `list` API. `list` is used rather\
+  \ than `get` because a\n`GET` on a just-created compute returns `404 \"Cluster not\
+  \ found\"` for an extended period while\nit provisions, whereas `list` reflects\
+  \ the compute's state from the moment the create is\naccepted. The poller only needs\
+  \ `computes/read`, still blocks until a terminal state, and\nsurfaces a genuine\
+  \ provisioning failure instead of masking it."
 constructor:
   syntax: ComputesOperations(*args, **kwargs)
 methods:
 - uid: azure.mgmt.cognitiveservices.operations.ComputesOperations.begin_create_or_update
   name: begin_create_or_update
-  summary: Creates or updates a compute associated with the Cognitive Services account.
+  summary: 'Creates or updates a compute associated with the Cognitive Services account.
+
+
+    This override accepts the service''s `202 Accepted` and blocks until the compute
+    reaches a
+
+    terminal state, reading `provisioningState` from the `list` API rather than polling
+    the
+
+    operation-status endpoint (which requires `computeOperations/read`). `list` is
+    used because
+
+    a `GET` on a just-created compute returns `404 "Cluster not found"` while it provisions.
+    It
+
+    raises on a genuine provisioning failure, so callers get correct results without
+    needing the
+
+    operation-status read permission.'
   signature: 'begin_create_or_update(resource_group_name: str, account_name: str,
     compute_name: str, resource: _models.Compute, *, content_type: str = ''application/json'',
     **kwargs: Any) -> LROPoller[_models.Compute]'
@@ -52,238 +86,5 @@ methods:
       MutableMapping'
     types:
     - <xref:azure.core.polling.LROPoller>[<xref:azure.mgmt.cognitiveservices.models.Compute>]
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
-- uid: azure.mgmt.cognitiveservices.operations.ComputesOperations.begin_delete
-  name: begin_delete
-  summary: Deletes the specified compute associated with the Cognitive Services account.
-  signature: 'begin_delete(resource_group_name: str, account_name: str, compute_name:
-    str, **kwargs: Any) -> LROPoller[None]'
-  parameters:
-  - name: resource_group_name
-    description: 'The name of the resource group. The name is case insensitive.
-
-      Required.'
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: account_name
-    description: The name of Cognitive Services account. Required.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: compute_name
-    description: 'The name of the compute associated with the Cognitive Services Account.
-
-      Required.'
-    isRequired: true
-    types:
-    - <xref:str>
-  return:
-    description: An instance of LROPoller that returns None
-    types:
-    - <xref:azure.core.polling.LROPoller>[<xref:None>]
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
-- uid: azure.mgmt.cognitiveservices.operations.ComputesOperations.begin_restart
-  name: begin_restart
-  summary: 'Restarts a running ContainerInstance compute resource. This is a long-running
-    operation that
-
-    returns 202 Accepted. Only applicable when computeType is ContainerInstance.'
-  signature: 'begin_restart(resource_group_name: str, account_name: str, compute_name:
-    str, **kwargs: Any) -> LROPoller[None]'
-  parameters:
-  - name: resource_group_name
-    description: 'The name of the resource group. The name is case insensitive.
-
-      Required.'
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: account_name
-    description: The name of Cognitive Services account. Required.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: compute_name
-    description: 'The name of the compute associated with the Cognitive Services Account.
-
-      Required.'
-    isRequired: true
-    types:
-    - <xref:str>
-  return:
-    description: An instance of LROPoller that returns None
-    types:
-    - <xref:azure.core.polling.LROPoller>[<xref:None>]
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
-- uid: azure.mgmt.cognitiveservices.operations.ComputesOperations.begin_start
-  name: begin_start
-  summary: 'Starts a stopped ContainerInstance compute resource. This is a long-running
-    operation that
-
-    returns 202 Accepted. Only applicable when computeType is ContainerInstance.'
-  signature: 'begin_start(resource_group_name: str, account_name: str, compute_name:
-    str, **kwargs: Any) -> LROPoller[None]'
-  parameters:
-  - name: resource_group_name
-    description: 'The name of the resource group. The name is case insensitive.
-
-      Required.'
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: account_name
-    description: The name of Cognitive Services account. Required.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: compute_name
-    description: 'The name of the compute associated with the Cognitive Services Account.
-
-      Required.'
-    isRequired: true
-    types:
-    - <xref:str>
-  return:
-    description: An instance of LROPoller that returns None
-    types:
-    - <xref:azure.core.polling.LROPoller>[<xref:None>]
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
-- uid: azure.mgmt.cognitiveservices.operations.ComputesOperations.begin_stop
-  name: begin_stop
-  summary: 'Stops a running ContainerInstance compute resource. This is a long-running
-    operation that
-
-    returns 202 Accepted. Only applicable when computeType is ContainerInstance.'
-  signature: 'begin_stop(resource_group_name: str, account_name: str, compute_name:
-    str, **kwargs: Any) -> LROPoller[None]'
-  parameters:
-  - name: resource_group_name
-    description: 'The name of the resource group. The name is case insensitive.
-
-      Required.'
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: account_name
-    description: The name of Cognitive Services account. Required.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: compute_name
-    description: 'The name of the compute associated with the Cognitive Services Account.
-
-      Required.'
-    isRequired: true
-    types:
-    - <xref:str>
-  return:
-    description: An instance of LROPoller that returns None
-    types:
-    - <xref:azure.core.polling.LROPoller>[<xref:None>]
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
-- uid: azure.mgmt.cognitiveservices.operations.ComputesOperations.begin_update
-  name: begin_update
-  summary: Updates a compute associated with the Cognitive Services account.
-  signature: 'begin_update(resource_group_name: str, account_name: str, compute_name:
-    str, properties: _models.Compute, *, content_type: str = ''application/json'',
-    **kwargs: Any) -> LROPoller[_models.Compute]'
-  parameters:
-  - name: resource_group_name
-    description: 'The name of the resource group. The name is case insensitive.
-
-      Required.'
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: account_name
-    description: The name of Cognitive Services account. Required.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: compute_name
-    description: 'The name of the compute associated with the Cognitive Services Account.
-
-      Required.'
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: properties
-    description: 'The compute properties to update. Is one of the following types:
-      Compute,
-
-      JSON, IO[bytes] Required.'
-    isRequired: true
-    types:
-    - <xref:azure.mgmt.cognitiveservices.models.Compute>
-    - <xref:JSON>
-    - <xref:typing.IO>[<xref:bytes>]
-  return:
-    description: 'An instance of LROPoller that returns Compute. The Compute is compatible
-      with
-
-      MutableMapping'
-    types:
-    - <xref:azure.core.polling.LROPoller>[<xref:azure.mgmt.cognitiveservices.models.Compute>]
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
-- uid: azure.mgmt.cognitiveservices.operations.ComputesOperations.get
-  name: get
-  summary: Gets the specified compute associated with the Cognitive Services account.
-  signature: 'get(resource_group_name: str, account_name: str, compute_name: str,
-    **kwargs: Any) -> Compute'
-  parameters:
-  - name: resource_group_name
-    description: 'The name of the resource group. The name is case insensitive.
-
-      Required.'
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: account_name
-    description: The name of Cognitive Services account. Required.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: compute_name
-    description: 'The name of the compute associated with the Cognitive Services Account.
-
-      Required.'
-    isRequired: true
-    types:
-    - <xref:str>
-  return:
-    description: Compute. The Compute is compatible with MutableMapping
-    types:
-    - <xref:azure.mgmt.cognitiveservices.models.Compute>
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
-- uid: azure.mgmt.cognitiveservices.operations.ComputesOperations.list
-  name: list
-  summary: Gets the computes associated with the Cognitive Services account.
-  signature: 'list(resource_group_name: str, account_name: str, **kwargs: Any) ->
-    ItemPaged[Compute]'
-  parameters:
-  - name: resource_group_name
-    description: 'The name of the resource group. The name is case insensitive.
-
-      Required.'
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: account_name
-    description: The name of Cognitive Services account. Required.
-    isRequired: true
-    types:
-    - <xref:str>
-  return:
-    description: An iterator like instance of Compute
-    types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:azure.mgmt.cognitiveservices.models.Compute>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError

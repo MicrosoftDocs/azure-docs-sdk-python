@@ -1,0 +1,207 @@
+### YamlMime:PythonClass
+uid: azure.ai.agentserver.core.tasks.RetryPolicy
+name: RetryPolicy
+fullName: azure.ai.agentserver.core.tasks.RetryPolicy
+module: azure.ai.agentserver.core.tasks
+summary: 'Retry configuration for resilient tasks.
+
+
+  *New in version 2.1.0.*'
+constructor:
+  syntax: 'RetryPolicy(*, initial_delay: timedelta | float = datetime.timedelta(seconds=1),
+    backoff_coefficient: float = 2.0, max_delay: timedelta | float = datetime.timedelta(seconds=60),
+    max_attempts: int = 3, retry_on: type[Exception] | tuple[type[Exception], ...]
+    | None = None, jitter: bool | float = True, _linear: bool = False)'
+  parameters:
+  - name: initial_delay
+    description: Base delay between retries.
+    isRequired: true
+    types:
+    - <xref:datetime.timedelta>
+  - name: backoff_coefficient
+    description: Multiplier applied per attempt.
+    isRequired: true
+    types:
+    - <xref:float>
+  - name: max_delay
+    description: Upper bound on computed delay.
+    isRequired: true
+    types:
+    - <xref:datetime.timedelta>
+  - name: max_attempts
+    description: "Total attempts (including the first try). This is a\nsingle **resilient**\
+      \ budget that counts handler-raised failures across\nALL lifetimes \u2014 the\
+      \ count is persisted to\n`payload[\"retry_attempt\"]` and restored on recovery.\
+      \ Crash\nrecovery does NOT consume the budget; only handler-raised exceptions\n\
+      do. A steering input resets the counter (a steering input is a new\nlogical\
+      \ request)."
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: retry_on
+    description: Exception types that trigger retry. `None` means all.
+    isRequired: true
+    types:
+    - <xref:type>[<xref:Exception>] | <xref:tuple>[<xref:type>[<xref:Exception>],
+      ...] | <xref:None>
+  - name: jitter
+    description: "Whether to add \xB125% randomization to delays."
+    isRequired: true
+    types:
+    - <xref:bool>
+  keywordOnlyParameters:
+  - name: initial_delay
+    defaultValue: 0:00:01
+  - name: backoff_coefficient
+    defaultValue: '2.0'
+  - name: max_delay
+    defaultValue: 0:01:00
+  - name: max_attempts
+    defaultValue: '3'
+  - name: retry_on
+    defaultValue: None
+  - name: jitter
+    defaultValue: 'True'
+  - name: _linear
+    defaultValue: 'False'
+methods:
+- uid: azure.ai.agentserver.core.tasks.RetryPolicy.compute_delay
+  name: compute_delay
+  summary: Return the delay in seconds for the given attempt (0-indexed).
+  signature: 'compute_delay(attempt: int) -> float'
+  parameters:
+  - name: attempt
+    description: The 0-based attempt number that just failed.
+    isRequired: true
+    types:
+    - <xref:int>
+  return:
+    description: Delay in seconds before the next attempt.
+    types:
+    - <xref:float>
+- uid: azure.ai.agentserver.core.tasks.RetryPolicy.exponential_backoff
+  name: exponential_backoff
+  summary: "Exponential backoff \u2014 the most common pattern.\n\nDelay doubles per\
+    \ attempt: 1 s \u2192 2 s \u2192 4 s \u2192 ... capped at *max_delay*."
+  signature: 'exponential_backoff(*, max_attempts: int = 3, initial_delay: timedelta
+    = datetime.timedelta(seconds=1), max_delay: timedelta = datetime.timedelta(seconds=60),
+    backoff_coefficient: float = 2.0, jitter: bool = True) -> RetryPolicy'
+  keywordOnlyParameters:
+  - name: max_attempts
+    description: Total attempts including the first try.
+    defaultValue: '3'
+    types:
+    - <xref:int>
+  - name: initial_delay
+    description: Base delay.
+    defaultValue: 0:00:01
+    types:
+    - <xref:datetime.timedelta>
+  - name: max_delay
+    description: Upper bound.
+    defaultValue: 0:01:00
+    types:
+    - <xref:datetime.timedelta>
+  - name: backoff_coefficient
+    description: Multiplier applied per attempt.
+    defaultValue: '2.0'
+    types:
+    - <xref:float>
+  - name: jitter
+    description: "Add \xB125% randomization."
+    defaultValue: 'True'
+    types:
+    - <xref:bool>
+  return:
+    description: A configured `RetryPolicy`.
+    types:
+    - <xref:azure.ai.agentserver.core.tasks.RetryPolicy>
+- uid: azure.ai.agentserver.core.tasks.RetryPolicy.fixed_delay
+  name: fixed_delay
+  summary: "Fixed delay \u2014 constant interval between retries.\n\nUseful for rate-limited\
+    \ APIs where you want to wait a fixed\namount of time between each attempt."
+  signature: 'fixed_delay(*, delay: timedelta = datetime.timedelta(seconds=5), max_attempts:
+    int = 3) -> RetryPolicy'
+  keywordOnlyParameters:
+  - name: delay
+    description: Constant delay between retries.
+    defaultValue: 0:00:05
+    types:
+    - <xref:datetime.timedelta>
+  - name: max_attempts
+    description: Total attempts including the first try.
+    defaultValue: '3'
+    types:
+    - <xref:int>
+  return:
+    description: A configured `RetryPolicy`.
+    types:
+    - <xref:azure.ai.agentserver.core.tasks.RetryPolicy>
+- uid: azure.ai.agentserver.core.tasks.RetryPolicy.linear_backoff
+  name: linear_backoff
+  summary: "Linear backoff \u2014 delay grows additively.\n\nDelay is `initial_delay\
+    \ * (attempt + 1)`: 1 s \u2192 2 s \u2192 3 s \u2192 ..."
+  signature: 'linear_backoff(*, initial_delay: timedelta = datetime.timedelta(seconds=1),
+    max_delay: timedelta = datetime.timedelta(seconds=60), max_attempts: int = 5)
+    -> RetryPolicy'
+  keywordOnlyParameters:
+  - name: initial_delay
+    description: Base delay unit.
+    defaultValue: 0:00:01
+    types:
+    - <xref:datetime.timedelta>
+  - name: max_delay
+    description: Upper bound.
+    defaultValue: 0:01:00
+    types:
+    - <xref:datetime.timedelta>
+  - name: max_attempts
+    description: Total attempts including the first try.
+    defaultValue: '5'
+    types:
+    - <xref:int>
+  return:
+    description: A configured `RetryPolicy`.
+    types:
+    - <xref:azure.ai.agentserver.core.tasks.RetryPolicy>
+- uid: azure.ai.agentserver.core.tasks.RetryPolicy.no_retry
+  name: no_retry
+  summary: "No retry \u2014 the function runs once and fails on exception.\n\nEquivalent\
+    \ to not setting a retry policy at all."
+  signature: no_retry() -> RetryPolicy
+  return:
+    description: A `RetryPolicy` that never retries.
+    types:
+    - <xref:azure.ai.agentserver.core.tasks.RetryPolicy>
+- uid: azure.ai.agentserver.core.tasks.RetryPolicy.should_retry
+  name: should_retry
+  summary: Return whether the task should be retried.
+  signature: 'should_retry(attempt: int, error: Exception) -> bool'
+  parameters:
+  - name: attempt
+    description: The 0-based attempt number that just failed.
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: error
+    description: The exception that was raised.
+    isRequired: true
+    types:
+    - <xref:Exception>
+  return:
+    description: '`True` if the task should be retried.'
+    types:
+    - <xref:bool>
+attributes:
+- uid: azure.ai.agentserver.core.tasks.RetryPolicy.backoff_coefficient
+  name: backoff_coefficient
+- uid: azure.ai.agentserver.core.tasks.RetryPolicy.initial_delay
+  name: initial_delay
+- uid: azure.ai.agentserver.core.tasks.RetryPolicy.jitter
+  name: jitter
+- uid: azure.ai.agentserver.core.tasks.RetryPolicy.max_attempts
+  name: max_attempts
+- uid: azure.ai.agentserver.core.tasks.RetryPolicy.max_delay
+  name: max_delay
+- uid: azure.ai.agentserver.core.tasks.RetryPolicy.retry_on
+  name: retry_on

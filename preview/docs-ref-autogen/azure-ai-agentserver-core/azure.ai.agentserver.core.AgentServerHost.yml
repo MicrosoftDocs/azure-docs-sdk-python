@@ -95,11 +95,11 @@ constructor:
   - name: log_level
     defaultValue: None
   - name: access_log
-    defaultValue: <object object at 0x000001FEFFAD62F0>
+    defaultValue: <object object at 0x0000018C344CA2D0>
   - name: access_log_format
     defaultValue: None
   - name: configure_observability
-    defaultValue: <function configure_observability at 0x000001FE81EFD760>
+    defaultValue: <function configure_observability at 0x0000018C368A44A0>
   - name: routes
     defaultValue: None
 methods:
@@ -114,11 +114,32 @@ methods:
     isRequired: true
 - uid: azure.ai.agentserver.core.AgentServerHost.add_middleware
   name: add_middleware
-  signature: 'add_middleware(middleware_class: ~starlette.middleware._MiddlewareFactory[~P],
+  summary: 'Add middleware to the host.
+
+
+    This exposes Starlette''s middleware extension point without leaking
+
+    Starlette''s private type aliases in this package''s public API.'
+  signature: 'add_middleware(middleware_class: ~collections.abc.Callable[[~typing.Concatenate[~collections.abc.Callable[[~collections.abc.MutableMapping[str,
+    ~typing.Any], ~collections.abc.Callable[[], ~collections.abc.Awaitable[~collections.abc.MutableMapping[str,
+    ~typing.Any]]], ~collections.abc.Callable[[~collections.abc.MutableMapping[str,
+    ~typing.Any]], ~collections.abc.Awaitable[None]]], ~collections.abc.Awaitable[None]],
+    ~P]], ~collections.abc.Callable[[~collections.abc.MutableMapping[str, ~typing.Any],
+    ~collections.abc.Callable[[], ~collections.abc.Awaitable[~collections.abc.MutableMapping[str,
+    ~typing.Any]]], ~collections.abc.Callable[[~collections.abc.MutableMapping[str,
+    ~typing.Any]], ~collections.abc.Awaitable[None]]], ~collections.abc.Awaitable[None]]],
     *args: ~typing.~P, **kwargs: ~typing.~P) -> None'
   parameters:
   - name: middleware_class
+    description: Middleware class or factory to add.
     isRequired: true
+    types:
+    - <xref:MiddlewareFactory>
+  - name: args
+    description: Positional arguments forwarded to the middleware.
+    isRequired: true
+    types:
+    - <xref:typing.Any>
 - uid: azure.ai.agentserver.core.AgentServerHost.add_route
   name: add_route
   signature: 'add_route(path: str, route: Callable[[Request], Awaitable[Response]
@@ -164,6 +185,28 @@ methods:
     isRequired: true
   - name: name
     defaultValue: None
+- uid: azure.ai.agentserver.core.AgentServerHost.register_pre_shutdown_callback
+  name: register_pre_shutdown_callback
+  summary: "Register a synchronous callback to run on SIGTERM signal receipt.\n\n\
+    Callbacks run from inside the SIGTERM signal handler,\nBEFORE Hypercorn begins\
+    \ its graceful drain. Use this to\nset asyncio events that long-running request\
+    \ handlers observe via\ntheir cancellation-polling loops, so they can return before\n\
+    Hypercorn waits the full `graceful_shutdown_timeout` for the\nrequest to complete.\n\
+    \nCallbacks MUST be non-blocking and signal-safe \u2014 they execute\nsynchronously\
+    \ on the main thread inside the signal handler. The\ntypical pattern is:\n\n<!--\
+    \ literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
+    \ \"backrefs\": [], \"xml:space\": \"preserve\", \"language\": \"default\", \"\
+    force\": false, \"linenos\": false} -->\n\n````default\n\n   shutdown_event =\
+    \ asyncio.Event()\n   app.register_pre_shutdown_callback(shutdown_event.set)\n\
+    \   ````\n\nNote: `asyncio.Event.set()` is safe to call from a signal\nhandler\
+    \ when the event loop is running on the same thread."
+  signature: 'register_pre_shutdown_callback(fn: Callable[[], None]) -> None'
+  parameters:
+  - name: fn
+    description: A synchronous, non-blocking callable.
+    isRequired: true
+    types:
+    - <xref:typing.Callable>[[], <xref:None>]
 - uid: azure.ai.agentserver.core.AgentServerHost.register_server_version
   name: register_server_version
   summary: "Register a version segment for the `x-platform-server` header.\n\nProtocol\
@@ -248,9 +291,7 @@ methods:
     description: The async iterable to wrap.
     isRequired: true
     types:
-    - <xref:typing.AsyncIterable>[<xref:str>
-    - <xref:bytes>
-    - <xref:memoryview>]
+    - <xref:typing.AsyncIterable>[<xref:azure.ai.agentserver.core.StreamContent>]
   - name: interval
     description: Seconds between keep-alive frames. Must be > 0.
     isRequired: true
@@ -259,9 +300,7 @@ methods:
   return:
     description: An async iterator with interleaved keep-alive frames.
     types:
-    - <xref:typing.AsyncIterator>[<xref:str>
-    - <xref:bytes>
-    - <xref:memoryview>]
+    - <xref:typing.AsyncIterator>[<xref:azure.ai.agentserver.core.StreamContent>]
 - uid: azure.ai.agentserver.core.AgentServerHost.url_path_for
   name: url_path_for
   signature: 'url_path_for(name: str, /, **path_params: Any) -> URLPath'
