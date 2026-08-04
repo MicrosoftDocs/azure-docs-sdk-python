@@ -6,8 +6,8 @@ import yaml
 from sphinx.ext.intersphinx import read_inventory
 
 EXTERNAL_LINKS = ['https://docs.python.org/3.5/',
-                  'http://msrestazure.readthedocs.io/en/latest/',
-                  'http://msrest.readthedocs.io/en/latest/']
+                  'https://msrestazure.readthedocs.io/en/latest/',
+                  'https://msrest.readthedocs.io/en/latest/']
 xref_map = []
 
 for external_Link in EXTERNAL_LINKS:
