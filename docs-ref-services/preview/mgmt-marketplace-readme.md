@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-marketplace, marketplace
-ms.date: 07/10/2026
+ms.date: 08/04/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: marketplace
