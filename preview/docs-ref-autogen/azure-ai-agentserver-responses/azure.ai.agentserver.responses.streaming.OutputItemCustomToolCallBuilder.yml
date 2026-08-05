@@ -37,30 +37,6 @@ constructor:
     types:
     - <xref:str>
 methods:
-- uid: azure.ai.agentserver.responses.streaming.OutputItemCustomToolCallBuilder.ainput
-  name: ainput
-  summary: 'Async variant of <xref:azure.ai.agentserver.responses.streaming.OutputItemCustomToolCallBuilder.input>
-    with streaming support.
-
-
-    When *input_text* is a string, behaves identically to <xref:azure.ai.agentserver.responses.streaming.OutputItemCustomToolCallBuilder.input>.
-
-    When *input_text* is an async iterable of string chunks, emits one
-
-    `custom_tool_call_input.delta` per chunk in real time (S-055),
-
-    then `custom_tool_call_input.done` with the accumulated text.'
-  signature: 'async ainput(input_text: str | AsyncIterable[str]) -> AsyncIterator[ResponseStreamEvent]'
-  parameters:
-  - name: input_text
-    description: Complete input text or async iterable of chunks.
-    isRequired: true
-    types:
-    - <xref:str> | <xref:typing.AsyncIterable>[<xref:str>]
-  return:
-    description: An async iterator of event dicts.
-    types:
-    - <xref:typing.AsyncIterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
 - uid: azure.ai.agentserver.responses.streaming.OutputItemCustomToolCallBuilder.emit_added
   name: emit_added
   summary: Emit an `output_item.added` event for a custom tool call.
@@ -113,7 +89,26 @@ methods:
     Emits `custom_tool_call_input.delta` followed by
 
     `custom_tool_call_input.done`.'
-  signature: 'input(input_text: str) -> Iterator[ResponseStreamEvent]'
+  signature: 'input(input_text: str) -> Iterator[ResponseErrorEvent | ResponseAudioDeltaEvent
+    | ResponseAudioDoneEvent | ResponseAudioTranscriptDeltaEvent | ResponseAudioTranscriptDoneEvent
+    | ResponseCodeInterpreterCallCompletedEvent | ResponseCodeInterpreterCallInProgressEvent
+    | ResponseCodeInterpreterCallInterpretingEvent | ResponseCodeInterpreterCallCodeDeltaEvent
+    | ResponseCodeInterpreterCallCodeDoneEvent | ResponseCompletedEvent | ResponseContentPartAddedEvent
+    | ResponseContentPartDoneEvent | ResponseCreatedEvent | ResponseCustomToolCallInputDeltaEvent
+    | ResponseCustomToolCallInputDoneEvent | ResponseFailedEvent | ResponseFileSearchCallCompletedEvent
+    | ResponseFileSearchCallInProgressEvent | ResponseFileSearchCallSearchingEvent
+    | ResponseFunctionCallArgumentsDeltaEvent | ResponseFunctionCallArgumentsDoneEvent
+    | ResponseImageGenCallCompletedEvent | ResponseImageGenCallGeneratingEvent | ResponseImageGenCallInProgressEvent
+    | ResponseImageGenCallPartialImageEvent | ResponseInProgressEvent | ResponseIncompleteEvent
+    | ResponseMCPCallCompletedEvent | ResponseMCPCallFailedEvent | ResponseMCPCallInProgressEvent
+    | ResponseMCPCallArgumentsDeltaEvent | ResponseMCPCallArgumentsDoneEvent | ResponseMCPListToolsCompletedEvent
+    | ResponseMCPListToolsFailedEvent | ResponseMCPListToolsInProgressEvent | ResponseOutputItemAddedEvent
+    | ResponseOutputItemDoneEvent | ResponseOutputTextAnnotationAddedEvent | ResponseTextDeltaEvent
+    | ResponseTextDoneEvent | ResponseQueuedEvent | ResponseReasoningSummaryPartAddedEvent
+    | ResponseReasoningSummaryPartDoneEvent | ResponseReasoningSummaryTextDeltaEvent
+    | ResponseReasoningSummaryTextDoneEvent | ResponseReasoningTextDeltaEvent | ResponseReasoningTextDoneEvent
+    | ResponseRefusalDeltaEvent | ResponseRefusalDoneEvent | ResponseWebSearchCallCompletedEvent
+    | ResponseWebSearchCallInProgressEvent | ResponseWebSearchCallSearchingEvent]'
   parameters:
   - name: input_text
     description: The complete input text.
@@ -123,7 +118,7 @@ methods:
   return:
     description: An iterator of event dicts.
     types:
-    - <xref:typing.Iterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
+    - <xref:typing.Iterator>[<xref:ResponseStreamEvent>]
 attributes:
 - uid: azure.ai.agentserver.responses.streaming.OutputItemCustomToolCallBuilder.call_id
   name: call_id
@@ -132,6 +127,23 @@ attributes:
     description: The call ID.
     types:
     - <xref:str>
+- uid: azure.ai.agentserver.responses.streaming.OutputItemCustomToolCallBuilder.internal_metadata
+  name: internal_metadata
+  summary: 'Live, mutable framework-internal metadata for this output item.
+
+
+    Read / write / delete in place (`message.internal_metadata["step"] = "n3"`).
+
+    Whatever is set here is merged into the emitted `output_item.added` /
+
+    `output_item.done` payloads under the item''s `internal_metadata` key
+
+    (and thus onto `stream.response.output[i]`), and is stripped from every
+
+    client-facing payload. Values may be any JSON-serialisable type.'
+  return:
+    types:
+    - <xref:collections.abc.MutableMapping>[<xref:str>, <xref:typing.Any>]
 - uid: azure.ai.agentserver.responses.streaming.OutputItemCustomToolCallBuilder.item_id
   name: item_id
   summary: Return the output item identifier.

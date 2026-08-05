@@ -6,10 +6,10 @@ module: azure.ai.agentserver.responses.streaming
 summary: 'Generic output-item builder for item types without dedicated scoped builders.
 
 
-  Initialize the base output-item builder.'
+  Initialize a generic output-item builder.'
 constructor:
   syntax: 'OutputItemBuilder(stream: ResponseEventStream, output_index: int, item_id:
-    str)'
+    str, *, default_type: str | None = None)'
   parameters:
   - name: stream
     description: The parent event stream to emit events into.
@@ -26,17 +26,39 @@ constructor:
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
+  - name: default_type
+    description: Optional discriminator to apply when an item omits `type`.
+    defaultValue: None
+    types:
+    - <xref:str> | <xref:None>
 methods:
 - uid: azure.ai.agentserver.responses.streaming.OutputItemBuilder.emit_added
   name: emit_added
   summary: Emit an `output_item.added` event for a generic item.
-  signature: 'emit_added(item: OutputItem) -> ResponseOutputItemAddedEvent'
+  signature: 'emit_added(item: A2AToolCall | A2AToolCallOutput | OutputItemAdditionalTools
+    | OutputItemApplyPatchToolCall | OutputItemApplyPatchToolCallOutput | AzureAISearchToolCall
+    | AzureAISearchToolCallOutput | AzureFunctionToolCall | AzureFunctionToolCallOutput
+    | BingCustomSearchToolCall | BingCustomSearchToolCallOutput | BingGroundingToolCall
+    | BingGroundingToolCallOutput | BrowserAutomationToolCall | BrowserAutomationToolCallOutput
+    | OutputItemCodeInterpreterToolCall | OutputItemCompactionBody | OutputItemComputerToolCall
+    | OutputItemComputerToolCallOutput | CustomToolCallResource | CustomToolCallOutputResource
+    | FabricDataAgentToolCall | FabricDataAgentToolCallOutput | OutputItemFileSearchToolCall
+    | OutputItemFunctionToolCall | OutputItemFunctionToolCallOutput | OutputItemImageGenToolCall
+    | OutputItemLocalShellToolCall | OutputItemLocalShellToolCallOutput | OutputItemMcpApprovalRequest
+    | OutputItemMcpApprovalResponseResource | OutputItemMcpToolCall | OutputItemMcpListTools
+    | MemorySearchToolCallItemResource | OutputItemMessage | OAuthConsentRequestOutputItem
+    | OpenApiToolCall | OpenApiToolCallOutput | OutputItemOutputMessage | OutputItemReasoningItem
+    | SharepointGroundingToolCall | SharepointGroundingToolCallOutput | OutputItemFunctionShellCall
+    | OutputItemFunctionShellCallOutput | StructuredOutputsOutputItem | OutputItemToolSearchCall
+    | OutputItemToolSearchOutput | OutputItemWebSearchToolCall | WorkflowActionOutputItem)
+    -> ResponseOutputItemAddedEvent'
   parameters:
   - name: item
     description: The output item model instance.
     isRequired: true
     types:
-    - <xref:azure.ai.agentserver.responses.models.OutputItem>
+    - <xref:OutputItem>
   return:
     description: The emitted event.
     types:
@@ -44,18 +66,51 @@ methods:
 - uid: azure.ai.agentserver.responses.streaming.OutputItemBuilder.emit_done
   name: emit_done
   summary: Emit an `output_item.done` event for a generic item.
-  signature: 'emit_done(item: OutputItem) -> ResponseOutputItemDoneEvent'
+  signature: 'emit_done(item: A2AToolCall | A2AToolCallOutput | OutputItemAdditionalTools
+    | OutputItemApplyPatchToolCall | OutputItemApplyPatchToolCallOutput | AzureAISearchToolCall
+    | AzureAISearchToolCallOutput | AzureFunctionToolCall | AzureFunctionToolCallOutput
+    | BingCustomSearchToolCall | BingCustomSearchToolCallOutput | BingGroundingToolCall
+    | BingGroundingToolCallOutput | BrowserAutomationToolCall | BrowserAutomationToolCallOutput
+    | OutputItemCodeInterpreterToolCall | OutputItemCompactionBody | OutputItemComputerToolCall
+    | OutputItemComputerToolCallOutput | CustomToolCallResource | CustomToolCallOutputResource
+    | FabricDataAgentToolCall | FabricDataAgentToolCallOutput | OutputItemFileSearchToolCall
+    | OutputItemFunctionToolCall | OutputItemFunctionToolCallOutput | OutputItemImageGenToolCall
+    | OutputItemLocalShellToolCall | OutputItemLocalShellToolCallOutput | OutputItemMcpApprovalRequest
+    | OutputItemMcpApprovalResponseResource | OutputItemMcpToolCall | OutputItemMcpListTools
+    | MemorySearchToolCallItemResource | OutputItemMessage | OAuthConsentRequestOutputItem
+    | OpenApiToolCall | OpenApiToolCallOutput | OutputItemOutputMessage | OutputItemReasoningItem
+    | SharepointGroundingToolCall | SharepointGroundingToolCallOutput | OutputItemFunctionShellCall
+    | OutputItemFunctionShellCallOutput | StructuredOutputsOutputItem | OutputItemToolSearchCall
+    | OutputItemToolSearchOutput | OutputItemWebSearchToolCall | WorkflowActionOutputItem)
+    -> ResponseOutputItemDoneEvent'
   parameters:
   - name: item
     description: The completed output item model instance.
     isRequired: true
     types:
-    - <xref:azure.ai.agentserver.responses.models.OutputItem>
+    - <xref:OutputItem>
   return:
     description: The emitted event.
     types:
     - <xref:azure.ai.agentserver.responses.models.ResponseOutputItemDoneEvent>
 attributes:
+- uid: azure.ai.agentserver.responses.streaming.OutputItemBuilder.internal_metadata
+  name: internal_metadata
+  summary: 'Live, mutable framework-internal metadata for this output item.
+
+
+    Read / write / delete in place (`message.internal_metadata["step"] = "n3"`).
+
+    Whatever is set here is merged into the emitted `output_item.added` /
+
+    `output_item.done` payloads under the item''s `internal_metadata` key
+
+    (and thus onto `stream.response.output[i]`), and is stripped from every
+
+    client-facing payload. Values may be any JSON-serialisable type.'
+  return:
+    types:
+    - <xref:collections.abc.MutableMapping>[<xref:str>, <xref:typing.Any>]
 - uid: azure.ai.agentserver.responses.streaming.OutputItemBuilder.item_id
   name: item_id
   summary: Return the output item identifier.

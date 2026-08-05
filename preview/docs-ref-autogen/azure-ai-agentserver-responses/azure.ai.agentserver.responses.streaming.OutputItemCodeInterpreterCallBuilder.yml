@@ -27,30 +27,6 @@ constructor:
     types:
     - <xref:str>
 methods:
-- uid: azure.ai.agentserver.responses.streaming.OutputItemCodeInterpreterCallBuilder.acode
-  name: acode
-  summary: 'Async variant of <xref:azure.ai.agentserver.responses.streaming.OutputItemCodeInterpreterCallBuilder.code>
-    with streaming support.
-
-
-    When *code_text* is a string, behaves identically to <xref:azure.ai.agentserver.responses.streaming.OutputItemCodeInterpreterCallBuilder.code>.
-
-    When *code_text* is an async iterable of string chunks, emits one
-
-    `code_interpreter_call.code.delta` per chunk in real time (S-055),
-
-    then `code_interpreter_call.code.done` with the accumulated text.'
-  signature: 'async acode(code_text: str | AsyncIterable[str]) -> AsyncIterator[ResponseStreamEvent]'
-  parameters:
-  - name: code_text
-    description: Complete code string or async iterable of chunks.
-    isRequired: true
-    types:
-    - <xref:str> | <xref:typing.AsyncIterable>[<xref:str>]
-  return:
-    description: An async iterator of event dicts.
-    types:
-    - <xref:typing.AsyncIterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
 - uid: azure.ai.agentserver.responses.streaming.OutputItemCodeInterpreterCallBuilder.code
   name: code
   summary: 'Yield the code delta and code done events.
@@ -59,7 +35,26 @@ methods:
     Emits `code_interpreter_call.code.delta` followed by
 
     `code_interpreter_call.code.done`.'
-  signature: 'code(code_text: str) -> Iterator[ResponseStreamEvent]'
+  signature: 'code(code_text: str) -> Iterator[ResponseErrorEvent | ResponseAudioDeltaEvent
+    | ResponseAudioDoneEvent | ResponseAudioTranscriptDeltaEvent | ResponseAudioTranscriptDoneEvent
+    | ResponseCodeInterpreterCallCompletedEvent | ResponseCodeInterpreterCallInProgressEvent
+    | ResponseCodeInterpreterCallInterpretingEvent | ResponseCodeInterpreterCallCodeDeltaEvent
+    | ResponseCodeInterpreterCallCodeDoneEvent | ResponseCompletedEvent | ResponseContentPartAddedEvent
+    | ResponseContentPartDoneEvent | ResponseCreatedEvent | ResponseCustomToolCallInputDeltaEvent
+    | ResponseCustomToolCallInputDoneEvent | ResponseFailedEvent | ResponseFileSearchCallCompletedEvent
+    | ResponseFileSearchCallInProgressEvent | ResponseFileSearchCallSearchingEvent
+    | ResponseFunctionCallArgumentsDeltaEvent | ResponseFunctionCallArgumentsDoneEvent
+    | ResponseImageGenCallCompletedEvent | ResponseImageGenCallGeneratingEvent | ResponseImageGenCallInProgressEvent
+    | ResponseImageGenCallPartialImageEvent | ResponseInProgressEvent | ResponseIncompleteEvent
+    | ResponseMCPCallCompletedEvent | ResponseMCPCallFailedEvent | ResponseMCPCallInProgressEvent
+    | ResponseMCPCallArgumentsDeltaEvent | ResponseMCPCallArgumentsDoneEvent | ResponseMCPListToolsCompletedEvent
+    | ResponseMCPListToolsFailedEvent | ResponseMCPListToolsInProgressEvent | ResponseOutputItemAddedEvent
+    | ResponseOutputItemDoneEvent | ResponseOutputTextAnnotationAddedEvent | ResponseTextDeltaEvent
+    | ResponseTextDoneEvent | ResponseQueuedEvent | ResponseReasoningSummaryPartAddedEvent
+    | ResponseReasoningSummaryPartDoneEvent | ResponseReasoningSummaryTextDeltaEvent
+    | ResponseReasoningSummaryTextDoneEvent | ResponseReasoningTextDeltaEvent | ResponseReasoningTextDoneEvent
+    | ResponseRefusalDeltaEvent | ResponseRefusalDoneEvent | ResponseWebSearchCallCompletedEvent
+    | ResponseWebSearchCallInProgressEvent | ResponseWebSearchCallSearchingEvent]'
   parameters:
   - name: code_text
     description: The complete code string.
@@ -69,7 +64,7 @@ methods:
   return:
     description: An iterator of event dicts.
     types:
-    - <xref:typing.Iterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
+    - <xref:typing.Iterator>[<xref:ResponseStreamEvent>]
 - uid: azure.ai.agentserver.responses.streaming.OutputItemCodeInterpreterCallBuilder.emit_added
   name: emit_added
   summary: Emit an `output_item.added` event for a code interpreter call.
@@ -139,6 +134,23 @@ methods:
     types:
     - <xref:azure.ai.agentserver.responses.models.ResponseCodeInterpreterCallInterpretingEvent>
 attributes:
+- uid: azure.ai.agentserver.responses.streaming.OutputItemCodeInterpreterCallBuilder.internal_metadata
+  name: internal_metadata
+  summary: 'Live, mutable framework-internal metadata for this output item.
+
+
+    Read / write / delete in place (`message.internal_metadata["step"] = "n3"`).
+
+    Whatever is set here is merged into the emitted `output_item.added` /
+
+    `output_item.done` payloads under the item''s `internal_metadata` key
+
+    (and thus onto `stream.response.output[i]`), and is stripped from every
+
+    client-facing payload. Values may be any JSON-serialisable type.'
+  return:
+    types:
+    - <xref:collections.abc.MutableMapping>[<xref:str>, <xref:typing.Any>]
 - uid: azure.ai.agentserver.responses.streaming.OutputItemCodeInterpreterCallBuilder.item_id
   name: item_id
   summary: Return the output item identifier.

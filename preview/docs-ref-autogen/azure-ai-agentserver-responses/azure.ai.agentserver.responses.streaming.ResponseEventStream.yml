@@ -9,8 +9,8 @@ summary: 'Response event stream with deterministic sequence numbers.
   Initialize a new response event stream.'
 constructor:
   syntax: 'ResponseEventStream(*, response_id: str | None = None, agent_reference:
-    AgentReference | None = None, model: str | None = None, request: CreateResponse
-    | None = None, response: ResponseObject | None = None)'
+    AgentReference | dict[str, Any] | None = None, model: str | None = None, request:
+    CreateResponse | None = None, response: ResponseObject | None = None)'
   parameters:
   - name: response_id
     description: Unique identifier for the response. Inferred from *response* if omitted.
@@ -31,12 +31,12 @@ constructor:
     description: Optional create-response request to seed the response envelope from.
     isRequired: true
     types:
-    - <xref:azure.ai.agentserver.responses.models._generated.CreateResponse> | <xref:None>
+    - <xref:azure.ai.agentserver.responses.models.CreateResponse> | <xref:None>
   - name: response
     description: Optional pre-existing response envelope to build upon.
     isRequired: true
     types:
-    - <xref:azure.ai.agentserver.responses.models._generated.ResponseObject> | <xref:None>
+    - <xref:azure.ai.agentserver.responses.models.ResponseObject> | <xref:None>
   keywordOnlyParameters:
   - name: response_id
     defaultValue: None
@@ -317,481 +317,33 @@ methods:
     description: A builder for emitting web-search call lifecycle events.
     types:
     - <xref:azure.ai.agentserver.responses.streaming.OutputItemWebSearchCallBuilder>
-- uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.aoutput_item_apply_patch_call
-  name: aoutput_item_apply_patch_call
-  summary: Async variant of <xref:azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_apply_patch_call>.
-  signature: 'async aoutput_item_apply_patch_call(call_id: str, operation: ApplyPatchFileOperation,
-    *, status: str = ''completed'') -> AsyncIterator[ResponseStreamEvent]'
-  parameters:
-  - name: call_id
-    description: Unique identifier for this tool call.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: operation
-    description: The patch file operation.
-    isRequired: true
-    types:
-    - <xref:azure.ai.agentserver.responses.models.ApplyPatchFileOperation>
-  keywordOnlyParameters:
-  - name: status
-    description: Status; defaults to `"completed"`.
-    defaultValue: completed
-    types:
-    - <xref:type>
-  - name: status
-    description: str
+- uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.checkpoint
+  name: checkpoint
+  summary: "Return a checkpoint event to `yield` for persistence.\n\nUsage (inside\
+    \ a resilient background response handler):\n\n<!-- literal_block {\"ids\": [],\
+    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\"\
+    : \"preserve\", \"language\": \"default\", \"force\": false, \"linenos\": false}\
+    \ -->\n\n````default\n\n   yield stream.checkpoint()\n   ````\n\nYielding the\
+    \ event persists the current `stream.response`\nsnapshot via the storage provider.\
+    \ It is processed by the orchestrator\nand is NOT forwarded to the SSE wire (internal\
+    \ control signal).\n\nSemantics (enforced by the orchestrator):\n\n* **Deterministic\
+    \ + developer-driven** \u2014 only where the handler yields one; there are no\
+    \ periodic / implicit checkpoints. \n\n* **Backpressure** \u2014 because the orchestrator\
+    \ fully processes the event (awaiting the provider write) before requesting the\
+    \ next event, the handler is suspended at the yield until the persist completes.\
+    \ \n\n* **Resilient background only** \u2014 persists only when the deployment\
+    \ has `resilient_background=True` and the request is `background=True` (\u21D2\
+    \ `store=True`); a no-op otherwise. \n\n* **Idempotent** \u2014 a snapshot byte-identical\
+    \ to the last persisted one is skipped. \n\n* **Failures swallowed** \u2014 provider\
+    \ errors are logged, never raised into the handler; recovery falls back to the\
+    \ previously-persisted snapshot. \n\n* **After terminal** \u2014 a checkpoint\
+    \ yielded after a terminal event is dropped. \n\nPersists the response with whatever\
+    \ `status` it currently has \u2014 the\ncheckpoint never overrides it."
+  signature: checkpoint() -> ResponseCheckpointEvent
   return:
-    description: An async iterator of events.
+    description: The checkpoint event to yield.
     types:
-    - <xref:typing.AsyncIterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
-- uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.aoutput_item_apply_patch_call_output
-  name: aoutput_item_apply_patch_call_output
-  summary: Async variant of <xref:azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_apply_patch_call_output>.
-  signature: 'async aoutput_item_apply_patch_call_output(call_id: str, *, status:
-    str = ''completed'', output: str | None = None) -> AsyncIterator[ResponseStreamEvent]'
-  parameters:
-  - name: call_id
-    description: The call ID this output belongs to.
-    isRequired: true
-    types:
-    - <xref:str>
-  keywordOnlyParameters:
-  - name: status
-    description: Status; defaults to `"completed"`.
-    defaultValue: completed
-    types:
-    - <xref:type>
-  - name: status
-    description: str
-  - name: output
-    description: Optional output string.
-    defaultValue: None
-    types:
-    - <xref:type>
-  - name: output
-    description: str | None
-  return:
-    description: An async iterator of events.
-    types:
-    - <xref:typing.AsyncIterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
-- uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.aoutput_item_compaction
-  name: aoutput_item_compaction
-  summary: Async variant of <xref:azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_compaction>.
-  signature: 'async aoutput_item_compaction(encrypted_content: str) -> AsyncIterator[ResponseStreamEvent]'
-  parameters:
-  - name: encrypted_content
-    description: The encrypted compaction content.
-    isRequired: true
-    types:
-    - <xref:str>
-  return:
-    description: An async iterator of events.
-    types:
-    - <xref:typing.AsyncIterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
-- uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.aoutput_item_computer_call
-  name: aoutput_item_computer_call
-  summary: Async variant of <xref:azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_computer_call>.
-  signature: 'async aoutput_item_computer_call(call_id: str, action: ComputerAction,
-    *, pending_safety_checks: list[azure.ai.agentserver.responses.models._generated.sdk.models.models._models.ComputerCallSafetyCheckParam]
-    | None = None, status: str = ''completed'') -> AsyncIterator[ResponseStreamEvent]'
-  parameters:
-  - name: call_id
-    description: Unique identifier for this tool call.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: action
-    description: The computer action.
-    isRequired: true
-    types:
-    - <xref:azure.ai.agentserver.responses.models.ComputerAction>
-  keywordOnlyParameters:
-  - name: pending_safety_checks
-    description: Optional safety checks.
-    defaultValue: None
-    types:
-    - <xref:type>
-  - name: pending_safety_checks
-    description: list[ComputerCallSafetyCheckParam] | None
-  - name: status
-    description: Status; defaults to `"completed"`.
-    defaultValue: completed
-    types:
-    - <xref:type>
-  - name: status
-    description: str
-  return:
-    description: An async iterator of events.
-    types:
-    - <xref:typing.AsyncIterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
-- uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.aoutput_item_computer_call_output
-  name: aoutput_item_computer_call_output
-  summary: Async variant of <xref:azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_computer_call_output>.
-  signature: 'async aoutput_item_computer_call_output(call_id: str, output: ComputerScreenshotImage,
-    *, acknowledged_safety_checks: list[azure.ai.agentserver.responses.models._generated.sdk.models.models._models.ComputerCallSafetyCheckParam]
-    | None = None) -> AsyncIterator[ResponseStreamEvent]'
-  parameters:
-  - name: call_id
-    description: The call ID this output belongs to.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: output
-    description: The screenshot image output.
-    isRequired: true
-    types:
-    - <xref:azure.ai.agentserver.responses.models.ComputerScreenshotImage>
-  keywordOnlyParameters:
-  - name: acknowledged_safety_checks
-    description: Optional acknowledged safety checks.
-    defaultValue: None
-    types:
-    - <xref:type>
-  - name: acknowledged_safety_checks
-    description: list[ComputerCallSafetyCheckParam] | None
-  return:
-    description: An async iterator of events.
-    types:
-    - <xref:typing.AsyncIterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
-- uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.aoutput_item_custom_tool_call_output
-  name: aoutput_item_custom_tool_call_output
-  summary: Async variant of <xref:azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_custom_tool_call_output>.
-  signature: 'async aoutput_item_custom_tool_call_output(call_id: str, output: str
-    | list[azure.ai.agentserver.responses.models._generated.sdk.models.models._models.FunctionAndCustomToolCallOutput])
-    -> AsyncIterator[ResponseStreamEvent]'
-  parameters:
-  - name: call_id
-    description: The call ID this output belongs to.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: output
-    description: The output value (string or structured list).
-    isRequired: true
-    types:
-    - <xref:str> | <xref:list>[<xref:azure.ai.agentserver.responses.models.FunctionAndCustomToolCallOutput>]
-  return:
-    description: An async iterator of events.
-    types:
-    - <xref:typing.AsyncIterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
-- uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.aoutput_item_function_call
-  name: aoutput_item_function_call
-  summary: 'Async variant of <xref:azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_function_call>
-    with streaming support.
-
-
-    When *arguments* is a string, emits the same events as the sync variant.
-
-    When *arguments* is an async iterable of string chunks, emits one
-
-    `function_call_arguments.delta` per chunk in real time.'
-  signature: 'async aoutput_item_function_call(name: str, call_id: str, arguments:
-    str | AsyncIterable[str]) -> AsyncIterator[ResponseStreamEvent]'
-  parameters:
-  - name: name
-    description: The function name being called.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: call_id
-    description: Unique identifier for this function call.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: arguments
-    description: Complete arguments string or async iterable of chunks.
-    isRequired: true
-    types:
-    - <xref:str> | <xref:typing.AsyncIterable>[<xref:str>]
-  return:
-    description: An async iterator of events.
-    types:
-    - <xref:typing.AsyncIterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
-- uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.aoutput_item_function_call_output
-  name: aoutput_item_function_call_output
-  summary: Async variant of <xref:azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_function_call_output>.
-  signature: 'async aoutput_item_function_call_output(call_id: str, output: str) ->
-    AsyncIterator[ResponseStreamEvent]'
-  parameters:
-  - name: call_id
-    description: The call ID of the function call this output belongs to.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: output
-    description: The output value for the function call.
-    isRequired: true
-    types:
-    - <xref:str>
-  return:
-    description: An async iterator of events.
-    types:
-    - <xref:typing.AsyncIterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
-- uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.aoutput_item_function_shell_call
-  name: aoutput_item_function_shell_call
-  summary: Async variant of <xref:azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_function_shell_call>.
-  signature: 'async aoutput_item_function_shell_call(call_id: str, action: FunctionShellAction,
-    environment: FunctionShellCallEnvironment, *, status: str = ''completed'') ->
-    AsyncIterator[ResponseStreamEvent]'
-  parameters:
-  - name: call_id
-    description: Unique identifier for this tool call.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: action
-    description: The function shell action.
-    isRequired: true
-    types:
-    - <xref:azure.ai.agentserver.responses.models.FunctionShellAction>
-  - name: environment
-    description: The execution environment.
-    isRequired: true
-    types:
-    - <xref:azure.ai.agentserver.responses.models.FunctionShellCallEnvironment>
-  keywordOnlyParameters:
-  - name: status
-    description: Status; defaults to `"completed"`.
-    defaultValue: completed
-    types:
-    - <xref:type>
-  - name: status
-    description: str
-  return:
-    description: An async iterator of events.
-    types:
-    - <xref:typing.AsyncIterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
-- uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.aoutput_item_function_shell_call_output
-  name: aoutput_item_function_shell_call_output
-  summary: Async variant of <xref:azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_function_shell_call_output>.
-  signature: 'async aoutput_item_function_shell_call_output(call_id: str, output:
-    list[azure.ai.agentserver.responses.models._generated.sdk.models.models._models.FunctionShellCallOutputContent],
-    *, status: str = ''completed'', max_output_length: int | None = None) -> AsyncIterator[ResponseStreamEvent]'
-  parameters:
-  - name: call_id
-    description: The call ID this output belongs to.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: output
-    description: The output content list.
-    isRequired: true
-    types:
-    - <xref:list>[<xref:azure.ai.agentserver.responses.models.FunctionShellCallOutputContent>]
-  keywordOnlyParameters:
-  - name: status
-    description: Status; defaults to `"completed"`.
-    defaultValue: completed
-    types:
-    - <xref:type>
-  - name: status
-    description: str
-  - name: max_output_length
-    description: Maximum output length.
-    defaultValue: None
-    types:
-    - <xref:type>
-  - name: max_output_length
-    description: int | None
-  return:
-    description: An async iterator of events.
-    types:
-    - <xref:typing.AsyncIterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
-- uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.aoutput_item_image_gen_call
-  name: aoutput_item_image_gen_call
-  summary: 'Async variant of <xref:azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_image_gen_call>
-    with optional partial streaming.
-
-
-    When *partials* is provided, emits `partial_image` events between
-
-    the generating and completed states.'
-  signature: 'async aoutput_item_image_gen_call(result_base64: str, *, partials: AsyncIterable[str]
-    | None = None) -> AsyncIterator[ResponseStreamEvent]'
-  parameters:
-  - name: result_base64
-    description: The final base64-encoded image result.
-    isRequired: true
-    types:
-    - <xref:str>
-  keywordOnlyParameters:
-  - name: partials
-    description: Optional async iterable of partial base64 image strings.
-    defaultValue: None
-    types:
-    - <xref:type>
-  - name: partials
-    description: AsyncIterable[str] | None
-  return:
-    description: An async iterator of events.
-    types:
-    - <xref:typing.AsyncIterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
-- uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.aoutput_item_local_shell_call
-  name: aoutput_item_local_shell_call
-  summary: Async variant of <xref:azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_local_shell_call>.
-  signature: 'async aoutput_item_local_shell_call(call_id: str, action: LocalShellExecAction,
-    *, status: str = ''completed'') -> AsyncIterator[ResponseStreamEvent]'
-  parameters:
-  - name: call_id
-    description: Unique identifier for this tool call.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: action
-    description: The shell exec action.
-    isRequired: true
-    types:
-    - <xref:azure.ai.agentserver.responses.models.LocalShellExecAction>
-  keywordOnlyParameters:
-  - name: status
-    description: Status; defaults to `"completed"`.
-    defaultValue: completed
-    types:
-    - <xref:type>
-  - name: status
-    description: str
-  return:
-    description: An async iterator of events.
-    types:
-    - <xref:typing.AsyncIterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
-- uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.aoutput_item_local_shell_call_output
-  name: aoutput_item_local_shell_call_output
-  summary: Async variant of <xref:azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_local_shell_call_output>.
-  signature: 'async aoutput_item_local_shell_call_output(output: str) -> AsyncIterator[ResponseStreamEvent]'
-  parameters:
-  - name: output
-    description: The shell output string.
-    isRequired: true
-    types:
-    - <xref:str>
-  return:
-    description: An async iterator of events.
-    types:
-    - <xref:typing.AsyncIterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
-- uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.aoutput_item_mcp_approval_request
-  name: aoutput_item_mcp_approval_request
-  summary: Async variant of <xref:azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_mcp_approval_request>.
-  signature: 'async aoutput_item_mcp_approval_request(server_label: str, name: str,
-    arguments: str) -> AsyncIterator[ResponseStreamEvent]'
-  parameters:
-  - name: server_label
-    description: Label identifying the MCP server.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: name
-    description: Tool name requiring approval.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: arguments
-    description: JSON string of the tool arguments.
-    isRequired: true
-    types:
-    - <xref:str>
-  return:
-    description: An async iterator of events.
-    types:
-    - <xref:typing.AsyncIterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
-- uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.aoutput_item_mcp_approval_response
-  name: aoutput_item_mcp_approval_response
-  summary: Async variant of <xref:azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_mcp_approval_response>.
-  signature: 'async aoutput_item_mcp_approval_response(approval_request_id: str, approve:
-    bool, *, reason: str | None = None) -> AsyncIterator[ResponseStreamEvent]'
-  parameters:
-  - name: approval_request_id
-    description: The request ID being responded to.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: approve
-    description: Whether to approve.
-    isRequired: true
-    types:
-    - <xref:bool>
-  keywordOnlyParameters:
-  - name: reason
-    description: Optional reason for the decision.
-    defaultValue: None
-    types:
-    - <xref:type>
-  - name: reason
-    description: str | None
-  return:
-    description: An async iterator of events.
-    types:
-    - <xref:typing.AsyncIterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
-- uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.aoutput_item_message
-  name: aoutput_item_message
-  summary: 'Async variant of <xref:azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_message>
-    with streaming support.
-
-
-    When *text* is a string, emits the same events as the sync variant.
-
-    When *text* is an async iterable of string chunks, emits one
-
-    `output_text.delta` per chunk in real time, enabling token-by-token
-
-    streaming from upstream LLMs.'
-  signature: 'async aoutput_item_message(text: str | AsyncIterable[str], *, annotations:
-    Sequence[Annotation] | None = None) -> AsyncIterator[ResponseStreamEvent]'
-  parameters:
-  - name: text
-    description: Complete text or async iterable of text chunks.
-    isRequired: true
-    types:
-    - <xref:str> | <xref:typing.AsyncIterable>[<xref:str>]
-  keywordOnlyParameters:
-  - name: annotations
-    description: Optional annotations to attach to the text content.
-    defaultValue: None
-    types:
-    - <xref:type>
-  - name: annotations
-    description: Sequence[Annotation] | None
-  return:
-    description: An async iterator of events.
-    types:
-    - <xref:typing.AsyncIterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
-- uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.aoutput_item_reasoning_item
-  name: aoutput_item_reasoning_item
-  summary: 'Async variant of <xref:azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_reasoning_item>
-    with streaming support.
-
-
-    When *summary_text* is a string, emits the same events as the sync variant.
-
-    When *summary_text* is an async iterable of string chunks, emits one
-
-    `reasoning_summary_text.delta` per chunk in real time.'
-  signature: 'async aoutput_item_reasoning_item(summary_text: str | AsyncIterable[str])
-    -> AsyncIterator[ResponseStreamEvent]'
-  parameters:
-  - name: summary_text
-    description: Complete summary text or async iterable of chunks.
-    isRequired: true
-    types:
-    - <xref:str> | <xref:typing.AsyncIterable>[<xref:str>]
-  return:
-    description: An async iterator of events.
-    types:
-    - <xref:typing.AsyncIterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
-- uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.aoutput_item_structured_outputs
-  name: aoutput_item_structured_outputs
-  summary: Async variant of <xref:azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_structured_outputs>.
-  signature: 'async aoutput_item_structured_outputs(output: Any) -> AsyncIterator[ResponseStreamEvent]'
-  parameters:
-  - name: output
-    description: The structured output data.
-    isRequired: true
-    types:
-    - <xref:typing.Any>
-  return:
-    description: An async iterator of events.
-    types:
-    - <xref:typing.AsyncIterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
+    - <xref:azure.ai.agentserver.responses.streaming._checkpoint.ResponseCheckpointEvent>
 - uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.emit_completed
   name: emit_completed
   summary: Emit a `response.completed` terminal lifecycle event.
@@ -803,12 +355,11 @@ methods:
     types:
     - <xref:type>
   - name: usage
-    description: ~azure.ai.agentserver.responses.models._generated.ResponseUsage |
-      None
+    description: ~azure.ai.agentserver.responses.models.ResponseUsage | None
   return:
     description: The emitted event model instance.
     types:
-    - <xref:azure.ai.agentserver.responses.models._generated.ResponseCompletedEvent>
+    - <xref:azure.ai.agentserver.responses.models.ResponseCompletedEvent>
 - uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.emit_created
   name: emit_created
   summary: Emit a `response.created` lifecycle event.
@@ -824,13 +375,12 @@ methods:
   return:
     description: The emitted event model instance.
     types:
-    - <xref:azure.ai.agentserver.responses.models._generated.ResponseCreatedEvent>
+    - <xref:azure.ai.agentserver.responses.models.ResponseCreatedEvent>
 - uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.emit_failed
   name: emit_failed
   summary: Emit a `response.failed` terminal lifecycle event.
-  signature: 'emit_failed(*, code: str | ResponseErrorCode = ''server_error'', message:
-    str = ''An internal server error occurred.'', usage: ResponseUsage | None = None)
-    -> ResponseFailedEvent'
+  signature: 'emit_failed(*, code: str = ''server_error'', message: str = ''An internal
+    server error occurred.'', usage: ResponseUsage | None = None) -> ResponseFailedEvent'
   keywordOnlyParameters:
   - name: code
     description: Error code describing the failure.
@@ -838,7 +388,7 @@ methods:
     types:
     - <xref:type>
   - name: code
-    description: str | ~azure.ai.agentserver.responses.models._generated.ResponseErrorCode
+    description: str | ~azure.ai.agentserver.responses.models.ResponseErrorCode
   - name: message
     description: Human-readable error message.
     defaultValue: An internal server error occurred.
@@ -852,12 +402,11 @@ methods:
     types:
     - <xref:type>
   - name: usage
-    description: ~azure.ai.agentserver.responses.models._generated.ResponseUsage |
-      None
+    description: ~azure.ai.agentserver.responses.models.ResponseUsage | None
   return:
     description: The emitted event model instance.
     types:
-    - <xref:azure.ai.agentserver.responses.models._generated.ResponseFailedEvent>
+    - <xref:azure.ai.agentserver.responses.models.ResponseFailedEvent>
 - uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.emit_in_progress
   name: emit_in_progress
   summary: Emit a `response.in_progress` lifecycle event.
@@ -865,7 +414,7 @@ methods:
   return:
     description: The emitted event model instance.
     types:
-    - <xref:azure.ai.agentserver.responses.models._generated.ResponseInProgressEvent>
+    - <xref:azure.ai.agentserver.responses.models.ResponseInProgressEvent>
 - uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.emit_incomplete
   name: emit_incomplete
   summary: Emit a `response.incomplete` terminal lifecycle event.
@@ -878,7 +427,7 @@ methods:
     types:
     - <xref:type>
   - name: reason
-    description: 'str | ~azure.ai.agentserver.responses.models._generated.ResponseIncompleteReason
+    description: 'str | ~azure.ai.agentserver.responses.models.ResponseIncompleteReason
 
       | None'
   - name: usage
@@ -887,12 +436,11 @@ methods:
     types:
     - <xref:type>
   - name: usage
-    description: ~azure.ai.agentserver.responses.models._generated.ResponseUsage |
-      None
+    description: ~azure.ai.agentserver.responses.models.ResponseUsage | None
   return:
     description: The emitted event model instance.
     types:
-    - <xref:azure.ai.agentserver.responses.models._generated.ResponseIncompleteEvent>
+    - <xref:azure.ai.agentserver.responses.models.ResponseIncompleteEvent>
 - uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.emit_queued
   name: emit_queued
   summary: Emit a `response.queued` lifecycle event.
@@ -900,20 +448,89 @@ methods:
   return:
     description: The emitted event model instance.
     types:
-    - <xref:azure.ai.agentserver.responses.models._generated.ResponseQueuedEvent>
+    - <xref:azure.ai.agentserver.responses.models.ResponseQueuedEvent>
 - uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.events
   name: events
   summary: Return copies of all events emitted so far as typed model instances.
-  signature: events() -> list[azure.ai.agentserver.responses.models._generated.sdk.models.models._models.ResponseStreamEvent]
+  signature: events() -> list[Union[azure.ai.agentserver.responses.models._generated.types.ResponseErrorEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseAudioDeltaEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseAudioDoneEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseAudioTranscriptDeltaEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseAudioTranscriptDoneEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseCodeInterpreterCallCompletedEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseCodeInterpreterCallInProgressEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseCodeInterpreterCallInterpretingEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseCodeInterpreterCallCodeDeltaEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseCodeInterpreterCallCodeDoneEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseCompletedEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseContentPartAddedEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseContentPartDoneEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseCreatedEvent, azure.ai.agentserver.responses.models._generated.types.ResponseCustomToolCallInputDeltaEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseCustomToolCallInputDoneEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseFailedEvent, azure.ai.agentserver.responses.models._generated.types.ResponseFileSearchCallCompletedEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseFileSearchCallInProgressEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseFileSearchCallSearchingEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseFunctionCallArgumentsDeltaEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseFunctionCallArgumentsDoneEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseImageGenCallCompletedEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseImageGenCallGeneratingEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseImageGenCallInProgressEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseImageGenCallPartialImageEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseInProgressEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseIncompleteEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseMCPCallCompletedEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseMCPCallFailedEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseMCPCallInProgressEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseMCPCallArgumentsDeltaEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseMCPCallArgumentsDoneEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseMCPListToolsCompletedEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseMCPListToolsFailedEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseMCPListToolsInProgressEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseOutputItemAddedEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseOutputItemDoneEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseOutputTextAnnotationAddedEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseTextDeltaEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseTextDoneEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseQueuedEvent, azure.ai.agentserver.responses.models._generated.types.ResponseReasoningSummaryPartAddedEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseReasoningSummaryPartDoneEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseReasoningSummaryTextDeltaEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseReasoningSummaryTextDoneEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseReasoningTextDeltaEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseReasoningTextDoneEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseRefusalDeltaEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseRefusalDoneEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseWebSearchCallCompletedEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseWebSearchCallInProgressEvent,
+    azure.ai.agentserver.responses.models._generated.types.ResponseWebSearchCallSearchingEvent]]
   return:
     description: A list of `ResponseStreamEvent` model instances.
     types:
-    - <xref:list>[<xref:azure.ai.agentserver.responses.models._generated.ResponseStreamEvent>]
+    - <xref:list>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
 - uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_apply_patch_call
   name: output_item_apply_patch_call
   summary: Yield the full lifecycle for an apply-patch call output item.
-  signature: 'output_item_apply_patch_call(call_id: str, operation: ApplyPatchFileOperation,
-    *, status: str = ''completed'') -> Iterator[ResponseStreamEvent]'
+  signature: 'output_item_apply_patch_call(call_id: str, operation: ApplyPatchCreateFileOperation
+    | ApplyPatchDeleteFileOperation | ApplyPatchUpdateFileOperation, *, status: str
+    = ''completed'') -> Iterator[ResponseErrorEvent | ResponseAudioDeltaEvent | ResponseAudioDoneEvent
+    | ResponseAudioTranscriptDeltaEvent | ResponseAudioTranscriptDoneEvent | ResponseCodeInterpreterCallCompletedEvent
+    | ResponseCodeInterpreterCallInProgressEvent | ResponseCodeInterpreterCallInterpretingEvent
+    | ResponseCodeInterpreterCallCodeDeltaEvent | ResponseCodeInterpreterCallCodeDoneEvent
+    | ResponseCompletedEvent | ResponseContentPartAddedEvent | ResponseContentPartDoneEvent
+    | ResponseCreatedEvent | ResponseCustomToolCallInputDeltaEvent | ResponseCustomToolCallInputDoneEvent
+    | ResponseFailedEvent | ResponseFileSearchCallCompletedEvent | ResponseFileSearchCallInProgressEvent
+    | ResponseFileSearchCallSearchingEvent | ResponseFunctionCallArgumentsDeltaEvent
+    | ResponseFunctionCallArgumentsDoneEvent | ResponseImageGenCallCompletedEvent
+    | ResponseImageGenCallGeneratingEvent | ResponseImageGenCallInProgressEvent |
+    ResponseImageGenCallPartialImageEvent | ResponseInProgressEvent | ResponseIncompleteEvent
+    | ResponseMCPCallCompletedEvent | ResponseMCPCallFailedEvent | ResponseMCPCallInProgressEvent
+    | ResponseMCPCallArgumentsDeltaEvent | ResponseMCPCallArgumentsDoneEvent | ResponseMCPListToolsCompletedEvent
+    | ResponseMCPListToolsFailedEvent | ResponseMCPListToolsInProgressEvent | ResponseOutputItemAddedEvent
+    | ResponseOutputItemDoneEvent | ResponseOutputTextAnnotationAddedEvent | ResponseTextDeltaEvent
+    | ResponseTextDoneEvent | ResponseQueuedEvent | ResponseReasoningSummaryPartAddedEvent
+    | ResponseReasoningSummaryPartDoneEvent | ResponseReasoningSummaryTextDeltaEvent
+    | ResponseReasoningSummaryTextDoneEvent | ResponseReasoningTextDeltaEvent | ResponseReasoningTextDoneEvent
+    | ResponseRefusalDeltaEvent | ResponseRefusalDoneEvent | ResponseWebSearchCallCompletedEvent
+    | ResponseWebSearchCallInProgressEvent | ResponseWebSearchCallSearchingEvent]'
   parameters:
   - name: call_id
     description: Unique identifier for this tool call.
@@ -924,7 +541,7 @@ methods:
     description: The patch file operation.
     isRequired: true
     types:
-    - <xref:azure.ai.agentserver.responses.models.ApplyPatchFileOperation>
+    - <xref:ApplyPatchFileOperation>
   keywordOnlyParameters:
   - name: status
     description: Status of the call; defaults to `"completed"`.
@@ -936,12 +553,31 @@ methods:
   return:
     description: An iterator of events.
     types:
-    - <xref:typing.Iterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
+    - <xref:typing.Iterator>[<xref:ResponseStreamEvent>]
 - uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_apply_patch_call_output
   name: output_item_apply_patch_call_output
   summary: Yield the full lifecycle for an apply-patch call output item.
   signature: 'output_item_apply_patch_call_output(call_id: str, *, status: str = ''completed'',
-    output: str | None = None) -> Iterator[ResponseStreamEvent]'
+    output: str | None = None) -> Iterator[ResponseErrorEvent | ResponseAudioDeltaEvent
+    | ResponseAudioDoneEvent | ResponseAudioTranscriptDeltaEvent | ResponseAudioTranscriptDoneEvent
+    | ResponseCodeInterpreterCallCompletedEvent | ResponseCodeInterpreterCallInProgressEvent
+    | ResponseCodeInterpreterCallInterpretingEvent | ResponseCodeInterpreterCallCodeDeltaEvent
+    | ResponseCodeInterpreterCallCodeDoneEvent | ResponseCompletedEvent | ResponseContentPartAddedEvent
+    | ResponseContentPartDoneEvent | ResponseCreatedEvent | ResponseCustomToolCallInputDeltaEvent
+    | ResponseCustomToolCallInputDoneEvent | ResponseFailedEvent | ResponseFileSearchCallCompletedEvent
+    | ResponseFileSearchCallInProgressEvent | ResponseFileSearchCallSearchingEvent
+    | ResponseFunctionCallArgumentsDeltaEvent | ResponseFunctionCallArgumentsDoneEvent
+    | ResponseImageGenCallCompletedEvent | ResponseImageGenCallGeneratingEvent | ResponseImageGenCallInProgressEvent
+    | ResponseImageGenCallPartialImageEvent | ResponseInProgressEvent | ResponseIncompleteEvent
+    | ResponseMCPCallCompletedEvent | ResponseMCPCallFailedEvent | ResponseMCPCallInProgressEvent
+    | ResponseMCPCallArgumentsDeltaEvent | ResponseMCPCallArgumentsDoneEvent | ResponseMCPListToolsCompletedEvent
+    | ResponseMCPListToolsFailedEvent | ResponseMCPListToolsInProgressEvent | ResponseOutputItemAddedEvent
+    | ResponseOutputItemDoneEvent | ResponseOutputTextAnnotationAddedEvent | ResponseTextDeltaEvent
+    | ResponseTextDoneEvent | ResponseQueuedEvent | ResponseReasoningSummaryPartAddedEvent
+    | ResponseReasoningSummaryPartDoneEvent | ResponseReasoningSummaryTextDeltaEvent
+    | ResponseReasoningSummaryTextDoneEvent | ResponseReasoningTextDeltaEvent | ResponseReasoningTextDoneEvent
+    | ResponseRefusalDeltaEvent | ResponseRefusalDoneEvent | ResponseWebSearchCallCompletedEvent
+    | ResponseWebSearchCallInProgressEvent | ResponseWebSearchCallSearchingEvent]'
   parameters:
   - name: call_id
     description: The call ID this output belongs to.
@@ -966,11 +602,31 @@ methods:
   return:
     description: An iterator of events.
     types:
-    - <xref:typing.Iterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
+    - <xref:typing.Iterator>[<xref:ResponseStreamEvent>]
 - uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_compaction
   name: output_item_compaction
   summary: Yield the full lifecycle for a compaction output item.
-  signature: 'output_item_compaction(encrypted_content: str) -> Iterator[ResponseStreamEvent]'
+  signature: 'output_item_compaction(encrypted_content: str) -> Iterator[ResponseErrorEvent
+    | ResponseAudioDeltaEvent | ResponseAudioDoneEvent | ResponseAudioTranscriptDeltaEvent
+    | ResponseAudioTranscriptDoneEvent | ResponseCodeInterpreterCallCompletedEvent
+    | ResponseCodeInterpreterCallInProgressEvent | ResponseCodeInterpreterCallInterpretingEvent
+    | ResponseCodeInterpreterCallCodeDeltaEvent | ResponseCodeInterpreterCallCodeDoneEvent
+    | ResponseCompletedEvent | ResponseContentPartAddedEvent | ResponseContentPartDoneEvent
+    | ResponseCreatedEvent | ResponseCustomToolCallInputDeltaEvent | ResponseCustomToolCallInputDoneEvent
+    | ResponseFailedEvent | ResponseFileSearchCallCompletedEvent | ResponseFileSearchCallInProgressEvent
+    | ResponseFileSearchCallSearchingEvent | ResponseFunctionCallArgumentsDeltaEvent
+    | ResponseFunctionCallArgumentsDoneEvent | ResponseImageGenCallCompletedEvent
+    | ResponseImageGenCallGeneratingEvent | ResponseImageGenCallInProgressEvent |
+    ResponseImageGenCallPartialImageEvent | ResponseInProgressEvent | ResponseIncompleteEvent
+    | ResponseMCPCallCompletedEvent | ResponseMCPCallFailedEvent | ResponseMCPCallInProgressEvent
+    | ResponseMCPCallArgumentsDeltaEvent | ResponseMCPCallArgumentsDoneEvent | ResponseMCPListToolsCompletedEvent
+    | ResponseMCPListToolsFailedEvent | ResponseMCPListToolsInProgressEvent | ResponseOutputItemAddedEvent
+    | ResponseOutputItemDoneEvent | ResponseOutputTextAnnotationAddedEvent | ResponseTextDeltaEvent
+    | ResponseTextDoneEvent | ResponseQueuedEvent | ResponseReasoningSummaryPartAddedEvent
+    | ResponseReasoningSummaryPartDoneEvent | ResponseReasoningSummaryTextDeltaEvent
+    | ResponseReasoningSummaryTextDoneEvent | ResponseReasoningTextDeltaEvent | ResponseReasoningTextDoneEvent
+    | ResponseRefusalDeltaEvent | ResponseRefusalDoneEvent | ResponseWebSearchCallCompletedEvent
+    | ResponseWebSearchCallInProgressEvent | ResponseWebSearchCallSearchingEvent]'
   parameters:
   - name: encrypted_content
     description: The encrypted compaction content.
@@ -980,13 +636,33 @@ methods:
   return:
     description: An iterator of events.
     types:
-    - <xref:typing.Iterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
+    - <xref:typing.Iterator>[<xref:ResponseStreamEvent>]
 - uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_computer_call
   name: output_item_computer_call
   summary: Yield the full lifecycle for a computer call output item.
-  signature: 'output_item_computer_call(call_id: str, action: ComputerAction, *, pending_safety_checks:
-    list[azure.ai.agentserver.responses.models._generated.sdk.models.models._models.ComputerCallSafetyCheckParam]
-    | None = None, status: str = ''completed'') -> Iterator[ResponseStreamEvent]'
+  signature: 'output_item_computer_call(call_id: str, action: ClickParam | DoubleClickAction
+    | DragParam | KeyPressAction | MoveParam | ScreenshotParam | ScrollParam | TypeParam
+    | WaitParam, *, pending_safety_checks: list[azure.ai.agentserver.responses.models._generated.types.ComputerCallSafetyCheckParam]
+    | None = None, status: str = ''completed'') -> Iterator[ResponseErrorEvent | ResponseAudioDeltaEvent
+    | ResponseAudioDoneEvent | ResponseAudioTranscriptDeltaEvent | ResponseAudioTranscriptDoneEvent
+    | ResponseCodeInterpreterCallCompletedEvent | ResponseCodeInterpreterCallInProgressEvent
+    | ResponseCodeInterpreterCallInterpretingEvent | ResponseCodeInterpreterCallCodeDeltaEvent
+    | ResponseCodeInterpreterCallCodeDoneEvent | ResponseCompletedEvent | ResponseContentPartAddedEvent
+    | ResponseContentPartDoneEvent | ResponseCreatedEvent | ResponseCustomToolCallInputDeltaEvent
+    | ResponseCustomToolCallInputDoneEvent | ResponseFailedEvent | ResponseFileSearchCallCompletedEvent
+    | ResponseFileSearchCallInProgressEvent | ResponseFileSearchCallSearchingEvent
+    | ResponseFunctionCallArgumentsDeltaEvent | ResponseFunctionCallArgumentsDoneEvent
+    | ResponseImageGenCallCompletedEvent | ResponseImageGenCallGeneratingEvent | ResponseImageGenCallInProgressEvent
+    | ResponseImageGenCallPartialImageEvent | ResponseInProgressEvent | ResponseIncompleteEvent
+    | ResponseMCPCallCompletedEvent | ResponseMCPCallFailedEvent | ResponseMCPCallInProgressEvent
+    | ResponseMCPCallArgumentsDeltaEvent | ResponseMCPCallArgumentsDoneEvent | ResponseMCPListToolsCompletedEvent
+    | ResponseMCPListToolsFailedEvent | ResponseMCPListToolsInProgressEvent | ResponseOutputItemAddedEvent
+    | ResponseOutputItemDoneEvent | ResponseOutputTextAnnotationAddedEvent | ResponseTextDeltaEvent
+    | ResponseTextDoneEvent | ResponseQueuedEvent | ResponseReasoningSummaryPartAddedEvent
+    | ResponseReasoningSummaryPartDoneEvent | ResponseReasoningSummaryTextDeltaEvent
+    | ResponseReasoningSummaryTextDoneEvent | ResponseReasoningTextDeltaEvent | ResponseReasoningTextDoneEvent
+    | ResponseRefusalDeltaEvent | ResponseRefusalDoneEvent | ResponseWebSearchCallCompletedEvent
+    | ResponseWebSearchCallInProgressEvent | ResponseWebSearchCallSearchingEvent]'
   parameters:
   - name: call_id
     description: Unique identifier for this tool call.
@@ -997,7 +673,7 @@ methods:
     description: The computer action to perform.
     isRequired: true
     types:
-    - <xref:azure.ai.agentserver.responses.models.ComputerAction>
+    - <xref:ComputerAction>
   keywordOnlyParameters:
   - name: pending_safety_checks
     description: Optional safety checks.
@@ -1016,13 +692,32 @@ methods:
   return:
     description: An iterator of events.
     types:
-    - <xref:typing.Iterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
+    - <xref:typing.Iterator>[<xref:ResponseStreamEvent>]
 - uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_computer_call_output
   name: output_item_computer_call_output
   summary: Yield the full lifecycle for a computer call output item.
   signature: 'output_item_computer_call_output(call_id: str, output: ComputerScreenshotImage,
-    *, acknowledged_safety_checks: list[azure.ai.agentserver.responses.models._generated.sdk.models.models._models.ComputerCallSafetyCheckParam]
-    | None = None) -> Iterator[ResponseStreamEvent]'
+    *, acknowledged_safety_checks: list[azure.ai.agentserver.responses.models._generated.types.ComputerCallSafetyCheckParam]
+    | None = None) -> Iterator[ResponseErrorEvent | ResponseAudioDeltaEvent | ResponseAudioDoneEvent
+    | ResponseAudioTranscriptDeltaEvent | ResponseAudioTranscriptDoneEvent | ResponseCodeInterpreterCallCompletedEvent
+    | ResponseCodeInterpreterCallInProgressEvent | ResponseCodeInterpreterCallInterpretingEvent
+    | ResponseCodeInterpreterCallCodeDeltaEvent | ResponseCodeInterpreterCallCodeDoneEvent
+    | ResponseCompletedEvent | ResponseContentPartAddedEvent | ResponseContentPartDoneEvent
+    | ResponseCreatedEvent | ResponseCustomToolCallInputDeltaEvent | ResponseCustomToolCallInputDoneEvent
+    | ResponseFailedEvent | ResponseFileSearchCallCompletedEvent | ResponseFileSearchCallInProgressEvent
+    | ResponseFileSearchCallSearchingEvent | ResponseFunctionCallArgumentsDeltaEvent
+    | ResponseFunctionCallArgumentsDoneEvent | ResponseImageGenCallCompletedEvent
+    | ResponseImageGenCallGeneratingEvent | ResponseImageGenCallInProgressEvent |
+    ResponseImageGenCallPartialImageEvent | ResponseInProgressEvent | ResponseIncompleteEvent
+    | ResponseMCPCallCompletedEvent | ResponseMCPCallFailedEvent | ResponseMCPCallInProgressEvent
+    | ResponseMCPCallArgumentsDeltaEvent | ResponseMCPCallArgumentsDoneEvent | ResponseMCPListToolsCompletedEvent
+    | ResponseMCPListToolsFailedEvent | ResponseMCPListToolsInProgressEvent | ResponseOutputItemAddedEvent
+    | ResponseOutputItemDoneEvent | ResponseOutputTextAnnotationAddedEvent | ResponseTextDeltaEvent
+    | ResponseTextDoneEvent | ResponseQueuedEvent | ResponseReasoningSummaryPartAddedEvent
+    | ResponseReasoningSummaryPartDoneEvent | ResponseReasoningSummaryTextDeltaEvent
+    | ResponseReasoningSummaryTextDoneEvent | ResponseReasoningTextDeltaEvent | ResponseReasoningTextDoneEvent
+    | ResponseRefusalDeltaEvent | ResponseRefusalDoneEvent | ResponseWebSearchCallCompletedEvent
+    | ResponseWebSearchCallInProgressEvent | ResponseWebSearchCallSearchingEvent]'
   parameters:
   - name: call_id
     description: The call ID this output belongs to.
@@ -1045,12 +740,33 @@ methods:
   return:
     description: An iterator of events.
     types:
-    - <xref:typing.Iterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
+    - <xref:typing.Iterator>[<xref:ResponseStreamEvent>]
 - uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_custom_tool_call_output
   name: output_item_custom_tool_call_output
   summary: Yield the full lifecycle for a custom tool call output item.
-  signature: 'output_item_custom_tool_call_output(call_id: str, output: str | list[azure.ai.agentserver.responses.models._generated.sdk.models.models._models.FunctionAndCustomToolCallOutput])
-    -> Iterator[ResponseStreamEvent]'
+  signature: 'output_item_custom_tool_call_output(call_id: str, output: str | list[Union[azure.ai.agentserver.responses.models._generated.types.FunctionAndCustomToolCallOutputInputFileContent,
+    azure.ai.agentserver.responses.models._generated.types.FunctionAndCustomToolCallOutputInputImageContent,
+    azure.ai.agentserver.responses.models._generated.types.FunctionAndCustomToolCallOutputInputTextContent]])
+    -> Iterator[ResponseErrorEvent | ResponseAudioDeltaEvent | ResponseAudioDoneEvent
+    | ResponseAudioTranscriptDeltaEvent | ResponseAudioTranscriptDoneEvent | ResponseCodeInterpreterCallCompletedEvent
+    | ResponseCodeInterpreterCallInProgressEvent | ResponseCodeInterpreterCallInterpretingEvent
+    | ResponseCodeInterpreterCallCodeDeltaEvent | ResponseCodeInterpreterCallCodeDoneEvent
+    | ResponseCompletedEvent | ResponseContentPartAddedEvent | ResponseContentPartDoneEvent
+    | ResponseCreatedEvent | ResponseCustomToolCallInputDeltaEvent | ResponseCustomToolCallInputDoneEvent
+    | ResponseFailedEvent | ResponseFileSearchCallCompletedEvent | ResponseFileSearchCallInProgressEvent
+    | ResponseFileSearchCallSearchingEvent | ResponseFunctionCallArgumentsDeltaEvent
+    | ResponseFunctionCallArgumentsDoneEvent | ResponseImageGenCallCompletedEvent
+    | ResponseImageGenCallGeneratingEvent | ResponseImageGenCallInProgressEvent |
+    ResponseImageGenCallPartialImageEvent | ResponseInProgressEvent | ResponseIncompleteEvent
+    | ResponseMCPCallCompletedEvent | ResponseMCPCallFailedEvent | ResponseMCPCallInProgressEvent
+    | ResponseMCPCallArgumentsDeltaEvent | ResponseMCPCallArgumentsDoneEvent | ResponseMCPListToolsCompletedEvent
+    | ResponseMCPListToolsFailedEvent | ResponseMCPListToolsInProgressEvent | ResponseOutputItemAddedEvent
+    | ResponseOutputItemDoneEvent | ResponseOutputTextAnnotationAddedEvent | ResponseTextDeltaEvent
+    | ResponseTextDoneEvent | ResponseQueuedEvent | ResponseReasoningSummaryPartAddedEvent
+    | ResponseReasoningSummaryPartDoneEvent | ResponseReasoningSummaryTextDeltaEvent
+    | ResponseReasoningSummaryTextDoneEvent | ResponseReasoningTextDeltaEvent | ResponseReasoningTextDoneEvent
+    | ResponseRefusalDeltaEvent | ResponseRefusalDoneEvent | ResponseWebSearchCallCompletedEvent
+    | ResponseWebSearchCallInProgressEvent | ResponseWebSearchCallSearchingEvent]'
   parameters:
   - name: call_id
     description: The call ID this output belongs to.
@@ -1061,11 +777,11 @@ methods:
     description: The output value (string or structured list).
     isRequired: true
     types:
-    - <xref:str> | <xref:list>[<xref:azure.ai.agentserver.responses.models.FunctionAndCustomToolCallOutput>]
+    - <xref:str> | <xref:list>[<xref:FunctionAndCustomToolCallOutput>]
   return:
     description: An iterator of events.
     types:
-    - <xref:typing.Iterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
+    - <xref:typing.Iterator>[<xref:ResponseStreamEvent>]
 - uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_function_call
   name: output_item_function_call
   summary: 'Yield the full lifecycle for a function call output item.
@@ -1075,7 +791,26 @@ methods:
 
     function_call_arguments.done, and output_item.done.'
   signature: 'output_item_function_call(name: str, call_id: str, arguments: str) ->
-    Iterator[ResponseStreamEvent]'
+    Iterator[ResponseErrorEvent | ResponseAudioDeltaEvent | ResponseAudioDoneEvent
+    | ResponseAudioTranscriptDeltaEvent | ResponseAudioTranscriptDoneEvent | ResponseCodeInterpreterCallCompletedEvent
+    | ResponseCodeInterpreterCallInProgressEvent | ResponseCodeInterpreterCallInterpretingEvent
+    | ResponseCodeInterpreterCallCodeDeltaEvent | ResponseCodeInterpreterCallCodeDoneEvent
+    | ResponseCompletedEvent | ResponseContentPartAddedEvent | ResponseContentPartDoneEvent
+    | ResponseCreatedEvent | ResponseCustomToolCallInputDeltaEvent | ResponseCustomToolCallInputDoneEvent
+    | ResponseFailedEvent | ResponseFileSearchCallCompletedEvent | ResponseFileSearchCallInProgressEvent
+    | ResponseFileSearchCallSearchingEvent | ResponseFunctionCallArgumentsDeltaEvent
+    | ResponseFunctionCallArgumentsDoneEvent | ResponseImageGenCallCompletedEvent
+    | ResponseImageGenCallGeneratingEvent | ResponseImageGenCallInProgressEvent |
+    ResponseImageGenCallPartialImageEvent | ResponseInProgressEvent | ResponseIncompleteEvent
+    | ResponseMCPCallCompletedEvent | ResponseMCPCallFailedEvent | ResponseMCPCallInProgressEvent
+    | ResponseMCPCallArgumentsDeltaEvent | ResponseMCPCallArgumentsDoneEvent | ResponseMCPListToolsCompletedEvent
+    | ResponseMCPListToolsFailedEvent | ResponseMCPListToolsInProgressEvent | ResponseOutputItemAddedEvent
+    | ResponseOutputItemDoneEvent | ResponseOutputTextAnnotationAddedEvent | ResponseTextDeltaEvent
+    | ResponseTextDoneEvent | ResponseQueuedEvent | ResponseReasoningSummaryPartAddedEvent
+    | ResponseReasoningSummaryPartDoneEvent | ResponseReasoningSummaryTextDeltaEvent
+    | ResponseReasoningSummaryTextDoneEvent | ResponseReasoningTextDeltaEvent | ResponseReasoningTextDoneEvent
+    | ResponseRefusalDeltaEvent | ResponseRefusalDoneEvent | ResponseWebSearchCallCompletedEvent
+    | ResponseWebSearchCallInProgressEvent | ResponseWebSearchCallSearchingEvent]'
   parameters:
   - name: name
     description: The function name being called.
@@ -1095,14 +830,34 @@ methods:
   return:
     description: An iterator of events.
     types:
-    - <xref:typing.Iterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
+    - <xref:typing.Iterator>[<xref:ResponseStreamEvent>]
 - uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_function_call_output
   name: output_item_function_call_output
   summary: 'Yield the full lifecycle for a function call output item.
 
 
     Emits output_item.added and output_item.done.'
-  signature: 'output_item_function_call_output(call_id: str, output: str) -> Iterator[ResponseStreamEvent]'
+  signature: 'output_item_function_call_output(call_id: str, output: str) -> Iterator[ResponseErrorEvent
+    | ResponseAudioDeltaEvent | ResponseAudioDoneEvent | ResponseAudioTranscriptDeltaEvent
+    | ResponseAudioTranscriptDoneEvent | ResponseCodeInterpreterCallCompletedEvent
+    | ResponseCodeInterpreterCallInProgressEvent | ResponseCodeInterpreterCallInterpretingEvent
+    | ResponseCodeInterpreterCallCodeDeltaEvent | ResponseCodeInterpreterCallCodeDoneEvent
+    | ResponseCompletedEvent | ResponseContentPartAddedEvent | ResponseContentPartDoneEvent
+    | ResponseCreatedEvent | ResponseCustomToolCallInputDeltaEvent | ResponseCustomToolCallInputDoneEvent
+    | ResponseFailedEvent | ResponseFileSearchCallCompletedEvent | ResponseFileSearchCallInProgressEvent
+    | ResponseFileSearchCallSearchingEvent | ResponseFunctionCallArgumentsDeltaEvent
+    | ResponseFunctionCallArgumentsDoneEvent | ResponseImageGenCallCompletedEvent
+    | ResponseImageGenCallGeneratingEvent | ResponseImageGenCallInProgressEvent |
+    ResponseImageGenCallPartialImageEvent | ResponseInProgressEvent | ResponseIncompleteEvent
+    | ResponseMCPCallCompletedEvent | ResponseMCPCallFailedEvent | ResponseMCPCallInProgressEvent
+    | ResponseMCPCallArgumentsDeltaEvent | ResponseMCPCallArgumentsDoneEvent | ResponseMCPListToolsCompletedEvent
+    | ResponseMCPListToolsFailedEvent | ResponseMCPListToolsInProgressEvent | ResponseOutputItemAddedEvent
+    | ResponseOutputItemDoneEvent | ResponseOutputTextAnnotationAddedEvent | ResponseTextDeltaEvent
+    | ResponseTextDoneEvent | ResponseQueuedEvent | ResponseReasoningSummaryPartAddedEvent
+    | ResponseReasoningSummaryPartDoneEvent | ResponseReasoningSummaryTextDeltaEvent
+    | ResponseReasoningSummaryTextDoneEvent | ResponseReasoningTextDeltaEvent | ResponseReasoningTextDoneEvent
+    | ResponseRefusalDeltaEvent | ResponseRefusalDoneEvent | ResponseWebSearchCallCompletedEvent
+    | ResponseWebSearchCallInProgressEvent | ResponseWebSearchCallSearchingEvent]'
   parameters:
   - name: call_id
     description: The call ID of the function call this output belongs to.
@@ -1117,13 +872,32 @@ methods:
   return:
     description: An iterator of events.
     types:
-    - <xref:typing.Iterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
+    - <xref:typing.Iterator>[<xref:ResponseStreamEvent>]
 - uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_function_shell_call
   name: output_item_function_shell_call
   summary: Yield the full lifecycle for a function shell call output item.
   signature: 'output_item_function_shell_call(call_id: str, action: FunctionShellAction,
-    environment: FunctionShellCallEnvironment, *, status: str = ''completed'') ->
-    Iterator[ResponseStreamEvent]'
+    environment: ContainerReferenceResource | LocalEnvironmentResource, *, status:
+    str = ''completed'') -> Iterator[ResponseErrorEvent | ResponseAudioDeltaEvent
+    | ResponseAudioDoneEvent | ResponseAudioTranscriptDeltaEvent | ResponseAudioTranscriptDoneEvent
+    | ResponseCodeInterpreterCallCompletedEvent | ResponseCodeInterpreterCallInProgressEvent
+    | ResponseCodeInterpreterCallInterpretingEvent | ResponseCodeInterpreterCallCodeDeltaEvent
+    | ResponseCodeInterpreterCallCodeDoneEvent | ResponseCompletedEvent | ResponseContentPartAddedEvent
+    | ResponseContentPartDoneEvent | ResponseCreatedEvent | ResponseCustomToolCallInputDeltaEvent
+    | ResponseCustomToolCallInputDoneEvent | ResponseFailedEvent | ResponseFileSearchCallCompletedEvent
+    | ResponseFileSearchCallInProgressEvent | ResponseFileSearchCallSearchingEvent
+    | ResponseFunctionCallArgumentsDeltaEvent | ResponseFunctionCallArgumentsDoneEvent
+    | ResponseImageGenCallCompletedEvent | ResponseImageGenCallGeneratingEvent | ResponseImageGenCallInProgressEvent
+    | ResponseImageGenCallPartialImageEvent | ResponseInProgressEvent | ResponseIncompleteEvent
+    | ResponseMCPCallCompletedEvent | ResponseMCPCallFailedEvent | ResponseMCPCallInProgressEvent
+    | ResponseMCPCallArgumentsDeltaEvent | ResponseMCPCallArgumentsDoneEvent | ResponseMCPListToolsCompletedEvent
+    | ResponseMCPListToolsFailedEvent | ResponseMCPListToolsInProgressEvent | ResponseOutputItemAddedEvent
+    | ResponseOutputItemDoneEvent | ResponseOutputTextAnnotationAddedEvent | ResponseTextDeltaEvent
+    | ResponseTextDoneEvent | ResponseQueuedEvent | ResponseReasoningSummaryPartAddedEvent
+    | ResponseReasoningSummaryPartDoneEvent | ResponseReasoningSummaryTextDeltaEvent
+    | ResponseReasoningSummaryTextDoneEvent | ResponseReasoningTextDeltaEvent | ResponseReasoningTextDoneEvent
+    | ResponseRefusalDeltaEvent | ResponseRefusalDoneEvent | ResponseWebSearchCallCompletedEvent
+    | ResponseWebSearchCallInProgressEvent | ResponseWebSearchCallSearchingEvent]'
   parameters:
   - name: call_id
     description: Unique identifier for this tool call.
@@ -1139,7 +913,7 @@ methods:
     description: The execution environment.
     isRequired: true
     types:
-    - <xref:azure.ai.agentserver.responses.models.FunctionShellCallEnvironment>
+    - <xref:FunctionShellCallEnvironment>
   keywordOnlyParameters:
   - name: status
     description: Status of the call; defaults to `"completed"`.
@@ -1151,12 +925,32 @@ methods:
   return:
     description: An iterator of events.
     types:
-    - <xref:typing.Iterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
+    - <xref:typing.Iterator>[<xref:ResponseStreamEvent>]
 - uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_function_shell_call_output
   name: output_item_function_shell_call_output
   summary: Yield the full lifecycle for a function shell call output item.
-  signature: 'output_item_function_shell_call_output(call_id: str, output: list[azure.ai.agentserver.responses.models._generated.sdk.models.models._models.FunctionShellCallOutputContent],
-    *, status: str = ''completed'', max_output_length: int | None = None) -> Iterator[ResponseStreamEvent]'
+  signature: 'output_item_function_shell_call_output(call_id: str, output: list[azure.ai.agentserver.responses.models._generated.types.FunctionShellCallOutputContent],
+    *, status: str = ''completed'', max_output_length: int | None = None) -> Iterator[ResponseErrorEvent
+    | ResponseAudioDeltaEvent | ResponseAudioDoneEvent | ResponseAudioTranscriptDeltaEvent
+    | ResponseAudioTranscriptDoneEvent | ResponseCodeInterpreterCallCompletedEvent
+    | ResponseCodeInterpreterCallInProgressEvent | ResponseCodeInterpreterCallInterpretingEvent
+    | ResponseCodeInterpreterCallCodeDeltaEvent | ResponseCodeInterpreterCallCodeDoneEvent
+    | ResponseCompletedEvent | ResponseContentPartAddedEvent | ResponseContentPartDoneEvent
+    | ResponseCreatedEvent | ResponseCustomToolCallInputDeltaEvent | ResponseCustomToolCallInputDoneEvent
+    | ResponseFailedEvent | ResponseFileSearchCallCompletedEvent | ResponseFileSearchCallInProgressEvent
+    | ResponseFileSearchCallSearchingEvent | ResponseFunctionCallArgumentsDeltaEvent
+    | ResponseFunctionCallArgumentsDoneEvent | ResponseImageGenCallCompletedEvent
+    | ResponseImageGenCallGeneratingEvent | ResponseImageGenCallInProgressEvent |
+    ResponseImageGenCallPartialImageEvent | ResponseInProgressEvent | ResponseIncompleteEvent
+    | ResponseMCPCallCompletedEvent | ResponseMCPCallFailedEvent | ResponseMCPCallInProgressEvent
+    | ResponseMCPCallArgumentsDeltaEvent | ResponseMCPCallArgumentsDoneEvent | ResponseMCPListToolsCompletedEvent
+    | ResponseMCPListToolsFailedEvent | ResponseMCPListToolsInProgressEvent | ResponseOutputItemAddedEvent
+    | ResponseOutputItemDoneEvent | ResponseOutputTextAnnotationAddedEvent | ResponseTextDeltaEvent
+    | ResponseTextDoneEvent | ResponseQueuedEvent | ResponseReasoningSummaryPartAddedEvent
+    | ResponseReasoningSummaryPartDoneEvent | ResponseReasoningSummaryTextDeltaEvent
+    | ResponseReasoningSummaryTextDoneEvent | ResponseReasoningTextDeltaEvent | ResponseReasoningTextDoneEvent
+    | ResponseRefusalDeltaEvent | ResponseRefusalDoneEvent | ResponseWebSearchCallCompletedEvent
+    | ResponseWebSearchCallInProgressEvent | ResponseWebSearchCallSearchingEvent]'
   parameters:
   - name: call_id
     description: The call ID this output belongs to.
@@ -1186,12 +980,32 @@ methods:
   return:
     description: An iterator of events.
     types:
-    - <xref:typing.Iterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
+    - <xref:typing.Iterator>[<xref:ResponseStreamEvent>]
 - uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_image_gen_call
   name: output_item_image_gen_call
   summary: "Yield the full lifecycle for an image generation call.\n\nEmits added\
     \ \u2192 in_progress \u2192 generating \u2192 completed \u2192 done(result)."
-  signature: 'output_item_image_gen_call(result_base64: str) -> Iterator[ResponseStreamEvent]'
+  signature: 'output_item_image_gen_call(result_base64: str) -> Iterator[ResponseErrorEvent
+    | ResponseAudioDeltaEvent | ResponseAudioDoneEvent | ResponseAudioTranscriptDeltaEvent
+    | ResponseAudioTranscriptDoneEvent | ResponseCodeInterpreterCallCompletedEvent
+    | ResponseCodeInterpreterCallInProgressEvent | ResponseCodeInterpreterCallInterpretingEvent
+    | ResponseCodeInterpreterCallCodeDeltaEvent | ResponseCodeInterpreterCallCodeDoneEvent
+    | ResponseCompletedEvent | ResponseContentPartAddedEvent | ResponseContentPartDoneEvent
+    | ResponseCreatedEvent | ResponseCustomToolCallInputDeltaEvent | ResponseCustomToolCallInputDoneEvent
+    | ResponseFailedEvent | ResponseFileSearchCallCompletedEvent | ResponseFileSearchCallInProgressEvent
+    | ResponseFileSearchCallSearchingEvent | ResponseFunctionCallArgumentsDeltaEvent
+    | ResponseFunctionCallArgumentsDoneEvent | ResponseImageGenCallCompletedEvent
+    | ResponseImageGenCallGeneratingEvent | ResponseImageGenCallInProgressEvent |
+    ResponseImageGenCallPartialImageEvent | ResponseInProgressEvent | ResponseIncompleteEvent
+    | ResponseMCPCallCompletedEvent | ResponseMCPCallFailedEvent | ResponseMCPCallInProgressEvent
+    | ResponseMCPCallArgumentsDeltaEvent | ResponseMCPCallArgumentsDoneEvent | ResponseMCPListToolsCompletedEvent
+    | ResponseMCPListToolsFailedEvent | ResponseMCPListToolsInProgressEvent | ResponseOutputItemAddedEvent
+    | ResponseOutputItemDoneEvent | ResponseOutputTextAnnotationAddedEvent | ResponseTextDeltaEvent
+    | ResponseTextDoneEvent | ResponseQueuedEvent | ResponseReasoningSummaryPartAddedEvent
+    | ResponseReasoningSummaryPartDoneEvent | ResponseReasoningSummaryTextDeltaEvent
+    | ResponseReasoningSummaryTextDoneEvent | ResponseReasoningTextDeltaEvent | ResponseReasoningTextDoneEvent
+    | ResponseRefusalDeltaEvent | ResponseRefusalDoneEvent | ResponseWebSearchCallCompletedEvent
+    | ResponseWebSearchCallInProgressEvent | ResponseWebSearchCallSearchingEvent]'
   parameters:
   - name: result_base64
     description: The base64-encoded image result.
@@ -1201,12 +1015,31 @@ methods:
   return:
     description: An iterator of events.
     types:
-    - <xref:typing.Iterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
+    - <xref:typing.Iterator>[<xref:ResponseStreamEvent>]
 - uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_local_shell_call
   name: output_item_local_shell_call
   summary: Yield the full lifecycle for a local shell call output item.
   signature: 'output_item_local_shell_call(call_id: str, action: LocalShellExecAction,
-    *, status: str = ''completed'') -> Iterator[ResponseStreamEvent]'
+    *, status: str = ''completed'') -> Iterator[ResponseErrorEvent | ResponseAudioDeltaEvent
+    | ResponseAudioDoneEvent | ResponseAudioTranscriptDeltaEvent | ResponseAudioTranscriptDoneEvent
+    | ResponseCodeInterpreterCallCompletedEvent | ResponseCodeInterpreterCallInProgressEvent
+    | ResponseCodeInterpreterCallInterpretingEvent | ResponseCodeInterpreterCallCodeDeltaEvent
+    | ResponseCodeInterpreterCallCodeDoneEvent | ResponseCompletedEvent | ResponseContentPartAddedEvent
+    | ResponseContentPartDoneEvent | ResponseCreatedEvent | ResponseCustomToolCallInputDeltaEvent
+    | ResponseCustomToolCallInputDoneEvent | ResponseFailedEvent | ResponseFileSearchCallCompletedEvent
+    | ResponseFileSearchCallInProgressEvent | ResponseFileSearchCallSearchingEvent
+    | ResponseFunctionCallArgumentsDeltaEvent | ResponseFunctionCallArgumentsDoneEvent
+    | ResponseImageGenCallCompletedEvent | ResponseImageGenCallGeneratingEvent | ResponseImageGenCallInProgressEvent
+    | ResponseImageGenCallPartialImageEvent | ResponseInProgressEvent | ResponseIncompleteEvent
+    | ResponseMCPCallCompletedEvent | ResponseMCPCallFailedEvent | ResponseMCPCallInProgressEvent
+    | ResponseMCPCallArgumentsDeltaEvent | ResponseMCPCallArgumentsDoneEvent | ResponseMCPListToolsCompletedEvent
+    | ResponseMCPListToolsFailedEvent | ResponseMCPListToolsInProgressEvent | ResponseOutputItemAddedEvent
+    | ResponseOutputItemDoneEvent | ResponseOutputTextAnnotationAddedEvent | ResponseTextDeltaEvent
+    | ResponseTextDoneEvent | ResponseQueuedEvent | ResponseReasoningSummaryPartAddedEvent
+    | ResponseReasoningSummaryPartDoneEvent | ResponseReasoningSummaryTextDeltaEvent
+    | ResponseReasoningSummaryTextDoneEvent | ResponseReasoningTextDeltaEvent | ResponseReasoningTextDoneEvent
+    | ResponseRefusalDeltaEvent | ResponseRefusalDoneEvent | ResponseWebSearchCallCompletedEvent
+    | ResponseWebSearchCallInProgressEvent | ResponseWebSearchCallSearchingEvent]'
   parameters:
   - name: call_id
     description: Unique identifier for this tool call.
@@ -1229,11 +1062,31 @@ methods:
   return:
     description: An iterator of events.
     types:
-    - <xref:typing.Iterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
+    - <xref:typing.Iterator>[<xref:ResponseStreamEvent>]
 - uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_local_shell_call_output
   name: output_item_local_shell_call_output
   summary: Yield the full lifecycle for a local shell call output item.
-  signature: 'output_item_local_shell_call_output(output: str) -> Iterator[ResponseStreamEvent]'
+  signature: 'output_item_local_shell_call_output(output: str) -> Iterator[ResponseErrorEvent
+    | ResponseAudioDeltaEvent | ResponseAudioDoneEvent | ResponseAudioTranscriptDeltaEvent
+    | ResponseAudioTranscriptDoneEvent | ResponseCodeInterpreterCallCompletedEvent
+    | ResponseCodeInterpreterCallInProgressEvent | ResponseCodeInterpreterCallInterpretingEvent
+    | ResponseCodeInterpreterCallCodeDeltaEvent | ResponseCodeInterpreterCallCodeDoneEvent
+    | ResponseCompletedEvent | ResponseContentPartAddedEvent | ResponseContentPartDoneEvent
+    | ResponseCreatedEvent | ResponseCustomToolCallInputDeltaEvent | ResponseCustomToolCallInputDoneEvent
+    | ResponseFailedEvent | ResponseFileSearchCallCompletedEvent | ResponseFileSearchCallInProgressEvent
+    | ResponseFileSearchCallSearchingEvent | ResponseFunctionCallArgumentsDeltaEvent
+    | ResponseFunctionCallArgumentsDoneEvent | ResponseImageGenCallCompletedEvent
+    | ResponseImageGenCallGeneratingEvent | ResponseImageGenCallInProgressEvent |
+    ResponseImageGenCallPartialImageEvent | ResponseInProgressEvent | ResponseIncompleteEvent
+    | ResponseMCPCallCompletedEvent | ResponseMCPCallFailedEvent | ResponseMCPCallInProgressEvent
+    | ResponseMCPCallArgumentsDeltaEvent | ResponseMCPCallArgumentsDoneEvent | ResponseMCPListToolsCompletedEvent
+    | ResponseMCPListToolsFailedEvent | ResponseMCPListToolsInProgressEvent | ResponseOutputItemAddedEvent
+    | ResponseOutputItemDoneEvent | ResponseOutputTextAnnotationAddedEvent | ResponseTextDeltaEvent
+    | ResponseTextDoneEvent | ResponseQueuedEvent | ResponseReasoningSummaryPartAddedEvent
+    | ResponseReasoningSummaryPartDoneEvent | ResponseReasoningSummaryTextDeltaEvent
+    | ResponseReasoningSummaryTextDoneEvent | ResponseReasoningTextDeltaEvent | ResponseReasoningTextDoneEvent
+    | ResponseRefusalDeltaEvent | ResponseRefusalDoneEvent | ResponseWebSearchCallCompletedEvent
+    | ResponseWebSearchCallInProgressEvent | ResponseWebSearchCallSearchingEvent]'
   parameters:
   - name: output
     description: The shell output string.
@@ -1243,12 +1096,31 @@ methods:
   return:
     description: An iterator of events.
     types:
-    - <xref:typing.Iterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
+    - <xref:typing.Iterator>[<xref:ResponseStreamEvent>]
 - uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_mcp_approval_request
   name: output_item_mcp_approval_request
   summary: Yield the full lifecycle for an MCP approval request item.
   signature: 'output_item_mcp_approval_request(server_label: str, name: str, arguments:
-    str) -> Iterator[ResponseStreamEvent]'
+    str) -> Iterator[ResponseErrorEvent | ResponseAudioDeltaEvent | ResponseAudioDoneEvent
+    | ResponseAudioTranscriptDeltaEvent | ResponseAudioTranscriptDoneEvent | ResponseCodeInterpreterCallCompletedEvent
+    | ResponseCodeInterpreterCallInProgressEvent | ResponseCodeInterpreterCallInterpretingEvent
+    | ResponseCodeInterpreterCallCodeDeltaEvent | ResponseCodeInterpreterCallCodeDoneEvent
+    | ResponseCompletedEvent | ResponseContentPartAddedEvent | ResponseContentPartDoneEvent
+    | ResponseCreatedEvent | ResponseCustomToolCallInputDeltaEvent | ResponseCustomToolCallInputDoneEvent
+    | ResponseFailedEvent | ResponseFileSearchCallCompletedEvent | ResponseFileSearchCallInProgressEvent
+    | ResponseFileSearchCallSearchingEvent | ResponseFunctionCallArgumentsDeltaEvent
+    | ResponseFunctionCallArgumentsDoneEvent | ResponseImageGenCallCompletedEvent
+    | ResponseImageGenCallGeneratingEvent | ResponseImageGenCallInProgressEvent |
+    ResponseImageGenCallPartialImageEvent | ResponseInProgressEvent | ResponseIncompleteEvent
+    | ResponseMCPCallCompletedEvent | ResponseMCPCallFailedEvent | ResponseMCPCallInProgressEvent
+    | ResponseMCPCallArgumentsDeltaEvent | ResponseMCPCallArgumentsDoneEvent | ResponseMCPListToolsCompletedEvent
+    | ResponseMCPListToolsFailedEvent | ResponseMCPListToolsInProgressEvent | ResponseOutputItemAddedEvent
+    | ResponseOutputItemDoneEvent | ResponseOutputTextAnnotationAddedEvent | ResponseTextDeltaEvent
+    | ResponseTextDoneEvent | ResponseQueuedEvent | ResponseReasoningSummaryPartAddedEvent
+    | ResponseReasoningSummaryPartDoneEvent | ResponseReasoningSummaryTextDeltaEvent
+    | ResponseReasoningSummaryTextDoneEvent | ResponseReasoningTextDeltaEvent | ResponseReasoningTextDoneEvent
+    | ResponseRefusalDeltaEvent | ResponseRefusalDoneEvent | ResponseWebSearchCallCompletedEvent
+    | ResponseWebSearchCallInProgressEvent | ResponseWebSearchCallSearchingEvent]'
   parameters:
   - name: server_label
     description: Label identifying the MCP server.
@@ -1268,12 +1140,31 @@ methods:
   return:
     description: An iterator of events.
     types:
-    - <xref:typing.Iterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
+    - <xref:typing.Iterator>[<xref:ResponseStreamEvent>]
 - uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_mcp_approval_response
   name: output_item_mcp_approval_response
   summary: Yield the full lifecycle for an MCP approval response item.
   signature: 'output_item_mcp_approval_response(approval_request_id: str, approve:
-    bool, *, reason: str | None = None) -> Iterator[ResponseStreamEvent]'
+    bool, *, reason: str | None = None) -> Iterator[ResponseErrorEvent | ResponseAudioDeltaEvent
+    | ResponseAudioDoneEvent | ResponseAudioTranscriptDeltaEvent | ResponseAudioTranscriptDoneEvent
+    | ResponseCodeInterpreterCallCompletedEvent | ResponseCodeInterpreterCallInProgressEvent
+    | ResponseCodeInterpreterCallInterpretingEvent | ResponseCodeInterpreterCallCodeDeltaEvent
+    | ResponseCodeInterpreterCallCodeDoneEvent | ResponseCompletedEvent | ResponseContentPartAddedEvent
+    | ResponseContentPartDoneEvent | ResponseCreatedEvent | ResponseCustomToolCallInputDeltaEvent
+    | ResponseCustomToolCallInputDoneEvent | ResponseFailedEvent | ResponseFileSearchCallCompletedEvent
+    | ResponseFileSearchCallInProgressEvent | ResponseFileSearchCallSearchingEvent
+    | ResponseFunctionCallArgumentsDeltaEvent | ResponseFunctionCallArgumentsDoneEvent
+    | ResponseImageGenCallCompletedEvent | ResponseImageGenCallGeneratingEvent | ResponseImageGenCallInProgressEvent
+    | ResponseImageGenCallPartialImageEvent | ResponseInProgressEvent | ResponseIncompleteEvent
+    | ResponseMCPCallCompletedEvent | ResponseMCPCallFailedEvent | ResponseMCPCallInProgressEvent
+    | ResponseMCPCallArgumentsDeltaEvent | ResponseMCPCallArgumentsDoneEvent | ResponseMCPListToolsCompletedEvent
+    | ResponseMCPListToolsFailedEvent | ResponseMCPListToolsInProgressEvent | ResponseOutputItemAddedEvent
+    | ResponseOutputItemDoneEvent | ResponseOutputTextAnnotationAddedEvent | ResponseTextDeltaEvent
+    | ResponseTextDoneEvent | ResponseQueuedEvent | ResponseReasoningSummaryPartAddedEvent
+    | ResponseReasoningSummaryPartDoneEvent | ResponseReasoningSummaryTextDeltaEvent
+    | ResponseReasoningSummaryTextDoneEvent | ResponseReasoningTextDeltaEvent | ResponseReasoningTextDoneEvent
+    | ResponseRefusalDeltaEvent | ResponseRefusalDoneEvent | ResponseWebSearchCallCompletedEvent
+    | ResponseWebSearchCallInProgressEvent | ResponseWebSearchCallSearchingEvent]'
   parameters:
   - name: approval_request_id
     description: The request ID being responded to.
@@ -1296,7 +1187,7 @@ methods:
   return:
     description: An iterator of events.
     types:
-    - <xref:typing.Iterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
+    - <xref:typing.Iterator>[<xref:ResponseStreamEvent>]
 - uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_message
   name: output_item_message
   summary: 'Yield the full lifecycle for a text message output item.
@@ -1307,8 +1198,28 @@ methods:
     output_text.done, optionally annotation.added events,
 
     content_part.done, and output_item.done.'
-  signature: 'output_item_message(text: str, *, annotations: Sequence[Annotation]
-    | None = None) -> Iterator[ResponseStreamEvent]'
+  signature: 'output_item_message(text: str, *, annotations: Sequence[ContainerFileCitationBody
+    | FileCitationBody | FilePath | UrlCitationBody] | None = None) -> Iterator[ResponseErrorEvent
+    | ResponseAudioDeltaEvent | ResponseAudioDoneEvent | ResponseAudioTranscriptDeltaEvent
+    | ResponseAudioTranscriptDoneEvent | ResponseCodeInterpreterCallCompletedEvent
+    | ResponseCodeInterpreterCallInProgressEvent | ResponseCodeInterpreterCallInterpretingEvent
+    | ResponseCodeInterpreterCallCodeDeltaEvent | ResponseCodeInterpreterCallCodeDoneEvent
+    | ResponseCompletedEvent | ResponseContentPartAddedEvent | ResponseContentPartDoneEvent
+    | ResponseCreatedEvent | ResponseCustomToolCallInputDeltaEvent | ResponseCustomToolCallInputDoneEvent
+    | ResponseFailedEvent | ResponseFileSearchCallCompletedEvent | ResponseFileSearchCallInProgressEvent
+    | ResponseFileSearchCallSearchingEvent | ResponseFunctionCallArgumentsDeltaEvent
+    | ResponseFunctionCallArgumentsDoneEvent | ResponseImageGenCallCompletedEvent
+    | ResponseImageGenCallGeneratingEvent | ResponseImageGenCallInProgressEvent |
+    ResponseImageGenCallPartialImageEvent | ResponseInProgressEvent | ResponseIncompleteEvent
+    | ResponseMCPCallCompletedEvent | ResponseMCPCallFailedEvent | ResponseMCPCallInProgressEvent
+    | ResponseMCPCallArgumentsDeltaEvent | ResponseMCPCallArgumentsDoneEvent | ResponseMCPListToolsCompletedEvent
+    | ResponseMCPListToolsFailedEvent | ResponseMCPListToolsInProgressEvent | ResponseOutputItemAddedEvent
+    | ResponseOutputItemDoneEvent | ResponseOutputTextAnnotationAddedEvent | ResponseTextDeltaEvent
+    | ResponseTextDoneEvent | ResponseQueuedEvent | ResponseReasoningSummaryPartAddedEvent
+    | ResponseReasoningSummaryPartDoneEvent | ResponseReasoningSummaryTextDeltaEvent
+    | ResponseReasoningSummaryTextDoneEvent | ResponseReasoningTextDeltaEvent | ResponseReasoningTextDoneEvent
+    | ResponseRefusalDeltaEvent | ResponseRefusalDoneEvent | ResponseWebSearchCallCompletedEvent
+    | ResponseWebSearchCallInProgressEvent | ResponseWebSearchCallSearchingEvent]'
   parameters:
   - name: text
     description: The text content of the message.
@@ -1326,7 +1237,7 @@ methods:
   return:
     description: An iterator of events.
     types:
-    - <xref:typing.Iterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
+    - <xref:typing.Iterator>[<xref:ResponseStreamEvent>]
 - uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_reasoning_item
   name: output_item_reasoning_item
   summary: 'Yield the full lifecycle for a reasoning output item.
@@ -1337,7 +1248,27 @@ methods:
     reasoning_summary_text.delta, reasoning_summary_text.done,
 
     reasoning_summary_part.done, and output_item.done.'
-  signature: 'output_item_reasoning_item(summary_text: str) -> Iterator[ResponseStreamEvent]'
+  signature: 'output_item_reasoning_item(summary_text: str) -> Iterator[ResponseErrorEvent
+    | ResponseAudioDeltaEvent | ResponseAudioDoneEvent | ResponseAudioTranscriptDeltaEvent
+    | ResponseAudioTranscriptDoneEvent | ResponseCodeInterpreterCallCompletedEvent
+    | ResponseCodeInterpreterCallInProgressEvent | ResponseCodeInterpreterCallInterpretingEvent
+    | ResponseCodeInterpreterCallCodeDeltaEvent | ResponseCodeInterpreterCallCodeDoneEvent
+    | ResponseCompletedEvent | ResponseContentPartAddedEvent | ResponseContentPartDoneEvent
+    | ResponseCreatedEvent | ResponseCustomToolCallInputDeltaEvent | ResponseCustomToolCallInputDoneEvent
+    | ResponseFailedEvent | ResponseFileSearchCallCompletedEvent | ResponseFileSearchCallInProgressEvent
+    | ResponseFileSearchCallSearchingEvent | ResponseFunctionCallArgumentsDeltaEvent
+    | ResponseFunctionCallArgumentsDoneEvent | ResponseImageGenCallCompletedEvent
+    | ResponseImageGenCallGeneratingEvent | ResponseImageGenCallInProgressEvent |
+    ResponseImageGenCallPartialImageEvent | ResponseInProgressEvent | ResponseIncompleteEvent
+    | ResponseMCPCallCompletedEvent | ResponseMCPCallFailedEvent | ResponseMCPCallInProgressEvent
+    | ResponseMCPCallArgumentsDeltaEvent | ResponseMCPCallArgumentsDoneEvent | ResponseMCPListToolsCompletedEvent
+    | ResponseMCPListToolsFailedEvent | ResponseMCPListToolsInProgressEvent | ResponseOutputItemAddedEvent
+    | ResponseOutputItemDoneEvent | ResponseOutputTextAnnotationAddedEvent | ResponseTextDeltaEvent
+    | ResponseTextDoneEvent | ResponseQueuedEvent | ResponseReasoningSummaryPartAddedEvent
+    | ResponseReasoningSummaryPartDoneEvent | ResponseReasoningSummaryTextDeltaEvent
+    | ResponseReasoningSummaryTextDoneEvent | ResponseReasoningTextDeltaEvent | ResponseReasoningTextDoneEvent
+    | ResponseRefusalDeltaEvent | ResponseRefusalDoneEvent | ResponseWebSearchCallCompletedEvent
+    | ResponseWebSearchCallInProgressEvent | ResponseWebSearchCallSearchingEvent]'
   parameters:
   - name: summary_text
     description: The reasoning summary text.
@@ -1347,14 +1278,34 @@ methods:
   return:
     description: An iterator of events.
     types:
-    - <xref:typing.Iterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
+    - <xref:typing.Iterator>[<xref:ResponseStreamEvent>]
 - uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.output_item_structured_outputs
   name: output_item_structured_outputs
   summary: 'Yield the full lifecycle for a structured outputs item.
 
 
     Emits output_item.added and output_item.done.'
-  signature: 'output_item_structured_outputs(output: Any) -> Iterator[ResponseStreamEvent]'
+  signature: 'output_item_structured_outputs(output: Any) -> Iterator[ResponseErrorEvent
+    | ResponseAudioDeltaEvent | ResponseAudioDoneEvent | ResponseAudioTranscriptDeltaEvent
+    | ResponseAudioTranscriptDoneEvent | ResponseCodeInterpreterCallCompletedEvent
+    | ResponseCodeInterpreterCallInProgressEvent | ResponseCodeInterpreterCallInterpretingEvent
+    | ResponseCodeInterpreterCallCodeDeltaEvent | ResponseCodeInterpreterCallCodeDoneEvent
+    | ResponseCompletedEvent | ResponseContentPartAddedEvent | ResponseContentPartDoneEvent
+    | ResponseCreatedEvent | ResponseCustomToolCallInputDeltaEvent | ResponseCustomToolCallInputDoneEvent
+    | ResponseFailedEvent | ResponseFileSearchCallCompletedEvent | ResponseFileSearchCallInProgressEvent
+    | ResponseFileSearchCallSearchingEvent | ResponseFunctionCallArgumentsDeltaEvent
+    | ResponseFunctionCallArgumentsDoneEvent | ResponseImageGenCallCompletedEvent
+    | ResponseImageGenCallGeneratingEvent | ResponseImageGenCallInProgressEvent |
+    ResponseImageGenCallPartialImageEvent | ResponseInProgressEvent | ResponseIncompleteEvent
+    | ResponseMCPCallCompletedEvent | ResponseMCPCallFailedEvent | ResponseMCPCallInProgressEvent
+    | ResponseMCPCallArgumentsDeltaEvent | ResponseMCPCallArgumentsDoneEvent | ResponseMCPListToolsCompletedEvent
+    | ResponseMCPListToolsFailedEvent | ResponseMCPListToolsInProgressEvent | ResponseOutputItemAddedEvent
+    | ResponseOutputItemDoneEvent | ResponseOutputTextAnnotationAddedEvent | ResponseTextDeltaEvent
+    | ResponseTextDoneEvent | ResponseQueuedEvent | ResponseReasoningSummaryPartAddedEvent
+    | ResponseReasoningSummaryPartDoneEvent | ResponseReasoningSummaryTextDeltaEvent
+    | ResponseReasoningSummaryTextDoneEvent | ResponseReasoningTextDeltaEvent | ResponseReasoningTextDoneEvent
+    | ResponseRefusalDeltaEvent | ResponseRefusalDoneEvent | ResponseWebSearchCallCompletedEvent
+    | ResponseWebSearchCallInProgressEvent | ResponseWebSearchCallSearchingEvent]'
   parameters:
   - name: output
     description: The structured output data (will be serialized as-is).
@@ -1364,12 +1315,23 @@ methods:
   return:
     description: An iterator of events.
     types:
-    - <xref:typing.Iterator>[<xref:azure.ai.agentserver.responses.models.ResponseStreamEvent>]
+    - <xref:typing.Iterator>[<xref:ResponseStreamEvent>]
 attributes:
+- uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.internal_metadata
+  name: internal_metadata
+  summary: "Live, mutable response-level framework-internal metadata.\n\nA convenience\
+    \ proxy backed by a reserved `_internal_metadata` key\ninside the response's public\
+    \ `metadata` map \u2014 read / write / delete in\nplace (`stream.internal_metadata[\"\
+    phase\"] = 3`). Stripped from every\nclient-facing payload and persisted at the\
+    \ next `yield\nstream.checkpoint()` (and at terminal). Values may be any\nJSON-serialisable\
+    \ type."
+  return:
+    types:
+    - <xref:collections.abc.MutableMapping>[<xref:str>, <xref:typing.Any>]
 - uid: azure.ai.agentserver.responses.streaming.ResponseEventStream.response
   name: response
   summary: Return the current response envelope.
   return:
     description: The mutable response envelope being built by this stream.
     types:
-    - <xref:azure.ai.agentserver.responses.models._generated.ResponseObject>
+    - <xref:azure.ai.agentserver.responses.models.ResponseObject>

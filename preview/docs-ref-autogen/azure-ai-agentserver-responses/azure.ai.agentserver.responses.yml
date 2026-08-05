@@ -5,27 +5,6 @@ fullName: azure.ai.agentserver.responses
 summary: Public API surface for the Azure AI Agent Server Responses package.
 type: rootImport
 functions:
-- uid: azure.ai.agentserver.responses.get_conversation_id
-  name: get_conversation_id
-  summary: 'Extract conversation ID from a request or response''s `conversation` field.
-
-
-    If conversation is a plain string, returns it directly.
-
-    If it is a <xref:azure.ai.agentserver.responses.ConversationParam_2> object, returns
-    its `id` field.'
-  signature: 'get_conversation_id(request: CreateResponse | ResponseObject) -> str
-    | None'
-  parameters:
-  - name: request
-    description: The create-response request or response object.
-    isRequired: true
-    types:
-    - <xref:azure.ai.agentserver.responses.CreateResponse> | <xref:azure.ai.agentserver.responses.ResponseObject>
-  return:
-    description: The conversation ID, or `None` if no conversation is set.
-    types:
-    - <xref:str> | <xref:None>
 - uid: azure.ai.agentserver.responses.get_input_expanded
   name: get_input_expanded
   summary: "Normalize `CreateResponse.input` into a list of <xref:azure.ai.agentserver.responses.Item>.\n\
@@ -35,7 +14,27 @@ functions:
     \n* If input is already a list, each element is deserialized into the appropriate\
     \ <xref:azure.ai.agentserver.responses.Item> subclass (e.g., <xref:azure.ai.agentserver.responses.ItemMessage>,\
     \ <xref:azure.ai.agentserver.responses.FunctionCallOutputItemParam>)."
-  signature: 'get_input_expanded(request: CreateResponse) -> list[azure.ai.agentserver.responses.models._generated.sdk.models.models._models.Item]'
+  signature: 'get_input_expanded(request: CreateResponse) -> list[Union[azure.ai.agentserver.responses.models._generated.types.AdditionalToolsItemParam,
+    azure.ai.agentserver.responses.models._generated.types.ApplyPatchToolCallItemParam,
+    azure.ai.agentserver.responses.models._generated.types.ApplyPatchToolCallOutputItemParam,
+    azure.ai.agentserver.responses.models._generated.types.ItemCodeInterpreterToolCall,
+    azure.ai.agentserver.responses.models._generated.types.CompactionSummaryItemParam,
+    azure.ai.agentserver.responses.models._generated.types.ItemComputerToolCall, azure.ai.agentserver.responses.models._generated.types.ComputerCallOutputItemParam,
+    azure.ai.agentserver.responses.models._generated.types.ItemCustomToolCall, azure.ai.agentserver.responses.models._generated.types.ItemCustomToolCallOutput,
+    azure.ai.agentserver.responses.models._generated.types.ItemFileSearchToolCall,
+    azure.ai.agentserver.responses.models._generated.types.ItemFunctionToolCall, azure.ai.agentserver.responses.models._generated.types.FunctionCallOutputItemParam,
+    azure.ai.agentserver.responses.models._generated.types.ItemImageGenToolCall, azure.ai.agentserver.responses.models._generated.types.ItemReferenceParam,
+    azure.ai.agentserver.responses.models._generated.types.ItemLocalShellToolCall,
+    azure.ai.agentserver.responses.models._generated.types.ItemLocalShellToolCallOutput,
+    azure.ai.agentserver.responses.models._generated.types.ItemMcpApprovalRequest,
+    azure.ai.agentserver.responses.models._generated.types.MCPApprovalResponse, azure.ai.agentserver.responses.models._generated.types.ItemMcpToolCall,
+    azure.ai.agentserver.responses.models._generated.types.ItemMcpListTools, azure.ai.agentserver.responses.models._generated.types.MemorySearchToolCallItemParam,
+    azure.ai.agentserver.responses.models._generated.types.ItemMessage, azure.ai.agentserver.responses.models._generated.types.ItemOutputMessage,
+    azure.ai.agentserver.responses.models._generated.types.ItemReasoningItem, azure.ai.agentserver.responses.models._generated.types.FunctionShellCallItemParam,
+    azure.ai.agentserver.responses.models._generated.types.FunctionShellCallOutputItemParam,
+    azure.ai.agentserver.responses.models._generated.types.ToolSearchCallItemParam,
+    azure.ai.agentserver.responses.models._generated.types.ToolSearchOutputItemParam,
+    azure.ai.agentserver.responses.models._generated.types.ItemWebSearchToolCall]]'
   parameters:
   - name: request
     description: The create-response request.
@@ -45,43 +44,11 @@ functions:
   return:
     description: A list of typed input items.
     types:
-    - <xref:list>[<xref:azure.ai.agentserver.responses.models.Item>]
-- uid: azure.ai.agentserver.responses.to_output_item
-  name: to_output_item
-  summary: "Convert an <xref:azure.ai.agentserver.responses.Item> to the corresponding\
-    \ <xref:azure.ai.agentserver.responses.OutputItem>.\n\nGenerates a type-specific\
-    \ ID via <xref:IdGenerator.new_item_id> and\napplies status according to per-type\
-    \ rules:\n\n* **Completed** \u2014 explicitly listed types get `status = \"completed\"\
-    `. \n\n* **Preserve status** \u2014 types whose original status must be kept (`ItemOutputMessage`,\
-    \ `ApplyPatch*`). \n\n* **No status** \u2014 all other types (including any future\
-    \ types) receive no status value.  This opt-in design prevents newly-added item\
-    \ types from accidentally gaining a status field. \n\nReturns `None` for <xref:azure.ai.agentserver.responses.ItemReferenceParam>\
-    \ or unrecognised types.\n\nThe conversion leverages `_deserialize(OutputItem,\
-    \ data)` which\nresolves the correct subtype via the `type` discriminator.  All\
-    \ 24\ninput/output discriminator pairs share the same string values, so the\n\
-    dict representation produced by `dict(item)` is directly compatible\nwith `OutputItem`\
-    \ deserialization."
-  signature: 'to_output_item(item: Item, response_id: str | None = None) -> OutputItem
-    | None'
-  parameters:
-  - name: item
-    description: The input item to convert.
-    isRequired: true
-    types:
-    - <xref:azure.ai.agentserver.responses.models.Item>
-  - name: response_id
-    description: 'An existing ID (typically the response ID) used as
-
-      a partition-key hint for the generated item ID.'
-    defaultValue: None
-    types:
-    - <xref:str> | <xref:None>
-  return:
-    description: The converted output item, or `None` if non-convertible.
-    types:
-    - <xref:azure.ai.agentserver.responses.models.OutputItem> | <xref:None>
+    - <xref:list>[<xref:Item>]
 classes:
+- azure.ai.agentserver.responses.ConversationChainMetadataNamespace
 - azure.ai.agentserver.responses.CreateResponse
+- azure.ai.agentserver.responses.FileResponseStore
 - azure.ai.agentserver.responses.FoundryApiError
 - azure.ai.agentserver.responses.FoundryBadRequestError
 - azure.ai.agentserver.responses.FoundryResourceNotFoundError
@@ -92,13 +59,14 @@ classes:
 - azure.ai.agentserver.responses.PlatformContext
 - azure.ai.agentserver.responses.ResponseContext
 - azure.ai.agentserver.responses.ResponseEventStream
+- azure.ai.agentserver.responses.ResponseExitForRecovery
 - azure.ai.agentserver.responses.ResponseObject
 - azure.ai.agentserver.responses.ResponseProviderProtocol
-- azure.ai.agentserver.responses.ResponseStreamProviderProtocol
 - azure.ai.agentserver.responses.ResponsesAgentServerHost
 - azure.ai.agentserver.responses.ResponsesServerOptions
 - azure.ai.agentserver.responses.TextResponse
 packages:
+- azure.ai.agentserver.responses.aio
 - azure.ai.agentserver.responses.hosting
 - azure.ai.agentserver.responses.models
 - azure.ai.agentserver.responses.store

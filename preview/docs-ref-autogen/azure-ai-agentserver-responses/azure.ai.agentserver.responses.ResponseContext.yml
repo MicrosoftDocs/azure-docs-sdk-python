@@ -4,7 +4,30 @@ name: ResponseContext
 fullName: azure.ai.agentserver.responses.ResponseContext
 module: azure.ai.agentserver.responses
 summary: "Runtime context exposed to response handlers and used by hosting orchestration.\n\
-  \n* response identifier \n\n* shutdown signal flag \n\n* async input/history resolution"
+  \nPublic surface (post-spec-024 Phase 5):\n\nIdentity / request shape:\n   * <xref:azure.ai.agentserver.responses.ResponseContext.response_id>\
+  \ \u2014 stable id for this response. \n\n   * <xref:azure.ai.agentserver.responses.ResponseContext.mode_flags>\
+  \ \u2014 bg/stream/store flags. \n\n   * <xref:azure.ai.agentserver.responses.ResponseContext.request>\
+  \ \u2014 parsed CreateResponse. \n\n   * <xref:azure.ai.agentserver.responses.ResponseContext.created_at>\
+  \ \u2014 UTC timestamp. \n\n   * <xref:azure.ai.agentserver.responses.ResponseContext.client_headers>\
+  \ / <xref:azure.ai.agentserver.responses.ResponseContext.query_parameters> \u2014\
+  \ request metadata. \n\n   * <xref:azure.ai.agentserver.responses.ResponseContext.platform_context>\
+  \ \u2014 tenant partition identity (user id / call id). \n\n   * <xref:azure.ai.agentserver.responses.ResponseContext.conversation_id>\
+  \ / <xref:previous_response_id>. \n\n   * <xref:azure.ai.agentserver.responses.ResponseContext.conversation_chain_id>\
+  \ \u2014 derived chain identifier. \n\nRecovery + steering classifiers (Proposal\
+  \ #6/#10/#13):\n   * <xref:azure.ai.agentserver.responses.ResponseContext.is_recovery>\
+  \ \u2014 True on a crash-recovered re-entry. \n\n   * <xref:azure.ai.agentserver.responses.ResponseContext.is_steered_turn>\
+  \ \u2014 True on a steering-drain re-entry. \n\n   * <xref:azure.ai.agentserver.responses.ResponseContext.pending_input_count>\
+  \ \u2014 queued steering inputs (live count). \n\n   * <xref:azure.ai.agentserver.responses.ResponseContext.conversation_chain_metadata>\
+  \ \u2014 <xref:azure.ai.agentserver.responses.ConversationChainMetadataNamespace>-typed\
+  \ checkpoint store. \n\nCancellation surface (Proposal #11):\n   * <xref:cancel>\
+  \ \u2014 asyncio.Event set when any cancel cause fires. \n\n   * <xref:azure.ai.agentserver.responses.ResponseContext.shutdown>\
+  \ \u2014 asyncio.Event set when the server is shutting down. \n\n   * <xref:azure.ai.agentserver.responses.ResponseContext.client_cancelled>\
+  \ \u2014 bool, True for explicit /cancel endpoint OR non-background POST disconnect.\
+  \ \n\n   * <xref:azure.ai.agentserver.responses.ResponseContext.exit_for_recovery>\
+  \ \u2014 opt-in graceful-shutdown primitive (call as a bare `await context.exit_for_recovery()`\
+  \ \u2014 it raises internally; works in any handler shape). \n\nAsync helpers:\n\
+  \   * <xref:azure.ai.agentserver.responses.ResponseContext.get_input_items> / <xref:azure.ai.agentserver.responses.ResponseContext.get_input_text>\
+  \ / <xref:azure.ai.agentserver.responses.ResponseContext.get_history>."
 constructor:
   syntax: 'ResponseContext(*, response_id: str, mode_flags: ResponseModeFlags, request:
     CreateResponse | None = None, created_at: datetime | None = None, provider: ResponseProviderProtocol
@@ -12,7 +35,8 @@ constructor:
     previous_response_id: str | None = None, conversation_id: str | None = None, history_limit:
     int = 100, client_headers: dict[str, str] | None = None, query_parameters: dict[str,
     str] | None = None, platform_context: PlatformContext | None = None, prefetched_history_ids:
-    list[str] | None = None)'
+    list[str] | None = None, steerable: bool = False, agent_name: str = '''', session_id:
+    str = '''')'
   keywordOnlyParameters:
   - name: response_id
     isRequired: true
@@ -40,7 +64,36 @@ constructor:
     defaultValue: None
   - name: prefetched_history_ids
     defaultValue: None
+  - name: steerable
+    defaultValue: 'False'
+  - name: agent_name
+  - name: session_id
 methods:
+- uid: azure.ai.agentserver.responses.ResponseContext.exit_for_recovery
+  name: exit_for_recovery
+  summary: "Defer this response to next-lifetime recovery \u2014 one idiom, any shape.\n\
+    \nCall it as a bare statement, in coroutine, async-generator, or sync\nhandlers\
+    \ alike:\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"xml:space\": \"preserve\", \"language\": \"\
+    default\", \"force\": false, \"linenos\": false} -->\n\n````default\n\n   if context.shutdown.is_set():\n\
+    \       await context.exit_for_recovery()\n   ````\n\nIt **raises** <xref:azure.ai.agentserver.responses.ResponseExitForRecovery>\
+    \ internally \u2014 it NEVER\nreturns. The framework catches the signal at the\
+    \ resilient task boundary\nand leaves the response `in_progress` so the handler\
+    \ is re-invoked on\nthe next process start (for `resilient_background=True` responses).\n\
+    \n(Streaming handlers that simply `return` without emitting a terminal\nwhile\
+    \ `context.shutdown` is set also recover via the implicit\nfallback; `await context.exit_for_recovery()`\
+    \ is the explicit,\nrecommended form.)"
+  signature: async exit_for_recovery() -> NoReturn
+  return:
+    types:
+    - <xref:typing.NoReturn>
+  exceptions:
+  - type: RuntimeError
+    description: When called outside a resilient task body (e.g. on a `store=false`
+      request where there is no task to defer).
+  - type: azure.ai.agentserver.responses.ResponseExitForRecovery
+    description: "Always, on success \u2014 the control-flow\nsignal the framework\
+      \ catches."
 - uid: azure.ai.agentserver.responses.ResponseContext.get_history
   name: get_history
   summary: 'Resolve and cache conversation history items via the provider.
@@ -51,11 +104,26 @@ methods:
     the provider''s `get_history_item_ids` call is skipped and only
 
     `get_items` is invoked to materialise the items.'
-  signature: async get_history() -> Sequence[OutputItem]
+  signature: async get_history() -> Sequence[A2AToolCall | A2AToolCallOutput | OutputItemAdditionalTools
+    | OutputItemApplyPatchToolCall | OutputItemApplyPatchToolCallOutput | AzureAISearchToolCall
+    | AzureAISearchToolCallOutput | AzureFunctionToolCall | AzureFunctionToolCallOutput
+    | BingCustomSearchToolCall | BingCustomSearchToolCallOutput | BingGroundingToolCall
+    | BingGroundingToolCallOutput | BrowserAutomationToolCall | BrowserAutomationToolCallOutput
+    | OutputItemCodeInterpreterToolCall | OutputItemCompactionBody | OutputItemComputerToolCall
+    | OutputItemComputerToolCallOutput | CustomToolCallResource | CustomToolCallOutputResource
+    | FabricDataAgentToolCall | FabricDataAgentToolCallOutput | OutputItemFileSearchToolCall
+    | OutputItemFunctionToolCall | OutputItemFunctionToolCallOutput | OutputItemImageGenToolCall
+    | OutputItemLocalShellToolCall | OutputItemLocalShellToolCallOutput | OutputItemMcpApprovalRequest
+    | OutputItemMcpApprovalResponseResource | OutputItemMcpToolCall | OutputItemMcpListTools
+    | MemorySearchToolCallItemResource | OutputItemMessage | OAuthConsentRequestOutputItem
+    | OpenApiToolCall | OpenApiToolCallOutput | OutputItemOutputMessage | OutputItemReasoningItem
+    | SharepointGroundingToolCall | SharepointGroundingToolCallOutput | OutputItemFunctionShellCall
+    | OutputItemFunctionShellCallOutput | StructuredOutputsOutputItem | OutputItemToolSearchCall
+    | OutputItemToolSearchOutput | OutputItemWebSearchToolCall | WorkflowActionOutputItem]
   return:
     description: A tuple of conversation history items.
     types:
-    - <xref:typing.Sequence>[<xref:azure.ai.agentserver.responses.models.OutputItem>]
+    - <xref:typing.Sequence>[<xref:OutputItem>]
 - uid: azure.ai.agentserver.responses.ResponseContext.get_input_items
   name: get_input_items
   summary: "Return the caller's input items as <xref:azure.ai.agentserver.responses.Item>\
@@ -64,7 +132,15 @@ methods:
     <xref:azure.ai.agentserver.responses.FunctionCallOutputItemParam>).\n<xref:azure.ai.agentserver.responses.ItemReferenceParam>\
     \ entries are batch-resolved via the\nprovider and converted back to <xref:azure.ai.agentserver.responses.Item>\
     \ subtypes.\nUnresolvable references (provider returns `None`) are silently dropped."
-  signature: 'async get_input_items(*, resolve_references: bool = True) -> Sequence[Item]'
+  signature: 'async get_input_items(*, resolve_references: bool = True) -> Sequence[AdditionalToolsItemParam
+    | ApplyPatchToolCallItemParam | ApplyPatchToolCallOutputItemParam | ItemCodeInterpreterToolCall
+    | CompactionSummaryItemParam | ItemComputerToolCall | ComputerCallOutputItemParam
+    | ItemCustomToolCall | ItemCustomToolCallOutput | ItemFileSearchToolCall | ItemFunctionToolCall
+    | FunctionCallOutputItemParam | ItemImageGenToolCall | ItemReferenceParam | ItemLocalShellToolCall
+    | ItemLocalShellToolCallOutput | ItemMcpApprovalRequest | MCPApprovalResponse
+    | ItemMcpToolCall | ItemMcpListTools | MemorySearchToolCallItemParam | ItemMessage
+    | ItemOutputMessage | ItemReasoningItem | FunctionShellCallItemParam | FunctionShellCallOutputItemParam
+    | ToolSearchCallItemParam | ToolSearchOutputItemParam | ItemWebSearchToolCall]'
   keywordOnlyParameters:
   - name: resolve_references
     description: 'When `True` (default),
@@ -83,7 +159,7 @@ methods:
   return:
     description: A tuple of input items.
     types:
-    - <xref:typing.Sequence>[<xref:azure.ai.agentserver.responses.models.Item>]
+    - <xref:typing.Sequence>[<xref:Item>]
 - uid: azure.ai.agentserver.responses.ResponseContext.get_input_text
   name: get_input_text
   summary: 'Resolve input items and extract all text content as a single string.
@@ -110,3 +186,72 @@ methods:
     description: The combined text content, or `""` if no text found.
     types:
     - <xref:str>
+attributes:
+- uid: azure.ai.agentserver.responses.ResponseContext.conversation_chain_id
+  name: conversation_chain_id
+  summary: "Stable identifier for the multi-turn conversation chain.\n\nReturns an\
+    \ opaque, agent/session-scoped hex id that is the **same for\nevery turn** of\
+    \ a conversation chain. It is derived from the partition\nkey embedded in the\
+    \ chain's response IDs (chained response IDs all carry\nthe same embedded key),\
+    \ so it stays stable across turns and across crash\nrecovery without any history\
+    \ walk. The resilient task backing the\nconversation uses this same hash (with\
+    \ a fixed prefix), so the two never\ndrift apart.\n\nPriority for the underlying\
+    \ chain partition:\n\n1. `conversation_id` if supplied on the request. \n\n2.\
+    \ `previous_response_id` (steerable chains) \u2014 the shared partition key of\
+    \ the sequential chain. \n\n3. `response_id` \u2014 for the first turn, or as\
+    \ the per-fork identity when `steerable_conversations` is disabled. \n\nHandlers\
+    \ use this id as a key into application-side conversation state\n(e.g., an upstream\
+    \ SDK session id, per-conversation rate limits, or a\nconversation index): store\
+    \ it in a resilient side store and look it up on\nrecovery to re-attach to the\
+    \ prior session.\n\nKnown limitation: the identity is derived from framework-generated\
+    \ IDs. A\nclient that supplies its own `response_id` (via `x-agent-response-id`\n\
+    or an explicit request field) carrying a mismatched embedded partition can\nshift\
+    \ the chain identity for later turns."
+  return:
+    types:
+    - <xref:str>
+- uid: azure.ai.agentserver.responses.ResponseContext.client_cancelled
+  name: client_cancelled
+  signature: 'client_cancelled: bool'
+- uid: azure.ai.agentserver.responses.ResponseContext.client_headers
+  name: client_headers
+  signature: 'client_headers: dict[str, str]'
+- uid: azure.ai.agentserver.responses.ResponseContext.conversation_chain_metadata
+  name: conversation_chain_metadata
+  signature: 'conversation_chain_metadata: ConversationChainMetadataNamespace'
+- uid: azure.ai.agentserver.responses.ResponseContext.conversation_id
+  name: conversation_id
+  signature: 'conversation_id: str | None'
+- uid: azure.ai.agentserver.responses.ResponseContext.created_at
+  name: created_at
+  signature: 'created_at: datetime'
+- uid: azure.ai.agentserver.responses.ResponseContext.is_recovery
+  name: is_recovery
+  signature: 'is_recovery: bool'
+- uid: azure.ai.agentserver.responses.ResponseContext.is_steered_turn
+  name: is_steered_turn
+  signature: 'is_steered_turn: bool'
+- uid: azure.ai.agentserver.responses.ResponseContext.mode_flags
+  name: mode_flags
+  signature: 'mode_flags: ResponseModeFlags'
+- uid: azure.ai.agentserver.responses.ResponseContext.pending_input_count
+  name: pending_input_count
+  signature: 'pending_input_count: int'
+- uid: azure.ai.agentserver.responses.ResponseContext.persisted_response
+  name: persisted_response
+  signature: 'persisted_response: ResponseObject | None'
+- uid: azure.ai.agentserver.responses.ResponseContext.platform_context
+  name: platform_context
+  signature: 'platform_context: PlatformContext'
+- uid: azure.ai.agentserver.responses.ResponseContext.query_parameters
+  name: query_parameters
+  signature: 'query_parameters: dict[str, str]'
+- uid: azure.ai.agentserver.responses.ResponseContext.request
+  name: request
+  signature: 'request: CreateResponse | None'
+- uid: azure.ai.agentserver.responses.ResponseContext.response_id
+  name: response_id
+  signature: 'response_id: str'
+- uid: azure.ai.agentserver.responses.ResponseContext.shutdown
+  name: shutdown
+  signature: 'shutdown: asyncio.Event'
