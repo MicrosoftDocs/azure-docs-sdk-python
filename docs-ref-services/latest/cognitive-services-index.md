@@ -1,6 +1,7 @@
 | Reference | Package | Source |
 |---|---|---|
 |[AI Agents](ai-agents-readme.md)|[azure-ai-agents](https://pypi.org/project/azure-ai-agents)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/ai/azure-ai-agents)|
+|[AI Agent Server - Core](ai-agentserver-core-readme.md)|[azure-ai-agentserver-core](https://pypi.org/project/azure-ai-agentserver-core)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/agentserver/azure-ai-agentserver-core)|
 |[Content Safety](ai-contentsafety-readme.md)|[azure-ai-contentsafety](https://pypi.org/project/azure-ai-contentsafety)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/contentsafety/azure-ai-contentsafety)|
 |[Document Intelligence](ai-documentintelligence-readme.md)|[azure-ai-documentintelligence](https://pypi.org/project/azure-ai-documentintelligence)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/documentintelligence/azure-ai-documentintelligence)|
 |[AI Evaluation](ai-evaluation-readme.md)|[azure-ai-evaluation](https://pypi.org/project/azure-ai-evaluation)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/evaluation/azure-ai-evaluation)|
