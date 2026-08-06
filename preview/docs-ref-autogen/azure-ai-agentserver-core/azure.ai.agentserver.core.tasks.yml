@@ -26,10 +26,12 @@ type: import
 functions:
 - uid: azure.ai.agentserver.core.tasks.multi_turn_task
   name: multi_turn_task
-  summary: "Decorator producing a multi-turn resilient chain.\n\nMulti-turn chains\
-    \ accept inputs across many turns against the same\n`task_id`. The handler's `return\
-    \ X` is the implicit-suspend\nsignal \u2014 there is no `ctx.suspend`. The chain\
-    \ stays\nalive across handler raises."
+  summary: "> [!NOTE]\n> This is an experimental method, and may change at any time.\
+    \ Please see [https://aka.ms/azure-ai-agentserver-experimental](https://aka.ms/azure-ai-agentserver-experimental)\
+    \ for more information.\n>\n\nDecorator producing a multi-turn resilient chain.\n\
+    \nMulti-turn chains accept inputs across many turns against the same\n`task_id`.\
+    \ The handler's `return X` is the implicit-suspend\nsignal \u2014 there is no\
+    \ `ctx.suspend`. The chain stays\nalive across handler raises."
   signature: 'multi_turn_task(fn: Callable[[...], Any] | None = None, *, name: str
     | None = None, title: str | None = None, timeout: timedelta | None = None, retry:
     RetryPolicy | None = None, steerable: bool = False, **_extra_kwargs: Any) -> Any'
@@ -57,7 +59,7 @@ functions:
   - name: timeout
     description: 'Per-turn cooperative timeout. Defaults to 1 day when
 
-      unset; 1 day is a hard ceiling (larger/negative rejected at
+      unset; 7 days is a hard ceiling (larger/negative rejected at
 
       decoration). This is a per-turn cap, not a chain-lifetime bound.'
     defaultValue: None
@@ -78,10 +80,12 @@ functions:
     - <xref:typing.Any>
 - uid: azure.ai.agentserver.core.tasks.resilient_tasks_enabled
   name: resilient_tasks_enabled
-  summary: "Return whether the recovery scan was explicitly force-enabled.\n\nNote\
-    \ this reflects only the switch \u2014 recovery also runs automatically when\n\
-    a durable task is declared, so a `False` return does not mean recovery is\noff,\
-    \ nor that tasks are unavailable."
+  summary: "> [!NOTE]\n> This is an experimental method, and may change at any time.\
+    \ Please see [https://aka.ms/azure-ai-agentserver-experimental](https://aka.ms/azure-ai-agentserver-experimental)\
+    \ for more information.\n>\n\nReturn whether the recovery scan was explicitly\
+    \ force-enabled.\n\nNote this reflects only the switch \u2014 recovery also runs\
+    \ automatically when\na durable task is declared, so a `False` return does not\
+    \ mean recovery is\noff, nor that tasks are unavailable."
   signature: resilient_tasks_enabled() -> bool
   return:
     description: '`True` if <xref:azure.ai.agentserver.core.tasks.set_resilient_tasks_enabled>
@@ -90,13 +94,15 @@ functions:
     - <xref:bool>
 - uid: azure.ai.agentserver.core.tasks.set_resilient_tasks_enabled
   name: set_resilient_tasks_enabled
-  summary: "Force-enable (or clear) the resilient task recovery scan process-wide.\n\
-    \nSetting this to `True` starts the startup recovery scan + periodic\nrecovery\
-    \ loop even when no durable task is declared at startup. It does\nNOT gate the\
-    \ `TaskManager`'s existence: `.run()` / `.start()` work\nwhether or not this is\
-    \ set \u2014 this only controls automatic crash recovery.\n\nMust be called before\
-    \ `AgentServerHost` lifespan startup (typically at\nimport time) to take effect.\
-    \ Defaults to enabling when called with no\nargument."
+  summary: "> [!NOTE]\n> This is an experimental method, and may change at any time.\
+    \ Please see [https://aka.ms/azure-ai-agentserver-experimental](https://aka.ms/azure-ai-agentserver-experimental)\
+    \ for more information.\n>\n\nForce-enable (or clear) the resilient task recovery\
+    \ scan process-wide.\n\nSetting this to `True` starts the startup recovery scan\
+    \ + periodic\nrecovery loop even when no durable task is declared at startup.\
+    \ It does\nNOT gate the `TaskManager`'s existence: `.run()` / `.start()` work\n\
+    whether or not this is set \u2014 this only controls automatic crash recovery.\n\
+    \nMust be called before `AgentServerHost` lifespan startup (typically at\nimport\
+    \ time) to take effect. Defaults to enabling when called with no\nargument."
   signature: 'set_resilient_tasks_enabled(value: bool = True) -> None'
   parameters:
   - name: value
@@ -106,18 +112,20 @@ functions:
     - <xref:bool>
 - uid: azure.ai.agentserver.core.tasks.task
   name: task
-  summary: "Turn an async function into a crash-resilient one-shot resilient task.\n\
-    \nOne-shot tasks are always ephemeral \u2014 the persisted record is\ndeleted\
-    \ on terminal exit. `task_id` is optional on the resulting\nhandle's `.start`\
-    \ / `.run` calls; the framework auto-generates\na GUID and defaults `input_id`\
-    \ to `task_id` (1:1 invariant).\n\n`name` is required \u2014 always use the parameterized\
-    \ form:\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"xml:space\": \"preserve\", \"language\": \"\
-    default\", \"force\": false, \"linenos\": false} -->\n\n````default\n\n   @task(name=\"\
-    my-task\")\n   async def my_task(ctx: TaskContext[MyInput]) -> MyOutput: ...\n\
-    \   ````\n\n> [!NOTE]\n> Use @multi_turn_task for steerable chains. Passing\n\
-    >\n> ephemeral= or steerable= to @task raises\n>\n> TypeError at decoration time.\n\
-    >"
+  summary: "> [!NOTE]\n> This is an experimental method, and may change at any time.\
+    \ Please see [https://aka.ms/azure-ai-agentserver-experimental](https://aka.ms/azure-ai-agentserver-experimental)\
+    \ for more information.\n>\n\nTurn an async function into a crash-resilient one-shot\
+    \ resilient task.\n\nOne-shot tasks are always ephemeral \u2014 the persisted\
+    \ record is\ndeleted on terminal exit. `task_id` is optional on the resulting\n\
+    handle's `.start` / `.run` calls; the framework auto-generates\na GUID and defaults\
+    \ `input_id` to `task_id` (1:1 invariant).\n\n`name` is required \u2014 always\
+    \ use the parameterized form:\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\": \"preserve\"\
+    , \"language\": \"default\", \"force\": false, \"linenos\": false} -->\n\n````default\n\
+    \n   @task(name=\"my-task\")\n   async def my_task(ctx: TaskContext[MyInput])\
+    \ -> MyOutput: ...\n   ````\n\n> [!NOTE]\n> Use @multi_turn_task for steerable\
+    \ chains. Passing\n>\n> ephemeral= or steerable= to @task raises\n>\n> TypeError\
+    \ at decoration time.\n>"
   signature: 'task(fn: Callable[[...], Any] | None = None, *, name: str | None = None,
     title: str | None = None, timeout: timedelta | None = None, retry: RetryPolicy
     | None = None, **_extra_kwargs: Any) -> Any'
@@ -148,9 +156,9 @@ functions:
     defaultValue: None
   - name: timeout
     description: "Per-turn, wall-clock, resilient, cooperative-only\nexecution budget.\
-      \ Defaults to 1 day when unset; a supplied value may\nlower the budget but 1\
-      \ day is a hard ceiling (a larger or negative value\nraises `ValueError` at\
-      \ decoration). This caps a single handler\ninvocation only \u2014 it is NOT\
+      \ Defaults to 1 day when unset; a supplied value may\nraise the budget up to\
+      \ 7 days, which is a hard ceiling (a larger or\nnegative value raises `ValueError`\
+      \ at decoration). This caps a single handler\ninvocation only \u2014 it is NOT\
       \ a task-lifetime bound. When the budget\nelapses for the current turn, `ctx.timeout_exceeded`\
       \ is set then\n`ctx.cancel` is set; the handler decides whether to wind down.\
       \ The\nwatchdog does NOT force-stop the handler. See the developer guide\n\xA7\

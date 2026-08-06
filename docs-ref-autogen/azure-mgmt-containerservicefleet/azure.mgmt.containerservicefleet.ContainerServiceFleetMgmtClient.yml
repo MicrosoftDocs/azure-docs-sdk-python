@@ -6,10 +6,11 @@ module: azure.mgmt.containerservicefleet
 summary: Azure Kubernetes Fleet Manager api client.
 constructor:
   syntax: 'ContainerServiceFleetMgmtClient(credential: TokenCredential, subscription_id:
-    str, base_url: str = ''https://management.azure.com'', **kwargs: Any)'
+    str, base_url: str | None = None, *, cloud_setting: AzureClouds | None = None,
+    **kwargs: Any)'
   parameters:
   - name: credential
-    description: Credential needed for the client to connect to Azure. Required.
+    description: Credential used to authenticate requests to the service. Required.
     isRequired: true
     types:
     - <xref:azure.core.credentials.TokenCredential>
@@ -19,16 +20,26 @@ constructor:
     types:
     - <xref:str>
   - name: base_url
-    description: Service URL. Default value is "`https://management.azure.com`".
-    defaultValue: https://management.azure.com
+    description: Service host. Default value is None.
+    defaultValue: None
     types:
     - <xref:str>
   keywordOnlyParameters:
-  - name: api_version
-    description: 'Api Version. Default value is "2025-03-01". Note that overriding
-      this
+  - name: cloud_setting
+    description: 'The cloud setting for which to get the ARM endpoint. Default value
+      is
 
-      default value may result in unsupported behavior.'
+      None.'
+    defaultValue: None
+    types:
+    - <xref:azure.core.AzureClouds>
+  - name: api_version
+    description: 'The API version to use for this operation. Known values are "2026-06-01"
+
+      and None. Default value is None. If not set, the operation''s default API version
+      will be used.
+
+      Note that overriding this default value may result in unsupported behavior.'
     types:
     - <xref:str>
   - name: polling_interval
@@ -46,18 +57,18 @@ variables:
   name: fleets
   types:
   - <xref:azure.mgmt.containerservicefleet.operations.FleetsOperations>
-- description: AutoUpgradeProfilesOperations operations
-  name: auto_upgrade_profiles
-  types:
-  - <xref:azure.mgmt.containerservicefleet.operations.AutoUpgradeProfilesOperations>
-- description: AutoUpgradeProfileOperationsOperations operations
-  name: auto_upgrade_profile_operations
-  types:
-  - <xref:azure.mgmt.containerservicefleet.operations.AutoUpgradeProfileOperationsOperations>
 - description: FleetMembersOperations operations
   name: fleet_members
   types:
   - <xref:azure.mgmt.containerservicefleet.operations.FleetMembersOperations>
+- description: FleetManagedNamespacesOperations operations
+  name: fleet_managed_namespaces
+  types:
+  - <xref:azure.mgmt.containerservicefleet.operations.FleetManagedNamespacesOperations>
+- description: GatesOperations operations
+  name: gates
+  types:
+  - <xref:azure.mgmt.containerservicefleet.operations.GatesOperations>
 - description: UpdateRunsOperations operations
   name: update_runs
   types:
@@ -66,7 +77,56 @@ variables:
   name: fleet_update_strategies
   types:
   - <xref:azure.mgmt.containerservicefleet.operations.FleetUpdateStrategiesOperations>
+- description: AutoUpgradeProfilesOperations operations
+  name: auto_upgrade_profiles
+  types:
+  - <xref:azure.mgmt.containerservicefleet.operations.AutoUpgradeProfilesOperations>
+- description: AutoUpgradeProfileOperationsOperations operations
+  name: auto_upgrade_profile_operations
+  types:
+  - <xref:azure.mgmt.containerservicefleet.operations.AutoUpgradeProfileOperationsOperations>
 methods:
 - uid: azure.mgmt.containerservicefleet.ContainerServiceFleetMgmtClient.close
   name: close
   signature: close() -> None
+- uid: azure.mgmt.containerservicefleet.ContainerServiceFleetMgmtClient.send_request
+  name: send_request
+  summary: 'Runs the network request through the client''s chained policies.
+
+
+    ```
+
+
+    >>> from azure.core.rest import HttpRequest
+
+    >>> request = HttpRequest("GET", "https://www.example.org/")
+
+    <HttpRequest [GET], url: ''https://www.example.org/''>
+
+    >>> response = client.send_request(request)
+
+    <HttpResponse: 200 OK>
+
+    ```
+
+
+    For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> HttpResponse'
+  parameters:
+  - name: request
+    description: The network request you want to make. Required.
+    isRequired: true
+    types:
+    - <xref:azure.core.rest.HttpRequest>
+  keywordOnlyParameters:
+  - name: stream
+    description: Whether the response payload will be streamed. Defaults to False.
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  return:
+    description: The response of your network call. Does not do error handling on
+      your response.
+    types:
+    - <xref:azure.core.rest.HttpResponse>
