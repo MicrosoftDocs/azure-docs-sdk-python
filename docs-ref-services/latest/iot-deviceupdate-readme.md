@@ -1,17 +1,20 @@
 ---
 title: Azure Device Update for IoT Hub client library for Python
 keywords: Azure, python, SDK, API, azure-iot-deviceupdate, deviceupdate
-ms.date: 09/09/2022
+ms.date: 08/06/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: deviceupdate
 ---
-# Azure Device Update for IoT Hub client library for Python - version 1.0.0 
+# Azure Device Update for IoT Hub client library for Python - version 1.1.0 
 
 
 The library provides access to the Device Update for IoT Hub service that enables customers to publish updates for their IoT devices to the cloud, and then deploy these updates to their devices (approve updates to groups of devices managed and provisioned in IoT Hub).
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-iot-deviceupdate_1.0.0/sdk/deviceupdate/azure-iot-deviceupdate) | [Package (PyPI)](https://aka.ms/azsdk/python/deviceupdate-pypi) | [Product documentation](/azure/iot-hub-device-update/understand-device-update)
+[Source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-iot-deviceupdate_1.1.0/sdk/deviceupdate/azure-iot-deviceupdate)
+| [Package (PyPI)](https://aka.ms/azsdk/python/deviceupdate-pypi)
+| [Package (Conda)](https://anaconda.org/microsoft/azure-iot-deviceupdate)
+| [Product documentation](https://learn.microsoft.com/azure/iot-hub-device-update/understand-device-update)
 
 ## _Disclaimer_
 
@@ -45,20 +48,20 @@ You can learn more about Device Update for IoT Hub by visiting [Device Update fo
 
 ## Examples
 
-You can familiarize yourself with different APIs using [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-iot-deviceupdate_1.0.0/sdk/deviceupdate/azure-iot-deviceupdate/samples).
+You can familiarize yourself with different APIs using [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-iot-deviceupdate_1.1.0/sdk/deviceupdate/azure-iot-deviceupdate/samples).
 
 ## Troubleshooting
 
-The Device Update for IoT Hub client will raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-iot-deviceupdate_1.0.0/sdk/core/azure-core/README.md).
+The Device Update for IoT Hub client will raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-iot-deviceupdate_1.1.0/sdk/core/azure-core/README.md).
 
 ## Next steps
 
-Get started with our [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-iot-deviceupdate_1.0.0/sdk/deviceupdate/azure-iot-deviceupdate/samples).
+Get started with our [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-iot-deviceupdate_1.1.0/sdk/deviceupdate/azure-iot-deviceupdate/samples).
 
 ## Contributing
 
 If you encounter any bugs or have suggestions, please file an issue in the [Issues](https://github.com/Azure/azure-sdk-for-python/issues) section of the project.
 
 <!-- LINKS -->
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-iot-deviceupdate_1.0.0/sdk/core/azure-core/README.md
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-iot-deviceupdate_1.1.0/sdk/core/azure-core/README.md
 
