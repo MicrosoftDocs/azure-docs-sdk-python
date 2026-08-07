@@ -1,0 +1,64 @@
+### YamlMime:PythonClass
+uid: azure.ai.agentserver.core.FoundryAgentRequestContext
+name: FoundryAgentRequestContext
+fullName: azure.ai.agentserver.core.FoundryAgentRequestContext
+module: azure.ai.agentserver.core
+summary: 'Platform-supplied, request-scoped identity context.
+
+
+  Populated by the protocol endpoint from inbound platform headers on every
+
+  request.  All fields are `None` when the corresponding header was absent
+
+  (e.g. local development, or `call_id` under protocol version `1.0.0`).'
+constructor:
+  syntax: 'FoundryAgentRequestContext(*, call_id: str | None = None, user_id: str
+    | None = None, session_id: str | None = None)'
+  keywordOnlyParameters:
+  - name: call_id
+    defaultValue: None
+  - name: user_id
+    defaultValue: None
+  - name: session_id
+    defaultValue: None
+variables:
+- description: 'Opaque per-request call identifier from `x-agent-foundry-call-id`
+
+    (protocol version `2.0.0` only).  Forward verbatim on outbound Foundry
+
+    calls; never parse it.'
+  name: call_id
+  types:
+  - <xref:str> | <xref:None>
+- description: Global, cross-agent per-user identity from `x-agent-user-id`.
+  name: user_id
+  types:
+  - <xref:str> | <xref:None>
+- description: The resolved session ID for the request, when available.
+  name: session_id
+  types:
+  - <xref:str> | <xref:None>
+methods:
+- uid: azure.ai.agentserver.core.FoundryAgentRequestContext.platform_headers
+  name: platform_headers
+  summary: "Build the platform identity headers to forward on outbound 1P calls.\n\
+    \nOnly `x-agent-foundry-call-id` is forwarded: 1P services resolve the\ncaller\
+    \ context server-side from the opaque call ID. `x-agent-user-id`\nis **not** forwarded\
+    \ \u2014 it is not accepted/trusted by 1P services and is\nonly consumed container-side\
+    \ for per-user state partitioning. The call ID\nis included only when present\
+    \ (non-`None`). The managed-identity\n`Authorization` header is unaffected \u2014\
+    \ this is an **additional** header\nfor caller-identity context."
+  signature: platform_headers() -> dict[str, str]
+  return:
+    description: 'A mapping of header name to value, suitable for merging into an
+
+      outbound request''s headers.'
+    types:
+    - <xref:dict>[<xref:str>, <xref:str>]
+attributes:
+- uid: azure.ai.agentserver.core.FoundryAgentRequestContext.call_id
+  name: call_id
+- uid: azure.ai.agentserver.core.FoundryAgentRequestContext.session_id
+  name: session_id
+- uid: azure.ai.agentserver.core.FoundryAgentRequestContext.user_id
+  name: user_id

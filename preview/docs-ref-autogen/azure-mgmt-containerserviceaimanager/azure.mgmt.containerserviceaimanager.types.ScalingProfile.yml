@@ -1,0 +1,45 @@
+### YamlMime:PythonClass
+uid: azure.mgmt.containerserviceaimanager.types.ScalingProfile
+name: ScalingProfile
+fullName: azure.mgmt.containerserviceaimanager.types.ScalingProfile
+module: azure.mgmt.containerserviceaimanager.types
+summary: "Scaling configuration for a model deployment. Exactly one of `manual` or\n\
+  `autoscale` must be set.\n\nThis mutual-exclusion constraint is enforced by the\
+  \ service at request\nvalidation time, not by the schema. A PUT request that sets\
+  \ both `manual`\nand `autoscale`, or sets neither, is rejected with HTTP 400 (Bad\
+  \ Request)\nand an `InvalidScalingProfile` error code;\n\nScale-to-zero semantics\
+  \ differ between the two modes:\n\n* *manual* permits *replicas: 0*. This is an\
+  \ explicit operator action to \n\nstop serving traffic while keeping the *ModelDeployment*\
+  \ resource (and\nits configuration) in place. While at zero replicas the endpoint\n\
+  returns errors for inference requests, and the deployment releases its\nGPU capacity.\n\
+  * *autoscale* does not permit *minReplicas: 0*. Autoscaling decisions are\ndriven\
+  \ by serving-server runtime metrics (request rate, queue depth,\nGPU utilization);\
+  \ at zero replicas there is no signal for the\nautoscaler to scale back up from.\
+  \ Combined with GPU cold-start time\n(on the order of minutes) and constrained regional\
+  \ GPU capacity, a\nscale-from-zero event would produce unacceptable first-request\
+  \ latency\nand a high risk of capacity unavailability. Callers that want\nautoscaling\
+  \ with an idle state should delete the *ModelDeployment*\ninstead."
+constructor:
+  syntax: ScalingProfile()
+variables:
+- description: 'Manual scaling configuration with a fixed replica count. Mutually
+    exclusive with
+
+    `autoscale`.'
+  name: manual
+  types:
+  - <xref:<xref:"ManualScalingProfile">>
+- description: Autoscaling configuration. Mutually exclusive with `manual`.
+  name: autoscale
+  types:
+  - <xref:<xref:"AutoscaleProfile">>
+attributes:
+- uid: azure.mgmt.containerserviceaimanager.types.ScalingProfile.autoscale
+  name: autoscale
+  summary: Autoscaling configuration. Mutually exclusive with `manual`.
+  signature: 'autoscale: AutoscaleProfile'
+- uid: azure.mgmt.containerserviceaimanager.types.ScalingProfile.manual
+  name: manual
+  summary: Manual scaling configuration with a fixed replica count. Mutually exclusive
+    with `autoscale`.
+  signature: 'manual: ManualScalingProfile'

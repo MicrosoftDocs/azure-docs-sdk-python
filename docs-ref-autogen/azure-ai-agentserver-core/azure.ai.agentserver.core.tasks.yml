@@ -1,0 +1,193 @@
+### YamlMime:PythonPackage
+uid: azure.ai.agentserver.core.tasks
+name: tasks
+fullName: azure.ai.agentserver.core.tasks
+summary: "Task subsystem for crash-resilient long-running agents.\n\n\nProvides the\
+  \ <xref:task> and <xref:multi_turn_task> decorators\nplus supporting types for building\
+  \ Azure AI Hosted Agents that survive\ncontainer crashes, OOM kills, and redeployments.\n\
+  \n\nKey features:\n\n\n- **Two decorators** \u2014 ``@task`` (one-shot, single run,\
+  \ ephemeral) and\n  ``@multi_turn_task`` (chain \u2014 every ``return X`` is one\
+  \ turn; chain\n  stays alive in ``suspended`` between turns).\n- **Lifecycle automation**\
+  \ \u2014 ``.run()`` and ``.start()`` automatically\n  start, resume, or recover\
+  \ tasks based on their current state.\n- **Entry mode** \u2014 ``ctx.entry_mode``\
+  \ tells the handler whether it was\n  entered fresh, resumed from suspension, or\
+  \ recovered from a crash.\n- **RetryPolicy** \u2014 configurable retry with exponential,\
+  \ fixed, or linear\n  backoff (see <xref:RetryPolicy> presets).\n- **Streaming**\
+  \ lives in <xref:azure.ai.agentserver.core.streaming>;\n  handlers call ``stream\
+  \ = await streams.get_or_create(invocation_id)``\n  to obtain a stream handle; ``TaskRun``\
+  \ itself is NOT iterable.\n\n\nPublic API::\n\n\n    from azure.ai.agentserver.core.tasks\
+  \ import (\n        task,\n        multi_turn_task,\n        Task,\n        MultiTurnTask,\n\
+  \        RetryPolicy,\n        TaskContext,\n        TaskMetadata,\n        TaskRun,\n\
+  \        TaskFailed,\n        TaskCancelled,\n        TaskDeferred,\n        TaskConflictError,\n\
+  \        LastInputIdPreconditionFailed,\n        SteeringQueueFull,\n        InputTooLarge,\n\
+  \        JSONValue,\n        TaskErrorDict,\n        TaskExhaustedRetriesErrorDict,\n\
+  \        EntryMode,\n    )"
+type: import
+functions:
+- uid: azure.ai.agentserver.core.tasks.multi_turn_task
+  name: multi_turn_task
+  summary: "> [!NOTE]\n> This is an experimental method, and may change at any time.\
+    \ Please see [https://aka.ms/azure-ai-agentserver-experimental](https://aka.ms/azure-ai-agentserver-experimental)\
+    \ for more information.\n>\n\nDecorator producing a multi-turn resilient chain.\n\
+    \nMulti-turn chains accept inputs across many turns against the same\n`task_id`.\
+    \ The handler's `return X` is the implicit-suspend\nsignal \u2014 there is no\
+    \ `ctx.suspend`. The chain stays\nalive across handler raises."
+  signature: 'multi_turn_task(fn: Callable[[...], Any] | None = None, *, name: str
+    | None = None, title: str | None = None, timeout: timedelta | None = None, retry:
+    RetryPolicy | None = None, steerable: bool = False, **_extra_kwargs: Any) -> Any'
+  parameters:
+  - name: fn
+    description: 'The handler to decorate (parameterized form only; the bare
+
+      `@multi_turn_task` form is rejected because it cannot supply a
+
+      `name`).'
+    defaultValue: None
+    types:
+    - <xref:typing.Callable>[..., <xref:typing.Any>] | <xref:None>
+  keywordOnlyParameters:
+  - name: name
+    description: '**Required** stable chain-identity anchor (no
+
+      function-derived default; omitting it raises `ValueError`).'
+    defaultValue: None
+  - name: title
+    description: 'Static human-readable string. Callable-factory form is
+
+      not supported.'
+    defaultValue: None
+  - name: timeout
+    description: 'Per-turn cooperative timeout. Defaults to 1 day when
+
+      unset; 7 days is a hard ceiling (larger/negative rejected at
+
+      decoration). This is a per-turn cap, not a chain-lifetime bound.'
+    defaultValue: None
+  - name: retry
+    description: Default retry policy.
+    defaultValue: None
+  - name: steerable
+    description: 'When True, `start()` against an in-flight chain
+
+      queues the new input instead of raising `TaskConflictError`.'
+    defaultValue: 'False'
+  return:
+    description: 'A <xref:azure.ai.agentserver.core.tasks.MultiTurnTask> instance
+      (distinct public class from
+
+      <xref:azure.ai.agentserver.core.tasks.Task>).'
+    types:
+    - <xref:typing.Any>
+- uid: azure.ai.agentserver.core.tasks.resilient_tasks_enabled
+  name: resilient_tasks_enabled
+  summary: "> [!NOTE]\n> This is an experimental method, and may change at any time.\
+    \ Please see [https://aka.ms/azure-ai-agentserver-experimental](https://aka.ms/azure-ai-agentserver-experimental)\
+    \ for more information.\n>\n\nReturn whether the recovery scan was explicitly\
+    \ force-enabled.\n\nNote this reflects only the switch \u2014 recovery also runs\
+    \ automatically when\na durable task is declared, so a `False` return does not\
+    \ mean recovery is\noff, nor that tasks are unavailable."
+  signature: resilient_tasks_enabled() -> bool
+  return:
+    description: '`True` if <xref:azure.ai.agentserver.core.tasks.set_resilient_tasks_enabled>
+      turned it on.'
+    types:
+    - <xref:bool>
+- uid: azure.ai.agentserver.core.tasks.set_resilient_tasks_enabled
+  name: set_resilient_tasks_enabled
+  summary: "> [!NOTE]\n> This is an experimental method, and may change at any time.\
+    \ Please see [https://aka.ms/azure-ai-agentserver-experimental](https://aka.ms/azure-ai-agentserver-experimental)\
+    \ for more information.\n>\n\nForce-enable (or clear) the resilient task recovery\
+    \ scan process-wide.\n\nSetting this to `True` starts the startup recovery scan\
+    \ + periodic\nrecovery loop even when no durable task is declared at startup.\
+    \ It does\nNOT gate the `TaskManager`'s existence: `.run()` / `.start()` work\n\
+    whether or not this is set \u2014 this only controls automatic crash recovery.\n\
+    \nMust be called before `AgentServerHost` lifespan startup (typically at\nimport\
+    \ time) to take effect. Defaults to enabling when called with no\nargument."
+  signature: 'set_resilient_tasks_enabled(value: bool = True) -> None'
+  parameters:
+  - name: value
+    description: '`True` to force-enable recovery, `False` to clear.'
+    defaultValue: 'True'
+    types:
+    - <xref:bool>
+- uid: azure.ai.agentserver.core.tasks.task
+  name: task
+  summary: "> [!NOTE]\n> This is an experimental method, and may change at any time.\
+    \ Please see [https://aka.ms/azure-ai-agentserver-experimental](https://aka.ms/azure-ai-agentserver-experimental)\
+    \ for more information.\n>\n\nTurn an async function into a crash-resilient one-shot\
+    \ resilient task.\n\nOne-shot tasks are always ephemeral \u2014 the persisted\
+    \ record is\ndeleted on terminal exit. `task_id` is optional on the resulting\n\
+    handle's `.start` / `.run` calls; the framework auto-generates\na GUID and defaults\
+    \ `input_id` to `task_id` (1:1 invariant).\n\n`name` is required \u2014 always\
+    \ use the parameterized form:\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\": \"preserve\"\
+    , \"language\": \"default\", \"force\": false, \"linenos\": false} -->\n\n````default\n\
+    \n   @task(name=\"my-task\")\n   async def my_task(ctx: TaskContext[MyInput])\
+    \ -> MyOutput: ...\n   ````\n\n> [!NOTE]\n> Use @multi_turn_task for steerable\
+    \ chains. Passing\n>\n> ephemeral= or steerable= to @task raises\n>\n> TypeError\
+    \ at decoration time.\n>"
+  signature: 'task(fn: Callable[[...], Any] | None = None, *, name: str | None = None,
+    title: str | None = None, timeout: timedelta | None = None, retry: RetryPolicy
+    | None = None, **_extra_kwargs: Any) -> Any'
+  parameters:
+  - name: fn
+    description: 'The async function to decorate (parameterized form only; the
+
+      bare `@task` form is rejected because it cannot supply a `name`).'
+    defaultValue: None
+    types:
+    - <xref:typing.Callable>[..., <xref:typing.Any>] | <xref:None>
+  keywordOnlyParameters:
+  - name: name
+    description: '**Required stable identity anchor.** Used for recovery routing
+
+      and source stamping. There is no function-derived default: deriving it
+
+      from `fn.__qualname__` would silently rebind task identity whenever the
+
+      function is renamed or moved, orphaning in-flight tasks on the next
+
+      deploy. Omitting it (or passing whitespace) raises `ValueError` at
+
+      decoration.'
+    defaultValue: None
+  - name: title
+    description: Static human-readable string.
+    defaultValue: None
+  - name: timeout
+    description: "Per-turn, wall-clock, resilient, cooperative-only\nexecution budget.\
+      \ Defaults to 1 day when unset; a supplied value may\nraise the budget up to\
+      \ 7 days, which is a hard ceiling (a larger or\nnegative value raises `ValueError`\
+      \ at decoration). This caps a single handler\ninvocation only \u2014 it is NOT\
+      \ a task-lifetime bound. When the budget\nelapses for the current turn, `ctx.timeout_exceeded`\
+      \ is set then\n`ctx.cancel` is set; the handler decides whether to wind down.\
+      \ The\nwatchdog does NOT force-stop the handler. See the developer guide\n\xA7\
+      4 Timeout for the full mechanic (including the crash-mid-turn\nbudget-preserving\
+      \ recovery semantics)."
+    defaultValue: None
+  - name: retry
+    description: 'Default retry policy for this task. Recovery-safe: applied
+
+      by the framework on every entry, including crash recovery.'
+    defaultValue: None
+  return:
+    description: A `Task[Input, Output]` wrapper.
+    types:
+    - <xref:typing.Any>
+classes:
+- azure.ai.agentserver.core.tasks.InputTooLarge
+- azure.ai.agentserver.core.tasks.LastInputIdPreconditionFailed
+- azure.ai.agentserver.core.tasks.MultiTurnTask
+- azure.ai.agentserver.core.tasks.RetryPolicy
+- azure.ai.agentserver.core.tasks.SteeringQueueFull
+- azure.ai.agentserver.core.tasks.Task
+- azure.ai.agentserver.core.tasks.TaskCancelled
+- azure.ai.agentserver.core.tasks.TaskConflictError
+- azure.ai.agentserver.core.tasks.TaskContext
+- azure.ai.agentserver.core.tasks.TaskDeferred
+- azure.ai.agentserver.core.tasks.TaskErrorDict
+- azure.ai.agentserver.core.tasks.TaskExhaustedRetriesErrorDict
+- azure.ai.agentserver.core.tasks.TaskFailed
+- azure.ai.agentserver.core.tasks.TaskManagerNotInitialized
+- azure.ai.agentserver.core.tasks.TaskMetadata
+- azure.ai.agentserver.core.tasks.TaskRun

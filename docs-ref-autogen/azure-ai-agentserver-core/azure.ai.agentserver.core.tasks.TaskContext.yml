@@ -1,0 +1,164 @@
+### YamlMime:PythonClass
+uid: azure.ai.agentserver.core.tasks.TaskContext
+name: TaskContext
+fullName: azure.ai.agentserver.core.tasks.TaskContext
+module: azure.ai.agentserver.core.tasks
+summary: '> [!NOTE]
+
+  > This is an experimental class, and may change at any time. Please see [https://aka.ms/azure-ai-agentserver-experimental](https://aka.ms/azure-ai-agentserver-experimental)
+  for more information.
+
+  >
+
+
+  The single parameter to a resilient task function.
+
+
+  Provides access to the task''s identity, typed input, mutable metadata
+
+  for progress tracking, cancellation signals (with cause booleans),
+
+  and the ability to suspend or exit-for-recovery.'
+constructor:
+  syntax: 'TaskContext(*, task_id: str, session_id: str, input: Input, metadata: TaskMetadata,
+    retry_attempt: int = 0, recovery_count: int = 0, cancel: Event | None = None,
+    shutdown: Event | None = None, entry_mode: Literal[''fresh'', ''resumed'', ''recovered'']
+    = ''fresh'', is_steered_turn: bool = False, pending_count_provider: Callable[[],
+    int] | None = None, input_id: str | None = None)'
+  parameters:
+  - name: task_id
+    description: Unique task identifier.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: input
+    description: Typed, validated input value.
+    isRequired: true
+    types:
+    - <xref:Input>
+  - name: metadata
+    description: Mutable progress metadata.
+    isRequired: true
+    types:
+    - <xref:azure.ai.agentserver.core.tasks.TaskMetadata>
+  - name: retry_attempt
+    description: 'Resilient retry attempt counter. Survives crashes;
+
+      increments only on failure-retries, never on crash recovery.'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: recovery_count
+    description: 'Crash-recovery counter. Increments each time the
+
+      framework re-enters this task after a lease loss or stale detection.'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: cancel
+    description: 'Request-level cancellation event. The framework sets
+
+      this from multiple causes; observe `timeout_exceeded`,
+
+      `cancel_requested`, `pending_input_count` to disambiguate.'
+    isRequired: true
+    types:
+    - <xref:asyncio.Event>
+  - name: shutdown
+    description: 'Container-level shutdown event. Precondition for
+
+      <xref:azure.ai.agentserver.core.tasks.TaskContext.exit_for_recovery>.'
+    isRequired: true
+    types:
+    - <xref:asyncio.Event>
+  keywordOnlyParameters:
+  - name: task_id
+    isRequired: true
+  - name: session_id
+    isRequired: true
+  - name: input
+    isRequired: true
+  - name: metadata
+    isRequired: true
+  - name: retry_attempt
+    defaultValue: '0'
+  - name: recovery_count
+    defaultValue: '0'
+  - name: cancel
+    defaultValue: None
+  - name: shutdown
+    defaultValue: None
+  - name: entry_mode
+    defaultValue: fresh
+  - name: is_steered_turn
+    defaultValue: 'False'
+  - name: pending_count_provider
+    defaultValue: None
+  - name: input_id
+    defaultValue: None
+methods:
+- uid: azure.ai.agentserver.core.tasks.TaskContext.exit_for_recovery
+  name: exit_for_recovery
+  summary: ": graceful-shutdown shape.\n\nCallable ONLY when `ctx.shutdown.is_set()\
+    \ == True`. Calling it\noutside shutdown raises `RuntimeError` at the call site\n\
+    (visible in user-code tracebacks; the task ends in `failed`).\n\nWhen called during\
+    \ shutdown, the framework:\n\n1. Flushes `ctx.metadata` (auto-flush invariant).\
+    \ \n\n2. Releases the lease on the persisted record. \n\n3. Leaves the stored\
+    \ `status` as `in_progress` (NOT transitions to `suspended`). \n\n4. Signals in-process\
+    \ awaiters with the standard cooperative- cancel `TaskCancelled` result. \n\n\
+    5. Preserves any queued steering inputs in the persisted state. \n\nThe recovery\
+    \ scan on the next process startup re-enters the\nhandler with `ctx.entry_mode\
+    \ == \"recovered\"`.\n\nUse as `return await ctx.exit_for_recovery()`."
+  signature: async exit_for_recovery() -> Any
+  return:
+    description: The <xref:azure.ai.agentserver.core.tasks._ExitForRecovery> sentinel.
+    types:
+    - <xref:typing.Any>
+  exceptions:
+  - type: RuntimeError
+    description: If called outside `ctx.shutdown.is_set() == True`
+attributes:
+- uid: azure.ai.agentserver.core.tasks.TaskContext.cancel
+  name: cancel
+- uid: azure.ai.agentserver.core.tasks.TaskContext.cancel_requested
+  name: cancel_requested
+  signature: 'cancel_requested: bool'
+- uid: azure.ai.agentserver.core.tasks.TaskContext.entry_mode
+  name: entry_mode
+  signature: 'entry_mode: Literal[''fresh'', ''resumed'', ''recovered'']'
+- uid: azure.ai.agentserver.core.tasks.TaskContext.input
+  name: input
+- uid: azure.ai.agentserver.core.tasks.TaskContext.input_id
+  name: input_id
+- uid: azure.ai.agentserver.core.tasks.TaskContext.is_steered_turn
+  name: is_steered_turn
+  signature: 'is_steered_turn: bool'
+- uid: azure.ai.agentserver.core.tasks.TaskContext.metadata
+  name: metadata
+- uid: azure.ai.agentserver.core.tasks.TaskContext.pending_input_count
+  name: pending_input_count
+  summary: 'live count of queued steering inputs.
+
+
+    Reflects the current backlog including inputs queued mid-handler.
+
+    Reads as `0` for non-steerable tasks (where the provider
+
+    returns 0). Replaces the legacy `ctx.pending_inputs: Sequence[Any]`
+
+    snapshot.'
+  return:
+    description: Number of queued steering inputs.
+    types:
+    - <xref:int>
+- uid: azure.ai.agentserver.core.tasks.TaskContext.recovery_count
+  name: recovery_count
+- uid: azure.ai.agentserver.core.tasks.TaskContext.retry_attempt
+  name: retry_attempt
+- uid: azure.ai.agentserver.core.tasks.TaskContext.shutdown
+  name: shutdown
+- uid: azure.ai.agentserver.core.tasks.TaskContext.task_id
+  name: task_id
+- uid: azure.ai.agentserver.core.tasks.TaskContext.timeout_exceeded
+  name: timeout_exceeded
+  signature: 'timeout_exceeded: bool'
