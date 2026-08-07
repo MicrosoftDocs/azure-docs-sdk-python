@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: connectedcache
 ---
-# Azure Connected Cache SDK for Python - preview
-## Packages - preview
+# Azure Connected Cache SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](connected-cache-index.md)]
