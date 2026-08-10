@@ -1,12 +1,12 @@
 ---
 title: Azure AI Agent Server Invocations client library for Python
 keywords: Azure, python, SDK, API, azure-ai-agentserver-invocations, agentserver
-ms.date: 08/03/2026
+ms.date: 08/10/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: agentserver
 ---
-# Azure AI Agent Server Invocations client library for Python - version 1.0.0b8 
+# Azure AI Agent Server Invocations client library for Python - version 1.0.0a20260810001 
 
 
 The `azure-ai-agentserver-invocations` package provides the invocation protocol endpoints for Azure AI Hosted Agent containers. It plugs into the [`azure-ai-agentserver-core`](https://pypi.org/project/azure-ai-agentserver-core/) host framework and supports two transports on the same host:
@@ -322,6 +322,7 @@ The handler receives a Starlette [`WebSocket`][starlette-ws] and returns `None`.
 
 | Environment variable | Default | Description |
 |---|---|---|
+| `SSE_KEEPALIVE_INTERVAL` | unset (disabled) | Platform-injected interval, in seconds, for SSE comments on idle `POST /invocations` streams. `0` disables keep-alive. Surfaced on `app.config.sse_keepalive_interval`. |
 | `WS_KEEPALIVE_INTERVAL` | unset (disabled) | Platform-injected WebSocket Ping interval, in seconds. `0` disables keep-alive. Surfaced on `app.config.ws_ping_interval` and wired into Hypercorn's `websocket_ping_interval` by `AgentServerHost`. |
 
 ### Reference: close codes
@@ -340,14 +341,14 @@ To report an issue with the client library, or request additional features, plea
 
 ## Next steps
 
-Visit the [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.0.0b8/sdk/agentserver/azure-ai-agentserver-invocations/samples) folder for complete working examples:
+Visit the [Samples](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/agentserver/azure-ai-agentserver-invocations/samples) folder for complete working examples:
 
 | Sample | Description |
 |---|---|
-| [simple_invoke_agent](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.0.0b8/sdk/agentserver/azure-ai-agentserver-invocations/samples/simple_invoke_agent/) | Minimal synchronous request-response |
-| [async_invoke_agent](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.0.0b8/sdk/agentserver/azure-ai-agentserver-invocations/samples/async_invoke_agent/) | Long-running operations with polling and cancellation |
-| [ws_invoke_agent](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.0.0b8/sdk/agentserver/azure-ai-agentserver-invocations/samples/ws_invoke_agent/) | Combined `POST /invocations` (HTTP) and `/invocations_ws` (WebSocket) host |
-| [ws_bidirectional_streaming_agent](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.0.0b8/sdk/agentserver/azure-ai-agentserver-invocations/samples/ws_bidirectional_streaming_agent/) | Full-duplex `/invocations_ws` agent: concurrent token streams + mid-flight cancel (relies on the SDK's WS protocol Ping/Pong keep-alive, not application-level heartbeats) |
+| [simple_invoke_agent](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/agentserver/azure-ai-agentserver-invocations/samples/simple_invoke_agent/) | Minimal synchronous request-response |
+| [async_invoke_agent](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/agentserver/azure-ai-agentserver-invocations/samples/async_invoke_agent/) | Long-running operations with polling and cancellation |
+| [ws_invoke_agent](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/agentserver/azure-ai-agentserver-invocations/samples/ws_invoke_agent/) | Combined `POST /invocations` (HTTP) and `/invocations_ws` (WebSocket) host |
+| [ws_bidirectional_streaming_agent](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/agentserver/azure-ai-agentserver-invocations/samples/ws_bidirectional_streaming_agent/) | Full-duplex `/invocations_ws` agent: concurrent token streams + mid-flight cancel (relies on the SDK's WS protocol Ping/Pong keep-alive, not application-level heartbeats) |
 
 ## Contributing
 
