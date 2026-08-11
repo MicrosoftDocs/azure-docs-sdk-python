@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-programenrollment, programenrollment
-ms.date: 06/17/2026
+ms.date: 08/11/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: programenrollment
