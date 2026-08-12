@@ -23,18 +23,24 @@ functions:
     \ consumers (RAG indexers,\npage-citation prompts) can rely on the marker value\
     \ to cite the\ncorrect source page even when only a subset of pages was analyzed.\n\
     Internal telemetry messages such as `LLMStats: ...` are filtered\nfrom the rendered\
-    \ `rai_warnings` front matter.\n\nExample:\n\n<!-- literal_block {\"ids\": [],\
-    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\"\
-    : \"preserve\", \"language\": \"default\", \"force\": false, \"linenos\": false}\
-    \ -->\n\n````default\n\n   from azure.ai.contentunderstanding import (\n     \
-    \  ContentUnderstandingClient,\n       to_llm_input,\n   )\n   from azure.identity\
-    \ import DefaultAzureCredential\n\n   client = ContentUnderstandingClient(endpoint,\
-    \ DefaultAzureCredential())\n   poller = client.begin_analyze(\n       analyzer_id=\"\
-    prebuilt-invoice\",\n       inputs=[{\"source\": {\"kind\": \"url\", \"url\":\
-    \ url}}],\n   )\n   result = poller.result()\n   text = to_llm_input(result)\n\
-    \   ````"
+    \ `warnings` front matter.\n\nThe YAML front matter (delimited by `---`) may include:\n\
+    `mimeType` (for example, application/pdf, image/jpeg, audio/mpeg, video/mp4),\n\
+    `customMetadata` (caller-supplied key-value pairs from\n*custom_metadata*),\n\
+    `metadata` (analysis-result metadata from\n`AnalysisContent.metadata`),\n`pages`\
+    \ (page range),\n`timeRange` (media time span),\n`category` (classification label),\n\
+    `fields` (extracted structured fields as YAML),\nand `warnings` (content safety\
+    \ flags).\n\nExample:\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
+    names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\": \"preserve\",\
+    \ \"language\": \"default\", \"force\": false, \"linenos\": false} -->\n\n````default\n\
+    \n   from azure.ai.contentunderstanding import (\n       ContentUnderstandingClient,\n\
+    \       to_llm_input,\n   )\n   from azure.identity import DefaultAzureCredential\n\
+    \n   client = ContentUnderstandingClient(endpoint, DefaultAzureCredential())\n\
+    \   poller = client.begin_analyze(\n       analyzer_id=\"prebuilt-invoice\",\n\
+    \       inputs=[{\"source\": {\"kind\": \"url\", \"url\": url}}],\n   )\n   result\
+    \ = poller.result()\n   text = to_llm_input(result)\n   ````"
   signature: 'to_llm_input(result: AnalysisResult, *, include_fields: bool = True,
-    include_markdown: bool = True, metadata: Dict[str, Any] | None = None) -> str'
+    include_markdown: bool = True, custom_metadata: Dict[str, Any] | None = None)
+    -> str'
   parameters:
   - name: result
     description: The `AnalysisResult` from a Content Understanding analyze operation.
@@ -60,20 +66,20 @@ functions:
     defaultValue: 'True'
     types:
     - <xref:bool>
-  - name: metadata
-    description: 'Optional dict of user-supplied key-value pairs to
+  - name: custom_metadata
+    description: 'Optional caller-supplied key-value pairs emitted
 
-      include in the YAML front matter. Common keys include
+      under a nested `customMetadata` YAML front-matter block (kept
 
-      `"source"` (filename), `"department"`,
+      separate from service `AnalysisContent.metadata` / `metadata`).
 
-      `"batch_id"`, etc. Metadata keys are placed after
+      Common keys include `"source"`, `"documentId"`, or
 
-      `contentType` and before auto-detected keys
+      `"department"`. String values are emitted as opaque YAML scalars;
 
-      (`timeRange`, `category`, `pages`). Metadata keys must not
+      nested structure must be supplied as real objects (dicts / lists),
 
-      conflict with helper-generated front matter keys.'
+      not JSON text.'
     defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:typing.Any>]
@@ -87,10 +93,10 @@ functions:
   exceptions:
   - type: TypeError
     description: If *result* is not an `AnalysisResult`
-  - type: ValueError
-    description: If *metadata* contains a reserved front matter key.
 classes:
 - azure.ai.contentunderstanding.ContentUnderstandingClient
 packages:
 - azure.ai.contentunderstanding.aio
 - azure.ai.contentunderstanding.models
+modules:
+- azure.ai.contentunderstanding.types

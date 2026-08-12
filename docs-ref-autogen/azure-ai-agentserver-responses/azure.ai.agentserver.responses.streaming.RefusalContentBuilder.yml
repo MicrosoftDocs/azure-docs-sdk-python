@@ -1,0 +1,107 @@
+### YamlMime:PythonClass
+uid: azure.ai.agentserver.responses.streaming.RefusalContentBuilder
+name: RefusalContentBuilder
+fullName: azure.ai.agentserver.responses.streaming.RefusalContentBuilder
+module: azure.ai.agentserver.responses.streaming
+summary: "Scoped builder for a refusal content part within an output message item.\n\
+  \nLifecycle: `emit_added()` \u2192 `emit_delta()` (0+) \u2192 `emit_refusal_done()`\n\
+  \u2192 `emit_done()`.\n\nInitialize the refusal content builder."
+constructor:
+  syntax: 'RefusalContentBuilder(stream: ResponseEventStream, output_index: int, content_index:
+    int, item_id: str)'
+  parameters:
+  - name: stream
+    description: The parent event stream.
+    isRequired: true
+    types:
+    - <xref:azure.ai.agentserver.responses.streaming.ResponseEventStream>
+  - name: output_index
+    description: Zero-based index of the parent output item.
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: content_index
+    description: Zero-based index of this content part.
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: item_id
+    description: Identifier of the parent output item.
+    isRequired: true
+    types:
+    - <xref:str>
+methods:
+- uid: azure.ai.agentserver.responses.streaming.RefusalContentBuilder.emit_added
+  name: emit_added
+  summary: Emit a `content_part.added` event for this refusal content.
+  signature: emit_added() -> ResponseContentPartAddedEvent
+  return:
+    description: The emitted event dict.
+    types:
+    - <xref:azure.ai.agentserver.responses.models.ResponseContentPartAddedEvent>
+  exceptions:
+  - type: ValueError
+    description: If the builder is not in `NOT_STARTED` state.
+- uid: azure.ai.agentserver.responses.streaming.RefusalContentBuilder.emit_delta
+  name: emit_delta
+  summary: Emit a refusal delta event.
+  signature: 'emit_delta(text: str) -> ResponseRefusalDeltaEvent'
+  parameters:
+  - name: text
+    description: The incremental refusal text fragment.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: The emitted event dict.
+    types:
+    - <xref:azure.ai.agentserver.responses.models.ResponseRefusalDeltaEvent>
+- uid: azure.ai.agentserver.responses.streaming.RefusalContentBuilder.emit_done
+  name: emit_done
+  summary: 'Emit a `content_part.done` event, closing this content part.
+
+
+    Must be called after `emit_refusal_done()`.'
+  signature: emit_done() -> ResponseContentPartDoneEvent
+  return:
+    description: The emitted event dict.
+    types:
+    - <xref:azure.ai.agentserver.responses.models.ResponseContentPartDoneEvent>
+  exceptions:
+  - type: ValueError
+    description: If refusal has not been finalized or builder is already done.
+- uid: azure.ai.agentserver.responses.streaming.RefusalContentBuilder.emit_refusal_done
+  name: emit_refusal_done
+  summary: 'Emit a `refusal.done` event.
+
+
+    Call this after all deltas have been emitted and before `emit_done()`.'
+  signature: 'emit_refusal_done(final_refusal: str) -> ResponseRefusalDoneEvent'
+  parameters:
+  - name: final_refusal
+    description: The final, complete refusal text.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: The emitted event dict.
+    types:
+    - <xref:azure.ai.agentserver.responses.models.ResponseRefusalDoneEvent>
+  exceptions:
+  - type: ValueError
+    description: If the builder is not in `ADDED` state or refusal is already done.
+attributes:
+- uid: azure.ai.agentserver.responses.streaming.RefusalContentBuilder.content_index
+  name: content_index
+  summary: Return the zero-based content part index.
+  return:
+    description: The content index.
+    types:
+    - <xref:int>
+- uid: azure.ai.agentserver.responses.streaming.RefusalContentBuilder.final_refusal
+  name: final_refusal
+  summary: Return the final refusal text, or `None` if not yet done.
+  return:
+    description: The final refusal string.
+    types:
+    - <xref:str> | <xref:None>

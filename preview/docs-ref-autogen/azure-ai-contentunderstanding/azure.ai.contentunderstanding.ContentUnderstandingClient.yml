@@ -14,7 +14,10 @@ summary: 'Custom ContentUnderstandingClient with static patches for analyze oper
 
   - Fixes content_type default for begin_analyze_binary
 
-  - Defaults polling_interval to 3 seconds'
+  - Defaults polling_interval to 3 seconds
+
+  - Forwards allow_input_truncation on analyze APIs (JSON and binary; when omitted,
+  the analyzer config applies)'
 constructor:
   syntax: 'ContentUnderstandingClient(endpoint: str, credential: AzureKeyCredential
     | TokenCredential, **kwargs: Any)'
@@ -35,9 +38,11 @@ constructor:
     - <xref:azure.core.credentials.TokenCredential>
   keywordOnlyParameters:
   - name: api_version
-    description: 'The API version to use for this operation. Default value is "2025-11-01".
+    description: 'The API version to use for this operation. Known values are
 
-      Note that overriding this default value may result in unsupported behavior.'
+      `2025-11-01` (GA) and `2026-06-01-preview`. Default value is
+
+      `2026-06-01-preview`. Preview-only operations require the preview API version.'
     types:
     - <xref:str>
   - name: polling_interval
@@ -47,6 +52,154 @@ constructor:
     types:
     - <xref:int>
 methods:
+- uid: azure.ai.contentunderstanding.ContentUnderstandingClient.analyze_binary_inline
+  name: analyze_binary_inline
+  summary: 'Extract content and fields from binary input synchronously. Returns the
+    result directly
+
+    in the response (no polling).
+
+
+    > [!NOTE]
+
+    > The string_encoding parameter is automatically set to "codePoint" for Python
+    as it
+
+    >
+
+    > matches Python''s native string indexing behavior (len() and str[i] use code
+    points).
+
+    >'
+  signature: 'analyze_binary_inline(analyzer_id: str, binary_input: bytes, *, content_range:
+    str | None = None, allow_input_truncation: bool | None = None, content_type: str
+    = ''application/octet-stream'', processing_location: str | ProcessingLocation
+    | None = None, **kwargs: Any) -> ContentAnalyzerInlineResponse'
+  parameters:
+  - name: analyzer_id
+    description: The unique identifier of the analyzer. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: binary_input
+    description: The binary content of the document to analyze. Required.
+    isRequired: true
+    types:
+    - <xref:bytes>
+  keywordOnlyParameters:
+  - name: content_range
+    description: Range of the input to analyze (ex. `1-3,5,9-`). Default is None.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: allow_input_truncation
+    description: 'Allows the input to be truncated to fit within the model''s
+
+      processing limits when it would otherwise exceed them. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:bool>
+  - name: content_type
+    description: Body Parameter content-type. Default value is "application/octet-stream".
+    defaultValue: application/octet-stream
+    types:
+    - <xref:str>
+  - name: processing_location
+    description: 'The location where the data may be processed. Defaults to
+
+      global. Known values are: "geography", "dataZone", and "global". Default value
+      is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.ai.contentunderstanding.models.ProcessingLocation>
+  return:
+    description: ContentAnalyzerInlineResponse. Access the `AnalysisResult` via `.result`.
+    types:
+    - <xref:azure.ai.contentunderstanding.models.ContentAnalyzerInlineResponse>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+    description: 'Service returned a non-success status
+
+      code, or the inline envelope `status` was not `Succeeded`'
+- uid: azure.ai.contentunderstanding.ContentUnderstandingClient.analyze_inline
+  name: analyze_inline
+  summary: 'Extract content and fields from input synchronously. Returns the result
+    directly in
+
+    the response (no polling).
+
+
+    > [!NOTE]
+
+    > The string_encoding parameter is automatically set to "codePoint" for Python
+    as it
+
+    >
+
+    > matches Python''s native string indexing behavior (len() and str[i] use code
+    points).
+
+    >'
+  signature: 'analyze_inline(analyzer_id: str, *, inputs: list[_models.AnalysisInput],
+    allow_input_truncation: bool | None = None, model_deployments: dict[str, str]
+    | None = None, processing_location: str | _models.ProcessingLocation | None =
+    None, **kwargs: Any) -> _models.ContentAnalyzerInlineResponse'
+  parameters:
+  - name: analyzer_id
+    description: The unique identifier of the analyzer. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: body
+    description: Is either a JSON type or a IO[bytes] type. Default value is None.
+    types:
+    - <xref:JSON>
+    - <xref:typing.IO>[<xref:bytes>]
+  keywordOnlyParameters:
+  - name: inputs
+    description: Inputs to analyze. Required.
+    defaultValue: <object object at 0x00000231C69028B0>
+    types:
+    - <xref:list>[<xref:azure.ai.contentunderstanding.models.AnalysisInput>]
+  - name: allow_input_truncation
+    description: 'Overrides the analyzer''s allowInputTruncation setting for
+
+      this request. When omitted, the analyzer''s configured value applies. Default
+      value is None.'
+    defaultValue: None
+    types:
+    - <xref:bool>
+  - name: model_deployments
+    description: 'Override default mapping of model names to deployments.
+
+      Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:dict>[<xref:str>, <xref:str>]
+  - name: processing_location
+    description: 'The location where the data may be processed. Defaults to
+
+      global. Known values are: "geography", "dataZone", and "global". Default value
+      is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.ai.contentunderstanding.models.ProcessingLocation>
+  - name: content_type
+    description: Body Parameter content-type. Default value is "application/json".
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: ContentAnalyzerInlineResponse. Access the `AnalysisResult` via `.result`.
+    types:
+    - <xref:azure.ai.contentunderstanding.models.ContentAnalyzerInlineResponse>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+    description: 'Service returned a non-success status
+
+      code, or the inline envelope `status` was not `Succeeded`'
 - uid: azure.ai.contentunderstanding.ContentUnderstandingClient.begin_analyze
   name: begin_analyze
   summary: 'Extract content and fields from input.
@@ -68,8 +221,9 @@ methods:
 
     >'
   signature: 'begin_analyze(analyzer_id: str, *, inputs: list[_models.AnalysisInput],
-    model_deployments: dict[str, str] | None = None, processing_location: str | _models.ProcessingLocation
-    | None = None, **kwargs: Any) -> AnalyzeLROPoller[_models.AnalysisResult]'
+    allow_input_truncation: bool | None = None, model_deployments: dict[str, str]
+    | None = None, processing_location: str | _models.ProcessingLocation | None =
+    None, **kwargs: Any) -> AnalyzeLROPoller[_models.AnalysisResult]'
   parameters:
   - name: analyzer_id
     description: The unique identifier of the analyzer. Required.
@@ -86,13 +240,21 @@ methods:
     description: 'Inputs to analyze. Currently, only pro mode supports multiple inputs.
 
       Required.'
-    defaultValue: <object object at 0x00000295A7FF2810>
+    defaultValue: <object object at 0x00000231C69028B0>
     types:
     - <xref:list>[<xref:azure.ai.contentunderstanding.models.AnalysisInput>]
+  - name: allow_input_truncation
+    description: 'Overrides the analyzer''s allowInputTruncation setting for
+
+      this request. When omitted, the analyzer''s configured value applies. Default
+      value is None.'
+    defaultValue: None
+    types:
+    - <xref:bool>
   - name: model_deployments
     description: 'Override default mapping of model names to deployments.
 
-      Ex. { "gpt-4.1": "myGpt41Deployment", "text-embedding-3-large":
+      Ex. { "gpt-5.2": "myGpt52Deployment", "text-embedding-3-large":
 
       "myTextEmbedding3LargeDeployment" }. Default value is None.'
     defaultValue: None
@@ -142,8 +304,9 @@ methods:
 
     >'
   signature: 'begin_analyze_binary(analyzer_id: str, binary_input: bytes, *, content_range:
-    str | None = None, content_type: str = ''application/octet-stream'', processing_location:
-    str | ProcessingLocation | None = None, **kwargs: Any) -> AnalyzeLROPoller[AnalysisResult]'
+    str | None = None, allow_input_truncation: bool | None = None, content_type: str
+    = ''application/octet-stream'', processing_location: str | ProcessingLocation
+    | None = None, **kwargs: Any) -> AnalyzeLROPoller[AnalysisResult]'
   parameters:
   - name: analyzer_id
     description: The unique identifier of the analyzer. Required.
@@ -165,6 +328,13 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
+  - name: allow_input_truncation
+    description: 'Allows the input to be truncated to fit within the model''s
+
+      processing limits when it would otherwise exceed them. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:bool>
   - name: content_type
     description: 'Body Parameter content-type. Content type parameter for binary body.
 
@@ -194,10 +364,10 @@ methods:
   name: begin_copy_analyzer
   summary: Create a copy of the source analyzer to the current location.
   signature: 'begin_copy_analyzer(analyzer_id: str, body: ~collections.abc.MutableMapping[str,
-    ~typing.Any] | ~typing.IO[bytes] = <object object>, *, source_analyzer_id: str
-    = <object object>, allow_replace: bool | None = None, source_azure_resource_id:
-    str | None = None, source_region: str | None = None, **kwargs: ~typing.Any) ->
-    LROPoller[ContentAnalyzer]'
+    ~typing.Any] | ~azure.ai.contentunderstanding.types.CopyAnalyzerRequest | ~typing.IO[bytes]
+    = <object object>, *, source_analyzer_id: str = <object object>, allow_replace:
+    bool | None = None, source_azure_resource_id: str | None = None, source_region:
+    str | None = None, **kwargs: ~typing.Any) -> LROPoller[ContentAnalyzer]'
   parameters:
   - name: analyzer_id
     description: The unique identifier of the analyzer. Required.
@@ -205,14 +375,16 @@ methods:
     types:
     - <xref:str>
   - name: body
-    description: Is either a JSON type or a IO[bytes] type. Required.
+    description: 'Is one of the following types: JSON, CopyAnalyzerRequest, IO[bytes]
+      Required.'
     types:
     - <xref:JSON>
+    - <xref:azure.ai.contentunderstanding.types.CopyAnalyzerRequest>
     - <xref:typing.IO>[<xref:bytes>]
   keywordOnlyParameters:
   - name: source_analyzer_id
     description: Source analyzer ID. Required.
-    defaultValue: <object object at 0x00000295A7FF27D0>
+    defaultValue: <object object at 0x00000231C69027D0>
     types:
     - <xref:str>
   - name: allow_replace
@@ -250,8 +422,8 @@ methods:
   name: begin_create_analyzer
   summary: Create a new analyzer asynchronously.
   signature: 'begin_create_analyzer(analyzer_id: str, resource: ContentAnalyzer |
-    MutableMapping[str, Any] | IO[bytes], *, allow_replace: bool | None = None, **kwargs:
-    Any) -> LROPoller[ContentAnalyzer]'
+    ContentAnalyzer | IO[bytes], *, allow_replace: bool | None = None, **kwargs: Any)
+    -> LROPoller[ContentAnalyzer]'
   parameters:
   - name: analyzer_id
     description: The unique identifier of the analyzer. Required.
@@ -259,14 +431,14 @@ methods:
     types:
     - <xref:str>
   - name: resource
-    description: 'The resource instance. Is one of the following types: ContentAnalyzer,
-      JSON,
+    description: 'The resource instance. Is either a ContentAnalyzer type or a IO[bytes]
+      type.
 
-      IO[bytes] Required.'
+      Required.'
     isRequired: true
     types:
     - <xref:azure.ai.contentunderstanding.models.ContentAnalyzer>
-    - <xref:JSON>
+    - <xref:azure.ai.contentunderstanding.types.ContentAnalyzer>
     - <xref:typing.IO>[<xref:bytes>]
   keywordOnlyParameters:
   - name: allow_replace
@@ -375,9 +547,9 @@ methods:
   name: grant_copy_authorization
   summary: Get authorization for copying this analyzer to another location.
   signature: 'grant_copy_authorization(analyzer_id: str, body: ~collections.abc.MutableMapping[str,
-    ~typing.Any] | ~typing.IO[bytes] = <object object>, *, target_azure_resource_id:
-    str = <object object>, target_region: str | None = None, **kwargs: ~typing.Any)
-    -> CopyAuthorization'
+    ~typing.Any] | ~azure.ai.contentunderstanding.types.GrantCopyAuthorizationRequest
+    | ~typing.IO[bytes] = <object object>, *, target_azure_resource_id: str = <object
+    object>, target_region: str | None = None, **kwargs: ~typing.Any) -> CopyAuthorization'
   parameters:
   - name: analyzer_id
     description: The unique identifier of the analyzer. Required.
@@ -385,14 +557,18 @@ methods:
     types:
     - <xref:str>
   - name: body
-    description: Is either a JSON type or a IO[bytes] type. Required.
+    description: 'Is one of the following types: JSON, GrantCopyAuthorizationRequest,
+      IO[bytes]
+
+      Required.'
     types:
     - <xref:JSON>
+    - <xref:azure.ai.contentunderstanding.types.GrantCopyAuthorizationRequest>
     - <xref:typing.IO>[<xref:bytes>]
   keywordOnlyParameters:
   - name: target_azure_resource_id
     description: Azure resource ID of the target analyzer location. Required.
-    defaultValue: <object object at 0x00000295A7FF27D0>
+    defaultValue: <object object at 0x00000231C69027D0>
     types:
     - <xref:str>
   - name: target_region
@@ -462,8 +638,8 @@ methods:
 - uid: azure.ai.contentunderstanding.ContentUnderstandingClient.update_analyzer
   name: update_analyzer
   summary: Update analyzer properties.
-  signature: 'update_analyzer(analyzer_id: str, resource: ContentAnalyzer | MutableMapping[str,
-    Any] | IO[bytes], **kwargs: Any) -> ContentAnalyzer'
+  signature: 'update_analyzer(analyzer_id: str, resource: ContentAnalyzer | ContentAnalyzer
+    | IO[bytes], **kwargs: Any) -> ContentAnalyzer'
   parameters:
   - name: analyzer_id
     description: The unique identifier of the analyzer. Required.
@@ -471,14 +647,14 @@ methods:
     types:
     - <xref:str>
   - name: resource
-    description: 'The resource instance. Is one of the following types: ContentAnalyzer,
-      JSON,
+    description: 'The resource instance. Is either a ContentAnalyzer type or a IO[bytes]
+      type.
 
-      IO[bytes] Required.'
+      Required.'
     isRequired: true
     types:
     - <xref:azure.ai.contentunderstanding.models.ContentAnalyzer>
-    - <xref:JSON>
+    - <xref:azure.ai.contentunderstanding.types.ContentAnalyzer>
     - <xref:typing.IO>[<xref:bytes>]
   return:
     description: ContentAnalyzer. The ContentAnalyzer is compatible with MutableMapping
@@ -490,13 +666,16 @@ methods:
   name: update_defaults
   summary: Update default settings for this Content Understanding resource.
   signature: 'update_defaults(body: ~collections.abc.MutableMapping[str, ~typing.Any]
-    | ~typing.IO[bytes] = <object object>, *, model_deployments: ~typing.Dict[str,
-    str] | None = None, **kwargs: ~typing.Any) -> ContentUnderstandingDefaults'
+    | ~azure.ai.contentunderstanding.types.UpdateDefaultsRequest | ~typing.IO[bytes]
+    = <object object>, *, model_deployments: ~typing.Dict[str, str] | None = None,
+    **kwargs: ~typing.Any) -> ContentUnderstandingDefaults'
   parameters:
   - name: body
-    description: Is either a JSON type or a IO[bytes] type. Required.
+    description: 'Is one of the following types: JSON, UpdateDefaultsRequest, IO[bytes]
+      Required.'
     types:
     - <xref:JSON>
+    - <xref:azure.ai.contentunderstanding.types.UpdateDefaultsRequest>
     - <xref:typing.IO>[<xref:bytes>]
   keywordOnlyParameters:
   - name: model_deployments

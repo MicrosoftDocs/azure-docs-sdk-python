@@ -1,0 +1,364 @@
+### YamlMime:PythonClass
+uid: azure.ai.agentserver.responses.FileResponseStore
+name: FileResponseStore
+fullName: azure.ai.agentserver.responses.FileResponseStore
+module: azure.ai.agentserver.responses
+summary: 'File-backed response store provider.
+
+
+  Implements <xref:azure.ai.agentserver.responses.ResponseProviderProtocol>. Streaming
+  concerns are
+
+  handled separately by the process-wide
+
+  `azure.ai.agentserver.core.streaming.streams` registry, configured
+
+  by the responses hosting layer.'
+constructor:
+  syntax: 'FileResponseStore(storage_dir: str | Path | None = None)'
+  parameters:
+  - name: storage_dir
+    description: "Root directory for the store. Created if it does\nnot exist. Subdirectories\
+      \ `responses/`, `items/`, and\n`conversations/` are managed by the store. Defaults\
+      \ to\n`resolve_state_subdir(\"responses\")` \u2014 a `responses` directory\n\
+      under the shared agent-server state root (`AGENTSERVER_STATE_ROOT`,\nor `~/.agentserver`\
+      \ when unset), alongside `tasks` and\n`streams`."
+    defaultValue: None
+    types:
+    - <xref:str> | <xref:pathlib.Path> | <xref:None>
+methods:
+- uid: azure.ai.agentserver.responses.FileResponseStore.create_response
+  name: create_response
+  summary: Persist a new response envelope.
+  signature: 'async create_response(response: ResponseObject, input_items: Iterable[A2AToolCall
+    | A2AToolCallOutput | OutputItemAdditionalTools | OutputItemApplyPatchToolCall
+    | OutputItemApplyPatchToolCallOutput | AzureAISearchToolCall | AzureAISearchToolCallOutput
+    | AzureFunctionToolCall | AzureFunctionToolCallOutput | BingCustomSearchToolCall
+    | BingCustomSearchToolCallOutput | BingGroundingToolCall | BingGroundingToolCallOutput
+    | BrowserAutomationToolCall | BrowserAutomationToolCallOutput | OutputItemCodeInterpreterToolCall
+    | OutputItemCompactionBody | OutputItemComputerToolCall | OutputItemComputerToolCallOutput
+    | CustomToolCallResource | CustomToolCallOutputResource | FabricDataAgentToolCall
+    | FabricDataAgentToolCallOutput | OutputItemFileSearchToolCall | OutputItemFunctionToolCall
+    | OutputItemFunctionToolCallOutput | OutputItemImageGenToolCall | OutputItemLocalShellToolCall
+    | OutputItemLocalShellToolCallOutput | OutputItemMcpApprovalRequest | OutputItemMcpApprovalResponseResource
+    | OutputItemMcpToolCall | OutputItemMcpListTools | MemorySearchToolCallItemResource
+    | OutputItemMessage | OAuthConsentRequestOutputItem | OpenApiToolCall | OpenApiToolCallOutput
+    | OutputItemOutputMessage | OutputItemReasoningItem | SharepointGroundingToolCall
+    | SharepointGroundingToolCallOutput | OutputItemFunctionShellCall | OutputItemFunctionShellCallOutput
+    | StructuredOutputsOutputItem | OutputItemToolSearchCall | OutputItemToolSearchOutput
+    | OutputItemWebSearchToolCall | WorkflowActionOutputItem] | None, history_item_ids:
+    Iterable[str] | None, *, context: PlatformContext | None = None) -> None'
+  parameters:
+  - name: response
+    description: The response envelope to persist.
+    isRequired: true
+    types:
+    - <xref:azure.ai.agentserver.responses.ResponseObject>
+  - name: input_items
+    description: Optional resolved input items.
+    isRequired: true
+    types:
+    - <xref:typing.Iterable>[<xref:OutputItem>] | <xref:None>
+  - name: history_item_ids
+    description: Optional history item ids to link.
+    isRequired: true
+    types:
+    - <xref:typing.Iterable>[<xref:str>] | <xref:None>
+  keywordOnlyParameters:
+  - name: context
+    description: "Platform context (accepted but unused \u2014\nmatches <xref:azure.ai.agentserver.responses.InMemoryResponseProvider>)."
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.PlatformContext> | <xref:None>
+  return:
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.ai.agentserver.responses.store.ResponseAlreadyExistsError
+    description: 'If a non-deleted response with
+
+      the same id already exists.'
+- uid: azure.ai.agentserver.responses.FileResponseStore.delete_response
+  name: delete_response
+  summary: 'Soft-delete a stored response envelope by identifier.
+
+
+    Writes a deleted marker file so that subsequent
+
+    <xref:azure.ai.agentserver.responses.FileResponseStore.create_response> calls
+    with the same id can re-create the
+
+    entry while concurrent reads see a `KeyError`. Mirrors
+
+    <xref:azure.ai.agentserver.responses.InMemoryResponseProvider>.'
+  signature: 'async delete_response(response_id: str, *, context: PlatformContext
+    | None = None) -> None'
+  parameters:
+  - name: response_id
+    description: The response identifier.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: context
+    description: "Platform context (accepted but unused \u2014\nmatches <xref:azure.ai.agentserver.responses.InMemoryResponseProvider>)."
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.PlatformContext> | <xref:None>
+  return:
+    types:
+    - <xref:None>
+  exceptions:
+  - type: KeyError
+    description: If the response does not exist or has already been deleted.
+- uid: azure.ai.agentserver.responses.FileResponseStore.get_history_item_ids
+  name: get_history_item_ids
+  summary: "Resolve history item ids from previous response and/or conversation.\n\
+    \nMirrors <xref:azure.ai.agentserver.responses.InMemoryResponseProvider.get_history_item_ids>:\n\
+    \n* When `previous_response_id` is set, contributes that response's `history_item_ids\
+    \ + input_item_ids + output_item_ids`. \n\n* When `conversation_id` is set, iterates\
+    \ all non-deleted responses in that conversation and contributes their `history_item_ids\
+    \ + input_item_ids + output_item_ids`. \n\n* Both may be set; results are concatenated\
+    \ in the same order. \n\nDeleted responses are skipped (matches the in-memory\
+    \ provider)."
+  signature: 'async get_history_item_ids(previous_response_id: str | None, conversation_id:
+    str | None, limit: int, *, context: PlatformContext | None = None) -> list[str]'
+  parameters:
+  - name: previous_response_id
+    description: Optional response id to chain history from.
+    isRequired: true
+    types:
+    - <xref:str> | <xref:None>
+  - name: conversation_id
+    description: Optional conversation id to scope history lookup.
+    isRequired: true
+    types:
+    - <xref:str> | <xref:None>
+  - name: limit
+    description: Maximum number of history item ids to return.
+    isRequired: true
+    types:
+    - <xref:int>
+  keywordOnlyParameters:
+  - name: context
+    description: "Platform context (accepted but unused \u2014\nmatches <xref:azure.ai.agentserver.responses.InMemoryResponseProvider>)."
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.PlatformContext> | <xref:None>
+  return:
+    description: List of history item ids (possibly empty).
+    types:
+    - <xref:list>[<xref:str>]
+- uid: azure.ai.agentserver.responses.FileResponseStore.get_input_items
+  name: get_input_items
+  summary: "Retrieve input + history items for a response with cursor paging.\n\n\
+    Returns the same ordered union of `history_item_ids` followed by\n`input_item_ids`\
+    \ that <xref:azure.ai.agentserver.responses.InMemoryResponseProvider> returns,\n\
+    with the same `limit` clamp (1\u2013100) and the same cursor\nsemantics."
+  signature: 'async get_input_items(response_id: str, limit: int = 20, ascending:
+    bool = False, after: str | None = None, before: str | None = None, *, context:
+    PlatformContext | None = None) -> list[Union[azure.ai.agentserver.responses.models._generated.types.A2AToolCall,
+    azure.ai.agentserver.responses.models._generated.types.A2AToolCallOutput, azure.ai.agentserver.responses.models._generated.types.OutputItemAdditionalTools,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemApplyPatchToolCall,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemApplyPatchToolCallOutput,
+    azure.ai.agentserver.responses.models._generated.types.AzureAISearchToolCall,
+    azure.ai.agentserver.responses.models._generated.types.AzureAISearchToolCallOutput,
+    azure.ai.agentserver.responses.models._generated.types.AzureFunctionToolCall,
+    azure.ai.agentserver.responses.models._generated.types.AzureFunctionToolCallOutput,
+    azure.ai.agentserver.responses.models._generated.types.BingCustomSearchToolCall,
+    azure.ai.agentserver.responses.models._generated.types.BingCustomSearchToolCallOutput,
+    azure.ai.agentserver.responses.models._generated.types.BingGroundingToolCall,
+    azure.ai.agentserver.responses.models._generated.types.BingGroundingToolCallOutput,
+    azure.ai.agentserver.responses.models._generated.types.BrowserAutomationToolCall,
+    azure.ai.agentserver.responses.models._generated.types.BrowserAutomationToolCallOutput,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemCodeInterpreterToolCall,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemCompactionBody,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemComputerToolCall,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemComputerToolCallOutput,
+    azure.ai.agentserver.responses.models._generated.types.CustomToolCallResource,
+    azure.ai.agentserver.responses.models._generated.types.CustomToolCallOutputResource,
+    azure.ai.agentserver.responses.models._generated.types.FabricDataAgentToolCall,
+    azure.ai.agentserver.responses.models._generated.types.FabricDataAgentToolCallOutput,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemFileSearchToolCall,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemFunctionToolCall,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemFunctionToolCallOutput,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemImageGenToolCall,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemLocalShellToolCall,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemLocalShellToolCallOutput,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemMcpApprovalRequest,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemMcpApprovalResponseResource,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemMcpToolCall,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemMcpListTools,
+    azure.ai.agentserver.responses.models._generated.types.MemorySearchToolCallItemResource,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemMessage, azure.ai.agentserver.responses.models._generated.types.OAuthConsentRequestOutputItem,
+    azure.ai.agentserver.responses.models._generated.types.OpenApiToolCall, azure.ai.agentserver.responses.models._generated.types.OpenApiToolCallOutput,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemOutputMessage,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemReasoningItem,
+    azure.ai.agentserver.responses.models._generated.types.SharepointGroundingToolCall,
+    azure.ai.agentserver.responses.models._generated.types.SharepointGroundingToolCallOutput,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemFunctionShellCall,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemFunctionShellCallOutput,
+    azure.ai.agentserver.responses.models._generated.types.StructuredOutputsOutputItem,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemToolSearchCall,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemToolSearchOutput,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemWebSearchToolCall,
+    azure.ai.agentserver.responses.models._generated.types.WorkflowActionOutputItem]]'
+  parameters:
+  - name: response_id
+    description: The response identifier.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: limit
+    description: "Maximum number of items to return (clamped to 1\u2013100)."
+    defaultValue: '20'
+    types:
+    - <xref:int>
+  - name: ascending
+    description: Return items in ascending order.
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: after
+    description: "Cursor \u2014 return items after this id."
+    defaultValue: None
+    types:
+    - <xref:str> | <xref:None>
+  - name: before
+    description: "Cursor \u2014 return items before this id."
+    defaultValue: None
+    types:
+    - <xref:str> | <xref:None>
+  keywordOnlyParameters:
+  - name: context
+    description: "Platform context (accepted but unused \u2014\nmatches <xref:azure.ai.agentserver.responses.InMemoryResponseProvider>)."
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.PlatformContext> | <xref:None>
+  return:
+    description: Paginated list of items.
+    types:
+    - <xref:list>[<xref:OutputItem>]
+  exceptions:
+  - type: KeyError
+    description: If the response does not exist.
+  - type: ValueError
+    description: If the response has been deleted.
+- uid: azure.ai.agentserver.responses.FileResponseStore.get_items
+  name: get_items
+  summary: "Retrieve items by id, preserving request order.\n\nMissing ids produce\
+    \ `None` entries \u2014 matches\n<xref:azure.ai.agentserver.responses.InMemoryResponseProvider>."
+  signature: 'async get_items(item_ids: Iterable[str], *, context: PlatformContext
+    | None = None) -> list[Union[azure.ai.agentserver.responses.models._generated.types.A2AToolCall,
+    azure.ai.agentserver.responses.models._generated.types.A2AToolCallOutput, azure.ai.agentserver.responses.models._generated.types.OutputItemAdditionalTools,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemApplyPatchToolCall,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemApplyPatchToolCallOutput,
+    azure.ai.agentserver.responses.models._generated.types.AzureAISearchToolCall,
+    azure.ai.agentserver.responses.models._generated.types.AzureAISearchToolCallOutput,
+    azure.ai.agentserver.responses.models._generated.types.AzureFunctionToolCall,
+    azure.ai.agentserver.responses.models._generated.types.AzureFunctionToolCallOutput,
+    azure.ai.agentserver.responses.models._generated.types.BingCustomSearchToolCall,
+    azure.ai.agentserver.responses.models._generated.types.BingCustomSearchToolCallOutput,
+    azure.ai.agentserver.responses.models._generated.types.BingGroundingToolCall,
+    azure.ai.agentserver.responses.models._generated.types.BingGroundingToolCallOutput,
+    azure.ai.agentserver.responses.models._generated.types.BrowserAutomationToolCall,
+    azure.ai.agentserver.responses.models._generated.types.BrowserAutomationToolCallOutput,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemCodeInterpreterToolCall,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemCompactionBody,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemComputerToolCall,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemComputerToolCallOutput,
+    azure.ai.agentserver.responses.models._generated.types.CustomToolCallResource,
+    azure.ai.agentserver.responses.models._generated.types.CustomToolCallOutputResource,
+    azure.ai.agentserver.responses.models._generated.types.FabricDataAgentToolCall,
+    azure.ai.agentserver.responses.models._generated.types.FabricDataAgentToolCallOutput,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemFileSearchToolCall,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemFunctionToolCall,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemFunctionToolCallOutput,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemImageGenToolCall,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemLocalShellToolCall,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemLocalShellToolCallOutput,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemMcpApprovalRequest,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemMcpApprovalResponseResource,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemMcpToolCall,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemMcpListTools,
+    azure.ai.agentserver.responses.models._generated.types.MemorySearchToolCallItemResource,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemMessage, azure.ai.agentserver.responses.models._generated.types.OAuthConsentRequestOutputItem,
+    azure.ai.agentserver.responses.models._generated.types.OpenApiToolCall, azure.ai.agentserver.responses.models._generated.types.OpenApiToolCallOutput,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemOutputMessage,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemReasoningItem,
+    azure.ai.agentserver.responses.models._generated.types.SharepointGroundingToolCall,
+    azure.ai.agentserver.responses.models._generated.types.SharepointGroundingToolCallOutput,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemFunctionShellCall,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemFunctionShellCallOutput,
+    azure.ai.agentserver.responses.models._generated.types.StructuredOutputsOutputItem,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemToolSearchCall,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemToolSearchOutput,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemWebSearchToolCall,
+    azure.ai.agentserver.responses.models._generated.types.WorkflowActionOutputItem,
+    NoneType]]'
+  parameters:
+  - name: item_ids
+    description: The item ids to look up.
+    isRequired: true
+    types:
+    - <xref:typing.Iterable>[<xref:str>]
+  keywordOnlyParameters:
+  - name: context
+    description: "Platform context (accepted but unused \u2014\nmatches <xref:azure.ai.agentserver.responses.InMemoryResponseProvider>)."
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.PlatformContext> | <xref:None>
+  return:
+    description: Items in the same order as `item_ids`, `None` for misses.
+    types:
+    - <xref:list>[<xref:OutputItem> | <xref:None>]
+- uid: azure.ai.agentserver.responses.FileResponseStore.get_response
+  name: get_response
+  summary: Retrieve one response envelope by identifier.
+  signature: 'async get_response(response_id: str, *, context: PlatformContext | None
+    = None) -> ResponseObject'
+  parameters:
+  - name: response_id
+    description: The response identifier.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: context
+    description: "Platform context (accepted but unused \u2014\nmatches <xref:azure.ai.agentserver.responses.InMemoryResponseProvider>)."
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.PlatformContext> | <xref:None>
+  return:
+    description: The persisted response envelope (deep-copied).
+    types:
+    - <xref:azure.ai.agentserver.responses.ResponseObject>
+  exceptions:
+  - type: KeyError
+    description: If the response does not exist or has been deleted.
+- uid: azure.ai.agentserver.responses.FileResponseStore.update_response
+  name: update_response
+  summary: "Update a stored response envelope.\n\nOutput items present on the updated\
+    \ response are persisted to the\nper-response items directory and the global items\
+    \ index so that\n<xref:azure.ai.agentserver.responses.FileResponseStore.get_items>\
+    \ can resolve them on subsequent history lookups \u2014\nmatches <xref:azure.ai.agentserver.responses.InMemoryResponseProvider>."
+  signature: 'async update_response(response: ResponseObject, *, context: PlatformContext
+    | None = None) -> None'
+  parameters:
+  - name: response
+    description: The new response envelope.
+    isRequired: true
+    types:
+    - <xref:azure.ai.agentserver.responses.ResponseObject>
+  keywordOnlyParameters:
+  - name: context
+    description: "Platform context (accepted but unused \u2014\nmatches <xref:azure.ai.agentserver.responses.InMemoryResponseProvider>)."
+    defaultValue: None
+    types:
+    - <xref:azure.ai.agentserver.responses.PlatformContext> | <xref:None>
+  return:
+    types:
+    - <xref:None>
+  exceptions:
+  - type: KeyError
+    description: If the response does not exist or has been deleted.

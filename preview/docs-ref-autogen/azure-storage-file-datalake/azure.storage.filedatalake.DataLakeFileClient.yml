@@ -79,10 +79,10 @@ examples:
   datalake_samples_instantiate_client.py )]-->\n\n<!-- literal_block {\"ids\": [],\
   \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
   : \"C:\\\\ToolCache\\\\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\
-  \\dist_temp\\\\357\\\\azure_storage_file_datalake-12.25.0b1\\\\samples\\\\datalake_samples_instantiate_client.py\"\
+  \\dist_temp\\\\357\\\\azure_storage_file_datalake-12.26.0b1\\\\samples\\\\datalake_samples_instantiate_client.py\"\
   , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
   : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.storage.filedatalake\
-  \ import DataLakeFileClient\n   DataLakeFileClient.from_connection_string(connection_string,\
+  \ import DataLakeFileClient\n\n   DataLakeFileClient.from_connection_string(connection_string,\
   \ \"myfilesystem\", \"mydirectory\", \"myfile\")\n\n   ````\n"
 methods:
 - uid: azure.storage.filedatalake.DataLakeFileClient.acquire_lease
@@ -199,19 +199,16 @@ methods:
     types:
     - <xref:bool>
   - name: validate_content
-    description: 'If true, calculates an MD5 hash of the block content. The storage
+    description: 'Enables checksum validation for the transfer. Any checksum calculated
+      is NOT stored with the blob.
 
-      service checks the hash of the content that has arrived
+      Choose "auto" (let the SDK choose the best algorithm), "crc64", or "md5". The
+      use of bool is deprecated.
 
-      with the hash that was sent. This is primarily valuable for detecting
-
-      bitflips on the wire if using http instead of https as https (the default)
-
-      will already validate. Note that this MD5 hash is not stored with the
-
-      file.'
+      NOTE: The use of "auto" or "crc64" requires the *azure-storage-extensions* package
+      to be installed.'
     types:
-    - <xref:bool>
+    - <xref:typing.Union>[<xref:bool>, <xref:typing.Literal>['auto', 'crc64', 'md5']]
   - name: lease_action
     description: 'Used to perform lease operations along with appending data.
 
@@ -281,7 +278,7 @@ methods:
   - "Append data to the file.<!--[!code-python[Main](les\\datalake_samples_upload_download.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\357\\\\azure_storage_file_datalake-12.25.0b1\\\
+    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\357\\\\azure_storage_file_datalake-12.26.0b1\\\
     \\samples\\\\datalake_samples_upload_download.py\", \"xml:space\": \"preserve\"\
     , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
     : 1}, \"linenos\": false} -->\n\n````python\n\n   file_client.append_data(data=file_content[2048:3072],\
@@ -472,7 +469,7 @@ methods:
   - "Create file.<!--[!code-python[Main](les\\datalake_samples_upload_download.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\357\\\\azure_storage_file_datalake-12.25.0b1\\\
+    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\357\\\\azure_storage_file_datalake-12.26.0b1\\\
     \\samples\\\\datalake_samples_upload_download.py\", \"xml:space\": \"preserve\"\
     , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
     : 1}, \"linenos\": false} -->\n\n````python\n\n   file_client = filesystem_client.get_file_client(file_name)\n\
@@ -546,7 +543,7 @@ methods:
   - "Delete file.<!--[!code-python[Main](les\\datalake_samples_upload_download.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\357\\\\azure_storage_file_datalake-12.25.0b1\\\
+    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\357\\\\azure_storage_file_datalake-12.26.0b1\\\
     \\samples\\\\datalake_samples_upload_download.py\", \"xml:space\": \"preserve\"\
     , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
     : 1}, \"linenos\": false} -->\n\n````python\n\n   new_client.delete_file()\n\n\
@@ -654,6 +651,17 @@ methods:
       decompressed automatically before being returned. Default value is True.'
     types:
     - <xref:bool>
+  - name: validate_content
+    description: "Enables checksum validation for the transfer. Any checksum calculated\
+      \ is NOT stored with the blob.\nChoose \"auto\" (let the SDK choose the best\
+      \ algorithm), \"crc64\", or \"md5\". The use of bool is deprecated.\n\n\n> [!NOTE]\n\
+      > When using CRC64 validation (including when \"auto\" resolves to CRC64):\n\
+      >\n> \n>\n> The ext-checksums extra must be installed.\n>\n> \n>\n> Automatic\
+      \ decompression is not supported. If decompress=True is explicitly\n>\n> set,\
+      \ a <xref:ValueError> will be raised. If decompress is not specified,\n>\n>\
+      \ it will be set to False automatically.\n>"
+    types:
+    - <xref:typing.Union>[<xref:bool>, <xref:typing.Literal>['auto', 'crc64', 'md5']]
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -677,7 +685,7 @@ methods:
   - "Return the downloaded data.<!--[!code-python[Main](les\\datalake_samples_upload_download.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\357\\\\azure_storage_file_datalake-12.25.0b1\\\
+    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\357\\\\azure_storage_file_datalake-12.26.0b1\\\
     \\samples\\\\datalake_samples_upload_download.py\", \"xml:space\": \"preserve\"\
     , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
     : 1}, \"linenos\": false} -->\n\n````python\n\n   download = file_client.download_file()\n\
@@ -871,7 +879,7 @@ methods:
   - "Commit the previous appended data.<!--[!code-python[Main](les\\datalake_samples_file_system.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\357\\\\azure_storage_file_datalake-12.25.0b1\\\
+    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\357\\\\azure_storage_file_datalake-12.26.0b1\\\
     \\samples\\\\datalake_samples_file_system.py\", \"xml:space\": \"preserve\", \"\
     force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
     : 1}, \"linenos\": false} -->\n\n````python\n\n   with open(SOURCE_FILE, \"rb\"\
@@ -1131,7 +1139,7 @@ methods:
   - "Getting the properties for a file.<!--[!code-python[Main](les\\datalake_samples_upload_download.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\357\\\\azure_storage_file_datalake-12.25.0b1\\\
+    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\357\\\\azure_storage_file_datalake-12.26.0b1\\\
     \\samples\\\\datalake_samples_upload_download.py\", \"xml:space\": \"preserve\"\
     , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
     : 1}, \"linenos\": false} -->\n\n````python\n\n   properties = file_client.get_file_properties()\n\
@@ -1342,17 +1350,18 @@ methods:
     datalake_samples_query.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
     ToolCache\\\\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\\
-    dist_temp\\\\357\\\\azure_storage_file_datalake-12.25.0b1\\\\samples\\\\datalake_samples_query.py\"\
+    dist_temp\\\\357\\\\azure_storage_file_datalake-12.26.0b1\\\\samples\\\\datalake_samples_query.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   errors = []\n   def on_error(error):\n       errors.append(error)\n\n   #\
-    \ upload the csv file\n   file_client = datalake_service_client.get_file_client(filesystem_name,\
+    \n   errors = []\n\n   def on_error(error):\n       errors.append(error)\n\n \
+    \  # upload the csv file\n   file_client = datalake_service_client.get_file_client(filesystem_name,\
     \ \"csvfile\")\n   file_client.upload_data(CSV_DATA, overwrite=True)\n\n   # select\
     \ the second column of the csv file\n   query_expression = \"SELECT _2 from DataLakeStorage\"\
-    \n   input_format = DelimitedTextDialect(delimiter=',', quotechar='\"', lineterminator='\\\
-    n', escapechar=\"\", has_header=False)\n   output_format = DelimitedJsonDialect(delimiter='\\\
-    n')\n   reader = file_client.query_file(query_expression, on_error=on_error, file_format=input_format,\
-    \ output_format=output_format)\n   content = reader.readall()\n\n   ````\n"
+    \n   input_format = DelimitedTextDialect(\n       delimiter=\",\", quotechar='\"\
+    ', lineterminator=\"\\n\", escapechar=\"\", has_header=False\n   )\n   output_format\
+    \ = DelimitedJsonDialect(delimiter=\"\\n\")\n   reader = file_client.query_file(\n\
+    \       query_expression, on_error=on_error, file_format=input_format, output_format=output_format\n\
+    \   )\n   content = reader.readall()\n\n   ````\n"
 - uid: azure.storage.filedatalake.DataLakeFileClient.remove_access_control_recursive
   name: remove_access_control_recursive
   summary: Removes the Access Control on a path and sub-paths.
@@ -1561,11 +1570,11 @@ methods:
   - "Rename the source file.<!--[!code-python[Main](les\\datalake_samples_upload_download.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\357\\\\azure_storage_file_datalake-12.25.0b1\\\
+    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\357\\\\azure_storage_file_datalake-12.26.0b1\\\
     \\samples\\\\datalake_samples_upload_download.py\", \"xml:space\": \"preserve\"\
     , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
     : 1}, \"linenos\": false} -->\n\n````python\n\n   new_client = file_client.rename_file(file_client.file_system_name\
-    \ + '/' + 'newname')\n\n   ````\n"
+    \ + \"/\" + \"newname\")\n\n   ````\n"
 - uid: azure.storage.filedatalake.DataLakeFileClient.set_access_control
   name: set_access_control
   summary: Set the owner, group, permissions, or access control list for a path.
@@ -2265,24 +2274,16 @@ methods:
     types:
     - <xref:datetime.datetime>
   - name: validate_content
-    description: 'If true, calculates an MD5 hash for each chunk of the file. The
-      storage
+    description: 'Enables checksum validation for the transfer. Any checksum calculated
+      is NOT stored with the blob.
 
-      service checks the hash of the content that has arrived with the hash
+      Choose "auto" (let the SDK choose the best algorithm), "crc64", or "md5". The
+      use of bool is deprecated.
 
-      that was sent. This is primarily valuable for detecting bitflips on
-
-      the wire if using http instead of https, as https (the default), will
-
-      already validate. Note that this MD5 hash is not stored with the
-
-      blob. Also note that if enabled, the memory-efficient upload algorithm
-
-      will not be used because computing the MD5 hash requires buffering
-
-      entire blocks, and doing so defeats the purpose of the memory-efficient algorithm.'
+      NOTE: The use of "auto" or "crc64" requires the *azure-storage-extensions* package
+      to be installed.'
     types:
-    - <xref:bool>
+    - <xref:typing.Union>[<xref:bool>, <xref:typing.Literal>['auto', 'crc64', 'md5']]
   - name: etag
     description: 'An ETag value, or the wildcard character (*). Used to check if the
       resource has changed,

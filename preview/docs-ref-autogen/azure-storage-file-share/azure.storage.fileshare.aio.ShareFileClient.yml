@@ -449,6 +449,18 @@ methods:
     description: Optional initial data to upload, up to 4MB.
     types:
     - <xref:bytes>
+  - name: validate_content
+    description: 'Only applicable when *data* is provided.
+
+      Enables checksum validation for the transfer. Any checksum calculated is NOT
+      stored with the file.
+
+      Choose "auto" (let the SDK choose the best algorithm), "crc64", or "md5".
+
+      NOTE: The use of "auto" or "crc64" requires the *azure-storage-extensions* package
+      to be installed.'
+    types:
+    - <xref:typing.Union>[<xref:typing.Literal>['auto', 'crc64', 'md5']]
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -469,7 +481,7 @@ methods:
   - "Create a file.<!--[!code-python[Main](les\\file_samples_client_async.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.12.10\\\\\
-    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\358\\\\azure_storage_file_share-12.26.0b1\\\
+    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\358\\\\azure_storage_file_share-12.27.0b1\\\
     \\samples\\\\file_samples_client_async.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   # Create and allocate bytes for the\
@@ -626,7 +638,7 @@ methods:
   - "Delete a file.<!--[!code-python[Main](les\\file_samples_client_async.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.12.10\\\\\
-    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\358\\\\azure_storage_file_share-12.26.0b1\\\
+    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\358\\\\azure_storage_file_share-12.27.0b1\\\
     \\samples\\\\file_samples_client_async.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   await my_file.delete_file()\n\n   ````\n"
@@ -668,24 +680,16 @@ methods:
     types:
     - <xref:int>
   - name: validate_content
-    description: 'If true, calculates an MD5 hash for each chunk of the file. The
-      storage
-
-      service checks the hash of the content that has arrived with the hash
-
-      that was sent. This is primarily valuable for detecting bitflips on
-
-      the wire if using http instead of https as https (the default) will
-
-      already validate. Note that this MD5 hash is not stored with the
-
-      file. Also note that if enabled, the memory-efficient upload algorithm
-
-      will not be used, because computing the MD5 hash requires buffering
-
-      entire blocks, and doing so defeats the purpose of the memory-efficient algorithm.'
+    description: "Enables checksum validation for the transfer. Any checksum calculated\
+      \ is NOT stored with the file.\nChoose \"auto\" (let the SDK choose the best\
+      \ algorithm), \"crc64\", or \"md5\". The use of bool is deprecated.\n\n\n> [!NOTE]\n\
+      > When using CRC64 validation (including when \"auto\" resolves to CRC64):\n\
+      >\n> \n>\n> The ext-checksums extra must be installed.\n>\n> \n>\n> Automatic\
+      \ decompression is not supported. If decompress=True is explicitly\n>\n> set,\
+      \ a <xref:ValueError> will be raised. If decompress is not specified,\n>\n>\
+      \ it will be set to False automatically.\n>"
     types:
-    - <xref:bool>
+    - <xref:typing.Union>[<xref:bool>, <xref:typing.Literal>['auto', 'crc64', 'md5']]
   - name: lease
     description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
       object
@@ -733,7 +737,7 @@ methods:
   - "Download a file.<!--[!code-python[Main](les\\file_samples_client_async.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.12.10\\\\\
-    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\358\\\\azure_storage_file_share-12.26.0b1\\\
+    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\358\\\\azure_storage_file_share-12.27.0b1\\\
     \\samples\\\\file_samples_client_async.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   with open(DEST_FILE, \"wb\") as data:\n\
@@ -839,13 +843,12 @@ methods:
     file_samples_hello_world_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
     classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\":\
     \ \"C:\\\\ToolCache\\\\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\
-    \\dist_temp\\\\358\\\\azure_storage_file_share-12.26.0b1\\\\samples\\\\file_samples_hello_world_async.py\"\
+    \\dist_temp\\\\358\\\\azure_storage_file_share-12.27.0b1\\\\samples\\\\file_samples_hello_world_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n       from azure.storage.fileshare.aio import ShareFileClient\n       file\
-    \ = ShareFileClient.from_connection_string(\n           self.connection_string,\n\
-    \           share_name='helloworld2async',\n           file_path=\"myfile\")\n\
-    \n   ````\n"
+    \n       from azure.storage.fileshare.aio import ShareFileClient\n\n       file\
+    \ = ShareFileClient.from_connection_string(\n           self.connection_string,\
+    \ share_name=\"helloworld2async\", file_path=\"myfile\"\n       )\n\n   ````\n"
 - uid: azure.storage.fileshare.aio.ShareFileClient.from_file_url
   name: from_file_url
   summary: A client to interact with a specific file, although that file may not yet
@@ -946,9 +949,13 @@ methods:
     - <xref:azure.storage.fileshare.FileProperties>
 - uid: azure.storage.fileshare.aio.ShareFileClient.get_ranges
   name: get_ranges
-  summary: 'Returns the list of valid page ranges for a file or snapshot
+  summary: 'DEPRECATED: Returns the list of valid page ranges for a file or snapshot
 
-    of a file.'
+    of a file.
+
+
+    *Deprecated since version 12.27.0b1:* Use <xref:azure.storage.fileshare.aio.ShareFileClient.list_ranges>
+    instead.'
   signature: 'async get_ranges(offset: int | None = None, length: int | None = None,
     **kwargs: Any) -> List[Dict[str, int]]'
   parameters:
@@ -992,12 +999,13 @@ methods:
     - <xref:typing.List>[<xref:dict>[<xref:str>, <xref:int>]]
 - uid: azure.storage.fileshare.aio.ShareFileClient.get_ranges_diff
   name: get_ranges_diff
-  summary: 'Returns the list of valid page ranges for a file or snapshot
+  summary: 'DEPRECATED: Returns the list of valid page ranges for a file or snapshot
 
     of a file.
 
 
-    *New in version 12.6.0.*'
+    *Deprecated since version 12.27.0b1:* Use <xref:azure.storage.fileshare.aio.ShareFileClient.list_ranges_diff>
+    instead.'
   signature: 'async get_ranges_diff(previous_sharesnapshot: str | Dict[str, Any],
     offset: int | None = None, length: int | None = None, *, include_renames: bool
     | None = None, **kwargs: Any) -> Tuple[List[Dict[str, int]], List[Dict[str, int]]]'
@@ -1109,6 +1117,127 @@ methods:
     description: An auto-paging iterable of Handle
     types:
     - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.storage.fileshare.Handle>]
+- uid: azure.storage.fileshare.aio.ShareFileClient.list_ranges
+  name: list_ranges
+  summary: Returns the list of valid ranges for a file or snapshot of a file.
+  signature: 'list_ranges(*, offset: int | None = None, length: int | None = None,
+    **kwargs: Any) -> AsyncItemPaged[FileRange]'
+  keywordOnlyParameters:
+  - name: offset
+    description: Specifies the start offset of bytes over which to get ranges.
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: length
+    description: Number of bytes to use over which to get ranges.
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.'
+    types:
+    - <xref:azure.storage.fileshare.ShareLeaseClient>
+    - <xref:str>
+  - name: results_per_page
+    description: The maximum number of file ranges to retrieve per API call.
+    types:
+    - <xref:int>
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+  return:
+    description: An iterable (auto-paging) of valid ranges.
+    types:
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.storage.fileshare.FileRange>]
+- uid: azure.storage.fileshare.aio.ShareFileClient.list_ranges_diff
+  name: list_ranges_diff
+  summary: 'Returns the list of valid ranges for a file or snapshot of a file, listing
+    only the
+
+    ranges that changed between the target snapshot (or live file) and a previous
+    snapshot.'
+  signature: 'list_ranges_diff(previous_sharesnapshot: str | Dict[str, Any], *, offset:
+    int | None = None, length: int | None = None, include_renames: bool | None = None,
+    **kwargs: Any) -> AsyncItemPaged[FileRange]'
+  parameters:
+  - name: previous_sharesnapshot
+    description: 'The snapshot diff parameter that contains an opaque DateTime value
+      that
+
+      specifies a previous file snapshot to be compared
+
+      against a more recent snapshot or the current file.'
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: offset
+    description: Specifies the start offset of bytes over which to get ranges.
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: length
+    description: Number of bytes to use over which to get ranges.
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: include_renames
+    description: 'Only valid if previous_sharesnapshot parameter is provided. Specifies
+      whether the changed ranges for
+
+      a file that has been renamed or moved between the target snapshot (or live file)
+      and the previous
+
+      snapshot should be listed. If set to True, the valid changed ranges for the
+      file will be returned.
+
+      If set to False, the operation will result in a 409 (Conflict) response.'
+    defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:bool>]
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.'
+    types:
+    - <xref:azure.storage.fileshare.ShareLeaseClient>
+    - <xref:str>
+  - name: results_per_page
+    description: The maximum number of file ranges to retrieve per API call.
+    types:
+    - <xref:int>
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+  return:
+    description: 'An iterable (auto-paging) of valid ranges. Each range has a `cleared`
+      attribute indicating
+
+      whether the range was cleared between the previous snapshot and the target.'
+    types:
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.storage.fileshare.FileRange>]
 - uid: azure.storage.fileshare.aio.ShareFileClient.rename_file
   name: rename_file
   summary: Rename the source file.
@@ -1657,7 +1786,7 @@ methods:
   - "Copy a file from a URL<!--[!code-python[Main](les\\file_samples_client_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\358\\\\azure_storage_file_share-12.26.0b1\\\
+    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\358\\\\azure_storage_file_share-12.27.0b1\\\
     \\samples\\\\file_samples_client_async.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   await destination_file.start_copy_from_url(source_url=source_url)\n\
@@ -1756,20 +1885,16 @@ methods:
     types:
     - <xref:azure.storage.fileshare.ContentSettings>
   - name: validate_content
-    description: 'If true, calculates an MD5 hash for each range of the file. The
-      storage
+    description: 'Enables checksum validation for the transfer. Any checksum calculated
+      is NOT stored with the file.
 
-      service checks the hash of the content that has arrived with the hash
+      Choose "auto" (let the SDK choose the best algorithm), "crc64", or "md5". The
+      use of bool is deprecated.
 
-      that was sent. This is primarily valuable for detecting bitflips on
-
-      the wire if using http instead of https as https (the default) will
-
-      already validate. Note that this MD5 hash is not stored with the
-
-      file.'
+      NOTE: The use of "auto" or "crc64" requires the *azure-storage-extensions* package
+      to be installed.'
     types:
-    - <xref:bool>
+    - <xref:typing.Union>[<xref:bool>, <xref:typing.Literal>['auto', 'crc64', 'md5']]
   - name: max_concurrency
     description: 'Maximum number of parallel connections to use when transferring
       the file in chunks.
@@ -1824,7 +1949,7 @@ methods:
   - "Upload a file.<!--[!code-python[Main](les\\file_samples_client_async.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.12.10\\\\\
-    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\358\\\\azure_storage_file_share-12.26.0b1\\\
+    x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\358\\\\azure_storage_file_share-12.27.0b1\\\
     \\samples\\\\file_samples_client_async.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   with open(SOURCE_FILE, \"rb\") as source:\n\
@@ -1856,19 +1981,16 @@ methods:
     - <xref:int>
   keywordOnlyParameters:
   - name: validate_content
-    description: 'If true, calculates an MD5 hash of the page content. The storage
+    description: 'Enables checksum validation for the transfer. Any checksum calculated
+      is NOT stored with the file.
 
-      service checks the hash of the content that has arrived
+      Choose "auto" (let the SDK choose the best algorithm), "crc64", or "md5". The
+      use of bool is deprecated.
 
-      with the hash that was sent. This is primarily valuable for detecting
-
-      bitflips on the wire if using http instead of https as https (the default)
-
-      will already validate. Note that this MD5 hash is not stored with the
-
-      file.'
+      NOTE: The use of "auto" or "crc64" requires the *azure-storage-extensions* package
+      to be installed.'
     types:
-    - <xref:bool>
+    - <xref:typing.Union>[<xref:bool>, <xref:typing.Literal>['auto', 'crc64', 'md5']]
   - name: file_last_write_mode
     description: 'If the file last write time should be preserved or overwritten.
       Possible values

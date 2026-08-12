@@ -1,0 +1,37 @@
+### YamlMime:PythonClass
+uid: azure.ai.agentserver.responses.PlatformContext
+name: PlatformContext
+fullName: azure.ai.agentserver.responses.PlatformContext
+module: azure.ai.agentserver.responses
+summary: "Platform-injected identity context for multi-tenant state partitioning.\n\
+  \nThe Foundry hosting platform injects `x-agent-user-id` and (on container\nprotocol\
+  \ version `2.0.0`) `x-agent-foundry-call-id` headers on every\nprotocol request\
+  \ (not on health probes):\n\n* `user_id_key` \u2014 global, cross-agent per-user\
+  \ partition key; the same user yields the same value regardless of which agent they\
+  \ interact with.  Use it as the primary partition key for per-user state. \n\n*\
+  \ `call_id` \u2014 opaque per-request call identifier (protocol `2.0.0` only). Providers\
+  \ **MUST** forward it on outbound Foundry API calls so 1P services can resolve the\
+  \ server-side-stored caller context.  Never parse it. \n\nWhen a header is absent\
+  \ (e.g. local development, or `call_id` under protocol\nversion `1.0.0`), the corresponding\
+  \ field is `None`.  When the platform\nsends the header with an empty value, the\
+  \ field is an empty string.  Use\n`is None` to detect whether the header was present\
+  \ at all."
+constructor:
+  syntax: 'PlatformContext(*, user_id_key: str | None = None, call_id: str | None
+    = None)'
+  keywordOnlyParameters:
+  - name: user_id_key
+    defaultValue: None
+  - name: call_id
+    defaultValue: None
+attributes:
+- uid: azure.ai.agentserver.responses.PlatformContext.call_id
+  name: call_id
+  summary: 'Opaque per-request call identifier (from `x-agent-foundry-call-id`).
+
+    `None` when the header was not sent (protocol `1.0.0` or local dev).'
+- uid: azure.ai.agentserver.responses.PlatformContext.user_id_key
+  name: user_id_key
+  summary: 'Partition key for per-user state (from `x-agent-user-id`).
+
+    `None` when the header was not sent.'

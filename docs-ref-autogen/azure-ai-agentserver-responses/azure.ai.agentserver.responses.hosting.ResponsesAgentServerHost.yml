@@ -1,0 +1,394 @@
+### YamlMime:PythonClass
+uid: azure.ai.agentserver.responses.hosting.ResponsesAgentServerHost
+name: ResponsesAgentServerHost
+fullName: azure.ai.agentserver.responses.hosting.ResponsesAgentServerHost
+module: azure.ai.agentserver.responses.hosting
+summary: "Responses protocol host for Azure AI Hosted Agents.\n\nA <xref:azure.ai.agentserver.core.AgentServerHost>\
+  \ subclass that adds\nthe Responses API endpoints.  Use the <xref:azure.ai.agentserver.responses.hosting.ResponsesAgentServerHost.response_handler>\
+  \ decorator\nto wire a handler function to the create endpoint.\n\nFor multi-protocol\
+  \ agents, compose via cooperative inheritance:\n\n<!-- literal_block {\"ids\": [],\
+  \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\"\
+  : \"preserve\", \"language\": \"default\", \"force\": false, \"linenos\": false}\
+  \ -->\n\n````default\n\n   class MyHost(InvocationAgentServerHost, ResponsesAgentServerHost):\n\
+  \       pass\n   ````\n\nUsage:\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+  : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\": \"preserve\"\
+  , \"language\": \"default\", \"force\": false, \"linenos\": false} -->\n\n````default\n\
+  \n   from azure.ai.agentserver.responses import ResponsesAgentServerHost\n\n   app\
+  \ = ResponsesAgentServerHost()\n\n   @app.response_handler\n   async def my_handler(request,\
+  \ context, cancellation_signal):\n       yield event\n\n   app.run()\n   ````"
+constructor:
+  syntax: 'ResponsesAgentServerHost(*, prefix: str = '''', options: ResponsesServerOptions
+    | None = None, store: ResponseProviderProtocol | None = None, **kwargs: Any)'
+  parameters:
+  - name: prefix
+    description: 'Optional URL prefix for all response routes
+
+      (e.g. `"/v1"`).'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: options
+    description: Optional runtime options for the responses server.
+    isRequired: true
+    types:
+    - <xref:azure.ai.agentserver.responses.ResponsesServerOptions> | <xref:None>
+  - name: store
+    description: 'Optional persistence provider for response
+
+      envelopes and input items.'
+    isRequired: true
+    types:
+    - <xref:azure.ai.agentserver.responses.ResponseProviderProtocol> | <xref:None>
+  keywordOnlyParameters:
+  - name: prefix
+  - name: options
+    defaultValue: None
+  - name: store
+    defaultValue: None
+methods:
+- uid: azure.ai.agentserver.responses.hosting.ResponsesAgentServerHost.add_exception_handler
+  name: add_exception_handler
+  signature: 'add_exception_handler(exc_class_or_status_code: int | type[Exception],
+    handler: ExceptionHandler) -> None'
+  parameters:
+  - name: exc_class_or_status_code
+    isRequired: true
+  - name: handler
+    isRequired: true
+- uid: azure.ai.agentserver.responses.hosting.ResponsesAgentServerHost.add_middleware
+  name: add_middleware
+  summary: 'Add middleware to the host.
+
+
+    This exposes Starlette''s middleware extension point without leaking
+
+    Starlette''s private type aliases in this package''s public API.'
+  signature: 'add_middleware(middleware_class: ~collections.abc.Callable[[~typing.Concatenate[~collections.abc.Callable[[~collections.abc.MutableMapping[str,
+    ~typing.Any], ~collections.abc.Callable[[], ~collections.abc.Awaitable[~collections.abc.MutableMapping[str,
+    ~typing.Any]]], ~collections.abc.Callable[[~collections.abc.MutableMapping[str,
+    ~typing.Any]], ~collections.abc.Awaitable[None]]], ~collections.abc.Awaitable[None]],
+    ~P]], ~collections.abc.Callable[[~collections.abc.MutableMapping[str, ~typing.Any],
+    ~collections.abc.Callable[[], ~collections.abc.Awaitable[~collections.abc.MutableMapping[str,
+    ~typing.Any]]], ~collections.abc.Callable[[~collections.abc.MutableMapping[str,
+    ~typing.Any]], ~collections.abc.Awaitable[None]]], ~collections.abc.Awaitable[None]]],
+    *args: ~typing.~P, **kwargs: ~typing.~P) -> None'
+  parameters:
+  - name: middleware_class
+    description: Middleware class or factory to add.
+    isRequired: true
+    types:
+    - <xref:MiddlewareFactory>
+  - name: args
+    description: Positional arguments forwarded to the middleware.
+    isRequired: true
+    types:
+    - <xref:typing.Any>
+- uid: azure.ai.agentserver.responses.hosting.ResponsesAgentServerHost.add_route
+  name: add_route
+  signature: 'add_route(path: str, route: Callable[[Request], Awaitable[Response]
+    | Response], methods: list[str] | None = None, name: str | None = None, include_in_schema:
+    bool = True) -> None'
+  parameters:
+  - name: path
+    isRequired: true
+  - name: route
+    isRequired: true
+  - name: methods
+    defaultValue: None
+  - name: name
+    defaultValue: None
+  - name: include_in_schema
+    defaultValue: 'True'
+- uid: azure.ai.agentserver.responses.hosting.ResponsesAgentServerHost.build_middleware_stack
+  name: build_middleware_stack
+  signature: build_middleware_stack() -> Callable[[MutableMapping[str, Any], Callable[[],
+    Awaitable[MutableMapping[str, Any]]], Callable[[MutableMapping[str, Any]], Awaitable[None]]],
+    Awaitable[None]]
+- uid: azure.ai.agentserver.responses.hosting.ResponsesAgentServerHost.host
+  name: host
+  signature: 'host(host: str, app: Callable[[MutableMapping[str, Any], Callable[[],
+    Awaitable[MutableMapping[str, Any]]], Callable[[MutableMapping[str, Any]], Awaitable[None]]],
+    Awaitable[None]], name: str | None = None) -> None'
+  parameters:
+  - name: host
+    isRequired: true
+  - name: app
+    isRequired: true
+  - name: name
+    defaultValue: None
+- uid: azure.ai.agentserver.responses.hosting.ResponsesAgentServerHost.mount
+  name: mount
+  signature: 'mount(path: str, app: Callable[[MutableMapping[str, Any], Callable[[],
+    Awaitable[MutableMapping[str, Any]]], Callable[[MutableMapping[str, Any]], Awaitable[None]]],
+    Awaitable[None]], name: str | None = None) -> None'
+  parameters:
+  - name: path
+    isRequired: true
+  - name: app
+    isRequired: true
+  - name: name
+    defaultValue: None
+- uid: azure.ai.agentserver.responses.hosting.ResponsesAgentServerHost.register_pre_shutdown_callback
+  name: register_pre_shutdown_callback
+  summary: "Register a synchronous callback to run on SIGTERM signal receipt.\n\n\
+    Callbacks run from inside the SIGTERM signal handler,\nBEFORE Hypercorn begins\
+    \ its graceful drain. Use this to\nset asyncio events that long-running request\
+    \ handlers observe via\ntheir cancellation-polling loops, so they can return before\n\
+    Hypercorn waits the full `graceful_shutdown_timeout` for the\nrequest to complete.\n\
+    \nCallbacks MUST be non-blocking and signal-safe \u2014 they execute\nsynchronously\
+    \ on the main thread inside the signal handler. The\ntypical pattern is:\n\n<!--\
+    \ literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
+    \ \"backrefs\": [], \"xml:space\": \"preserve\", \"language\": \"default\", \"\
+    force\": false, \"linenos\": false} -->\n\n````default\n\n   shutdown_event =\
+    \ asyncio.Event()\n   app.register_pre_shutdown_callback(shutdown_event.set)\n\
+    \   ````\n\nNote: `asyncio.Event.set()` is safe to call from a signal\nhandler\
+    \ when the event loop is running on the same thread."
+  signature: 'register_pre_shutdown_callback(fn: Callable[[], None]) -> None'
+  parameters:
+  - name: fn
+    description: A synchronous, non-blocking callable.
+    isRequired: true
+    types:
+    - <xref:typing.Callable>[[], <xref:None>]
+- uid: azure.ai.agentserver.responses.hosting.ResponsesAgentServerHost.register_server_version
+  name: register_server_version
+  summary: "Register a version segment for the `x-platform-server` header.\n\nProtocol\
+    \ packages (e.g. responses, invocations) call this in their\n`__init__` to add\
+    \ their own portion.  Handler developers can also\ncall it to append a custom\
+    \ version string.  Duplicates are ignored.\n\nUse <xref:azure.ai.agentserver.core.build_server_version>\
+    \ to\nbuild a standard segment:\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\": \"preserve\"\
+    , \"language\": \"default\", \"force\": false, \"linenos\": false} -->\n\n````default\n\
+    \n   from azure.ai.agentserver.core import build_server_version\n\n   app.register_server_version(\n\
+    \       build_server_version(\"my-library\", \"2.0.0\")\n   )\n   ````"
+  signature: 'register_server_version(version_segment: str) -> None'
+  parameters:
+  - name: version_segment
+    description: The version string to register.
+    isRequired: true
+    types:
+    - <xref:str>
+  exceptions:
+  - type: ValueError
+    description: If *version_segment* is empty or whitespace-only.
+- uid: azure.ai.agentserver.responses.hosting.ResponsesAgentServerHost.request_shutdown
+  name: request_shutdown
+  summary: 'Signal that shutdown is imminent.
+
+
+    Sets the internal shutdown flag immediately so that in-flight
+
+    foreground requests observe the cancellation signal without waiting
+
+    for the ASGI lifespan shutdown phase (which only fires after all
+
+    requests drain).
+
+
+    Call this from a process signal handler (SIGTERM) or before
+
+    triggering the ASGI server''s shutdown to avoid deadlocking
+
+    foreground handlers that await the cancellation signal.'
+  signature: request_shutdown() -> None
+- uid: azure.ai.agentserver.responses.hosting.ResponsesAgentServerHost.response_acceptor
+  name: response_acceptor
+  summary: "Register a function as the acceptance hook for steerable conversations.\n\
+    \nThe acceptance hook is called when a new turn is queued on an\nalready-active\
+    \ steerable conversation. It returns the typed\n`ResponseObject` (`status=\"queued\"\
+    `) surfaced to the HTTP caller.\n\nUsage:\n\n<!-- literal_block {\"ids\": [],\
+    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\"\
+    : \"preserve\", \"language\": \"default\", \"force\": false, \"linenos\": false}\
+    \ -->\n\n````default\n\n   from azure.ai.agentserver.responses import (\n    \
+    \   CreateResponse, ResponseContext, ResponseObject,\n   )\n\n   @app.response_acceptor\n\
+    \   def my_acceptor(\n       request: CreateResponse, context: ResponseContext\n\
+    \   ) -> ResponseObject:\n       return ResponseObject(\n           {\n      \
+    \         \"id\": context.response_id,\n               \"object\": \"response\"\
+    ,\n               \"status\": \"queued\",\n           }\n       )\n   ````"
+  signature: 'response_acceptor(fn: Any) -> Any'
+  parameters:
+  - name: fn
+    description: 'A callable accepting `(request, context)` and returning a
+
+      <xref:azure.ai.agentserver.responses.models.ResponseObject>.'
+    isRequired: true
+    types:
+    - <xref:typing.Callable>
+  return:
+    description: The original function (unmodified).
+    types:
+    - <xref:typing.Callable>
+- uid: azure.ai.agentserver.responses.hosting.ResponsesAgentServerHost.response_handler
+  name: response_handler
+  summary: "Register a function as the create-response handler.\n\nHandler MUST be\
+    \ `async def` and accept exactly three\npositional parameters: `(request, context,\
+    \ cancellation_signal)`.\nSync handlers and 2-arg signatures are rejected at decoration\n\
+    time with <xref:TypeError>.\n\nCancellation is observed via the `cancellation_signal`\
+    \ (an\n<xref:asyncio.Event> set on client cancel, `/cancel` API,\nor steering\
+    \ pressure). Server shutdown is a **distinct** signal\nobserved via `context.shutdown`\
+    \ \u2014 shutdown does NOT fire the\ncancellation signal; handlers that care about\
+    \ both must inspect\neach independently. The cancellation cause is inspected via\n\
+    `context.client_cancelled` (explicit cancel or non-bg\ndisconnect) or \u2014 for\
+    \ steering pressure \u2014 neither\n`client_cancelled` nor `shutdown.is_set()`\
+    \ (the signal\nfires with no cause flag).\n\nUsage:\n\n<!-- literal_block {\"\
+    ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
+    \ \"xml:space\": \"preserve\", \"language\": \"default\", \"force\": false, \"\
+    linenos\": false} -->\n\n````default\n\n   @app.response_handler\n   async def\
+    \ my_handler(request, context, cancellation_signal):\n       while not cancellation_signal.is_set():\n\
+    \           if context.shutdown.is_set():\n               return await context.exit_for_recovery()\n\
+    \           yield event\n   ````"
+  signature: 'response_handler(fn: Callable[[CreateResponse, ResponseContext, Event],
+    AsyncIterable[ResponseErrorEvent | ResponseAudioDeltaEvent | ResponseAudioDoneEvent
+    | ResponseAudioTranscriptDeltaEvent | ResponseAudioTranscriptDoneEvent | ResponseCodeInterpreterCallCompletedEvent
+    | ResponseCodeInterpreterCallInProgressEvent | ResponseCodeInterpreterCallInterpretingEvent
+    | ResponseCodeInterpreterCallCodeDeltaEvent | ResponseCodeInterpreterCallCodeDoneEvent
+    | ResponseCompletedEvent | ResponseContentPartAddedEvent | ResponseContentPartDoneEvent
+    | ResponseCreatedEvent | ResponseCustomToolCallInputDeltaEvent | ResponseCustomToolCallInputDoneEvent
+    | ResponseFailedEvent | ResponseFileSearchCallCompletedEvent | ResponseFileSearchCallInProgressEvent
+    | ResponseFileSearchCallSearchingEvent | ResponseFunctionCallArgumentsDeltaEvent
+    | ResponseFunctionCallArgumentsDoneEvent | ResponseImageGenCallCompletedEvent
+    | ResponseImageGenCallGeneratingEvent | ResponseImageGenCallInProgressEvent |
+    ResponseImageGenCallPartialImageEvent | ResponseInProgressEvent | ResponseIncompleteEvent
+    | ResponseMCPCallCompletedEvent | ResponseMCPCallFailedEvent | ResponseMCPCallInProgressEvent
+    | ResponseMCPCallArgumentsDeltaEvent | ResponseMCPCallArgumentsDoneEvent | ResponseMCPListToolsCompletedEvent
+    | ResponseMCPListToolsFailedEvent | ResponseMCPListToolsInProgressEvent | ResponseOutputItemAddedEvent
+    | ResponseOutputItemDoneEvent | ResponseOutputTextAnnotationAddedEvent | ResponseTextDeltaEvent
+    | ResponseTextDoneEvent | ResponseQueuedEvent | ResponseReasoningSummaryPartAddedEvent
+    | ResponseReasoningSummaryPartDoneEvent | ResponseReasoningSummaryTextDeltaEvent
+    | ResponseReasoningSummaryTextDoneEvent | ResponseReasoningTextDeltaEvent | ResponseReasoningTextDoneEvent
+    | ResponseRefusalDeltaEvent | ResponseRefusalDoneEvent | ResponseWebSearchCallCompletedEvent
+    | ResponseWebSearchCallInProgressEvent | ResponseWebSearchCallSearchingEvent |
+    ResponseCheckpointEvent | dict[str, Any]] | Awaitable[AsyncIterable[ResponseErrorEvent
+    | ResponseAudioDeltaEvent | ResponseAudioDoneEvent | ResponseAudioTranscriptDeltaEvent
+    | ResponseAudioTranscriptDoneEvent | ResponseCodeInterpreterCallCompletedEvent
+    | ResponseCodeInterpreterCallInProgressEvent | ResponseCodeInterpreterCallInterpretingEvent
+    | ResponseCodeInterpreterCallCodeDeltaEvent | ResponseCodeInterpreterCallCodeDoneEvent
+    | ResponseCompletedEvent | ResponseContentPartAddedEvent | ResponseContentPartDoneEvent
+    | ResponseCreatedEvent | ResponseCustomToolCallInputDeltaEvent | ResponseCustomToolCallInputDoneEvent
+    | ResponseFailedEvent | ResponseFileSearchCallCompletedEvent | ResponseFileSearchCallInProgressEvent
+    | ResponseFileSearchCallSearchingEvent | ResponseFunctionCallArgumentsDeltaEvent
+    | ResponseFunctionCallArgumentsDoneEvent | ResponseImageGenCallCompletedEvent
+    | ResponseImageGenCallGeneratingEvent | ResponseImageGenCallInProgressEvent |
+    ResponseImageGenCallPartialImageEvent | ResponseInProgressEvent | ResponseIncompleteEvent
+    | ResponseMCPCallCompletedEvent | ResponseMCPCallFailedEvent | ResponseMCPCallInProgressEvent
+    | ResponseMCPCallArgumentsDeltaEvent | ResponseMCPCallArgumentsDoneEvent | ResponseMCPListToolsCompletedEvent
+    | ResponseMCPListToolsFailedEvent | ResponseMCPListToolsInProgressEvent | ResponseOutputItemAddedEvent
+    | ResponseOutputItemDoneEvent | ResponseOutputTextAnnotationAddedEvent | ResponseTextDeltaEvent
+    | ResponseTextDoneEvent | ResponseQueuedEvent | ResponseReasoningSummaryPartAddedEvent
+    | ResponseReasoningSummaryPartDoneEvent | ResponseReasoningSummaryTextDeltaEvent
+    | ResponseReasoningSummaryTextDoneEvent | ResponseReasoningTextDeltaEvent | ResponseReasoningTextDoneEvent
+    | ResponseRefusalDeltaEvent | ResponseRefusalDoneEvent | ResponseWebSearchCallCompletedEvent
+    | ResponseWebSearchCallInProgressEvent | ResponseWebSearchCallSearchingEvent |
+    ResponseCheckpointEvent | dict[str, Any]]]]) -> Callable[[CreateResponse, ResponseContext,
+    Event], AsyncIterable[ResponseErrorEvent | ResponseAudioDeltaEvent | ResponseAudioDoneEvent
+    | ResponseAudioTranscriptDeltaEvent | ResponseAudioTranscriptDoneEvent | ResponseCodeInterpreterCallCompletedEvent
+    | ResponseCodeInterpreterCallInProgressEvent | ResponseCodeInterpreterCallInterpretingEvent
+    | ResponseCodeInterpreterCallCodeDeltaEvent | ResponseCodeInterpreterCallCodeDoneEvent
+    | ResponseCompletedEvent | ResponseContentPartAddedEvent | ResponseContentPartDoneEvent
+    | ResponseCreatedEvent | ResponseCustomToolCallInputDeltaEvent | ResponseCustomToolCallInputDoneEvent
+    | ResponseFailedEvent | ResponseFileSearchCallCompletedEvent | ResponseFileSearchCallInProgressEvent
+    | ResponseFileSearchCallSearchingEvent | ResponseFunctionCallArgumentsDeltaEvent
+    | ResponseFunctionCallArgumentsDoneEvent | ResponseImageGenCallCompletedEvent
+    | ResponseImageGenCallGeneratingEvent | ResponseImageGenCallInProgressEvent |
+    ResponseImageGenCallPartialImageEvent | ResponseInProgressEvent | ResponseIncompleteEvent
+    | ResponseMCPCallCompletedEvent | ResponseMCPCallFailedEvent | ResponseMCPCallInProgressEvent
+    | ResponseMCPCallArgumentsDeltaEvent | ResponseMCPCallArgumentsDoneEvent | ResponseMCPListToolsCompletedEvent
+    | ResponseMCPListToolsFailedEvent | ResponseMCPListToolsInProgressEvent | ResponseOutputItemAddedEvent
+    | ResponseOutputItemDoneEvent | ResponseOutputTextAnnotationAddedEvent | ResponseTextDeltaEvent
+    | ResponseTextDoneEvent | ResponseQueuedEvent | ResponseReasoningSummaryPartAddedEvent
+    | ResponseReasoningSummaryPartDoneEvent | ResponseReasoningSummaryTextDeltaEvent
+    | ResponseReasoningSummaryTextDoneEvent | ResponseReasoningTextDeltaEvent | ResponseReasoningTextDoneEvent
+    | ResponseRefusalDeltaEvent | ResponseRefusalDoneEvent | ResponseWebSearchCallCompletedEvent
+    | ResponseWebSearchCallInProgressEvent | ResponseWebSearchCallSearchingEvent |
+    ResponseCheckpointEvent | dict[str, Any]] | Awaitable[AsyncIterable[ResponseErrorEvent
+    | ResponseAudioDeltaEvent | ResponseAudioDoneEvent | ResponseAudioTranscriptDeltaEvent
+    | ResponseAudioTranscriptDoneEvent | ResponseCodeInterpreterCallCompletedEvent
+    | ResponseCodeInterpreterCallInProgressEvent | ResponseCodeInterpreterCallInterpretingEvent
+    | ResponseCodeInterpreterCallCodeDeltaEvent | ResponseCodeInterpreterCallCodeDoneEvent
+    | ResponseCompletedEvent | ResponseContentPartAddedEvent | ResponseContentPartDoneEvent
+    | ResponseCreatedEvent | ResponseCustomToolCallInputDeltaEvent | ResponseCustomToolCallInputDoneEvent
+    | ResponseFailedEvent | ResponseFileSearchCallCompletedEvent | ResponseFileSearchCallInProgressEvent
+    | ResponseFileSearchCallSearchingEvent | ResponseFunctionCallArgumentsDeltaEvent
+    | ResponseFunctionCallArgumentsDoneEvent | ResponseImageGenCallCompletedEvent
+    | ResponseImageGenCallGeneratingEvent | ResponseImageGenCallInProgressEvent |
+    ResponseImageGenCallPartialImageEvent | ResponseInProgressEvent | ResponseIncompleteEvent
+    | ResponseMCPCallCompletedEvent | ResponseMCPCallFailedEvent | ResponseMCPCallInProgressEvent
+    | ResponseMCPCallArgumentsDeltaEvent | ResponseMCPCallArgumentsDoneEvent | ResponseMCPListToolsCompletedEvent
+    | ResponseMCPListToolsFailedEvent | ResponseMCPListToolsInProgressEvent | ResponseOutputItemAddedEvent
+    | ResponseOutputItemDoneEvent | ResponseOutputTextAnnotationAddedEvent | ResponseTextDeltaEvent
+    | ResponseTextDoneEvent | ResponseQueuedEvent | ResponseReasoningSummaryPartAddedEvent
+    | ResponseReasoningSummaryPartDoneEvent | ResponseReasoningSummaryTextDeltaEvent
+    | ResponseReasoningSummaryTextDoneEvent | ResponseReasoningTextDeltaEvent | ResponseReasoningTextDoneEvent
+    | ResponseRefusalDeltaEvent | ResponseRefusalDoneEvent | ResponseWebSearchCallCompletedEvent
+    | ResponseWebSearchCallInProgressEvent | ResponseWebSearchCallSearchingEvent |
+    ResponseCheckpointEvent | dict[str, Any]]]]'
+  parameters:
+  - name: fn
+    description: A callable accepting (request, context, cancellation_signal).
+    isRequired: true
+    types:
+    - <xref:CreateHandlerFn>
+  return:
+    description: The original function (unmodified).
+    types:
+    - <xref:CreateHandlerFn>
+  exceptions:
+  - type: TypeError
+    description: 'If `fn` is not `async def` or does not
+
+      take exactly three positional parameters.'
+- uid: azure.ai.agentserver.responses.hosting.ResponsesAgentServerHost.run
+  name: run
+  summary: Start the server synchronously.
+  signature: 'run(host: str = ''0.0.0.0'', port: int | None = None) -> None'
+  parameters:
+  - name: host
+    description: Network interface to bind. Defaults to `"0.0.0.0"`.
+    defaultValue: 0.0.0.0
+    types:
+    - <xref:str>
+  - name: port
+    description: Port to bind. Defaults to `PORT` env var or 8088.
+    defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:int>]
+- uid: azure.ai.agentserver.responses.hosting.ResponsesAgentServerHost.run_async
+  name: run_async
+  summary: Start the server asynchronously (awaitable).
+  signature: 'async run_async(host: str = ''0.0.0.0'', port: int | None = None) ->
+    None'
+  parameters:
+  - name: host
+    description: Network interface to bind. Defaults to `"0.0.0.0"`.
+    defaultValue: 0.0.0.0
+    types:
+    - <xref:str>
+  - name: port
+    description: Port to bind. Defaults to `PORT` env var or 8088.
+    defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:int>]
+- uid: azure.ai.agentserver.responses.hosting.ResponsesAgentServerHost.shutdown_handler
+  name: shutdown_handler
+  summary: Register a function as the shutdown handler.
+  signature: 'shutdown_handler(fn: Callable[[], Awaitable[None]]) -> Callable[[],
+    Awaitable[None]]'
+  parameters:
+  - name: fn
+    description: Async function called during graceful shutdown.
+    isRequired: true
+    types:
+    - <xref:typing.Callable>[[], <xref:typing.Awaitable>[<xref:None>]]
+  return:
+    description: The original function (unmodified).
+    types:
+    - <xref:typing.Callable>[[], <xref:typing.Awaitable>[<xref:None>]]
+- uid: azure.ai.agentserver.responses.hosting.ResponsesAgentServerHost.url_path_for
+  name: url_path_for
+  signature: 'url_path_for(name: str, /, **path_params: Any) -> URLPath'
+  positionalOnlyParameters:
+  - name: name
+    isRequired: true
+attributes:
+- uid: azure.ai.agentserver.responses.hosting.ResponsesAgentServerHost.routes
+  name: routes
