@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-hanaonazure, hanaonazure
-ms.date: 05/27/2026
+ms.date: 08/12/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: hanaonazure
