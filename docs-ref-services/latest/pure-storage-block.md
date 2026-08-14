@@ -1,7 +1,7 @@
 ---
 title: Azure Pure Storage Block SDK for Python
 description: Reference for Azure Pure Storage Block SDK for Python
-ms.date: 08/13/2026
+ms.date: 08/14/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: purestorageblock
