@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-alertprocessingrules, alertsmanagement
-ms.date: 07/10/2026
+ms.date: 08/14/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: alertsmanagement
