@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-relay, azure-relay
-ms.date: 07/07/2026
+ms.date: 08/15/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: azure-relay
