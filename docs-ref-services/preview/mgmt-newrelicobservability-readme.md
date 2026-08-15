@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-newrelicobservability, newrelicobservability
-ms.date: 07/08/2026
+ms.date: 08/15/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: newrelicobservability
