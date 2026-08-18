@@ -1,7 +1,7 @@
 ---
 title: Azure Portal Services Copilot SDK for Python
 description: Reference for Azure Portal Services Copilot SDK for Python
-ms.date: 08/17/2026
+ms.date: 08/18/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: portalservicescopilot
