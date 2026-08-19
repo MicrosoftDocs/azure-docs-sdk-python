@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: servicegroups
 ---
-# Azure Service Groups SDK for Python - preview
-## Packages - preview
+# Azure Service Groups SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](service-groups-index.md)]
