@@ -1,12 +1,12 @@
 ---
 title: Azure App Configuration client library for Python
 keywords: Azure, python, SDK, API, azure-appconfiguration, appconfiguration
-ms.date: 03/22/2024
+ms.date: 08/19/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: appconfiguration
 ---
-# Azure App Configuration client library for Python - version 1.6.0b2 
+# Azure App Configuration client library for Python - version 1.10.0b1 
 
 
 Azure App Configuration is a managed service that helps developers centralize their application configurations simply and securely.
@@ -15,7 +15,7 @@ Modern programs, especially programs running in a cloud, generally have many com
 
 Use the client library for App Configuration to create and manage application configuration settings.
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.6.0b2/sdk/appconfiguration/azure-appconfiguration)
+[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.10.0b1/sdk/appconfiguration/azure-appconfiguration)
 | [Package (Pypi)][package]
 | [Package (Conda)](https://anaconda.org/microsoft/azure-appconfiguration/)
 | [API reference documentation](https://learn.microsoft.com/python/api/azure-appconfiguration/azure.appconfiguration?view=azure-python)
@@ -27,7 +27,7 @@ Use the client library for App Configuration to create and manage application co
 
 Install the Azure App Configuration client library for Python with pip:
 
-```commandline
+```
 pip install azure-appconfiguration
 ```
 
@@ -80,13 +80,25 @@ client = AzureAppConfigurationClient.from_connection_string(CONNECTION_STRING)
 
 <!-- END SNIPPET -->
 
-#### Use AAD token
+#### Use Entra ID token
 
 Here we demonstrate using [DefaultAzureCredential][default_cred_ref]
 to authenticate as a service principal. However, [AzureAppConfigurationClient][configuration_client_class]
 accepts any [azure-identity][azure_identity] credential. See the
 [azure-identity][azure_identity] documentation for more information about other
 credentials.
+
+<!-- SNIPPET:hello_world_entra_id_sample.create_app_config_client -->
+
+```python
+
+    ENDPOINT = os.environ["APPCONFIGURATION_ENDPOINT_STRING"]
+    credential = DefaultAzureCredential()
+    # Create app config client
+    client = AzureAppConfigurationClient(base_url=ENDPOINT, credential=credential)
+```
+
+<!-- END SNIPPET -->
 
 ##### Create a service principal (optional)
 This [Azure CLI][azure_cli] snippet shows how to create a
@@ -118,7 +130,7 @@ export AZURE_CLIENT_SECRET="random password"
 export AZURE_TENANT_ID="tenant id"
 ```
 
-Assign one of the applicable [App Configuration roles](/azure/azure-app-configuration/rest-api-authorization-azure-ad) to the service principal.
+Assign one of the applicable [App Configuration roles](https://learn.microsoft.com/azure/azure-app-configuration/rest-api-authorization-azure-ad) to the service principal.
 
 ##### Create a client
 Once the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET** and
@@ -165,6 +177,20 @@ etag : str
 
 Azure App Configuration allows users to create a point-in-time snapshot of their configuration store, providing them with the ability to treat settings as one consistent version. This feature enables applications to hold a consistent view of configuration, ensuring that there are no version mismatches to individual settings due to reading as updates were made. Snapshots are immutable, ensuring that configuration can confidently be rolled back to a last-known-good configuration in the event of a problem.
 
+### Feature Flag
+
+A Feature Flag is a special kind of configuration that turns application functionality on or off at runtime. Azure App Configuration exposes a dedicated feature flag endpoint that works with the strongly typed `FeatureFlag` model rather than raw configuration settings.
+
+A `FeatureFlag` can be as simple as a name with an `enabled` flag, or it can carry a rich model:
+
+* `conditions` / `client_filters` - gate the feature with filters such as time windows, percentages, or targeting.
+* `variants` - the possible values the feature can resolve to.
+* `allocation` - how percentiles, users, and groups map to variants.
+* `telemetry` - telemetry configuration and free-form metadata.
+* `tags` - user-defined tags for organizing feature flags.
+
+The feature flag endpoint methods are `set_feature_flag`, `get_feature_flag`, `list_feature_flags`, `list_feature_flag_revisions`, and `delete_feature_flag`.
+
 ## Examples
 
 The following sections provide several code snippets covering some of the most common Configuration Service tasks, including:
@@ -179,6 +205,10 @@ The following sections provide several code snippets covering some of the most c
 * [Recover a Snapshot](#recover-a-snapshot)
 * [List Snapshots](#list-snapshots)
 * [List Configuration Settings of a Snapshot](#list-configuration-settings-of-a-snapshot)
+* [Set a Feature Flag](#set-a-feature-flag)
+* [Get a Feature Flag](#get-a-feature-flag)
+* [List Feature Flags](#list-feature-flags)
+* [Delete a Feature Flag](#delete-a-feature-flag)
 * [Async APIs](#async-apis)
 
 ### Create a Configuration Setting
@@ -188,7 +218,7 @@ There are two ways to store a Configuration Setting:
 
 - add_configuration_setting creates a setting only if the setting does not already exist in the store.
 
-<!-- SNIPPET:hello_world_advanced_sample.create_config_setting -->
+<!-- SNIPPET:hello_world_sample.create_config_setting -->
 
 ```python
 config_setting = ConfigurationSetting(
@@ -201,7 +231,7 @@ added_config_setting = client.add_configuration_setting(config_setting)
 
 - set_configuration_setting creates a setting if it doesn't exist or overrides an existing setting.
 
-<!-- SNIPPET:hello_world_advanced_sample.set_config_setting -->
+<!-- SNIPPET:hello_world_sample.set_config_setting -->
 
 ```python
 added_config_setting.value = "new value"
@@ -211,11 +241,33 @@ updated_config_setting = client.set_configuration_setting(added_config_setting)
 
 <!-- END SNIPPET -->
 
+### Set and clear read-only for a configuration setting.
+
+- Set a configuration setting to be read-only.
+
+<!-- SNIPPET:read_only_sample.set_read_only -->
+
+```python
+read_only_config_setting = client.set_read_only(updated_config_setting)
+```
+
+<!-- END SNIPPET -->
+
+- Clear read-only for a configuration setting.
+
+<!-- SNIPPET:read_only_sample.clear_read_only -->
+
+```python
+read_write_config_setting = client.set_read_only(updated_config_setting, False)
+```
+
+<!-- END SNIPPET -->
+
 ### Get a Configuration Setting
 
 Get a previously stored Configuration Setting.
 
-<!-- SNIPPET:hello_world_advanced_sample.get_config_setting -->
+<!-- SNIPPET:hello_world_sample.get_config_setting -->
 
 ```python
 fetched_config_setting = client.get_configuration_setting(key="MyKey", label="MyLabel")
@@ -227,34 +279,88 @@ fetched_config_setting = client.get_configuration_setting(key="MyKey", label="My
 
 Delete an existing Configuration Setting.
 
-<!-- SNIPPET:hello_world_advanced_sample.delete_config_setting -->
+<!-- SNIPPET:hello_world_sample.delete_config_setting -->
 
 ```python
-client.delete_configuration_setting(
-    key="MyKey",
-    label="MyLabel",
-)
+client.delete_configuration_setting(key="MyKey", label="MyLabel")
 ```
 
 <!-- END SNIPPET -->
 
 ### List Configuration Settings
 
-List all configuration settings filtered with label_filter and/or key_filter.
+List all configuration settings filtered with label_filter and/or key_filter and/or tags_filter.
 
-<!-- SNIPPET:hello_world_advanced_sample.list_config_setting -->
+<!-- SNIPPET:list_configuration_settings_sample.list_configuration_settings -->
 
 ```python
-config_settings = client.list_configuration_settings(label_filter="MyLabel")
-for item in config_settings:
-    print_configuration_setting(item)
+config_settings = client.list_configuration_settings(key_filter="MyKey*", tags_filter=["my tag1=my tag1 value"])
+for config_setting in config_settings:
+    print(config_setting)
+```
+
+<!-- END SNIPPET -->
+
+### List revisions
+
+List revision history of configuration settings filtered with label_filter and/or key_filter and/or tags_filter.
+
+<!-- SNIPPET:list_revision_sample.list_revisions -->
+
+```python
+items = client.list_revisions(key_filter="MyKey", tags_filter=["my tag=my tag value"])
+for item in items:
+    print(item)
+```
+
+<!-- END SNIPPET -->
+
+### List labels
+
+List labels of all configuration settings.
+
+<!-- SNIPPET:list_labels_sample.list_labels -->
+
+```python
+print("List all labels in resource")
+config_settings = client.list_labels()
+for config_setting in config_settings:
+    print(config_setting)
+
+print("List labels by exact match")
+config_settings = client.list_labels(name="my label1")
+for config_setting in config_settings:
+    print(config_setting)
+
+print("List labels by wildcard")
+config_settings = client.list_labels(name="my label*")
+for config_setting in config_settings:
+    print(config_setting)
+```
+
+<!-- END SNIPPET -->
+
+You can also filter labels by the type of resource they belong to with `resource_type`, using `"kv"` for key-value settings or `"ff"` for feature flags.
+
+<!-- SNIPPET:list_labels_sample.list_labels_by_resource_type -->
+
+```python
+print("List labels used by key-value settings only")
+config_settings = client.list_labels(resource_type="kv")
+for config_setting in config_settings:
+    print(config_setting)
+
+print("List labels used by feature flags only")
+config_settings = client.list_labels(resource_type="ff")
+for config_setting in config_settings:
+    print(config_setting)
 ```
 
 <!-- END SNIPPET -->
 
 ### Create a Snapshot
 
-<!-- SNIPPET:snapshot_samples.create_snapshot -->
+<!-- SNIPPET:snapshot_sample.create_snapshot -->
 
 ```python
 from azure.appconfiguration import ConfigurationSettingsFilter
@@ -262,14 +368,13 @@ from azure.appconfiguration import ConfigurationSettingsFilter
 filters = [ConfigurationSettingsFilter(key="my_key1", label="my_label1")]
 response = client.begin_create_snapshot(name=snapshot_name, filters=filters)
 created_snapshot = response.result()
-print_snapshot(created_snapshot)
 ```
 
 <!-- END SNIPPET -->
 
 ### Get a Snapshot
 
-<!-- SNIPPET:snapshot_samples.get_snapshot -->
+<!-- SNIPPET:snapshot_sample.get_snapshot -->
 
 ```python
 received_snapshot = client.get_snapshot(name=snapshot_name)
@@ -279,44 +384,87 @@ received_snapshot = client.get_snapshot(name=snapshot_name)
 
 ### Archive a Snapshot
 
-<!-- SNIPPET:snapshot_samples.archive_snapshot -->
+<!-- SNIPPET:snapshot_sample.archive_snapshot -->
 
 ```python
 archived_snapshot = client.archive_snapshot(name=snapshot_name)
-print_snapshot(archived_snapshot)
 ```
 
 <!-- END SNIPPET -->
 
 ### Recover a Snapshot
 
-<!-- SNIPPET:snapshot_samples.recover_snapshot -->
+<!-- SNIPPET:snapshot_sample.recover_snapshot -->
 
 ```python
 recovered_snapshot = client.recover_snapshot(name=snapshot_name)
-print_snapshot(recovered_snapshot)
 ```
 
 <!-- END SNIPPET -->
 
 ### List Snapshots
 
-<!-- SNIPPET:snapshot_samples.list_snapshots -->
+<!-- SNIPPET:snapshot_sample.list_snapshots -->
 
 ```python
 for snapshot in client.list_snapshots():
-    print_snapshot(snapshot)
+    print(snapshot)
 ```
 
 <!-- END SNIPPET -->
 
 ### List Configuration Settings of a Snapshot
 
-<!-- SNIPPET:snapshot_samples.list_configuration_settings_for_snapshot -->
+<!-- SNIPPET:snapshot_sample.list_configuration_settings_for_snapshot -->
 
 ```python
 for config_setting in client.list_configuration_settings(snapshot_name=snapshot_name):
-    print_configuration_setting(config_setting)
+    print(config_setting)
+```
+
+<!-- END SNIPPET -->
+
+### Set a Feature Flag
+
+Create or update a feature flag through the dedicated feature flag endpoint. A feature flag can be a simple on/off toggle or carry the full model (conditions, variants, allocation, telemetry, tags).
+
+<!-- SNIPPET:feature_flag_sample.set_feature_flag -->
+
+```python
+flag = FeatureFlag(name="SampleFeature", enabled=True, description="A simple on/off feature flag")
+created = client.set_feature_flag(flag)
+```
+
+<!-- END SNIPPET -->
+
+### Get a Feature Flag
+
+<!-- SNIPPET:feature_flag_sample.get_feature_flag -->
+
+```python
+retrieved = client.get_feature_flag("SampleFeature")
+```
+
+<!-- END SNIPPET -->
+
+### List Feature Flags
+
+<!-- SNIPPET:feature_flag_sample.list_feature_flags -->
+
+```python
+for f in client.list_feature_flags():
+    print(f"  {f.name}: enabled={f.enabled}")
+```
+
+<!-- END SNIPPET -->
+
+### Delete a Feature Flag
+
+<!-- SNIPPET:feature_flag_sample.delete_feature_flag -->
+
+```python
+client.delete_feature_flag("SampleFeature")
+client.delete_feature_flag("RichFeature")
 ```
 
 <!-- END SNIPPET -->
@@ -324,7 +472,7 @@ for config_setting in client.list_configuration_settings(snapshot_name=snapshot_
 ### Async APIs
 
 Async client is supported.
-To use the async client library, import the AzureAppConfigurationClient from package azure.appconfiguration.aio instead of azure.appconfiguration
+To use the async client library, import the AzureAppConfigurationClient from package azure.appconfiguration.aio instead of azure.appconfiguration.
 
 <!-- SNIPPET:hello_world_sample_async.create_app_config_client -->
 
@@ -334,16 +482,16 @@ from azure.appconfiguration.aio import AzureAppConfigurationClient
 
 CONNECTION_STRING = os.environ["APPCONFIGURATION_CONNECTION_STRING"]
 
-# Create app config client
+# Create an app config client
 client = AzureAppConfigurationClient.from_connection_string(CONNECTION_STRING)
 ```
 
 <!-- END SNIPPET -->
 
-This async AzureAppConfigurationClient has the same method signatures as the sync ones except that they're async.
-For instance, to retrieve a Configuration Setting asynchronously, async_client can be used:
+This async AzureAppConfigurationClient has the same method signatures as the sync ones except that they're async.\
+For instance, retrieve a Configuration Setting asynchronously:
 
-<!-- SNIPPET:hello_world_advanced_sample_async.get_config_setting -->
+<!-- SNIPPET:hello_world_sample_async.get_config_setting -->
 
 ```python
 fetched_config_setting = await client.get_configuration_setting(key="MyKey", label="MyLabel")
@@ -351,71 +499,14 @@ fetched_config_setting = await client.get_configuration_setting(key="MyKey", lab
 
 <!-- END SNIPPET -->
 
-To use list_configuration_settings, call it synchronously and iterate over the returned async iterator asynchronously
+To list configuration settings, call `list_configuration_settings` operation synchronously and iterate over the returned async iterator asynchronously:
 
-<!-- SNIPPET:hello_world_advanced_sample_async.list_config_setting -->
-
-```python
-config_settings = client.list_configuration_settings(label_filter="MyLabel")
-async for item in config_settings:
-    print_configuration_setting(item)
-```
-
-<!-- END SNIPPET -->
-
-<!-- SNIPPET:snapshot_samples_async.create_snapshot -->
+<!-- SNIPPET:list_configuration_settings_sample_async.list_configuration_settings -->
 
 ```python
-from azure.appconfiguration import ConfigurationSettingsFilter
-
-filters = [ConfigurationSettingsFilter(key="my_key1", label="my_label1")]
-response = await client.begin_create_snapshot(name=snapshot_name, filters=filters)
-created_snapshot = await response.result()
-print_snapshot(created_snapshot)
-```
-
-<!-- END SNIPPET -->
-
-<!-- SNIPPET:snapshot_samples_async.get_snapshot -->
-
-```python
-received_snapshot = await client.get_snapshot(name=snapshot_name)
-```
-
-<!-- END SNIPPET -->
-
-<!-- SNIPPET:snapshot_samples_async.archive_snapshot -->
-
-```python
-archived_snapshot = await client.archive_snapshot(name=snapshot_name)
-print_snapshot(archived_snapshot)
-```
-
-<!-- END SNIPPET -->
-
-<!-- SNIPPET:snapshot_samples_async.recover_snapshot -->
-
-```python
-recovered_snapshot = await client.recover_snapshot(name=snapshot_name)
-print_snapshot(recovered_snapshot)
-```
-
-<!-- END SNIPPET -->
-
-<!-- SNIPPET:snapshot_samples_async.list_snapshots -->
-
-```python
-async for snapshot in client.list_snapshots():
-    print_snapshot(snapshot)
-```
-
-<!-- END SNIPPET -->
-
-<!-- SNIPPET:snapshot_samples_async.list_configuration_settings_for_snapshot -->
-
-```python
-async for config_setting in client.list_configuration_settings(snapshot_name=snapshot_name):
-    print_configuration_setting(config_setting)
+config_settings = client.list_configuration_settings(key_filter="MyKey*", tags_filter=["my tag1=my tag1 value"])
+async for config_setting in config_settings:
+    print(config_setting)
 ```
 
 <!-- END SNIPPET -->
@@ -429,14 +520,17 @@ See the [troubleshooting guide][troubleshooting_guide] for details on how to dia
 ### More sample code
 
 Several App Configuration client library samples are available to you in this GitHub repository.  These include:
-- [Hello world](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.6.0b2/sdk/appconfiguration/azure-appconfiguration/samples/hello_world_sample.py) / [Async version](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.6.0b2/sdk/appconfiguration/azure-appconfiguration/samples/hello_world_sample_async.py)
-- [Hello world with labels](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.6.0b2/sdk/appconfiguration/azure-appconfiguration/samples/hello_world_advanced_sample.py) / [Async version](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.6.0b2/sdk/appconfiguration/azure-appconfiguration/samples/hello_world_advanced_sample_async.py)
-- [Make a configuration setting readonly](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.6.0b2/sdk/appconfiguration/azure-appconfiguration/samples/read_only_sample.py) / [Async version](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.6.0b2/sdk/appconfiguration/azure-appconfiguration/samples/hello_world_sample_async.py)
-- [Read revision history](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.6.0b2/sdk/appconfiguration/azure-appconfiguration/samples/list_revision_sample.py) / [Async version](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.6.0b2/sdk/appconfiguration/azure-appconfiguration/samples/list_revision_sample_async.py)
-- [Get a setting if changed](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.6.0b2/sdk/appconfiguration/azure-appconfiguration/samples/conditional_operation_sample.py) / [Async version](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.6.0b2/sdk/appconfiguration/azure-appconfiguration/samples/conditional_operation_sample_async.py)
-- [Create, retrieve and update status of a configuration settings snapshot](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.6.0b2/sdk/appconfiguration/azure-appconfiguration/samples/snapshot_samples.py) / [Async version](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.6.0b2/sdk/appconfiguration/azure-appconfiguration/samples/snapshot_samples_async.py)
+- [Hello world](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.10.0b1/sdk/appconfiguration/azure-appconfiguration/samples/hello_world_sample.py) / [Async version](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.10.0b1/sdk/appconfiguration/azure-appconfiguration/samples/hello_world_sample_async.py)
+- [List configuration settings](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.10.0b1/sdk/appconfiguration/azure-appconfiguration/samples/list_configuration_settings_sample.py) / [Async version](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.10.0b1/sdk/appconfiguration/azure-appconfiguration/samples/list_configuration_settings_sample_async.py)
+- [Make a configuration setting readonly](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.10.0b1/sdk/appconfiguration/azure-appconfiguration/samples/read_only_sample.py) / [Async version](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.10.0b1/sdk/appconfiguration/azure-appconfiguration/samples/read_only_sample_async.py)
+- [Read revision history](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.10.0b1/sdk/appconfiguration/azure-appconfiguration/samples/list_revision_sample.py) / [Async version](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.10.0b1/sdk/appconfiguration/azure-appconfiguration/samples/list_revision_sample_async.py)
+- [Get a setting if changed](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.10.0b1/sdk/appconfiguration/azure-appconfiguration/samples/conditional_operation_sample.py) / [Async version](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.10.0b1/sdk/appconfiguration/azure-appconfiguration/samples/conditional_operation_sample_async.py)
+- [Create, retrieve and update status of a configuration settings snapshot](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.10.0b1/sdk/appconfiguration/azure-appconfiguration/samples/snapshot_sample.py) / [Async version](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.10.0b1/sdk/appconfiguration/azure-appconfiguration/samples/snapshot_sample_async.py)
+- [Set, get, list and delete feature flags (including the full FeatureFlag model)](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.10.0b1/sdk/appconfiguration/azure-appconfiguration/samples/feature_flag_sample.py) / [Async version](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.10.0b1/sdk/appconfiguration/azure-appconfiguration/samples/feature_flag_sample_async.py)
+- [Send custom HTTP requests](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.10.0b1/sdk/appconfiguration/azure-appconfiguration/samples/send_request_sample.py) / [Async version](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.10.0b1/sdk/appconfiguration/azure-appconfiguration/samples/send_request_sample_async.py)
+- [Update AzureAppConfigurationClient sync_token](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.10.0b1/sdk/appconfiguration/azure-appconfiguration/samples/sync_token_sample.py) / [Async version](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.10.0b1/sdk/appconfiguration/azure-appconfiguration/samples/sync_token_sample_async.py)
 
- For more details see the [samples README](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.6.0b2/sdk/appconfiguration/azure-appconfiguration/samples/README.md).
+ For more details see the [samples README](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.10.0b1/sdk/appconfiguration/azure-appconfiguration/samples/README.md).
 
 ## Contributing
 
@@ -456,19 +550,19 @@ see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_c
 additional questions or comments.
 
 <!-- LINKS -->
-[appconfig_docs]: /azure/azure-app-configuration/
+[appconfig_docs]: https://learn.microsoft.com/azure/azure-app-configuration/
 [appconfig_rest]: https://github.com/Azure/AppConfiguration#rest-api-reference
-[azure_cli]: /cli/azure
+[azure_cli]: https://learn.microsoft.com/cli/azure
 [azure_sub]: https://azure.microsoft.com/free/
-[configuration_client_class]: https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.6.0b2/sdk/appconfiguration/azure-appconfiguration/azure/appconfiguration/_azure_appconfiguration_client.py
+[configuration_client_class]: https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.10.0b1/sdk/appconfiguration/azure-appconfiguration/azure/appconfiguration/_azure_appconfiguration_client.py
 [package]: https://pypi.org/project/azure-appconfiguration/
 [configuration_store]: https://azure.microsoft.com/services/app-configuration/
 [default_cred_ref]: https://aka.ms/azsdk-python-identity-default-cred-ref
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-appconfiguration_1.6.0b2/sdk/identity/azure-identity
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-appconfiguration_1.10.0b1/sdk/identity/azure-identity
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [troubleshooting_guide]: https://aka.ms/azsdk/python/appconfiguration/troubleshoot
-[label_concept]: /azure/azure-app-configuration/concept-key-value#label-keys
+[label_concept]: https://learn.microsoft.com/azure/azure-app-configuration/concept-key-value#label-keys
 
