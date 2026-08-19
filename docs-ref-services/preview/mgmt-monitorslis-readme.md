@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-monitorslis, monitor
-ms.date: 06/16/2026
+ms.date: 08/19/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: monitor
