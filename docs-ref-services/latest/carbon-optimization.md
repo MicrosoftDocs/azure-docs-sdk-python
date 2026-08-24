@@ -1,7 +1,7 @@
 ---
 title: Azure Carbon Optimization SDK for Python
 description: Reference for Azure Carbon Optimization SDK for Python
-ms.date: 08/21/2026
+ms.date: 08/24/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: carbonoptimization
