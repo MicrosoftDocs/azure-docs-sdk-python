@@ -20,10 +20,16 @@ constructor:
     - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:bytes>]]
   keywordOnlyParameters:
   - name: application_properties
-    description: The user defined properties on the message.
+    description: 'The user defined properties on the message.
+
+      Keys may be `str` or `bytes`. Note that when a message is received, the
+
+      keys and any string values are returned as `bytes` - see the
+
+      `application_properties` property for details.'
     defaultValue: None
     types:
-    - <xref:typing.Dict>[<xref:str>, <xref:typing.Union>[<xref:int>
+    - <xref:typing.Dict>[<xref:typing.Union>[<xref:str>, <xref:bytes>], <xref:typing.Union>[<xref:int>
     - <xref:float>
     - <xref:bool>
     - <xref:bytes>
@@ -91,16 +97,28 @@ examples:
   sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
   : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\
   \\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-  354\\\\azure-servicebus-7.13.0b1\\\\samples\\\\sync_samples\\\\sample_code_servicebus.py\"\
+  354\\\\azure_servicebus-7.15.0b2\\\\samples\\\\sync_samples\\\\sample_code_servicebus.py\"\
   , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
   : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   message_send\
   \ = ServiceBusMessage(\n       \"Hello World!!\",\n       session_id=\"MySessionID\"\
-  ,\n       application_properties={'data': 'custom_data'},\n       time_to_live=datetime.timedelta(seconds=30),\n\
-  \       label='MyLabel'\n   )\n\n   ````\n"
+  ,\n       application_properties={\"data\": \"custom_data\"},\n       time_to_live=datetime.timedelta(seconds=30),\n\
+  \       label=\"MyLabel\",\n   )\n\n   ````\n"
 attributes:
 - uid: azure.servicebus.ServiceBusMessage.application_properties
   name: application_properties
-  summary: The user defined properties on the message.
+  summary: "The user defined properties on the message.\n\n> [!NOTE]\n> When a message\
+    \ is received, the keys and any string values in this\n>\n> dictionary are returned\
+    \ as bytes, not str (for example\n>\n> {b\"order_id\": b\"12345\"}). The property\
+    \ is None when the\n>\n> message carries no application properties, so guard for\
+    \ that before\n>\n> indexing. Access received properties using bytes keys, and\
+    \ decode\n>\n> string values as needed:\n>\n> \n>\n> props = message.application_properties\
+    \ or {}\n>\n> value = props.get(b\"order_id\")\n>\n> if isinstance(value, bytes):\n\
+    >\n>     value = value.decode(\"utf-8\")\n>\n> \n>\n> Non-string values are returned\
+    \ as decoded by the AMQP layer:\n>\n> int, bool, float and <xref:uuid.UUID> keep\
+    \ their\n>\n> native types, while an AMQP timestamp is returned as an integer\n\
+    >\n> (milliseconds since the Unix epoch), not a\n>\n> <xref:datetime.datetime>.\
+    \ The same bytes behavior applies to the\n>\n> raw AMQP annotations and delivery_annotations\
+    \ accessed\n>\n> through raw_amqp_message.\n>"
   return:
     types:
     - <xref:dict>[<xref:str>
@@ -158,7 +176,7 @@ attributes:
 
     See Message Routing and Correlation in
 
-    *https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation*.'
+    *https://learn.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation*.'
   return:
     types:
     - <xref:str>
@@ -184,7 +202,7 @@ attributes:
 
     application context.  If enabled, the duplicate detection (see
 
-    *https://docs.microsoft.com/azure/service-bus-messaging/duplicate-detection*)
+    *https://learn.microsoft.com/azure/service-bus-messaging/duplicate-detection*)
 
     feature identifies and removes second and further submissions of messages with
     the same message id.'
@@ -208,7 +226,7 @@ attributes:
 
     See Partitioned queues and topics in
 
-    *https://docs.microsoft.com/azure/service-bus-messaging/service-bus-partitioning*.'
+    *https://learn.microsoft.com/azure/service-bus-messaging/service-bus-partitioning*.'
   return:
     types:
     - <xref:str>
@@ -235,7 +253,7 @@ attributes:
 
     See Message Routing and Correlation in
 
-    *https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation*.'
+    *https://learn.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation*.'
   return:
     types:
     - <xref:str>
@@ -253,7 +271,7 @@ attributes:
 
     See Message Routing and Correlation in
 
-    *https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation*.'
+    *https://learn.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation*.'
   return:
     types:
     - <xref:str>
@@ -289,7 +307,7 @@ attributes:
     processing and demultiplexing. For non-sessionful entities, this value is ignored.
 
 
-    See Message Sessions in *https://docs.microsoft.com/azure/service-bus-messaging/message-sessions*.'
+    See Message Sessions in *https://learn.microsoft.com/azure/service-bus-messaging/message-sessions*.'
   return:
     types:
     - <xref:str>
@@ -325,7 +343,7 @@ attributes:
     adjusted if it does.
 
 
-    See Expiration in *https://docs.microsoft.com/azure/service-bus-messaging/message-expiration*'
+    See Expiration in *https://learn.microsoft.com/azure/service-bus-messaging/message-expiration*'
   return:
     types:
     - <xref:datetime.timedelta>
@@ -343,7 +361,7 @@ attributes:
     logical destination of the message.
 
 
-    See [https://docs.microsoft.com/azure/service-bus-messaging/service-bus-auto-forwarding](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-auto-forwarding)
+    See [https://learn.microsoft.com/azure/service-bus-messaging/service-bus-auto-forwarding](https://learn.microsoft.com/azure/service-bus-messaging/service-bus-auto-forwarding)
     for more details.'
   return:
     types:

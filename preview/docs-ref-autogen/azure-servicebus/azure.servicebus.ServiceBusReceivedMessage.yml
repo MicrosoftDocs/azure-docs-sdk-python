@@ -27,11 +27,11 @@ examples:
   sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
   : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\
   \\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-  354\\\\azure-servicebus-7.13.0b1\\\\samples\\\\sync_samples\\\\sample_code_servicebus.py\"\
+  354\\\\azure_servicebus-7.15.0b2\\\\samples\\\\sync_samples\\\\sample_code_servicebus.py\"\
   , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
   : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n       from typing\
-  \ import List\n       from azure.servicebus import ServiceBusReceivedMessage\n \
-  \      messages_complex: List[ServiceBusReceivedMessage] = servicebus_receiver.receive_messages(max_wait_time=5)\n\
+  \ import List\n       from azure.servicebus import ServiceBusReceivedMessage\n\n\
+  \       messages_complex: List[ServiceBusReceivedMessage] = servicebus_receiver.receive_messages(max_wait_time=5)\n\
   \       for message in messages_complex:\n           print(\"Receiving: {}\".format(message))\n\
   \           print(\"Time to live: {}\".format(message.time_to_live))\n         \
   \  print(\"Sequence number: {}\".format(message.sequence_number))\n           print(\"\
@@ -43,10 +43,79 @@ examples:
   .format(message.locked_until_utc))\n           print(\"Lock Token: {}\".format(message.lock_token))\n\
   \           print(\"Enqueued time: {}\".format(message.enqueued_time_utc))\n\n \
   \  ````\n"
+methods:
+- uid: azure.servicebus.ServiceBusReceivedMessage.from_bytes
+  name: from_bytes
+  summary: 'Constructs a ServiceBusReceivedMessage from the raw bytes of an AMQP message
+    payload.
+
+
+    The message payload should adhere to the Message Format specification
+
+    outlined in the AMQP v1.0 standard:
+
+    [http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format](http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format)
+
+
+    The returned message has no associated receiver. It is intended for reading
+
+    message content and metadata, and cannot be used to settle the message
+
+    (e.g., complete, abandon, defer, dead_letter) or renew its lock, because those
+
+    operations require a live receiver.
+
+
+    Broker metadata carried in the payload is preserved. When the encoded message
+
+    contains the corresponding sections, properties such as `lock_token`,
+
+    `locked_until_utc`, `sequence_number`, and `enqueued_time_utc` are
+
+    populated; when a section is absent, the corresponding property returns `None`.
+
+
+    Note that AMQP value and sequence body sections, as well as some string-typed
+
+    properties, are surfaced as `bytes` after decoding (for example, a value body
+
+    of `{"key": "value"}` decodes to `{b"key": b"value"}`). This reflects the
+
+    raw AMQP wire encoding and is not converted to `str`.'
+  signature: 'from_bytes(message: bytes) -> ServiceBusReceivedMessage'
+  parameters:
+  - name: message
+    description: The raw bytes representing the AMQP message payload.
+    isRequired: true
+    types:
+    - <xref:bytes>
+  return:
+    description: A ServiceBusReceivedMessage created from the provided message payload.
+    types:
+    - <xref:azure.servicebus.ServiceBusReceivedMessage>
+  exceptions:
+  - type: TypeError
+    description: If `message` is not a `bytes` object.
+  - type: ValueError
+    description: 'If `message` is empty, or is not a valid AMQP 1.0
+
+      message payload (decode failures are wrapped and chained).'
 attributes:
 - uid: azure.servicebus.ServiceBusReceivedMessage.application_properties
   name: application_properties
-  summary: The user defined properties on the message.
+  summary: "The user defined properties on the message.\n\n> [!NOTE]\n> When a message\
+    \ is received, the keys and any string values in this\n>\n> dictionary are returned\
+    \ as bytes, not str (for example\n>\n> {b\"order_id\": b\"12345\"}). The property\
+    \ is None when the\n>\n> message carries no application properties, so guard for\
+    \ that before\n>\n> indexing. Access received properties using bytes keys, and\
+    \ decode\n>\n> string values as needed:\n>\n> \n>\n> props = message.application_properties\
+    \ or {}\n>\n> value = props.get(b\"order_id\")\n>\n> if isinstance(value, bytes):\n\
+    >\n>     value = value.decode(\"utf-8\")\n>\n> \n>\n> Non-string values are returned\
+    \ as decoded by the AMQP layer:\n>\n> int, bool, float and <xref:uuid.UUID> keep\
+    \ their\n>\n> native types, while an AMQP timestamp is returned as an integer\n\
+    >\n> (milliseconds since the Unix epoch), not a\n>\n> <xref:datetime.datetime>.\
+    \ The same bytes behavior applies to the\n>\n> raw AMQP annotations and delivery_annotations\
+    \ accessed\n>\n> through raw_amqp_message.\n>"
   return:
     types:
     - <xref:dict>[<xref:str>
@@ -104,7 +173,7 @@ attributes:
 
     See Message Routing and Correlation in
 
-    *https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation*.'
+    *https://learn.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation*.'
   return:
     types:
     - <xref:str>
@@ -213,7 +282,7 @@ attributes:
 
     application context.  If enabled, the duplicate detection (see
 
-    *https://docs.microsoft.com/azure/service-bus-messaging/duplicate-detection*)
+    *https://learn.microsoft.com/azure/service-bus-messaging/duplicate-detection*)
 
     feature identifies and removes second and further submissions of messages with
     the same message id.'
@@ -237,7 +306,7 @@ attributes:
 
     See Partitioned queues and topics in
 
-    *https://docs.microsoft.com/azure/service-bus-messaging/service-bus-partitioning*.'
+    *https://learn.microsoft.com/azure/service-bus-messaging/service-bus-partitioning*.'
   return:
     types:
     - <xref:str>
@@ -264,7 +333,7 @@ attributes:
 
     See Message Routing and Correlation in
 
-    *https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation*.'
+    *https://learn.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation*.'
   return:
     types:
     - <xref:str>
@@ -282,7 +351,7 @@ attributes:
 
     See Message Routing and Correlation in
 
-    *https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation*.'
+    *https://learn.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation*.'
   return:
     types:
     - <xref:str>
@@ -333,7 +402,7 @@ attributes:
     processing and demultiplexing. For non-sessionful entities, this value is ignored.
 
 
-    See Message Sessions in *https://docs.microsoft.com/azure/service-bus-messaging/message-sessions*.'
+    See Message Sessions in *https://learn.microsoft.com/azure/service-bus-messaging/message-sessions*.'
   return:
     types:
     - <xref:str>
@@ -378,7 +447,7 @@ attributes:
     adjusted if it does.
 
 
-    See Expiration in *https://docs.microsoft.com/azure/service-bus-messaging/message-expiration*'
+    See Expiration in *https://learn.microsoft.com/azure/service-bus-messaging/message-expiration*'
   return:
     types:
     - <xref:datetime.timedelta>
@@ -396,7 +465,7 @@ attributes:
     logical destination of the message.
 
 
-    See [https://docs.microsoft.com/azure/service-bus-messaging/service-bus-auto-forwarding](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-auto-forwarding)
+    See [https://learn.microsoft.com/azure/service-bus-messaging/service-bus-auto-forwarding](https://learn.microsoft.com/azure/service-bus-messaging/service-bus-auto-forwarding)
     for more details.'
   return:
     types:

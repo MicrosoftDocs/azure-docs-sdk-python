@@ -1,0 +1,131 @@
+### YamlMime:PythonClass
+uid: azure.ai.agentserver.activity.FoundryStorage
+name: FoundryStorage
+fullName: azure.ai.agentserver.activity.FoundryStorage
+module: azure.ai.agentserver.activity
+summary: "Durable M365 Agents SDK storage adapter for Foundry-hosted Activity agents.\n\
+  \nBacked by <xref:azure.ai.agentserver.core.storage.FoundryStateStore>, whose\n\
+  protocol binds every client to one explicit, caller-named store \u2013 \"store\n\
+  name = scope\". Each M365 storage key (already a scope identifier, for\nexample\
+  \ `f\"{channel_id}/conversations/{conversation_id}\"` or\n`f\"{channel_id}/users/{user_id}\"\
+  `) gets its own lazily-created,\nlazily-cached <xref:azure.ai.agentserver.activity.FoundryStateStore>,\
+  \ with the key doubling as both the\nstore name and the single item key stored in\
+  \ it. This mirrors the M365 SDK\nitself, which never batches keys from different\
+  \ scopes in one call (every\n`AgentState` / `Authorization` / `Proactive` call operates\
+  \ on exactly\none key).\n\nSubclasses <xref:microsoft_agents.hosting.core.storage.AsyncStorageBase>,\n\
+  which implements the batch <xref:azure.ai.agentserver.activity.FoundryStorage.read>\
+  \ / <xref:azure.ai.agentserver.activity.FoundryStorage.write> / <xref:azure.ai.agentserver.activity.FoundryStorage.delete>\n\
+  (validation + concurrent fan-out) in terms of the single-item\n`_read_item` / `_write_item`\
+  \ / `_delete_item` hooks below.\n\nCreate the adapter. No backing stores are created\
+  \ until first use."
+constructor:
+  syntax: 'FoundryStorage(*, credential: ~azure.core.credentials_async.AsyncTokenCredential
+    | None = None, endpoint: ~azure.ai.agentserver.core.storage._endpoint.FoundryStorageEndpoint
+    | str | None = None, item_ttl_seconds: int | None = None, is_user_scoped: ~typing.Callable[[str],
+    bool] = <function _default_is_user_scoped>)'
+  keywordOnlyParameters:
+  - name: credential
+    description: 'Async token credential shared by every per-key store.
+
+      Defaults to `DefaultAzureCredential` (requires `azure-identity`).'
+    defaultValue: None
+  - name: endpoint
+    description: Foundry storage endpoint or project endpoint URL override.
+    defaultValue: None
+  - name: item_ttl_seconds
+    description: 'Store-level TTL applied to every per-key store
+
+      created by this adapter. Defaults to `FoundryStateStore`''s own default
+
+      (30 days) when omitted.'
+    defaultValue: None
+  - name: is_user_scoped
+    description: 'Predicate deciding which keys get
+
+      `user_isolation=True` on their backing store. Defaults to matching the
+
+      per-user M365 key shapes `"{channel}/users/{user_id}"` (`UserState`)
+
+      and `"auth:_SignInState:{channel}:{user_id}"` (`Authorization`).'
+    defaultValue: <function _default_is_user_scoped at 0x0000028934307EC0>
+  - name: credential
+    description: 'Async token credential shared by every per-key
+
+      store, or `None` to build an owned `DefaultAzureCredential`.'
+    types:
+    - <xref:azure.core.credentials_async.AsyncTokenCredential> | <xref:None>
+  - name: endpoint
+    description: 'Foundry storage endpoint or project endpoint URL
+
+      override, or `None` to resolve from the environment.'
+    types:
+    - <xref:azure.ai.agentserver.core.storage.FoundryStorageEndpoint> | <xref:str>
+      | <xref:None>
+  - name: item_ttl_seconds
+    description: 'Store-level TTL applied to every per-key
+
+      store, or `None` to use `FoundryStateStore`''s own default.'
+    types:
+    - <xref:int> | <xref:None>
+  - name: is_user_scoped
+    description: 'Predicate deciding which keys get
+
+      `user_isolation=True` on their backing store.'
+    types:
+    - <xref:collections.abc.Callable>[[<xref:str>], <xref:bool>]
+methods:
+- uid: azure.ai.agentserver.activity.FoundryStorage.aclose
+  name: aclose
+  summary: Close every cached per-key store and an owned default credential.
+  signature: async aclose() -> None
+  return:
+    description: None.
+    types:
+    - <xref:None>
+- uid: azure.ai.agentserver.activity.FoundryStorage.delete
+  name: delete
+  summary: Deletes multiple items from storage.
+  signature: 'async delete(keys: list[str]) -> None'
+  parameters:
+  - name: keys
+    description: A list of keys to delete.
+    isRequired: true
+  exceptions:
+  - type: ValueError
+    description: If keys is empty.
+- uid: azure.ai.agentserver.activity.FoundryStorage.initialize
+  name: initialize
+  summary: Initializes the storage container
+  signature: async initialize() -> None
+- uid: azure.ai.agentserver.activity.FoundryStorage.read
+  name: read
+  summary: Reads multiple items from storage.
+  signature: 'async read(keys: list[str], *, target_cls: type[StoreItemT], **kwargs)
+    -> dict[str, StoreItemT]'
+  parameters:
+  - name: keys
+    description: A list of keys to read.
+    isRequired: true
+  - name: target_cls
+    description: The class of the StoreItem to deserialize the data into.
+    isRequired: true
+  keywordOnlyParameters:
+  - name: target_cls
+    isRequired: true
+  return:
+    description: A dictionary of key to StoreItem.
+  exceptions:
+  - type: ValueError
+    description: If keys is empty.
+- uid: azure.ai.agentserver.activity.FoundryStorage.write
+  name: write
+  summary: Writes multiple items to storage.
+  signature: 'async write(changes: dict[str, microsoft_agents.hosting.core.storage.store_item.StoreItem])
+    -> None'
+  parameters:
+  - name: changes
+    description: A dictionary of key to StoreItem to write.
+    isRequired: true
+  exceptions:
+  - type: ValueError
+    description: If changes is empty.

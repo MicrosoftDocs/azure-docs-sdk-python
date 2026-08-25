@@ -33,24 +33,24 @@ variables:
   name: server_label
   types:
   - <xref:str>
-- description: 'The URL for the MCP server. One of `server_url` or `connector_id`
-    must be
+- description: 'The URL for the MCP server. One of `server_url`, `connector_id`, or
 
-    provided.'
+    `tunnel_id` must be provided.'
   name: server_url
   types:
   - <xref:str>
 - description: "Identifier for service connectors, like those available in ChatGPT.\
-    \ One of\n`server_url` or `connector_id` must be provided. Learn more about service\
-    \ connectors [here](/docs/guides/tools-remote-mcp#connectors). Currently supported\
-    \ `connector_id` values are:\n\n* Dropbox: *connector_dropbox* \n\n* Gmail: *connector_gmail*\
-    \ \n\n* Google Calendar: *connector_googlecalendar* \n\n* Google Drive: *connector_googledrive*\
-    \ \n\n* Microsoft Teams: *connector_microsoftteams* \n\n* Outlook Calendar: *connector_outlookcalendar*\
-    \ \n\n* Outlook Email: *connector_outlookemail* \n\n* SharePoint: *connector_sharepoint*.\
-    \ Is one of the following types: Literal[\"connector_dropbox\"], Literal[\"connector_gmail\"\
-    ], Literal[\"connector_googlecalendar\"], Literal[\"connector_googledrive\"],\
-    \ Literal[\"connector_microsoftteams\"], Literal[\"connector_outlookcalendar\"\
-    ], Literal[\"connector_outlookemail\"], Literal[\"connector_sharepoint\"]"
+    \ One of\n`server_url`, `connector_id`, or `tunnel_id` must be provided. Learn\
+    \ more about service\nconnectors [here](/docs/guides/tools-remote-mcp#connectors).\
+    \ Currently supported\n`connector_id` values are:\n\n* Dropbox: *connector_dropbox*\
+    \ \n\n* Gmail: *connector_gmail* \n\n* Google Calendar: *connector_googlecalendar*\
+    \ \n\n* Google Drive: *connector_googledrive* \n\n* Microsoft Teams: *connector_microsoftteams*\
+    \ \n\n* Outlook Calendar: *connector_outlookcalendar* \n\n* Outlook Email: *connector_outlookemail*\
+    \ \n\n* SharePoint: *connector_sharepoint*. Is one of the following types: Literal[\"\
+    connector_dropbox\"], Literal[\"connector_gmail\"], Literal[\"connector_googlecalendar\"\
+    ], Literal[\"connector_googledrive\"], Literal[\"connector_microsoftteams\"],\
+    \ Literal[\"connector_outlookcalendar\"], Literal[\"connector_outlookemail\"],\
+    \ Literal[\"connector_sharepoint\"]"
   name: connector_id
   types:
   - <xref:str>
@@ -60,6 +60,13 @@ variables:
   - <xref:str>
   - <xref:str>
   - <xref:str>
+  - <xref:str>
+- description: 'The Secure MCP Tunnel ID to use instead of a direct server URL. One
+    of
+
+    `server_url`, `connector_id`, or `tunnel_id` must be provided.'
+  name: tunnel_id
+  types:
   - <xref:str>
 - description: 'An OAuth access token that can be used with a remote MCP server, either
 
@@ -82,6 +89,10 @@ variables:
   types:
   - <xref:list>[<xref:str>]
   - <xref:azure.ai.projects.models.MCPToolFilter>
+- name: allowed_callers
+  types:
+  - <xref:list>[<xref:str>
+  - <xref:azure.ai.projects.models.CallableToolAllowedCaller>]
 - description: 'Is one of the following types: MCPToolRequireApproval,
 
     Literal["always"], Literal["never"]'
@@ -120,7 +131,7 @@ methods:
     - <xref:dict>
 - uid: azure.ai.projects.models.MCPToolboxTool.clear
   name: clear
-  summary: Remove all items from D.
+  summary: Remove all items from the dictionary.
   signature: clear() -> None
 - uid: azure.ai.projects.models.MCPToolboxTool.copy
   name: copy
@@ -134,7 +145,7 @@ methods:
     :param any default: The value to return if key is not in the dictionary. Defaults
     to None
 
-    :returns: D[k] if k in D, else d.
+    :returns: The value for key if key is in the dictionary, else default.
 
     :rtype: any'
   signature: 'get(key: str, default: Any = None) -> Any'
@@ -147,14 +158,14 @@ methods:
   name: items
   signature: items() -> ItemsView[str, Any]
   return:
-    description: set-like object providing a view on D's items
+    description: a set-like object providing a view on the mapping's items
     types:
     - <xref:typing.ItemsView>
 - uid: azure.ai.projects.models.MCPToolboxTool.keys
   name: keys
   signature: keys() -> KeysView[str]
   return:
-    description: a set-like object providing a view on D's keys
+    description: a set-like object providing a view on the mapping's keys
     types:
     - <xref:typing.KeysView>
 - uid: azure.ai.projects.models.MCPToolboxTool.pop
@@ -183,17 +194,20 @@ methods:
 
     :rtype: tuple
 
-    :raises KeyError: if D is empty.'
+    :raises KeyError: if the dictionary is empty.'
   signature: popitem() -> tuple[str, Any]
 - uid: azure.ai.projects.models.MCPToolboxTool.setdefault
   name: setdefault
-  summary: 'Same as calling D.get(k, d), and setting D[k]=d if k not found
+  summary: 'Return the value for key if key is in the dictionary; otherwise set the
+    key to
+
+    default and return default.
 
     :param str key: The key to look up.
 
     :param any default: The value to set if key is not in the dictionary
 
-    :returns: D[k] if k in D, else d.
+    :returns: The value for key if key is in the dictionary, else default.
 
     :rtype: any'
   signature: 'setdefault(key: str, default: ~typing.Any = <object object>) -> Any'
@@ -203,7 +217,7 @@ methods:
   - name: default
 - uid: azure.ai.projects.models.MCPToolboxTool.update
   name: update
-  summary: 'Updates D from mapping/iterable E and F.
+  summary: 'Update the dictionary from a mapping or an iterable of key-value pairs.
 
     :param any args: Either a mapping object or an iterable of key-value pairs.'
   signature: 'update(*args: Any, **kwargs: Any) -> None'
@@ -211,10 +225,14 @@ methods:
   name: values
   signature: values() -> ValuesView[Any]
   return:
-    description: an object providing a view on D's values
+    description: an object providing a view on the mapping's values
     types:
     - <xref:typing.ValuesView>
 attributes:
+- uid: azure.ai.projects.models.MCPToolboxTool.allowed_callers
+  name: allowed_callers
+  signature: 'allowed_callers: list[typing.Union[str, ForwardRef(''_models.CallableToolAllowedCaller'')]]
+    | None'
 - uid: azure.ai.projects.models.MCPToolboxTool.allowed_tools
   name: allowed_tools
   summary: Is either a [str] type or a MCPToolFilter type.
@@ -232,16 +250,17 @@ attributes:
 - uid: azure.ai.projects.models.MCPToolboxTool.connector_id
   name: connector_id
   summary: "Identifier for service connectors, like those available in ChatGPT. One\
-    \ of `server_url` or\n`connector_id` must be provided. Learn more about service\
-    \ connectors [here](/docs/guides/tools-remote-mcp#connectors). Currently supported\
-    \ `connector_id` values are:\n\n* Dropbox: *connector_dropbox* \n\n* Gmail: *connector_gmail*\
-    \ \n\n* Google Calendar: *connector_googlecalendar* \n\n* Google Drive: *connector_googledrive*\
-    \ \n\n* Microsoft Teams: *connector_microsoftteams* \n\n* Outlook Calendar: *connector_outlookcalendar*\
-    \ \n\n* Outlook Email: *connector_outlookemail* \n\n* SharePoint: *connector_sharepoint*.\
-    \ Is one of the following types: Literal[\"connector_dropbox\"], Literal[\"connector_gmail\"\
-    ], Literal[\"connector_googlecalendar\"], Literal[\"connector_googledrive\"],\
-    \ Literal[\"connector_microsoftteams\"], Literal[\"connector_outlookcalendar\"\
-    ], Literal[\"connector_outlookemail\"], Literal[\"connector_sharepoint\"] "
+    \ of `server_url`,\n`connector_id`, or `tunnel_id` must be provided. Learn more\
+    \ about service connectors [here](/docs/guides/tools-remote-mcp#connectors). Currently\
+    \ supported `connector_id` values are:\n\n* Dropbox: *connector_dropbox* \n\n\
+    * Gmail: *connector_gmail* \n\n* Google Calendar: *connector_googlecalendar* \n\
+    \n* Google Drive: *connector_googledrive* \n\n* Microsoft Teams: *connector_microsoftteams*\
+    \ \n\n* Outlook Calendar: *connector_outlookcalendar* \n\n* Outlook Email: *connector_outlookemail*\
+    \ \n\n* SharePoint: *connector_sharepoint*. Is one of the following types: Literal[\"\
+    connector_dropbox\"], Literal[\"connector_gmail\"], Literal[\"connector_googlecalendar\"\
+    ], Literal[\"connector_googledrive\"], Literal[\"connector_microsoftteams\"],\
+    \ Literal[\"connector_outlookcalendar\"], Literal[\"connector_outlookemail\"],\
+    \ Literal[\"connector_sharepoint\"] "
   signature: 'connector_id: Literal[''connector_dropbox'', ''connector_gmail'', ''connector_googlecalendar'',
     ''connector_googledrive'', ''connector_microsoftteams'', ''connector_outlookcalendar'',
     ''connector_outlookemail'', ''connector_sharepoint''] | None'
@@ -282,8 +301,10 @@ attributes:
   signature: 'server_label: str'
 - uid: azure.ai.projects.models.MCPToolboxTool.server_url
   name: server_url
-  summary: The URL for the MCP server. One of `server_url` or `connector_id` must
-    be provided.
+  summary: 'The URL for the MCP server. One of `server_url`, `connector_id`, or `tunnel_id`
+    must be
+
+    provided.'
   signature: 'server_url: str | None'
 - uid: azure.ai.projects.models.MCPToolboxTool.tool_configs
   name: tool_configs
@@ -295,6 +316,13 @@ attributes:
 
     runtime.'
   signature: 'tool_configs: dict[str, ''_models.ToolConfig''] | None'
+- uid: azure.ai.projects.models.MCPToolboxTool.tunnel_id
+  name: tunnel_id
+  summary: 'The Secure MCP Tunnel ID to use instead of a direct server URL. One of
+    `server_url`,
+
+    `connector_id`, or `tunnel_id` must be provided.'
+  signature: 'tunnel_id: str | None'
 - uid: azure.ai.projects.models.MCPToolboxTool.type
   name: type
   summary: Required. MCP.

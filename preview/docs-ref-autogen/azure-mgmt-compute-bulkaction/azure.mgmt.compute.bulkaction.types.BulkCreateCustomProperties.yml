@@ -8,13 +8,13 @@ constructor:
   syntax: BulkCreateCustomProperties()
 variables:
 - description: The UTC time the BulkCreateCustom resource was created.
-  name: created_time
+  name: createdTime
   types:
   - <xref:str>
 - description: 'The status of the last operation. Known values are: "Creating",
 
     "Succeeded", "Failed", "Deleting", and "Canceled".'
-  name: provisioning_state
+  name: provisioningState
   types:
   - <xref:typing.Union>[<xref:str>, <xref:"ProvisioningState">]
 - description: Total capacity to achieve. It can be in terms of VMs or vCPUs. Required.
@@ -25,37 +25,71 @@ variables:
     of VMs
 
     or vCPUs. Known values are: "VM" and "VCpu".'
-  name: capacity_type
+  name: capacityType
   types:
   - <xref:typing.Union>[<xref:str>, <xref:"CapacityType">]
-- description: 'Configuration Options for Regular or Spot instances in
+- description: 'The minimum capacity, expressed in units specified by capacityType,
+    that
 
-    BulkCreateCustom. Required.'
-  name: priority_profile
+    Azure must be able to allocate for the request to proceed. If Azure cannot allocate
+    at least
+
+    this capacity with high confidence, the request is rejected with 409 Conflict
+
+    (InsufficientCapacity) and no VMs are created. Otherwise, Azure allocates as much
+    capacity as
+
+    possible, up to the requested capacity. Must be greater than 0, less than capacity,
+    and
+
+    requires partialFulfillmentPolicy.mode to be Enabled.'
+  name: minCapacity
+  types:
+  - <xref:int>
+- description: 'Controls how partial fulfillment is handled for a
+
+    BulkCreateCustom request. When enabled, Azure creates only the VMs or vCPUs it
+    has high
+
+    confidence can be successfully allocated, instead of attempting the entire request
+    and
+
+    potentially returning allocation failures.'
+  name: partialFulfillmentPolicy
+  types:
+  - <xref:<xref:"PartialFulfillmentPolicy">>
+- description: The virtual machine resources resolved for the operation.
+  name: resources
+  types:
+  - <xref:list>[<xref:"BulkCreateCustomResource">]
+- description: 'Configuration Options for Regular or Spot instances in BulkCreateCustom.
+
+    Required.'
+  name: priorityProfile
   types:
   - <xref:<xref:"BulkCreateCustomPriorityProfile">>
 - description: List of VM sizes supported for BulkCreateCustom.
-  name: vm_sizes_profile
+  name: vmSizesProfile
   types:
   - <xref:list>[<xref:"BulkCreateCustomVmSizeProfile">]
 - description: Compute Profile to configure the Virtual Machines. Required.
-  name: compute_profile
+  name: computeProfile
   types:
   - <xref:<xref:"ComputeProfile">>
 - description: Zone Allocation Policy for launching instances.
-  name: zone_allocation_policy
+  name: zoneAllocationPolicy
   types:
   - <xref:<xref:"BulkCreateCustomZoneAllocationPolicy">>
 - description: 'Per-VM overrides and the shared name prefix, specified when the
 
     operation is created.'
-  name: overrides_profile
+  name: overridesProfile
   types:
   - <xref:<xref:"BulkCreateCustomOverridesProfile">>
-- description: 'Extra parameters that control how the request is executed,
+- description: 'Extra parameters that control how the request is executed, including
 
-    including the retry policy.'
-  name: execution_parameters
+    the retry policy.'
+  name: executionParameters
   types:
   - <xref:<xref:"ExecutionParameters">>
 attributes:
@@ -83,11 +117,40 @@ attributes:
   summary: Extra parameters that control how the request is executed, including the
     retry policy.
   signature: 'executionParameters: ExecutionParameters'
+- uid: azure.mgmt.compute.bulkaction.types.BulkCreateCustomProperties.minCapacity
+  name: minCapacity
+  summary: 'The minimum capacity, expressed in units specified by capacityType, that
+    Azure must be able to
+
+    allocate for the request to proceed. If Azure cannot allocate at least this capacity
+    with high
+
+    confidence, the request is rejected with 409 Conflict (InsufficientCapacity) and
+    no VMs are
+
+    created. Otherwise, Azure allocates as much capacity as possible, up to the requested
+    capacity.
+
+    Must be greater than 0, less than capacity, and requires partialFulfillmentPolicy.mode
+    to be
+
+    Enabled.'
+  signature: 'minCapacity: int'
 - uid: azure.mgmt.compute.bulkaction.types.BulkCreateCustomProperties.overridesProfile
   name: overridesProfile
   summary: Per-VM overrides and the shared name prefix, specified when the operation
     is created.
   signature: 'overridesProfile: BulkCreateCustomOverridesProfile'
+- uid: azure.mgmt.compute.bulkaction.types.BulkCreateCustomProperties.partialFulfillmentPolicy
+  name: partialFulfillmentPolicy
+  summary: 'Controls how partial fulfillment is handled for a BulkCreateCustom request.
+    When enabled, Azure
+
+    creates only the VMs or vCPUs it has high confidence can be successfully allocated,
+    instead of
+
+    attempting the entire request and potentially returning allocation failures.'
+  signature: 'partialFulfillmentPolicy: PartialFulfillmentPolicy'
 - uid: azure.mgmt.compute.bulkaction.types.BulkCreateCustomProperties.priorityProfile
   name: priorityProfile
   summary: Configuration Options for Regular or Spot instances in BulkCreateCustom.
@@ -99,6 +162,10 @@ attributes:
 
     "Deleting", and "Canceled".'
   signature: 'provisioningState: str | ProvisioningState'
+- uid: azure.mgmt.compute.bulkaction.types.BulkCreateCustomProperties.resources
+  name: resources
+  summary: The virtual machine resources resolved for the operation.
+  signature: 'resources: list[''BulkCreateCustomResource'']'
 - uid: azure.mgmt.compute.bulkaction.types.BulkCreateCustomProperties.vmSizesProfile
   name: vmSizesProfile
   summary: List of VM sizes supported for BulkCreateCustom.

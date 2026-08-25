@@ -103,6 +103,8 @@ constructor:
 
       other paths needed for the host environment. Default is None.
 
+      Unless specified otherwise, default transport type is TransportType.AmqpOverWebsockets.
+
       The format would be like "sb://<custom_endpoint_hostname>:<custom_endpoint_port>".
 
       If port is not specified in the *custom_endpoint_address*, by default port 443
@@ -118,6 +120,14 @@ constructor:
       Default is None in which case *certifi.where()* will be used.'
     types:
     - <xref:str>
+  - name: ssl_context
+    description: 'The SSLContext object to use in the underlying Pure Python AMQP
+      transport. If specified,
+
+      connection_verify will be ignored.'
+    types:
+    - <xref:ssl.SSLContext>
+    - <xref:None>
   - name: uamqp_transport
     description: 'Whether to use the *uamqp* library as the underlying transport.
       The default value is
@@ -137,13 +147,13 @@ examples:
   sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
   : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\
   \\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-  354\\\\azure-servicebus-7.13.0b1\\\\samples\\\\async_samples\\\\sample_code_servicebus_async.py\"\
+  354\\\\azure_servicebus-7.15.0b2\\\\samples\\\\async_samples\\\\sample_code_servicebus_async.py\"\
   , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
   : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
   \   from azure.identity.aio import DefaultAzureCredential\n   from azure.servicebus.aio\
-  \ import ServiceBusClient\n   fully_qualified_namespace = os.environ['SERVICEBUS_FULLY_QUALIFIED_NAMESPACE']\n\
-  \   servicebus_client = ServiceBusClient(\n       fully_qualified_namespace=fully_qualified_namespace,\n\
-  \       credential=DefaultAzureCredential()\n   )\n\n   ````\n"
+  \ import ServiceBusClient\n\n   fully_qualified_namespace = os.environ[\"SERVICEBUS_FULLY_QUALIFIED_NAMESPACE\"\
+  ]\n   servicebus_client = ServiceBusClient(\n       fully_qualified_namespace=fully_qualified_namespace,\
+  \ credential=DefaultAzureCredential()\n   )\n\n   ````\n"
 methods:
 - uid: azure.servicebus.aio.ServiceBusClient.close
   name: close
@@ -234,6 +244,8 @@ methods:
 
       other paths needed for the host environment. Default is None.
 
+      Unless specified otherwise, default transport type is TransportType.AmqpOverWebsockets.
+
       The format would be like "sb://<custom_endpoint_hostname>:<custom_endpoint_port>".
 
       If port is not specified in the custom_endpoint_address, by default port 443
@@ -249,6 +261,14 @@ methods:
       Default is None in which case *certifi.where()* will be used.'
     types:
     - <xref:str>
+  - name: ssl_context
+    description: 'The SSLContext object to use in the underlying Pure Python AMQP
+      transport. If specified,
+
+      connection_verify will be ignored.'
+    types:
+    - <xref:ssl.SSLContext>
+    - <xref:None>
   - name: uamqp_transport
     description: 'Whether to use the *uamqp* library as the underlying transport.
       The default value is
@@ -265,22 +285,23 @@ methods:
     async_samples\\sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
     \ \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\354\\\\azure-servicebus-7.13.0b1\\\\samples\\\\async_samples\\\
+    \\py2docfx\\\\dist_temp\\\\354\\\\azure_servicebus-7.15.0b2\\\\samples\\\\async_samples\\\
     \\sample_code_servicebus_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   import os\n   from azure.servicebus.aio import\
-    \ ServiceBusClient\n   servicebus_connection_str = os.environ['SERVICEBUS_CONNECTION_STR']\n\
-    \   servicebus_client = ServiceBusClient.from_connection_string(conn_str=servicebus_connection_str)\n\
+    \ ServiceBusClient\n\n   servicebus_connection_str = os.environ[\"SERVICEBUS_CONNECTION_STR\"\
+    ]\n   servicebus_client = ServiceBusClient.from_connection_string(conn_str=servicebus_connection_str)\n\
     \n   ````\n"
 - uid: azure.servicebus.aio.ServiceBusClient.get_queue_receiver
   name: get_queue_receiver
   summary: Get ServiceBusReceiver for the specific queue.
-  signature: 'get_queue_receiver(queue_name: str, *, session_id: str | ~typing.Literal[<ServiceBusSessionFilter.NEXT_AVAILABLE:
+  signature: 'get_queue_receiver(queue_name: str, *, client_identifier: str | None
+    = None, socket_timeout: float | None = None, session_id: str | ~typing.Literal[<ServiceBusSessionFilter.NEXT_AVAILABLE:
     0>] | None = None, sub_queue: ~azure.servicebus._common.constants.ServiceBusSubQueue
     | str | None = None, receive_mode: ~azure.servicebus._common.constants.ServiceBusReceiveMode
     | str = ServiceBusReceiveMode.PEEK_LOCK, max_wait_time: float | None = None, auto_lock_renewer:
-    ~azure.servicebus._common.auto_lock_renewer.AutoLockRenewer | None = None, prefetch_count:
-    int = 0, **kwargs: ~typing.Any) -> ServiceBusReceiver'
+    AutoLockRenewer | None = None, prefetch_count: int = 0, **kwargs: ~typing.Any)
+    -> ServiceBusReceiver'
   parameters:
   - name: queue_name
     description: The path of specific Service Bus Queue the client connects to.
@@ -366,24 +387,24 @@ methods:
     types:
     - <xref:typing.Optional>[<xref:azure.servicebus.aio.AutoLockRenewer>]
   - name: prefetch_count
-    description: 'The maximum number of messages to cache with each request to the
-      service.
+    description: 'The number of messages the receiver requests ahead of a
+
+      receive call, so that receive calls can be served from the buffer instead of
+      waiting on a
+
+      service request. This is separate from the *max_message_count* argument to
+
+      *receive_messages*, which bounds a single call rather than the buffer.
 
       This setting is only for advanced performance tuning. Increasing this value
       will improve message throughput
 
       performance but increase the chance that messages will expire while they are
-      cached if they''re not
+      buffered if they''re not
 
       processed fast enough.
 
-      The default value is 0, meaning messages will be received from the service and
-      processed one at a time.
-
-      In the case of prefetch_count being 0, *ServiceBusReceiver.receive_messages*
-      would try to cache
-
-      *max_message_count* (if provided) within its request to the service.
+      The default value is 0, meaning prefetch is turned off.
 
       WARNING: If prefetch_count > 0 and RECEIVE_AND_DELETE mode is used, all prefetched
       messages will stay in
@@ -405,6 +426,7 @@ methods:
       of errors.
 
       If not specified, a unique id will be generated.'
+    defaultValue: None
     types:
     - <xref:str>
   - name: socket_timeout
@@ -418,6 +440,7 @@ methods:
       due to write timing out,
 
       a larger than default value may need to be passed in.'
+    defaultValue: None
     types:
     - <xref:float>
   return:
@@ -429,18 +452,20 @@ methods:
     async_samples\\sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
     \ \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\354\\\\azure-servicebus-7.13.0b1\\\\samples\\\\async_samples\\\
+    \\py2docfx\\\\dist_temp\\\\354\\\\azure_servicebus-7.15.0b2\\\\samples\\\\async_samples\\\
     \\sample_code_servicebus_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   import os\n   from azure.servicebus.aio import\
-    \ ServiceBusClient\n   servicebus_connection_str = os.environ['SERVICEBUS_CONNECTION_STR']\n\
-    \   queue_name = os.environ['SERVICEBUS_QUEUE_NAME']\n   servicebus_client = ServiceBusClient.from_connection_string(conn_str=servicebus_connection_str)\n\
+    \ ServiceBusClient\n\n   servicebus_connection_str = os.environ[\"SERVICEBUS_CONNECTION_STR\"\
+    ]\n   queue_name = os.environ[\"SERVICEBUS_QUEUE_NAME\"]\n   servicebus_client\
+    \ = ServiceBusClient.from_connection_string(conn_str=servicebus_connection_str)\n\
     \   async with servicebus_client:\n       queue_receiver = servicebus_client.get_queue_receiver(queue_name=queue_name)\n\
     \n   ````\n"
 - uid: azure.servicebus.aio.ServiceBusClient.get_queue_sender
   name: get_queue_sender
   summary: Get ServiceBusSender for the specific queue.
-  signature: 'get_queue_sender(queue_name: str, **kwargs: Any) -> ServiceBusSender'
+  signature: 'get_queue_sender(queue_name: str, *, client_identifier: str | None =
+    None, socket_timeout: float | None = None, **kwargs: Any) -> ServiceBusSender'
   parameters:
   - name: queue_name
     description: The path of specific Service Bus Queue the client connects to.
@@ -455,6 +480,7 @@ methods:
       of errors.
 
       If not specified, a unique id will be generated.'
+    defaultValue: None
     types:
     - <xref:str>
   - name: socket_timeout
@@ -468,6 +494,7 @@ methods:
       due to write timing out,
 
       a larger than default value may need to be passed in.'
+    defaultValue: None
     types:
     - <xref:float>
   return:
@@ -479,12 +506,13 @@ methods:
     async_samples\\sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
     \ \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\354\\\\azure-servicebus-7.13.0b1\\\\samples\\\\async_samples\\\
+    \\py2docfx\\\\dist_temp\\\\354\\\\azure_servicebus-7.15.0b2\\\\samples\\\\async_samples\\\
     \\sample_code_servicebus_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   import os\n   from azure.servicebus.aio import\
-    \ ServiceBusClient\n   servicebus_connection_str = os.environ['SERVICEBUS_CONNECTION_STR']\n\
-    \   queue_name = os.environ['SERVICEBUS_QUEUE_NAME']\n   servicebus_client = ServiceBusClient.from_connection_string(conn_str=servicebus_connection_str)\n\
+    \ ServiceBusClient\n\n   servicebus_connection_str = os.environ[\"SERVICEBUS_CONNECTION_STR\"\
+    ]\n   queue_name = os.environ[\"SERVICEBUS_QUEUE_NAME\"]\n   servicebus_client\
+    \ = ServiceBusClient.from_connection_string(conn_str=servicebus_connection_str)\n\
     \   async with servicebus_client:\n       queue_sender = servicebus_client.get_queue_sender(queue_name=queue_name)\n\
     \n   ````\n"
 - uid: azure.servicebus.aio.ServiceBusClient.get_subscription_receiver
@@ -495,8 +523,9 @@ methods:
     | None = None, sub_queue: ~azure.servicebus._common.constants.ServiceBusSubQueue
     | str | None = None, receive_mode: ~azure.servicebus._common.constants.ServiceBusReceiveMode
     | str = ServiceBusReceiveMode.PEEK_LOCK, max_wait_time: float | None = None, auto_lock_renewer:
-    ~azure.servicebus._common.auto_lock_renewer.AutoLockRenewer | None = None, prefetch_count:
-    int = 0, **kwargs: ~typing.Any) -> ServiceBusReceiver'
+    AutoLockRenewer | None = None, prefetch_count: int = 0, client_identifier: str
+    | None = None, socket_timeout: float | None = None, **kwargs: ~typing.Any) ->
+    ServiceBusReceiver'
   parameters:
   - name: topic_name
     description: The name of specific Service Bus Topic the client connects to.
@@ -589,24 +618,24 @@ methods:
     types:
     - <xref:typing.Optional>[<xref:azure.servicebus.aio.AutoLockRenewer>]
   - name: prefetch_count
-    description: 'The maximum number of messages to cache with each request to the
-      service.
+    description: 'The number of messages the receiver requests ahead of a
+
+      receive call, so that receive calls can be served from the buffer instead of
+      waiting on a
+
+      service request. This is separate from the *max_message_count* argument to
+
+      *receive_messages*, which bounds a single call rather than the buffer.
 
       This setting is only for advanced performance tuning. Increasing this value
       will improve message throughput
 
       performance but increase the chance that messages will expire while they are
-      cached if they''re not
+      buffered if they''re not
 
       processed fast enough.
 
-      The default value is 0, meaning messages will be received from the service and
-      processed one at a time.
-
-      In the case of prefetch_count being 0, *ServiceBusReceiver.receive_messages*
-      would try to cache
-
-      *max_message_count* (if provided) within its request to the service.
+      The default value is 0, meaning prefetch is turned off.
 
       WARNING: If prefetch_count > 0 and RECEIVE_AND_DELETE mode is used, all prefetched
       messages will stay in
@@ -628,6 +657,7 @@ methods:
       of errors.
 
       If not specified, a unique id will be generated.'
+    defaultValue: None
     types:
     - <xref:str>
   - name: socket_timeout
@@ -641,6 +671,7 @@ methods:
       due to write timing out,
 
       a larger than default value may need to be passed in.'
+    defaultValue: None
     types:
     - <xref:float>
   return:
@@ -652,20 +683,21 @@ methods:
     async_samples\\sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
     \ \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\354\\\\azure-servicebus-7.13.0b1\\\\samples\\\\async_samples\\\
+    \\py2docfx\\\\dist_temp\\\\354\\\\azure_servicebus-7.15.0b2\\\\samples\\\\async_samples\\\
     \\sample_code_servicebus_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   import os\n   from azure.servicebus.aio import\
-    \ ServiceBusClient\n   servicebus_connection_str = os.environ['SERVICEBUS_CONNECTION_STR']\n\
-    \   topic_name = os.environ[\"SERVICEBUS_TOPIC_NAME\"]\n   subscription_name =\
-    \ os.environ[\"SERVICEBUS_SUBSCRIPTION_NAME\"]\n   servicebus_client = ServiceBusClient.from_connection_string(conn_str=servicebus_connection_str)\n\
+    \ ServiceBusClient\n\n   servicebus_connection_str = os.environ[\"SERVICEBUS_CONNECTION_STR\"\
+    ]\n   topic_name = os.environ[\"SERVICEBUS_TOPIC_NAME\"]\n   subscription_name\
+    \ = os.environ[\"SERVICEBUS_SUBSCRIPTION_NAME\"]\n   servicebus_client = ServiceBusClient.from_connection_string(conn_str=servicebus_connection_str)\n\
     \   async with servicebus_client:\n       subscription_receiver = servicebus_client.get_subscription_receiver(\n\
     \           topic_name=topic_name,\n           subscription_name=subscription_name,\n\
     \       )\n\n   ````\n"
 - uid: azure.servicebus.aio.ServiceBusClient.get_topic_sender
   name: get_topic_sender
   summary: Get ServiceBusSender for the specific topic.
-  signature: 'get_topic_sender(topic_name: str, **kwargs: Any) -> ServiceBusSender'
+  signature: 'get_topic_sender(topic_name: str, *, client_identifier: str | None =
+    None, socket_timeout: float | None = None, **kwargs: Any) -> ServiceBusSender'
   parameters:
   - name: topic_name
     description: The path of specific Service Bus Topic the client connects to.
@@ -680,6 +712,7 @@ methods:
       of errors.
 
       If not specified, a unique id will be generated.'
+    defaultValue: None
     types:
     - <xref:str>
   - name: socket_timeout
@@ -693,6 +726,7 @@ methods:
       due to write timing out,
 
       a larger than default value may need to be passed in.'
+    defaultValue: None
     types:
     - <xref:float>
   return:
@@ -704,11 +738,98 @@ methods:
     async_samples\\sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
     \ \"source\": \"C:\\\\ToolCache\\\\Python\\\\3.12.10\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\354\\\\azure-servicebus-7.13.0b1\\\\samples\\\\async_samples\\\
+    \\py2docfx\\\\dist_temp\\\\354\\\\azure_servicebus-7.15.0b2\\\\samples\\\\async_samples\\\
     \\sample_code_servicebus_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   import os\n   from azure.servicebus.aio import\
-    \ ServiceBusClient\n   servicebus_connection_str = os.environ['SERVICEBUS_CONNECTION_STR']\n\
-    \   topic_name = os.environ['SERVICEBUS_TOPIC_NAME']\n   servicebus_client = ServiceBusClient.from_connection_string(conn_str=servicebus_connection_str)\n\
+    \ ServiceBusClient\n\n   servicebus_connection_str = os.environ[\"SERVICEBUS_CONNECTION_STR\"\
+    ]\n   topic_name = os.environ[\"SERVICEBUS_TOPIC_NAME\"]\n   servicebus_client\
+    \ = ServiceBusClient.from_connection_string(conn_str=servicebus_connection_str)\n\
     \   async with servicebus_client:\n       topic_sender = servicebus_client.get_topic_sender(topic_name=topic_name)\n\
     \n   ````\n"
+- uid: azure.servicebus.aio.ServiceBusClient.list_queue_sessions
+  name: list_queue_sessions
+  summary: 'List session IDs with active messages or stored session state in a session-enabled
+    queue.
+
+
+    If `state_updated_after` is specified, only sessions whose
+
+    session state was set or updated after that time are returned. If not specified,
+    returns
+
+    sessions with active messages or stored session state in the queue. Sessions with
+    neither
+
+    are excluded.'
+  signature: 'list_queue_sessions(queue_name: str, *, state_updated_after: datetime
+    | None = None, timeout: float | None = None) -> AsyncItemPaged[str]'
+  parameters:
+  - name: queue_name
+    description: The name of the session-enabled queue.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: state_updated_after
+    description: 'If specified, only sessions whose
+
+      session state was set or updated after this time are returned.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: timeout
+    description: The total operation timeout in seconds, spent across every page.
+    defaultValue: None
+    types:
+    - <xref:float>
+  return:
+    description: A paged async iterable of session ID strings.
+    types:
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:str>]
+- uid: azure.servicebus.aio.ServiceBusClient.list_subscription_sessions
+  name: list_subscription_sessions
+  summary: 'List session IDs with active messages or stored session state in a session-enabled
+    subscription.
+
+
+    If `state_updated_after` is specified, only sessions whose
+
+    session state was set or updated after that time are returned. If not specified,
+    returns
+
+    sessions with active messages or stored session state in the subscription. Sessions
+    with
+
+    neither are excluded.'
+  signature: 'list_subscription_sessions(topic_name: str, subscription_name: str,
+    *, state_updated_after: datetime | None = None, timeout: float | None = None)
+    -> AsyncItemPaged[str]'
+  parameters:
+  - name: topic_name
+    description: The name of the topic.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: subscription_name
+    description: The name of the subscription.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: state_updated_after
+    description: 'If specified, only sessions whose
+
+      session state was set or updated after this time are returned.'
+    defaultValue: None
+    types:
+    - <xref:datetime.datetime>
+  - name: timeout
+    description: The total operation timeout in seconds, spent across every page.
+    defaultValue: None
+    types:
+    - <xref:float>
+  return:
+    description: A paged async iterable of session ID strings.
+    types:
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:str>]
