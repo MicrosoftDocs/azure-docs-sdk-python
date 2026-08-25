@@ -6,21 +6,22 @@ ms.topic: reference
 ms.devlang: python
 ms.service: ai
 ---
-# Azure AI Projects client library for Python - version 2.2.0a20260825001 
+# Azure AI Projects client library for Python - version 2.6.0a20260825002 
 
 
 The AI Projects client library is part of the Microsoft Foundry SDK, and provides easy access to
-resources in your Microsoft Foundry Project. Use it to:
+resources in your [Microsoft Foundry](https://ai.azure.com/) Project. Use it to:
 
-* **Create and run Agents** using methods on the `.agents` client property.
-* **Enhance Agents with specialized tools**:
-  * Agent-to-Agent (A2A) (Preview)
+* **Create and run Agents** using methods on the `.agents` client property. This includes **Hosted Agents**, which let you run your own containerized agent runtime while using Microsoft Foundry for managed hosting and scaling.
+* **Enhance Agents with specialized tools and toolbox tools** such as:
+  * Agent-to-Agent (A2A)
   * Azure AI Search
   * Azure Functions
   * Bing Custom Search (Preview)
   * Bing Grounding
   * Browser Automation (Preview)
   * Code Interpreter
+  * Computer
   * Computer Use (Preview)
   * Fabric IQ (Preview)
   * File Search
@@ -31,26 +32,31 @@ resources in your Microsoft Foundry Project. Use it to:
   * Microsoft SharePoint (Preview)
   * Model Context Protocol (MCP)
   * OpenAPI
-  * Toolbox Search (Preview)
+  * Reminder Tool (Preview)
+  * Toolbox Search
   * Web Search
-  * Web Search (Preview)
   * Work IQ (Preview)
 * **Get an OpenAI client** using `.get_openai_client()` method to run Responses, Conversations, Evaluations and Fine-Tuning operations with your Agent.
-* **Manage memory stores (preview)** for Agent conversations, using `.beta.memory_stores` operations.
-* **Explore additional evaluation tools (some in preview)** to assess the performance of your generative AI application, using `.evaluation_rules`,
-`.beta.evaluation_taxonomies`, `.beta.evaluators`, `.beta.insights`, and `.beta.schedules` operations.
-* **Run Red Team scans (preview)** to identify risks associated with your generative AI application, using `.beta.red_teams` operations.
-* **Fine tune** AI Models on your data.
+* **Create and version toolboxes** that bundle collections of tools and skills for your agents, using `.toolboxes` operations.
+* **Fine-tune** AI Models on your data.
 * **Enumerate AI Models** deployed to your Foundry Project using `.deployments` operations.
 * **Enumerate connected Azure resources** in your Foundry project using `.connections` operations.
 * **Upload documents and create Datasets** to reference them using `.datasets` operations.
-* **Register and manage local model weights** as Foundry `ModelVersion` resources using `.beta.models` operations, including the `create` end-to-end helper.
 * **Create and enumerate Search Indexes** using `.indexes` operations.
-* **Submit and manage Jobs (preview)** to run Training Jobs on compute using `.beta.jobs` operations.
+* **Explore additional evaluation tools (some in preview)** to assess the performance of your generative AI application, using `.evaluation_rules`,
+`.beta.evaluation_taxonomies`, `.beta.evaluators`, `.beta.insights`, and `.beta.schedules` operations.
+* **Manage memory stores (preview)** for Agent conversations, using `.beta.memory_stores` operations.
+* **Register and manage local AI model weights (preview)** using `.beta.models` operations.
+* **Run Red Team scans (preview)** to identify risks associated with your generative AI application, using `.beta.red_teams` operations.
+* **Create and manage routines (preview)** that execute triggered actions based on configured conditions, using `.beta.routines` operations.
+* **Manage skills (preview)** as reusable capabilities that can be included in toolboxes and agents, using `.beta.skills` operations.
+
+**Important:** This stable package includes Preview features. Preview features available through stable methods require setting `allow_preview=True` when constructing the client, while Preview features exposed via the .beta sub-clients do not. Preview features may change or be removed in future versions and are not recommended for production use.
 
 The client library uses version `v1` of the Microsoft Foundry [data plane REST APIs](https://aka.ms/azsdk/azure-ai-projects-v2/api-reference-v1).
 
-[Product documentation](https://aka.ms/azsdk/azure-ai-projects-v2/product-doc)
+[Microsoft Foundry](https://ai.azure.com/)
+| [Documentation](https://aka.ms/azsdk/azure-ai-projects-v2/product-doc)
 | [Samples][samples]
 | [API reference](https://aka.ms/azsdk/azure-ai-projects-v2/python/api-reference)
 | [Package (PyPI)](https://aka.ms/azsdk/azure-ai-projects-v2/python/package)
@@ -80,7 +86,7 @@ To report an issue with the client library, or request additional features, plea
 pip install azure-ai-projects
 ```
 
-Verify that you have version 2.0.0 or above installed by running:
+Verify that you have version 2.3.0 or above installed by running:
 
 ```bash
 pip show azure-ai-projects
@@ -90,7 +96,7 @@ pip show azure-ai-projects
 
 ### Create and authenticate the client with Entra ID
 
-Entra ID is the only authentication method supported at the moment by the client.
+Entra ID is the only authentication method currently supported by the client.
 
 To construct a synchronous client using a context manager:
 
@@ -101,7 +107,10 @@ from azure.identity import DefaultAzureCredential
 
 with (
     DefaultAzureCredential() as credential,
-    AIProjectClient(endpoint=os.environ["FOUNDRY_PROJECT_ENDPOINT"], credential=credential) as project_client,
+    AIProjectClient(
+        endpoint=os.environ["FOUNDRY_PROJECT_ENDPOINT"],
+        credential=credential
+    ) as project_client,
 ):
 ```
 
@@ -121,26 +130,18 @@ from azure.identity.aio import DefaultAzureCredential
 
 async with (
     DefaultAzureCredential() as credential,
-    AIProjectClient(endpoint=os.environ["FOUNDRY_PROJECT_ENDPOINT"], credential=credential) as project_client,
+    AIProjectClient(
+        endpoint=os.environ["FOUNDRY_PROJECT_ENDPOINT"],
+        credential=credential
+    ) as project_client,
 ):
 ```
-
-## Examples
-
-For comprehensive examples covering Agents, tool usage, evaluation, fine-tuning, datasets, indexes, and more, see:
-
-* **[Microsoft Foundry Agents overview](https://learn.microsoft.com/azure/foundry/agents/overview)** — concepts, setup, and quick-starts.
-* **[Runtime components](https://learn.microsoft.com/azure/foundry/agents/concepts/runtime-components?tabs=python)** — deep-dive into agent architecture.
-* **[Tool catalog](https://learn.microsoft.com/azure/foundry/agents/concepts/tool-catalog)** — all available tools and agent capabilities.
-* **[SDK samples folder][samples]** — fully runnable Python code for synchronous and asynchronous clients covering all operations below.
-
-The sections below cover SDK-specific behaviors (authentication variants, exception handling, logging, tracing) that are not documented in the above Learn pages.
 
 ### Performing Responses operations using OpenAI client
 
 Use the `.get_openai_client()` method to obtain an authenticated [OpenAI](https://github.com/openai/openai-python) client and run Responses, Conversations, Evaluations, Files, and Fine-Tuning operations. See the **responses**, **agents**, **evaluations**, **files**, and **finetuning** folders in the [samples][samples] for complete working examples.
 
-The code below assumes the environment variable `FOUNDRY_MODEL_NAME` is defined. It's the deployment name of an AI model in your Foundry Project. See "Build" menu, under "Models" (First column of the "Deployments" table).
+The code below assumes the environment variable `FOUNDRY_MODEL_NAME` is defined. It's the deployment name of an AI model in your Foundry Project. See first column titled "Name" in the "Deployed models" table in your Foundry Project.
 
 <!-- SNIPPET:sample_responses_basic.responses -->
 
@@ -164,34 +165,42 @@ with project_client.get_openai_client() as openai_client:
 
 See the **responses** folder in the [samples][samples] for additional samples including streaming responses.
 
-### Agents, Tools, Evaluation, Deployments, Connections, Datasets, Indexes, Files, and Fine-Tuning
+### Agents
 
-Full descriptions and working code for all of the above are available in:
+See Foundry documentation:
 
-| Topic | Learn documentation | Samples folder |
+* **[Microsoft Foundry Agents overview](https://learn.microsoft.com/azure/foundry/agents/overview)** — concepts, setup, and quick-starts.
+* **[Runtime components](https://learn.microsoft.com/azure/foundry/agents/concepts/runtime-components?tabs=python)** — deep-dive into agent architecture.
+* **[Tool catalog](https://learn.microsoft.com/azure/foundry/agents/concepts/tool-catalog)** — all available tools and agent capabilities.
+* **[SDK samples folder][samples]** — fully runnable Python code for synchronous and asynchronous clients covering all operations below.
+
+## Examples
+
+The table below lists the operation groups supported by the client library, with links to Foundry documentation and relevant [samples][samples] sub-folder. Additional documentation and samples may have been added after this package was released to cover the empty cells below.
+
+| Topic | Foundry documentation | Samples folder |
 |---|---|---|
 | Agents (create, run, stream) | [Agents overview](https://learn.microsoft.com/azure/foundry/agents/overview) | `samples/agents/` |
-| Hosted agents (preview) | [Hosted agents concepts](https://learn.microsoft.com/azure/foundry/agents/concepts/hosted-agents), [Deploy your first hosted agent](https://learn.microsoft.com/azure/foundry/agents/quickstarts/quickstart-hosted-agent) | `samples/hosted_agents/` |
-| Agents tools (Code Interpreter, File Search, MCP, OpenAPI, Bing, A2A, etc.) | [Tool catalog](https://learn.microsoft.com/azure/foundry/agents/concepts/tool-catalog) | `samples/agents/tools/` |
-| Evaluation | [Evaluate agents](https://learn.microsoft.com/azure/foundry/observability/how-to/evaluate-agent) | `samples/evaluations/` |
+| Hosted agents | [Hosted agents concepts](https://learn.microsoft.com/azure/foundry/agents/concepts/hosted-agents), [Deploy your first hosted agent](https://learn.microsoft.com/azure/foundry/agents/quickstarts/quickstart-hosted-agent) | `samples/hosted_agents/` |
+| Agents tools | [Tool catalog](https://learn.microsoft.com/azure/foundry/agents/concepts/tool-catalog) | `samples/agents/tools/` |
+| Agents optimization | [Prompt optimizer](https://learn.microsoft.com/azure/foundry/observability/how-to/prompt-optimizer), [Agent optimizer overview](https://learn.microsoft.com/azure/foundry/agents/concepts/agent-optimizer-overview) | `samples/agents/optimization/` |
+| Connections | [Add a new connection to your project](https://learn.microsoft.com/azure/foundry/how-to/connections-add?tabs=foundry-portal)| `samples/connections/` |
+| Client-side tracing | [Add client-side tracing to Foundry agents](https://learn.microsoft.com/azure/foundry/observability/how-to/trace-agent-client-side?tabs=python) | `samples/telemetry/` |
+| Datasets | | `samples/datasets/` |
 | Deployments | [Deployment types](https://learn.microsoft.com/azure/foundry/foundry-models/concepts/deployment-types) | `samples/deployments/` |
-| Connections | [Connections operations](https://learn.microsoft.com/python/api/overview/azure/ai-projects-readme?view=azure-python#connections-operations) | `samples/connections/` |
-| Datasets | [Dataset operations](https://learn.microsoft.com/python/api/overview/azure/ai-projects-readme?view=azure-python#dataset-operations) | `samples/datasets/` |
-| Models (preview) | Register local model weights as Foundry `ModelVersion` resources via `.beta.models` (`create`, `list`, `list_versions`, `get`, `update`, `delete`, `pending_upload`, `pending_create_version`, `get_credentials`). | `samples/models/` |
-| Indexes | [Azure AI Search](https://learn.microsoft.com/azure/search/search-what-is-azure-search) | `samples/indexes/` |
+| Evaluation | [Evaluate agents](https://learn.microsoft.com/azure/foundry/observability/how-to/evaluate-agent) | `samples/evaluations/` |
 | Files (upload, retrieve, list, delete) | [OpenAI Files API](https://platform.openai.com/docs/api-reference/files) | `samples/files/` |
-| Fine-tuning | [Fine-Tuning in AI Foundry](https://github.com/microsoft-foundry/fine-tuning) | `samples/finetuning/` |
+| Fine-tuning | [When to use fine-tuning](https://learn.microsoft.com/azure/foundry/openai/concepts/fine-tuning-considerations), [Fine-Tuning in AI Foundry (GitHub repo)](https://github.com/microsoft-foundry/fine-tuning) | `samples/finetuning/` |
+| Indexes | [Azure AI Search](https://learn.microsoft.com/azure/search/search-what-is-azure-search) | `samples/indexes/` |
+| Memory stores (preview) | [What is memory?](https://learn.microsoft.com/azure/foundry/agents/concepts/what-is-memory?tabs=conversational-agent) | `samples/memories/` |
+| Models (preview) | | `samples/models/` |
+| Red teams (preview) | | `samples/red_team/` |
+| Responses | [Responses API](https://platform.openai.com/docs/api-reference/responses) | `samples/responses/` |
+| Routines (preview) | [Routines overview](https://learn.microsoft.com/azure/foundry/agents/concepts/routines) | `samples/hosted_agents/` |
+| Sessions | [Manage hosted sessions](https://learn.microsoft.com/azure/foundry/agents/how-to/manage-hosted-sessions?pivots=python) | `samples/hosted_agents/` |
+| Skills (preview) | | `samples/skills/` |
+| Toolboxes | [Curate intent-based toolbox in Foundry](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/toolbox?pivots=python) | `samples/hosted_agents/`, `samples/toolboxes/` |
 
-### Hosted agents (preview)
-
-Hosted agents let you run your own containerized agent runtime while using Microsoft Foundry for managed hosting and scaling.
-
-For product guidance, see:
-
-* [Hosted agents concepts](https://learn.microsoft.com/azure/foundry/agents/concepts/hosted-agents)
-* [Deploy your first hosted agent](https://learn.microsoft.com/azure/foundry/agents/quickstarts/quickstart-hosted-agent)
-
-For SDK usage examples in this package, see `samples/hosted_agents/`, including CRUD, file upload/download, and skills scenarios.
 
 ## Client-side tracing
 
@@ -236,24 +245,28 @@ To turn on client console logging define the environment variable `AZURE_AI_PROJ
 
 #### Customizing your log
 
-Instead of using the above-mentioned environment variable, you can configure logging yourself and control the log level, format and destination. To log to `stdout`, add the following at the top of your Python script:
+Instead of using the above-mentioned environment variable, you can configure logging yourself and control the log level, format, and destination. You can optionally attach the same handler to the Azure SDK logger and, for `.get_openai_client()` scenarios, optionally attach it to the dedicated OpenAI transport logger as well:
 
 ```python
 import sys
 import logging
 
-# Acquire the logger for this client library. Use 'azure' to affect both
-# 'azure.core` and `azure.ai.inference' libraries.
-logger = logging.getLogger("azure")
-
-# Set the desired logging level. logging.INFO or logging.DEBUG are good options.
-logger.setLevel(logging.DEBUG)
-
 # Direct logging output to stdout:
 handler = logging.StreamHandler(stream=sys.stdout)
 # Or direct logging output to a file:
 # handler = logging.FileHandler(filename="sample.log")
+
+# Optional: logger for azure-ai-projects and azure-core.
+logger = logging.getLogger("azure")
+logger.setLevel(logging.DEBUG)
 logger.addHandler(handler)
+
+# Optional: additional logger for an openai client generated from `.get_openai_client()`.
+openai_logger = logging.getLogger("azure.ai.projects.openai_transport")
+openai_logger.setLevel(logging.DEBUG)
+openai_logger.propagate = False
+openai_logger.addHandler(handler)
+
 
 # Optional: change the default logging format. Here we add a timestamp.
 #formatter = logging.Formatter("%(asctime)s:%(levelname)s:%(name)s:%(message)s")
@@ -272,7 +285,9 @@ project_client = AIProjectClient(
 
 Note that the log level must be set to `logging.DEBUG` (see above code). Logs will be redacted with any other log level.
 
-Be sure to protect non redacted logs to avoid compromising security.
+See the logging samples in the `samples/logs/` folder for complete end-to-end examples, including console logging, file logging, and OpenAI transport logging.
+
+Be sure to protect non-redacted logs to avoid compromising security.
 
 For more information, see [Configure logging in the Azure libraries for Python](https://aka.ms/azsdk/python/logging)
 
