@@ -1,7 +1,7 @@
 ---
 title: Azure Template Specs SDK for Python
 description: Reference for Azure Template Specs SDK for Python
-ms.date: 08/25/2026
+ms.date: 08/26/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: templatespecs
