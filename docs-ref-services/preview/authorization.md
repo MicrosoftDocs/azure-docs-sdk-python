@@ -5,8 +5,8 @@ ms.date: 08/26/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: authorization
-manager: routlaw
 keywords: Azure, python, SDK, API, Authorization
+manager: routlaw
 ---
 # Azure Authorization libraries for python
 
