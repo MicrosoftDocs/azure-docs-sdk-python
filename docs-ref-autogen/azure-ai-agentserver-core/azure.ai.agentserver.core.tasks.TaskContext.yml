@@ -14,17 +14,15 @@ summary: '> [!NOTE]
   The single parameter to a resilient task function.
 
 
-  Provides access to the task''s identity, typed input, mutable metadata
+  Provides access to the task''s identity, typed input, cancellation signals
 
-  for progress tracking, cancellation signals (with cause booleans),
-
-  and the ability to suspend or exit-for-recovery.'
+  (with cause booleans), and the ability to suspend or exit-for-recovery.'
 constructor:
-  syntax: 'TaskContext(*, task_id: str, session_id: str, input: Input, metadata: TaskMetadata,
-    retry_attempt: int = 0, recovery_count: int = 0, cancel: Event | None = None,
-    shutdown: Event | None = None, entry_mode: Literal[''fresh'', ''resumed'', ''recovered'']
-    = ''fresh'', is_steered_turn: bool = False, pending_count_provider: Callable[[],
-    int] | None = None, input_id: str | None = None)'
+  syntax: 'TaskContext(*, task_id: str, session_id: str, input: Input, retry_attempt:
+    int = 0, recovery_count: int = 0, cancel: Event | None = None, shutdown: Event
+    | None = None, entry_mode: Literal[''fresh'', ''resumed'', ''recovered''] = ''fresh'',
+    is_steered_turn: bool = False, pending_count_provider: Callable[[], int] | None
+    = None, input_id: str | None = None)'
   parameters:
   - name: task_id
     description: Unique task identifier.
@@ -36,11 +34,6 @@ constructor:
     isRequired: true
     types:
     - <xref:Input>
-  - name: metadata
-    description: Mutable progress metadata.
-    isRequired: true
-    types:
-    - <xref:azure.ai.agentserver.core.tasks.TaskMetadata>
   - name: retry_attempt
     description: 'Resilient retry attempt counter. Survives crashes;
 
@@ -78,8 +71,6 @@ constructor:
     isRequired: true
   - name: input
     isRequired: true
-  - name: metadata
-    isRequired: true
   - name: retry_attempt
     defaultValue: '0'
   - name: recovery_count
@@ -102,13 +93,12 @@ methods:
   summary: ": graceful-shutdown shape.\n\nCallable ONLY when `ctx.shutdown.is_set()\
     \ == True`. Calling it\noutside shutdown raises `RuntimeError` at the call site\n\
     (visible in user-code tracebacks; the task ends in `failed`).\n\nWhen called during\
-    \ shutdown, the framework:\n\n1. Flushes `ctx.metadata` (auto-flush invariant).\
-    \ \n\n2. Releases the lease on the persisted record. \n\n3. Leaves the stored\
-    \ `status` as `in_progress` (NOT transitions to `suspended`). \n\n4. Signals in-process\
-    \ awaiters with the standard cooperative- cancel `TaskCancelled` result. \n\n\
-    5. Preserves any queued steering inputs in the persisted state. \n\nThe recovery\
-    \ scan on the next process startup re-enters the\nhandler with `ctx.entry_mode\
-    \ == \"recovered\"`.\n\nUse as `return await ctx.exit_for_recovery()`."
+    \ shutdown, the framework:\n\n1. Releases the lease on the persisted record. \n\
+    \n2. Leaves the stored `status` as `in_progress` (NOT transitions to `suspended`).\
+    \ \n\n3. Signals in-process awaiters with the standard cooperative- cancel `TaskCancelled`\
+    \ result. \n\n4. Preserves any queued steering inputs in the persisted state.\
+    \ \n\nThe recovery scan on the next process startup re-enters the\nhandler with\
+    \ `ctx.entry_mode == \"recovered\"`.\n\nUse as `return await ctx.exit_for_recovery()`."
   signature: async exit_for_recovery() -> Any
   return:
     description: The <xref:azure.ai.agentserver.core.tasks._ExitForRecovery> sentinel.
@@ -133,8 +123,6 @@ attributes:
 - uid: azure.ai.agentserver.core.tasks.TaskContext.is_steered_turn
   name: is_steered_turn
   signature: 'is_steered_turn: bool'
-- uid: azure.ai.agentserver.core.tasks.TaskContext.metadata
-  name: metadata
 - uid: azure.ai.agentserver.core.tasks.TaskContext.pending_input_count
   name: pending_input_count
   summary: 'live count of queued steering inputs.
