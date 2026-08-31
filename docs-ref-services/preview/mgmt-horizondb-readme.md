@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-horizondb, horizondb
-ms.date: 08/26/2026
+ms.date: 08/31/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: horizondb
