@@ -1,7 +1,7 @@
 ---
 title: Azure Certificate Registration SDK for Python
 description: Reference for Azure Certificate Registration SDK for Python
-ms.date: 08/28/2026
+ms.date: 08/31/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: certificateregistration
