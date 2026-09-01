@@ -1,19 +1,19 @@
 ---
 title: Azure PostgreSQL Auth client library for Python
 keywords: Azure, python, SDK, API, azure-postgresql-auth, postgresql
-ms.date: 04/29/2026
+ms.date: 09/01/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: postgresql
 ---
-# Azure PostgreSQL Auth client library for Python - version 1.0.2 
+# Azure PostgreSQL Auth client library for Python - version 1.1.0 
 
 
 The Azure PostgreSQL Auth client library provides Microsoft Entra ID authentication for Python database drivers connecting to Azure Database for PostgreSQL. It supports psycopg2, psycopg3, and SQLAlchemy with automatic token management and connection pooling.
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-postgresql-auth_1.0.2/sdk/postgresql/azure-postgresql-auth)
+[Source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-postgresql-auth_1.1.0/sdk/postgresql/azure-postgresql-auth)
 | [Package (PyPI)](https://pypi.org/project/azure-postgresql-auth/)
-| [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-postgresql-auth_1.0.2/sdk/postgresql/azure-postgresql-auth/samples)
+| [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-postgresql-auth_1.1.0/sdk/postgresql/azure-postgresql-auth/samples)
 
 ## Getting started
 
@@ -43,6 +43,9 @@ pip install "azure-postgresql-auth[psycopg2]"
 
 # For SQLAlchemy
 pip install "azure-postgresql-auth[sqlalchemy]"
+
+# For SQLAlchemy with asyncpg
+pip install "azure-postgresql-auth[sqlalchemy,asyncpg]"
 ```
 
 Install Azure Identity for credential support:
@@ -211,6 +214,29 @@ async with engine.connect() as conn:
     result = await conn.execute(text("SELECT 1"))
 ```
 
+### SQLAlchemy — Asynchronous asyncpg engine
+
+Use `create_asyncpg_engine` when the application uses `asyncpg` and an
+asynchronous Azure Identity credential. The helper acquires Entra tokens without
+blocking the event loop whenever the SQLAlchemy pool opens a physical connection.
+
+```python
+from azure.identity.aio import DefaultAzureCredential
+from azure_postgresql_auth.sqlalchemy import create_asyncpg_engine
+
+credential = DefaultAzureCredential()
+engine = create_asyncpg_engine(
+    "postgresql+asyncpg://your-server.postgres.database.azure.com/your_database?sslmode=require",
+    credential,
+)
+
+async with engine.connect() as conn:
+    result = await conn.execute(text("SELECT 1"))
+
+await engine.dispose()
+await credential.close()
+```
+
 ## Troubleshooting
 
 ### Authentication errors
@@ -265,7 +291,7 @@ For more information about Azure Database for PostgreSQL Entra ID authentication
 
 ### Samples
 
-Explore [sample code](https://github.com/Azure/azure-sdk-for-python/tree/azure-postgresql-auth_1.0.2/sdk/postgresql/azure-postgresql-auth/samples) for psycopg2, psycopg3, and SQLAlchemy.
+Explore [sample code](https://github.com/Azure/azure-sdk-for-python/tree/azure-postgresql-auth_1.1.0/sdk/postgresql/azure-postgresql-auth/samples) for psycopg2, psycopg3, and SQLAlchemy.
 
 ## Contributing
 
