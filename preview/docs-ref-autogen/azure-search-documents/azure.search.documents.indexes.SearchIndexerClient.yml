@@ -28,7 +28,7 @@ constructor:
 
       listed on the <xref:azure.search.documents.ApiVersion> enum. Default value is
 
-      `ApiVersion.V2026_05_01_PREVIEW`. Note that overriding this default value may
+      `ApiVersion.V2026_08_01_PREVIEW`. Note that overriding this default value may
 
       result in unsupported behavior.'
     types:
@@ -52,16 +52,16 @@ methods:
   name: create_data_source_connection
   summary: Creates a new datasource.
   signature: 'create_data_source_connection(data_source_connection: SearchIndexerDataSourceConnection
-    | MutableMapping[str, Any] | IO[bytes], **kwargs: Any) -> SearchIndexerDataSourceConnection'
+    | SearchIndexerDataSourceConnection | IO[bytes], **kwargs: Any) -> SearchIndexerDataSourceConnection'
   parameters:
   - name: data_source_connection
-    description: 'The definition of the datasource to create. Is one of the
+    description: 'The definition of the datasource to create. Is either a
 
-      following types: SearchIndexerDataSourceConnection, JSON, IO[bytes] Required.'
+      SearchIndexerDataSourceConnection type or a IO[bytes] type. Required.'
     isRequired: true
     types:
     - <xref:azure.search.documents.indexes.models.SearchIndexerDataSourceConnection>
-    - <xref:JSON>
+    - <xref:azure.search.documents.indexes.types.SearchIndexerDataSourceConnection>
     - <xref:typing.IO>[<xref:bytes>]
   return:
     description: 'SearchIndexerDataSourceConnection. The SearchIndexerDataSourceConnection
@@ -75,18 +75,18 @@ methods:
 - uid: azure.search.documents.indexes.SearchIndexerClient.create_indexer
   name: create_indexer
   summary: Creates a new indexer.
-  signature: 'create_indexer(indexer: SearchIndexer | MutableMapping[str, Any] | IO[bytes],
-    **kwargs: Any) -> SearchIndexer'
+  signature: 'create_indexer(indexer: SearchIndexer | SearchIndexer | IO[bytes], **kwargs:
+    Any) -> SearchIndexer'
   parameters:
   - name: indexer
-    description: 'The definition of the indexer to create. Is one of the following
-      types:
+    description: 'The definition of the indexer to create. Is either a SearchIndexer
+      type or a
 
-      SearchIndexer, JSON, IO[bytes] Required.'
+      IO[bytes] type. Required.'
     isRequired: true
     types:
     - <xref:azure.search.documents.indexes.models.SearchIndexer>
-    - <xref:JSON>
+    - <xref:azure.search.documents.indexes.types.SearchIndexer>
     - <xref:typing.IO>[<xref:bytes>]
   return:
     description: SearchIndexer. The SearchIndexer is compatible with MutableMapping
@@ -207,18 +207,18 @@ methods:
 - uid: azure.search.documents.indexes.SearchIndexerClient.create_skillset
   name: create_skillset
   summary: Creates a new skillset in a search service.
-  signature: 'create_skillset(skillset: SearchIndexerSkillset | MutableMapping[str,
-    Any] | IO[bytes], **kwargs: Any) -> SearchIndexerSkillset'
+  signature: 'create_skillset(skillset: SearchIndexerSkillset | SearchIndexerSkillset
+    | IO[bytes], **kwargs: Any) -> SearchIndexerSkillset'
   parameters:
   - name: skillset
     description: 'The skillset containing one or more skills to create in a search
       service. Is
 
-      one of the following types: SearchIndexerSkillset, JSON, IO[bytes] Required.'
+      either a SearchIndexerSkillset type or a IO[bytes] type. Required.'
     isRequired: true
     types:
     - <xref:azure.search.documents.indexes.models.SearchIndexerSkillset>
-    - <xref:JSON>
+    - <xref:azure.search.documents.indexes.types.SearchIndexerSkillset>
     - <xref:typing.IO>[<xref:bytes>]
   return:
     description: SearchIndexerSkillset. The SearchIndexerSkillset is compatible with
@@ -332,8 +332,9 @@ methods:
 - uid: azure.search.documents.indexes.SearchIndexerClient.get_data_source_connections
   name: get_data_source_connections
   summary: Lists all data source connections available for a search service.
-  signature: 'get_data_source_connections(*, select: List[str] | None = None, **kwargs:
-    Any) -> List[SearchIndexerDataSourceConnection]'
+  signature: 'get_data_source_connections(*, select: List[str] | None = None, search:
+    str | None = None, page_size: int | None = None, search_type: str | ListingSearchType
+    | None = None, **kwargs: Any) -> List[SearchIndexerDataSourceConnection]'
   keywordOnlyParameters:
   - name: select
     description: 'Selects which top-level properties to retrieve. Specified as a comma-separated
@@ -345,6 +346,25 @@ methods:
     defaultValue: None
     types:
     - <xref:list>[<xref:str>]
+  - name: search
+    description: A string used to narrow down the listing. Default value is None.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: page_size
+    description: The maximum number of items to return in a single page. Default value
+      is None.
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: search_type
+    description: 'Specifies how the search parameter is interpreted. Currently only
+
+      ''prefix'' is supported. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.search.documents.indexes.models.ListingSearchType>
   return:
     description: List of all the data source connections.
     types:
@@ -379,7 +399,7 @@ methods:
   - "List all the SearchIndexers<!--[!code-python[Main](les\\sample_indexer_crud.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\ToolCache\\\\Python\\\\\
-    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\351\\\\azure_search_documents-12.1.0b1\\\
+    3.12.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\351\\\\azure_search_documents-12.1.0b2\\\
     \\samples\\\\sample_indexer_crud.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   from azure.core.credentials import AzureKeyCredential\n\
@@ -406,7 +426,9 @@ methods:
 - uid: azure.search.documents.indexes.SearchIndexerClient.get_indexers
   name: get_indexers
   summary: Lists all indexers available for a search service.
-  signature: 'get_indexers(*, select: List[str] | None = None, **kwargs: Any) -> List[SearchIndexer]'
+  signature: 'get_indexers(*, select: List[str] | None = None, search: str | None
+    = None, page_size: int | None = None, search_type: str | ListingSearchType | None
+    = None, **kwargs: Any) -> List[SearchIndexer]'
   keywordOnlyParameters:
   - name: select
     description: 'Selects which top-level properties to retrieve. Specified as a comma-separated
@@ -418,6 +440,25 @@ methods:
     defaultValue: None
     types:
     - <xref:list>[<xref:str>]
+  - name: search
+    description: A string used to narrow down the listing. Default value is None.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: page_size
+    description: The maximum number of items to return in a single page. Default value
+      is None.
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: search_type
+    description: 'Specifies how the search parameter is interpreted. Currently only
+
+      ''prefix'' is supported. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.search.documents.indexes.models.ListingSearchType>
   return:
     description: List of all the SearchIndexers.
     types:
@@ -455,8 +496,9 @@ methods:
 - uid: azure.search.documents.indexes.SearchIndexerClient.get_skillsets
   name: get_skillsets
   summary: Lists all skillsets available for a search service.
-  signature: 'get_skillsets(*, select: List[str] | None = None, **kwargs: Any) ->
-    List[SearchIndexerSkillset]'
+  signature: 'get_skillsets(*, select: List[str] | None = None, search: str | None
+    = None, page_size: int | None = None, search_type: str | ListingSearchType | None
+    = None, **kwargs: Any) -> List[SearchIndexerSkillset]'
   keywordOnlyParameters:
   - name: select
     description: 'Selects which top-level properties to retrieve. Specified as a comma-separated
@@ -468,6 +510,25 @@ methods:
     defaultValue: None
     types:
     - <xref:list>[<xref:str>]
+  - name: search
+    description: A string used to narrow down the listing. Default value is None.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: page_size
+    description: The maximum number of items to return in a single page. Default value
+      is None.
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: search_type
+    description: 'Specifies how the search parameter is interpreted. Currently only
+
+      ''prefix'' is supported. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.search.documents.indexes.models.ListingSearchType>
   return:
     description: List of all the SearchIndexerSkillsets.
     types:

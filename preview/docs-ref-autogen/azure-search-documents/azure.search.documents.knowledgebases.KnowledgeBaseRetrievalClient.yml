@@ -33,7 +33,7 @@ constructor:
 
       listed on the <xref:azure.search.documents.ApiVersion> enum. Default value is
 
-      `ApiVersion.V2026_05_01_PREVIEW`. Note that overriding this default value may
+      `ApiVersion.V2026_08_01_PREVIEW`. Note that overriding this default value may
 
       result in unsupported behavior.'
     types:
@@ -56,18 +56,18 @@ methods:
 - uid: azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient.retrieve
   name: retrieve
   summary: KnowledgeBase retrieves relevant data from backing stores.
-  signature: 'retrieve(retrieval_request: KnowledgeBaseRetrievalRequest | MutableMapping[str,
-    Any] | IO[bytes], *, query_source_authorization: str | None = None, **kwargs:
-    Any) -> KnowledgeBaseRetrievalResponse'
+  signature: 'retrieve(retrieval_request: KnowledgeBaseRetrievalRequest | KnowledgeBaseRetrievalRequest
+    | IO[bytes], *, query_source_authorization: str | None = None, query_work_iq_source_authorization:
+    str | None = None, **kwargs: Any) -> KnowledgeBaseRetrievalResponse'
   parameters:
   - name: retrieval_request
-    description: 'The retrieval request to process. Is one of the following types:
+    description: 'The retrieval request to process. Is either a
 
-      KnowledgeBaseRetrievalRequest, JSON, IO[bytes] Required.'
+      KnowledgeBaseRetrievalRequest type or a IO[bytes] type. Required.'
     isRequired: true
     types:
     - <xref:azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalRequest>
-    - <xref:JSON>
+    - <xref:azure.search.documents.knowledgebases.types.KnowledgeBaseRetrievalRequest>
     - <xref:typing.IO>[<xref:bytes>]
   keywordOnlyParameters:
   - name: query_source_authorization
@@ -80,6 +80,16 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
+  - name: query_work_iq_source_authorization
+    description: 'User assertion token for a customer-owned Entra
+
+      app registration configured on a Work IQ knowledge source. Used for on-behalf-of
+      authentication
+
+      to the Work IQ API. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
   return:
     description: 'KnowledgeBaseRetrievalResponse. The KnowledgeBaseRetrievalResponse
       is compatible with
@@ -87,6 +97,48 @@ methods:
       MutableMapping'
     types:
     - <xref:azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResponse>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient.retrieve_stream
+  name: retrieve_stream
+  summary: Retrieve relevant data and stream typed server-sent events.
+  signature: 'retrieve_stream(retrieval_request: KnowledgeBaseRetrievalRequest | dict[str,
+    Any] | IO[bytes], *, query_source_authorization: str | None = None, query_work_iq_source_authorization:
+    str | None = None, content_type: str = ''application/json'', **kwargs: Any) ->
+    KnowledgeBaseRetrievalStream'
+  parameters:
+  - name: retrieval_request
+    description: The retrieval request to process. Required.
+    isRequired: true
+    types:
+    - <xref:azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalRequest>
+    - <xref:dict>
+    - <xref:typing.IO>[<xref:bytes>]
+  keywordOnlyParameters:
+  - name: query_source_authorization
+    description: 'Token identifying the user for which the query is
+
+      executed. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: query_work_iq_source_authorization
+    description: 'User assertion token for a customer-owned Entra
+
+      app registration configured on a Work IQ knowledge source. Default value is
+      None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: content_type
+    description: Body parameter content type. Default value is "application/json".
+    defaultValue: application/json
+    types:
+    - <xref:str>
+  return:
+    description: A stream of typed knowledge base retrieval events.
+    types:
+    - <xref:azure.search.documents.knowledgebases.KnowledgeBaseRetrievalStream>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient.send_request
