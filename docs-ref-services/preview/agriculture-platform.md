@@ -1,7 +1,7 @@
 ---
 title: Azure Agriculture Platform SDK for Python
 description: Reference for Azure Agriculture Platform SDK for Python
-ms.date: 08/31/2026
+ms.date: 09/01/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: agricultureplatform
