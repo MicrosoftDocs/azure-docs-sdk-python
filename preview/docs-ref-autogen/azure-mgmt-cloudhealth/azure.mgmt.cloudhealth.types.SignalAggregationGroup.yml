@@ -1,0 +1,195 @@
+### YamlMime:PythonClass
+uid: azure.mgmt.cloudhealth.types.SignalAggregationGroup
+name: SignalAggregationGroup
+fullName: azure.mgmt.cloudhealth.types.SignalAggregationGroup
+module: azure.mgmt.cloudhealth.types
+summary: 'A logical group of signals on an entity, evaluated under a configurable
+  aggregation strategy.
+
+  Groups are independent even when they share members. Each group''s aggregated state
+  is one of
+
+  the inputs to the entity''s composite health computation alongside any signals not
+  declared in
+
+  any group''s members[].'
+constructor:
+  syntax: SignalAggregationGroup()
+variables:
+- description: Name of the aggregation group. Unique within the entity. Required.
+  name: name
+  types:
+  - <xref:str>
+- description: Display name.
+  name: displayName
+  types:
+  - <xref:str>
+- description: 'Aggregation strategy applied across the members of this group. Known
+
+    values are: "WorstOf", "BestOf", "MinHealthy", and "MaxNotHealthy".'
+  name: aggregationType
+  types:
+  - <xref:typing.Union>[<xref:str>, <xref:"AggregationType">]
+- description: 'Names of signals on this entity which are members of the group. Members
+    are
+
+    matched by name; references to signals that do not currently exist on the entity
+    are accepted
+
+    (typically for pre-declared external signals) and surfaced via ''unresolvedMembers''.
+    A signal
+
+    may be listed in multiple groups; no duplicates within this list. Required.'
+  name: members
+  types:
+  - <xref:list>[<xref:str>]
+- description: "Degraded threshold for threshold-bearing strategies (MinHealthy,\n\
+    MaxNotHealthy). For MinHealthy: group is degraded when the healthy member count/percentage\n\
+    falls to or below this value. For MaxNotHealthy: group is degraded when the not-healthy\
+    \ member\ncount/percentage reaches or exceeds this value. Optional \u2014 if not\
+    \ set, the group transitions\ndirectly between Healthy and Unhealthy. MUST NOT\
+    \ be set when aggregationType is WorstOf or\nBestOf."
+  name: degradedThreshold
+  types:
+  - <xref:float>
+- description: 'Unhealthy threshold for threshold-bearing strategies. Required when
+
+    aggregationType is MinHealthy or MaxNotHealthy; MUST NOT be set otherwise.'
+  name: unhealthyThreshold
+  types:
+  - <xref:float>
+- description: 'Unit type for the thresholds. Required when aggregationType is MinHealthy
+    or
+
+    MaxNotHealthy; MUST NOT be set otherwise. Known values are: "Absolute" and "Percentage".'
+  name: unit
+  types:
+  - <xref:typing.Union>[<xref:str>, <xref:"AggregationUnit">]
+- description: 'If true (default), members reporting Unknown are excluded from the
+
+    aggregation. For MinHealthy and MaxNotHealthy this flag affects the denominator/count
+    and is
+
+    meaningful. For WorstOf and BestOf the flag has no observable effect: under WorstOf,
+    Unknown=0
+
+    is the lowest severity and can never beat any non-Unknown member in a Max() so
+    filtering it
+
+    changes nothing observable; under BestOf, Unknown is unconditionally excluded
+    by the strategy
+
+    itself irrespective of the flag. The flag is retained on the contract for vocabulary
+    symmetry
+
+    across all four strategies.'
+  name: ignoreUnknown
+  types:
+  - <xref:bool>
+- description: 'Computed aggregated health state of the group as of the last
+
+    entity evaluation. Unknown if no resolvable members or all members filtered out.
+    Known values
+
+    are: "Healthy", "Degraded", "Unhealthy", and "Unknown".'
+  name: aggregatedHealthState
+  types:
+  - <xref:typing.Union>[<xref:str>, <xref:"HealthState">]
+- description: 'Members listed in ''members'' that do not currently resolve to a signal
+
+    on this entity at the time of the last entity evaluation. Treated as Unknown during
+
+    aggregation. Empty/omitted when every member resolves.'
+  name: unresolvedMembers
+  types:
+  - <xref:list>[<xref:str>]
+attributes:
+- uid: azure.mgmt.cloudhealth.types.SignalAggregationGroup.aggregatedHealthState
+  name: aggregatedHealthState
+  summary: 'Computed aggregated health state of the group as of the last entity evaluation.
+    Unknown if no
+
+    resolvable members or all members filtered out. Known values are: "Healthy", "Degraded",
+
+    "Unhealthy", and "Unknown".'
+  signature: 'aggregatedHealthState: str | HealthState'
+- uid: azure.mgmt.cloudhealth.types.SignalAggregationGroup.aggregationType
+  name: aggregationType
+  summary: '"WorstOf",
+
+    "BestOf", "MinHealthy", and "MaxNotHealthy".'
+  signature: 'aggregationType: str | AggregationType'
+- uid: azure.mgmt.cloudhealth.types.SignalAggregationGroup.degradedThreshold
+  name: degradedThreshold
+  summary: "Degraded threshold for threshold-bearing strategies (MinHealthy, MaxNotHealthy).\
+    \ For\nMinHealthy: group is degraded when the healthy member count/percentage\
+    \ falls to or below this\nvalue. For MaxNotHealthy: group is degraded when the\
+    \ not-healthy member count/percentage\nreaches or exceeds this value. Optional\
+    \ \u2014 if not set, the group transitions directly between\nHealthy and Unhealthy.\
+    \ MUST NOT be set when aggregationType is WorstOf or BestOf."
+  signature: 'degradedThreshold: float'
+- uid: azure.mgmt.cloudhealth.types.SignalAggregationGroup.displayName
+  name: displayName
+  summary: Display name.
+  signature: 'displayName: str'
+- uid: azure.mgmt.cloudhealth.types.SignalAggregationGroup.ignoreUnknown
+  name: ignoreUnknown
+  summary: 'If true (default), members reporting Unknown are excluded from the aggregation.
+    For MinHealthy
+
+    and MaxNotHealthy this flag affects the denominator/count and is meaningful. For
+    WorstOf and
+
+    BestOf the flag has no observable effect: under WorstOf, Unknown=0 is the lowest
+    severity and
+
+    can never beat any non-Unknown member in a Max() so filtering it changes nothing
+    observable;
+
+    under BestOf, Unknown is unconditionally excluded by the strategy itself irrespective
+    of the
+
+    flag. The flag is retained on the contract for vocabulary symmetry across all
+    four strategies.'
+  signature: 'ignoreUnknown: bool'
+- uid: azure.mgmt.cloudhealth.types.SignalAggregationGroup.members
+  name: members
+  summary: 'Names of signals on this entity which are members of the group. Members
+    are matched by name;
+
+    references to signals that do not currently exist on the entity are accepted (typically
+    for
+
+    pre-declared external signals) and surfaced via ''unresolvedMembers''. A signal
+    may be listed in
+
+    multiple groups; no duplicates within this list. Required.'
+  signature: 'members: Required[list[str]]'
+- uid: azure.mgmt.cloudhealth.types.SignalAggregationGroup.name
+  name: name
+  summary: Name of the aggregation group. Unique within the entity. Required.
+  signature: 'name: Required[str]'
+- uid: azure.mgmt.cloudhealth.types.SignalAggregationGroup.unhealthyThreshold
+  name: unhealthyThreshold
+  summary: 'Unhealthy threshold for threshold-bearing strategies. Required when aggregationType
+    is
+
+    MinHealthy or MaxNotHealthy; MUST NOT be set otherwise.'
+  signature: 'unhealthyThreshold: float'
+- uid: azure.mgmt.cloudhealth.types.SignalAggregationGroup.unit
+  name: unit
+  summary: 'Unit type for the thresholds. Required when aggregationType is MinHealthy
+    or MaxNotHealthy;
+
+    MUST NOT be set otherwise. Known values are: "Absolute" and "Percentage".'
+  signature: 'unit: str | AggregationUnit'
+- uid: azure.mgmt.cloudhealth.types.SignalAggregationGroup.unresolvedMembers
+  name: unresolvedMembers
+  summary: 'Members listed in ''members'' that do not currently resolve to a signal
+    on this entity at the
+
+    time of the last entity evaluation. Treated as Unknown during aggregation. Empty/omitted
+    when
+
+    every member resolves.'
+  signature: 'unresolvedMembers: list[str]'

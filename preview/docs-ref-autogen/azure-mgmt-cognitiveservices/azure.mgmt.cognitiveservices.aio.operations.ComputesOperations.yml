@@ -3,88 +3,22 @@ uid: azure.mgmt.cognitiveservices.aio.operations.ComputesOperations
 name: ComputesOperations
 fullName: azure.mgmt.cognitiveservices.aio.operations.ComputesOperations
 module: azure.mgmt.cognitiveservices.aio.operations
-summary: "Customized `ComputesOperations` that tracks compute creation via the `list`\
-  \ API.\n\nThe generated <xref:azure.mgmt.cognitiveservices.aio.operations.ComputesOperations.begin_create_or_update>\
-  \ has two problems against the current service:\n\n* <xref:azure.mgmt.cognitiveservices.aio.operations.ComputesOperations._create_or_update_initial>\
-  \ rejects the `202 Accepted` the service returns for the async create with \"Operation\
-  \ returned an invalid status 'Accepted'\"; and \n\n* its poller follows the `Azure-AsyncOperation`\
-  \ header to `.../locations/{location}/computeOperations/{operationId}`, which requires\
-  \ the `Microsoft.CognitiveServices/locations/computeOperations/read` permission.\
-  \ Many callers who are allowed to create a compute lack that permission, so the\
-  \ poll fails with `AuthorizationFailed` even though the create itself succeeded.\
-  \ \n\nThis override keeps the generated method's public shape (overloads, api-version\
-  \ validation and\n`continuation_token` resume path) unchanged. It (1) accepts the\
-  \ `202` in\n<xref:azure.mgmt.cognitiveservices.aio.operations.ComputesOperations._create_or_update_initial>\
-  \ and (2) blocks on an <xref:azure.mgmt.cognitiveservices.aio.operations._AsyncComputeListPolling>\
-  \ poller\nthat reads `provisioningState` from the `list` API. `list` is used rather\
-  \ than `get`\nbecause a `GET` on a just-created compute returns `404 \"Cluster not\
-  \ found\"` for an extended\nperiod while it provisions, whereas `list` reflects\
-  \ the compute's state from the moment the\ncreate is accepted. The poller only needs\
-  \ `computes/read`, still blocks until a terminal state,\nand surfaces a genuine\
-  \ provisioning failure instead of masking it."
+summary: Computes operations that poll provisioning through the account's compute
+  list.
 constructor:
   syntax: ComputesOperations(*args, **kwargs)
 methods:
 - uid: azure.mgmt.cognitiveservices.aio.operations.ComputesOperations.begin_create_or_update
   name: begin_create_or_update
-  summary: 'Creates or updates a compute associated with the Cognitive Services account.
-
-
-    This override accepts the service''s `202 Accepted` and blocks until the compute
-    reaches a
-
-    terminal state, reading `provisioningState` from the `list` API rather than polling
-    the
-
-    operation-status endpoint (which requires `computeOperations/read`). `list` is
-    used because
-
-    a `GET` on a just-created compute returns `404 "Cluster not found"` while it provisions.
-    It
-
-    raises on a genuine provisioning failure, so callers get correct results without
-    needing the
-
-    operation-status read permission.'
   signature: 'async begin_create_or_update(resource_group_name: str, account_name:
     str, compute_name: str, resource: _models.Compute, *, content_type: str = ''application/json'',
     **kwargs: Any) -> AsyncLROPoller[_models.Compute]'
   parameters:
   - name: resource_group_name
-    description: 'The name of the resource group. The name is case insensitive.
-
-      Required.'
     isRequired: true
-    types:
-    - <xref:str>
   - name: account_name
-    description: The name of Cognitive Services account. Required.
     isRequired: true
-    types:
-    - <xref:str>
   - name: compute_name
-    description: 'The name of the compute associated with the Cognitive Services Account.
-
-      Required.'
     isRequired: true
-    types:
-    - <xref:str>
   - name: resource
-    description: 'The compute properties. Is one of the following types: Compute,
-      JSON,
-
-      IO[bytes] Required.'
     isRequired: true
-    types:
-    - <xref:azure.mgmt.cognitiveservices.models.Compute>
-    - <xref:JSON>
-    - <xref:typing.IO>[<xref:bytes>]
-  return:
-    description: 'An instance of AsyncLROPoller that returns Compute. The Compute
-      is compatible with
-
-      MutableMapping'
-    types:
-    - <xref:azure.core.polling.AsyncLROPoller>[<xref:azure.mgmt.cognitiveservices.models.Compute>]
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
