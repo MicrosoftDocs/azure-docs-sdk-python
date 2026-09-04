@@ -13,38 +13,37 @@ variables:
     CPU management policies](https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/#cpu-management-policies)
 
     for more information. Allowed values are ''none'' and ''static''.'
-  name: cpu_manager_policy
+  name: cpuManagerPolicy
   types:
   - <xref:str>
 - description: 'If CPU CFS quota enforcement is enabled for containers that specify
     CPU
 
     limits. The default is true.'
-  name: cpu_cfs_quota
+  name: cpuCfsQuota
   types:
   - <xref:bool>
-- description: 'The CPU CFS quota period value. The default is ''100ms.'' Valid
+- description: 'The CPU CFS quota period value. The default is ''100ms.'' Valid values
 
-    values are a sequence of decimal numbers with an optional fraction and a unit
-    suffix. For
+    are a sequence of decimal numbers with an optional fraction and a unit suffix.
+    For example:
 
-    example: ''300ms'', ''2h45m''. Supported units are ''ns'', ''us'', ''ms'', ''s'',
-    ''m'', and ''h''.'
-  name: cpu_cfs_quota_period
+    ''300ms'', ''2h45m''. Supported units are ''ns'', ''us'', ''ms'', ''s'', ''m'',
+    and ''h''.'
+  name: cpuCfsQuotaPeriod
   types:
   - <xref:str>
-- description: 'The percent of disk usage after which image garbage collection
+- description: 'The percent of disk usage after which image garbage collection is
 
-    is always run. To disable image garbage collection, set to 100. The default is
-    85%.'
-  name: image_gc_high_threshold
+    always run. To disable image garbage collection, set to 100. The default is 85%.'
+  name: imageGcHighThreshold
   types:
   - <xref:int>
-- description: 'The percent of disk usage before which image garbage collection
+- description: 'The percent of disk usage before which image garbage collection is
 
-    is never run. This cannot be set higher than imageGcHighThreshold. The default
-    is 80%.'
-  name: image_gc_low_threshold
+    never run. This cannot be set higher than imageGcHighThreshold. The default is
+    80%.'
+  name: imageGcLowThreshold
   types:
   - <xref:int>
 - description: 'The Topology Manager policy to use. For more information see
@@ -53,35 +52,35 @@ variables:
     The default is
 
     ''none''. Allowed values are ''none'', ''best-effort'', ''restricted'', and ''single-numa-node''.'
-  name: topology_manager_policy
+  name: topologyManagerPolicy
   types:
   - <xref:str>
-- description: 'Allowed list of unsafe sysctls or unsafe sysctl patterns (ending
+- description: 'Allowed list of unsafe sysctls or unsafe sysctl patterns (ending in
 
-    in `*`).'
-  name: allowed_unsafe_sysctls
+    `*`).'
+  name: allowedUnsafeSysctls
   types:
   - <xref:list>[<xref:str>]
 - description: 'If set to true it will make the Kubelet fail to start if swap is enabled
     on
 
     the node.'
-  name: fail_swap_on
+  name: failSwapOn
   types:
   - <xref:bool>
-- description: 'The maximum size (e.g. 10Mi) of container log file before it
+- description: 'The maximum size (e.g. 10Mi) of container log file before it is
 
-    is rotated.'
-  name: container_log_max_size_mb
+    rotated.'
+  name: containerLogMaxSizeMB
   types:
   - <xref:int>
-- description: "The maximum number of container log files that can be present\nfor\
-    \ a container. The number must be \u2265 2."
-  name: container_log_max_files
+- description: "The maximum number of container log files that can be present for\
+    \ a\ncontainer. The number must be \u2265 2."
+  name: containerLogMaxFiles
   types:
   - <xref:int>
 - description: The maximum number of processes per pod.
-  name: pod_max_pids
+  name: podMaxPids
   types:
   - <xref:int>
 - description: 'Specifies the default seccomp profile applied to all workloads. If
@@ -91,7 +90,7 @@ variables:
     and
 
     "RuntimeDefault".'
-  name: seccomp_default
+  name: seccompDefault
   types:
   - <xref:typing.Union>[<xref:str>, <xref:"SeccompDefault">]
 - description: 'Kube-reserved values for kubelet. When a value is not set, the
@@ -100,18 +99,59 @@ variables:
     for details on computed defaults. Only applicable for
 
     Linux nodepools.'
-  name: kube_reserved
+  name: kubeReserved
   types:
   - <xref:<xref:"KubeReserved">>
-- description: 'Hard eviction thresholds for kubelet. When a threshold is not
+- description: 'Hard eviction thresholds for kubelet. When a threshold is not set,
 
-    set, the system default is used. See [AKS node resource reservations](https://aka.ms/aks/nodereservations)
+    the system default is used. See [AKS node resource reservations](https://aka.ms/aks/nodereservations)
     for details on computed defaults. Only applicable for
 
     Linux nodepools.'
-  name: hard_eviction_threshold
+  name: hardEvictionThreshold
   types:
   - <xref:<xref:"HardEvictionThreshold">>
+- description: 'Soft eviction thresholds for kubelet. When crossed, pods are
+
+    evicted after the paired softEvictionGracePeriod. System defaults apply when the
+    cluster''s
+
+    `enableNodeHardening` property is true; otherwise no soft eviction is configured.
+    For each
+
+    signal (memoryAvailable, nodeFsAvailable, nodeFsInodesFree), the entries in
+
+    softEvictionThreshold and softEvictionGracePeriod must be in the same state: both
+    omitted
+
+    (default), both non-empty (override), or both empty strings (opt that signal out).
+    Only
+
+    applicable for Linux nodepools. See
+
+    [https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#soft-eviction-thresholds](https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#soft-eviction-thresholds).'
+  name: softEvictionThreshold
+  types:
+  - <xref:<xref:"SoftEvictionThreshold">>
+- description: "Grace periods for soft eviction signals \u2014 how long a threshold\n\
+    must be held before pod eviction. Same defaulting and pairing rules as softEvictionThreshold.\n\
+    Values are Go-style duration strings (e.g. '1m30s'); supported units are 'ns',\
+    \ 'us', 'ms', 's',\n'm', and 'h'. Only applicable for Linux nodepools."
+  name: softEvictionGracePeriod
+  types:
+  - <xref:<xref:"SoftEvictionGracePeriod">>
+- description: 'Maximum grace period, in seconds, for pods to
+
+    terminate during a soft eviction; caps the pod''s terminationGracePeriodSeconds.
+    Default is 60,
+
+    applied when the cluster''s `enableNodeHardening` property is true. Only applicable
+    for Linux
+
+    nodepools.'
+  name: evictionMaxPodGracePeriodInSeconds
+  types:
+  - <xref:int>
 attributes:
 - uid: azure.mgmt.containerservice.types.KubeletConfig.allowedUnsafeSysctls
   name: allowedUnsafeSysctls
@@ -150,6 +190,15 @@ attributes:
 
     for more information. Allowed values are ''none'' and ''static''.'
   signature: 'cpuManagerPolicy: str'
+- uid: azure.mgmt.containerservice.types.KubeletConfig.evictionMaxPodGracePeriodInSeconds
+  name: evictionMaxPodGracePeriodInSeconds
+  summary: 'Maximum grace period, in seconds, for pods to terminate during a soft
+    eviction; caps the pod''s
+
+    terminationGracePeriodSeconds. Default is 60, applied when the cluster''s
+
+    `enableNodeHardening` property is true. Only applicable for Linux nodepools.'
+  signature: 'evictionMaxPodGracePeriodInSeconds: int'
 - uid: azure.mgmt.containerservice.types.KubeletConfig.failSwapOn
   name: failSwapOn
   summary: If set to true it will make the Kubelet fail to start if swap is enabled
@@ -199,6 +248,34 @@ attributes:
 
     will be used by default. Known values are: "Unconfined" and "RuntimeDefault".'
   signature: 'seccompDefault: str | SeccompDefault'
+- uid: azure.mgmt.containerservice.types.KubeletConfig.softEvictionGracePeriod
+  name: softEvictionGracePeriod
+  summary: "Grace periods for soft eviction signals \u2014 how long a threshold must\
+    \ be held before pod\neviction. Same defaulting and pairing rules as softEvictionThreshold.\
+    \ Values are Go-style\nduration strings (e.g. '1m30s'); supported units are 'ns',\
+    \ 'us', 'ms', 's', 'm', and 'h'. Only\napplicable for Linux nodepools."
+  signature: 'softEvictionGracePeriod: SoftEvictionGracePeriod'
+- uid: azure.mgmt.containerservice.types.KubeletConfig.softEvictionThreshold
+  name: softEvictionThreshold
+  summary: 'Soft eviction thresholds for kubelet. When crossed, pods are evicted after
+    the paired
+
+    softEvictionGracePeriod. System defaults apply when the cluster''s `enableNodeHardening`
+
+    property is true; otherwise no soft eviction is configured. For each signal (memoryAvailable,
+
+    nodeFsAvailable, nodeFsInodesFree), the entries in softEvictionThreshold and
+
+    softEvictionGracePeriod must be in the same state: both omitted (default), both
+    non-empty
+
+    (override), or both empty strings (opt that signal out). Only applicable for Linux
+    nodepools.
+
+    See
+
+    [https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#soft-eviction-thresholds](https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#soft-eviction-thresholds).'
+  signature: 'softEvictionThreshold: SoftEvictionThreshold'
 - uid: azure.mgmt.containerservice.types.KubeletConfig.topologyManagerPolicy
   name: topologyManagerPolicy
   summary: 'The Topology Manager policy to use. For more information see [Kubernetes
