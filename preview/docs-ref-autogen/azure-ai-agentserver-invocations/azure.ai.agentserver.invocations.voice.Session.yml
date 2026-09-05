@@ -1,0 +1,79 @@
+### YamlMime:PythonClass
+uid: azure.ai.agentserver.invocations.voice.Session
+name: Session
+fullName: azure.ai.agentserver.invocations.voice.Session
+module: azure.ai.agentserver.invocations.voice
+summary: '> [!NOTE]
+
+  > This is an experimental class, and may change at any time. Please see [https://aka.ms/azure-ai-agentserver-experimental](https://aka.ms/azure-ai-agentserver-experimental)
+  for more information.
+
+  >
+
+
+  Send-only context for one accepted Voice WebSocket connection.
+
+
+  `Session` retains only transport write serialization and a terminal write
+
+  gate. Agent code owns response IDs, pending work, generation tasks,
+
+  terminal-event correlation, cancellation, history, and reconnect
+
+  restoration.
+
+
+  Instances are created by <xref:azure.ai.agentserver.invocations.voice.VoiceAgentServerHost>
+  and supplied to
+
+  registered callbacks.'
+constructor:
+  syntax: Session()
+methods:
+- uid: azure.ai.agentserver.invocations.voice.Session.send
+  name: send
+  summary: 'Encode and send one explicit agent-to-Bridge event.
+
+
+    Concurrent calls are serialized at the WebSocket write boundary. The
+
+    method does not retry, infer commitment, or update protocol state.'
+  signature: 'async send(message: SessionReady | SessionRejected | ResponseCreated
+    | ResponseNone | ResponseOutputTextDelta | ResponseOutputTextDone | ResponseDone
+    | ResponseCancel | EndCall | AgentError) -> None'
+  parameters:
+  - name: message
+    description: One immutable selected outbound message.
+    isRequired: true
+    types:
+    - <xref:OutboundVoiceMessage>
+- uid: azure.ai.agentserver.invocations.voice.Session.start_target_turn
+  name: start_target_turn
+  summary: Start one application-owned target-agent decision trace.
+  signature: 'start_target_turn(*, origin: TargetTurnOrigin | str, input_count: int,
+    trigger_context: SpanContext | None = None) -> TargetTurn'
+  keywordOnlyParameters:
+  - name: origin
+    description: Application-declared decision origin.
+    types:
+    - <xref:azure.ai.agentserver.invocations.voice.TargetTurnOrigin>
+    - <xref:str>
+  - name: input_count
+    description: Number of inputs consumed by the decision.
+    types:
+    - <xref:int>
+  - name: trigger_context
+    description: Optional ended trigger context to link to this decision.
+    defaultValue: None
+    types:
+    - <xref:opentelemetry.trace.SpanContext>
+    - <xref:None>
+  return:
+    description: A handle the application activates around model/tool work and completes
+      explicitly.
+    types:
+    - <xref:azure.ai.agentserver.invocations.voice.TargetTurn>
+attributes:
+- uid: azure.ai.agentserver.invocations.voice.Session.termination
+  name: termination
+  summary: Return the first physical connection terminal fact, when committed.
