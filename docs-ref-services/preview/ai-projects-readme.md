@@ -6,7 +6,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: ai
 ---
-# Azure AI Projects client library for Python - version 2.7.0a20260906001 
+# Azure AI Projects client library for Python - version 2.6.0a20260907002 
 
 
 The AI Projects client library is part of the Microsoft Foundry SDK, and provides easy access to
@@ -200,7 +200,6 @@ The table below lists the operation groups supported by the client library, with
 | Sessions | [Manage hosted sessions](https://learn.microsoft.com/azure/foundry/agents/how-to/manage-hosted-sessions?pivots=python) | `samples/hosted_agents/` |
 | Skills (preview) | | `samples/skills/` |
 | Toolboxes | [Curate intent-based toolbox in Foundry](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/toolbox?pivots=python) | `samples/hosted_agents/`, `samples/toolboxes/` |
-| Voice agents (preview) | [Use the GPT Realtime API for speech and audio](https://learn.microsoft.com/azure/foundry/openai/how-to/realtime-audio) | `samples/agents/voice/` |
 
 
 ## Client-side tracing
