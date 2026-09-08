@@ -1,12 +1,12 @@
 ---
 title: Azure Device Registry Software Update client library for Python
 keywords: Azure, python, SDK, API, azure-iot-deviceregistrysoftwareupdate, deviceregistry
-ms.date: 09/04/2026
+ms.date: 09/08/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: deviceregistry
 ---
-# Azure Device Registry Software Update client library for Python - version 1.0.0b1 
+# Azure Device Registry Software Update client library for Python - version 1.0.0a20260908001 
 
 
 Azure Device Registry Software Update enables you to import and manage software updates and inspect device classes for IoT devices registered with Azure Device Registry.
@@ -83,12 +83,12 @@ except HttpResponseError as error:
 ## Troubleshooting
 
 Service operations raise exceptions defined in
-[Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-iot-deviceregistrysoftwareupdate_1.0.0b1/sdk/core/azure-core/README.md).
+[Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md).
 
 ## Next steps
 
 Explore the available client operations and models in the
-[API reference](https://github.com/Azure/azure-sdk-for-python/blob/azure-iot-deviceregistrysoftwareupdate_1.0.0b1/sdk/deviceregistry/azure-iot-deviceregistrysoftwareupdate/api.md).
+[API reference](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/deviceregistry/azure-iot-deviceregistrysoftwareupdate/api.md).
 
 ## Contributing
 
@@ -110,9 +110,9 @@ additional questions or comments.
 <!-- LINKS -->
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [authenticate_with_token]: /azure/cognitive-services/authentication?tabs=powershell#authenticate-with-an-authentication-token
-[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-iot-deviceregistrysoftwareupdate_1.0.0b1/sdk/identity/azure-identity#credentials
+[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#credentials
 [azure_identity_pip]: https://pypi.org/project/azure-identity/
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-iot-deviceregistrysoftwareupdate_1.0.0b1/sdk/identity/azure-identity#defaultazurecredential
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#defaultazurecredential
 [pip]: https://pypi.org/project/pip/
 [azure_sub]: https://azure.microsoft.com/free/
 
