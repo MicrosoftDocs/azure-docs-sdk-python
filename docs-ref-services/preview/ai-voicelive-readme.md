@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-ai-voicelive, voicelive
-ms.date: 05/28/2026
+ms.date: 09/09/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: voicelive
@@ -264,7 +264,7 @@ async for event in connection:
         
     elif event.type == ServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STARTED:
         print("User started speaking")
-        # Stop playback and cancel any current response
+        # Stop playback
         
     elif event.type == ServerEventType.RESPONSE_AUDIO_DELTA:
         # Play the audio chunk
