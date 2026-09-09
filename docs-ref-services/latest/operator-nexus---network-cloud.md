@@ -1,7 +1,7 @@
 ---
 title: Azure Operator Nexus - Network Cloud SDK for Python
 description: Reference for Azure Operator Nexus - Network Cloud SDK for Python
-ms.date: 09/08/2026
+ms.date: 09/09/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: operatornexus-networkcloud

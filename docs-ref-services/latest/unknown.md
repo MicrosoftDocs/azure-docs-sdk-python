@@ -1,7 +1,7 @@
 ---
 title: Azure unknown SDK for Python
 description: Reference for Azure unknown SDK for Python
-ms.date: 09/08/2026
+ms.date: 09/09/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: unknown
