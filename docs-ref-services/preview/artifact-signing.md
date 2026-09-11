@@ -1,7 +1,7 @@
 ---
 title: Azure Artifact Signing SDK for Python
 description: Reference for Azure Artifact Signing SDK for Python
-ms.date: 09/10/2026
+ms.date: 09/11/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: artifactsigning
