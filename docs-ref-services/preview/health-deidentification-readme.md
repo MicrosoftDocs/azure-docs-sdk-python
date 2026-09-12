@@ -6,7 +6,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: healthdataaiservices
 ---
-# Azure Health Data Services de-identification service client library for Python - version 1.1.0a20260910001 
+# Azure Health Data Services de-identification service client library for Python - version 1.1.0a20260911001 
 
 
 This package contains a client library for the de-identification service in Azure Health Data Services which 
