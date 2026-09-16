@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: weights&biases
 ---
-# Azure Weights & Biases SDK for Python - legacy
-## Packages - legacy
+# Azure Weights & Biases SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](weights-&-biases-index.md)]
