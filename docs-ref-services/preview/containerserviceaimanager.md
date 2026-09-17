@@ -1,7 +1,7 @@
 ---
 title: Azure Containerserviceaimanager SDK for Python
 description: Reference for Azure Containerserviceaimanager SDK for Python
-ms.date: 09/16/2026
+ms.date: 09/17/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: containerserviceaimanager
