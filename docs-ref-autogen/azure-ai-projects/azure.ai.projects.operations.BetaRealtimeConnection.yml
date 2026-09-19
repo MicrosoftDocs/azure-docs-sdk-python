@@ -1,0 +1,123 @@
+### YamlMime:PythonClass
+uid: azure.ai.projects.operations.BetaRealtimeConnection
+name: BetaRealtimeConnection
+fullName: azure.ai.projects.operations.BetaRealtimeConnection
+module: azure.ai.projects.operations
+summary: "An open realtime WebSocket connection to a voice agent.\n\nIterate over\
+  \ the connection to receive strongly-typed server events, and use the\nsub-namespaces\
+  \ to send strongly-typed client events:\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+  : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\": \"preserve\"\
+  , \"language\": \"default\", \"force\": false, \"linenos\": false} -->\n\n````default\n\
+  \n   with client.beta.voice_agents.realtime.connect(agent_name=\"my-agent\") as\
+  \ conn:\n       for event in conn:\n           if event.type == RealtimeServerEventType.RESPONSE_DONE:\n\
+  \               break\n   ````"
+constructor:
+  syntax: 'BetaRealtimeConnection(connection: ClientConnection)'
+  parameters:
+  - name: connection
+    isRequired: true
+methods:
+- uid: azure.ai.projects.operations.BetaRealtimeConnection.close
+  name: close
+  summary: Close the connection.
+  signature: 'close(*, code: int = 1000, reason: str = '''') -> None'
+  keywordOnlyParameters:
+  - name: code
+    description: The WebSocket close code.
+    defaultValue: '1000'
+    types:
+    - <xref:int>
+  - name: reason
+    description: The close reason.
+    types:
+    - <xref:str>
+- uid: azure.ai.projects.operations.BetaRealtimeConnection.recv
+  name: recv
+  summary: 'Receive and parse the next server event.
+
+
+    Known event types are returned as their strongly-typed
+
+    `VoiceAgentServerEventXxx` model. Event types not (yet) represented by a
+
+    generated model are returned as a plain `dict` for forward compatibility.'
+  signature: 'recv(*, timeout: float | None = None) -> RealtimeServerEventError |
+    RealtimeServerEventResponseContentPartAdded | RealtimeServerEventConversationItemAdded
+    | RealtimeServerEventConversationItemCreated | RealtimeServerEventConversationItemDeleted
+    | RealtimeServerEventConversationItemDone | RealtimeServerEventConversationItemInputAudioTranscriptionCompleted
+    | RealtimeServerEventConversationItemInputAudioTranscriptionDelta | RealtimeServerEventConversationItemInputAudioTranscriptionFailed
+    | RealtimeServerEventConversationItemInputAudioTranscriptionSegment | RealtimeServerEventConversationItemRetrieved
+    | RealtimeServerEventConversationItemTruncated | RealtimeServerEventInputAudioBufferCleared
+    | RealtimeServerEventInputAudioBufferCommitted | RealtimeServerEventInputAudioBufferSpeechStarted
+    | RealtimeServerEventInputAudioBufferSpeechStopped | RealtimeServerEventInputAudioBufferTimeoutTriggered
+    | RealtimeServerEventMCPListToolsCompleted | RealtimeServerEventMCPListToolsFailed
+    | RealtimeServerEventMCPListToolsInProgress | RealtimeServerEventOutputAudioBufferCleared
+    | RealtimeServerEventRateLimitsUpdated | VoiceAgentServerEventResponseAnimationBlendshapesDelta
+    | VoiceAgentServerEventResponseAnimationBlendshapesDone | VoiceAgentServerEventResponseAnimationVisemeDelta
+    | VoiceAgentServerEventResponseAnimationVisemeDone | RealtimeServerEventResponseAudioDelta
+    | RealtimeServerEventResponseAudioDone | VoiceAgentServerEventResponseAudioTimestampDelta
+    | VoiceAgentServerEventResponseAudioTimestampDone | RealtimeServerEventResponseAudioTranscriptDelta
+    | RealtimeServerEventResponseAudioTranscriptDone | RealtimeServerEventResponseContentPartDone
+    | RealtimeServerEventResponseCreated | RealtimeServerEventResponseDone | RealtimeServerEventResponseFunctionCallArgumentsDelta
+    | RealtimeServerEventResponseFunctionCallArgumentsDone | RealtimeServerEventResponseMCPCallArgumentsDelta
+    | RealtimeServerEventResponseMCPCallArgumentsDone | RealtimeServerEventResponseMCPCallCompleted
+    | RealtimeServerEventResponseMCPCallFailed | RealtimeServerEventResponseMCPCallInProgress
+    | RealtimeServerEventResponseOutputItemAdded | RealtimeServerEventResponseOutputItemDone
+    | RealtimeServerEventResponseTextDelta | RealtimeServerEventResponseTextDone |
+    VoiceAgentServerEventResponseVideoDelta | VoiceAgentServerEventRtcCallError |
+    VoiceAgentServerEventRtcCallSdpCreated | VoiceAgentServerEventSessionAvatarConnecting
+    | VoiceAgentServerEventSessionAvatarSwitchToIdle | VoiceAgentServerEventSessionAvatarSwitchToSpeaking
+    | RealtimeServerEventSessionCreated | VoiceAgentServerEventSessionSubagentAborted
+    | VoiceAgentServerEventSessionSubagentCompleted | VoiceAgentServerEventSessionSubagentStarted
+    | RealtimeServerEventSessionUpdated | VoiceAgentServerEventWarning | Mapping[str,
+    Any]'
+  keywordOnlyParameters:
+  - name: timeout
+    description: 'Maximum time in seconds to wait for the next event. If `None`
+
+      (the default), block until an event is received. If no event arrives within
+
+      `timeout` seconds, raise <xref:TimeoutError>.'
+    defaultValue: None
+    types:
+    - <xref:float>
+    - <xref:None>
+  return:
+    description: The parsed server event.
+    types:
+    - <xref:azure.ai.projects.ServerEvent>
+  exceptions:
+  - type: ConnectionResetError
+    description: 'If the connection was closed by the server, gracefully or
+
+      otherwise. Iterating over the connection ( `for event in conn:`'
+  - type: TimeoutError
+    description: If `timeout` elapses before an event is received.
+- uid: azure.ai.projects.operations.BetaRealtimeConnection.send
+  name: send
+  summary: Send a client event over the connection.
+  signature: 'send(event: RealtimeClientEventConversationItemCreate | RealtimeClientEventConversationItemDelete
+    | RealtimeClientEventConversationItemRetrieve | RealtimeClientEventConversationItemTruncate
+    | RealtimeClientEventInputAudioBufferAppend | RealtimeClientEventInputAudioBufferClear
+    | RealtimeClientEventInputAudioBufferCommit | RealtimeClientEventOutputAudioBufferClear
+    | RealtimeClientEventResponseCancel | RealtimeClientEventResponseCreate | VoiceAgentClientEventRtcCallSdpCreate
+    | VoiceAgentClientEventSessionAvatarConnect | VoiceAgentClientEventSessionUpdate
+    | str | Mapping[str, Any]) -> None'
+  parameters:
+  - name: event
+    description: A strongly-typed client event, a ready-made mapping, or a raw JSON
+      string.
+    isRequired: true
+    types:
+    - <xref:azure.ai.projects.ClientEvent>
+    - <xref:str>
+  exceptions:
+  - type: ValueError
+    description: If `event` is a `str` that is not valid JSON.
+attributes:
+- uid: azure.ai.projects.operations.BetaRealtimeConnection.closed
+  name: closed
+  summary: Whether the underlying WebSocket connection has been closed.
+  return:
+    types:
+    - <xref:bool>

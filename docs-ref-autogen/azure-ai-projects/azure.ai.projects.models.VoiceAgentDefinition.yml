@@ -1,0 +1,464 @@
+### YamlMime:PythonClass
+uid: azure.ai.projects.models.VoiceAgentDefinition
+name: VoiceAgentDefinition
+fullName: azure.ai.projects.models.VoiceAgentDefinition
+module: azure.ai.projects.models
+summary: 'The voice agent definition. Its configuration (model, instructions, audio,
+  tools, and optional
+
+  avatar) drives a managed speech-to-speech experience. Establish realtime voice sessions
+  through
+
+  `GET /agents/{agent_name}/endpoint/protocols/voice`. Every create or update produces
+  a new
+
+  immutable version.'
+constructor:
+  syntax: 'VoiceAgentDefinition(*args: Any, **kwargs: Any)'
+variables:
+- description: Configuration for Responsible AI (RAI) content filtering and safety
+    features.
+  name: rai_config
+  types:
+  - <xref:azure.ai.projects.models.RaiConfig>
+- description: 'The kind discriminator for a voice agent definition. Always `voice`.
+    Required.
+
+    VOICE.'
+  name: kind
+  types:
+  - <xref:str>
+  - <xref:azure.ai.projects.models.VOICE>
+- description: 'How the model backing this voice agent is served. Required with `model`
+    for
+
+    a model-backed voice agent and omitted when `conversation_engine` is provided.
+    This is
+
+    independent of the architecture (realtime or cascaded), which the service derives
+    from the
+
+    selected model. Known values are: "managed" and "self_deployed".'
+  name: model_type
+  types:
+  - <xref:str>
+  - <xref:azure.ai.projects.models.VoiceModelType>
+- description: 'The model to use for this agent. Required with `model_type` for a
+    model-backed
+
+    voice agent and omitted when `conversation_engine` is provided. The model must
+    support
+
+    realtime or cascaded voice.'
+  name: model
+  types:
+  - <xref:str>
+- description: 'The engine that owns conversation handling for this voice agent.
+
+    Exactly one of this property and the model-backed configuration (`model_type`
+    with `model`)
+
+    must be provided. When this property is provided, `model_type`, `model`, `instructions`,
+
+    `tools`, and `tool_choice` must be omitted, and `greeting.tool_choice` cannot
+    be
+
+    `required`, because the engine owns the conversation logic. The initial implementation
+
+    supports a hosted-agent engine.'
+  name: conversation_engine
+  types:
+  - <xref:azure.ai.projects.models.VoiceConversationEngine>
+- description: 'A system (or developer) message inserted into the model''s context.
+    Supports
+
+    template substitution via `structured_inputs`, rendered per session before the
+    live session
+
+    starts.'
+  name: instructions
+  types:
+  - <xref:str>
+- description: 'Optional session-start greeting. Template mode speaks exact rendered
+    text;
+
+    LLM-generated mode asks the session model to author the opening response and may
+    use configured
+
+    tools.'
+  name: greeting
+  types:
+  - <xref:azure.ai.projects.models.VoiceAgentGreetingConfig>
+- description: 'The audio configuration, including input and output formats, voice,
+    turn
+
+    detection, noise reduction, and transcription. These values are session defaults;
+    a client may
+
+    override supported fields when connecting.'
+  name: audio
+  types:
+  - <xref:azure.ai.projects.models.VoiceAgentAudioConfig>
+- description: 'The output modalities the agent produces. Defaults to `["audio"]`.
+
+    `animation` and `avatar` are available when an avatar is configured.'
+  name: output_modalities
+  types:
+  - <xref:list>[<xref:str>
+  - <xref:azure.ai.projects.models.VoiceOutputModality>]
+- description: 'The maximum output-token count for one response. Is either a int type
+
+    or a Literal["inf"] type.'
+  name: max_output_tokens
+  types:
+  - <xref:int>
+  - <xref:str>
+- description: Additional fields to include in service outputs.
+  name: include
+  types:
+  - <xref:list>[<xref:str>
+  - <xref:azure.ai.projects.models.VoiceAgentSessionIncludeOption>]
+- description: Interim-response settings for latency and tool execution.
+  name: interim_response
+  types:
+  - <xref:azure.ai.projects.models.VoiceAgentInterimResponseConfig>
+- description: 'Optional avatar configuration. These values are session defaults and
+    may be
+
+    overridden when connecting.'
+  name: avatar
+  types:
+  - <xref:azure.ai.projects.models.VoiceAgentAvatarConfig>
+- description: 'The tools the voice agent may use. Supported tool kinds are `function`
+    (executed
+
+    by the client), `mcp`, `system` (service-managed session controls), and `toolbox`.
+
+    Server-side tools such as `web_search`, `azure_ai_search`, and `openapi` are provided
+
+    through a toolbox rather than declared directly.'
+  name: tools
+  types:
+  - <xref:list>[<xref:azure.ai.projects.models.VoiceAgentTool>]
+- description: 'How the model chooses tools for generated responses. `none` prevents
+    tool
+
+    calls, `auto` lets the model decide, `required` requires at least one tool call,
+    and a
+
+    specific function or MCP tool can be selected with an object. Defaults to `auto`.
+    Is one of
+
+    the following types: Literal["none"], Literal["auto"], Literal["required"], ToolChoiceFunction,
+
+    ToolChoiceMCP'
+  name: tool_choice
+  types:
+  - <xref:str>
+  - <xref:str>
+  - <xref:str>
+  - <xref:azure.ai.projects.models.ToolChoiceFunction>
+  - <xref:azure.ai.projects.models.ToolChoiceMCP>
+- description: Whether the model may call multiple tools in parallel.
+  name: parallel_tool_calls
+  types:
+  - <xref:bool>
+- description: 'Set of structured inputs that participate in prompt template
+
+    substitution, rendered per session before the live session starts.'
+  name: structured_inputs
+  types:
+  - <xref:dict>[<xref:str>, <xref:azure.ai.projects.models.StructuredInputDefinition>]
+- description: 'Optional configuration for sibling Foundry text agents that this voice
+
+    agent may consult as background specialists.'
+  name: subagent_config
+  types:
+  - <xref:azure.ai.projects.models.VoiceAgentSubagentConfig>
+- description: "Whether conversations with this agent are persisted. A single, all-or-nothing\n\
+    persistence switch that defaults to `false` (privacy-safe: off by default). When\
+    \ `true`,\nFoundry persists the full conversation \u2014 the transcript/event\
+    \ timeline and raw audio. When\n`false`, nothing is persisted and no conversation\
+    \ is surfaced. There is no separate\naudio-logging control; audio is persisted\
+    \ only as part of this switch. Latency/performance\ntelemetry (e.g. time-to-first-audio,\
+    \ inter-token latency, interruption) is observability-only\n(customer trace /\
+    \ App Insights) and is not part of the persisted conversation content."
+  name: store
+  types:
+  - <xref:bool>
+methods:
+- uid: azure.ai.projects.models.VoiceAgentDefinition.as_dict
+  name: as_dict
+  summary: Return a dict that can be turned into json using json.dump.
+  signature: 'as_dict(*, exclude_readonly: bool = False) -> dict[str, Any]'
+  keywordOnlyParameters:
+  - name: exclude_readonly
+    description: Whether to remove the readonly properties.
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  return:
+    description: A dict JSON compatible object
+    types:
+    - <xref:dict>
+- uid: azure.ai.projects.models.VoiceAgentDefinition.clear
+  name: clear
+  summary: Remove all items from the dictionary.
+  signature: clear() -> None
+- uid: azure.ai.projects.models.VoiceAgentDefinition.copy
+  name: copy
+  signature: copy() -> Model
+- uid: azure.ai.projects.models.VoiceAgentDefinition.get
+  name: get
+  summary: 'Get the value for key if key is in the dictionary, else default.
+
+    :param str key: The key to look up.
+
+    :param any default: The value to return if key is not in the dictionary. Defaults
+    to None
+
+    :returns: The value for key if key is in the dictionary, else default.
+
+    :rtype: any'
+  signature: 'get(key: str, default: Any = None) -> Any'
+  parameters:
+  - name: key
+    isRequired: true
+  - name: default
+    defaultValue: None
+- uid: azure.ai.projects.models.VoiceAgentDefinition.items
+  name: items
+  signature: items() -> ItemsView[str, Any]
+  return:
+    description: a set-like object providing a view on the mapping's items
+    types:
+    - <xref:typing.ItemsView>
+- uid: azure.ai.projects.models.VoiceAgentDefinition.keys
+  name: keys
+  signature: keys() -> KeysView[str]
+  return:
+    description: a set-like object providing a view on the mapping's keys
+    types:
+    - <xref:typing.KeysView>
+- uid: azure.ai.projects.models.VoiceAgentDefinition.pop
+  name: pop
+  summary: 'Removes specified key and return the corresponding value.
+
+    :param str key: The key to pop.
+
+    :param any default: The value to return if key is not in the dictionary
+
+    :returns: The value corresponding to the key.
+
+    :rtype: any
+
+    :raises KeyError: If key is not found and default is not given.'
+  signature: 'pop(key: str, default: ~typing.Any = <object object>) -> Any'
+  parameters:
+  - name: key
+    isRequired: true
+  - name: default
+- uid: azure.ai.projects.models.VoiceAgentDefinition.popitem
+  name: popitem
+  summary: 'Removes and returns some (key, value) pair
+
+    :returns: The (key, value) pair.
+
+    :rtype: tuple
+
+    :raises KeyError: if the dictionary is empty.'
+  signature: popitem() -> tuple[str, Any]
+- uid: azure.ai.projects.models.VoiceAgentDefinition.setdefault
+  name: setdefault
+  summary: 'Return the value for key if key is in the dictionary; otherwise set the
+    key to
+
+    default and return default.
+
+    :param str key: The key to look up.
+
+    :param any default: The value to set if key is not in the dictionary
+
+    :returns: The value for key if key is in the dictionary, else default.
+
+    :rtype: any'
+  signature: 'setdefault(key: str, default: ~typing.Any = <object object>) -> Any'
+  parameters:
+  - name: key
+    isRequired: true
+  - name: default
+- uid: azure.ai.projects.models.VoiceAgentDefinition.update
+  name: update
+  summary: 'Update the dictionary from a mapping or an iterable of key-value pairs.
+
+    :param any args: Either a mapping object or an iterable of key-value pairs.'
+  signature: 'update(*args: Any, **kwargs: Any) -> None'
+- uid: azure.ai.projects.models.VoiceAgentDefinition.values
+  name: values
+  signature: values() -> ValuesView[Any]
+  return:
+    description: an object providing a view on the mapping's values
+    types:
+    - <xref:typing.ValuesView>
+attributes:
+- uid: azure.ai.projects.models.VoiceAgentDefinition.audio
+  name: audio
+  summary: 'The audio configuration, including input and output formats, voice, turn
+    detection, noise
+
+    reduction, and transcription. These values are session defaults; a client may
+    override
+
+    supported fields when connecting.'
+  signature: 'audio: _models.VoiceAgentAudioConfig | None'
+- uid: azure.ai.projects.models.VoiceAgentDefinition.avatar
+  name: avatar
+  summary: 'Optional avatar configuration. These values are session defaults and may
+    be overridden when
+
+    connecting.'
+  signature: 'avatar: _models.VoiceAgentAvatarConfig | None'
+- uid: azure.ai.projects.models.VoiceAgentDefinition.conversation_engine
+  name: conversation_engine
+  summary: 'The engine that owns conversation handling for this voice agent. Exactly
+    one of this property
+
+    and the model-backed configuration (`model_type` with `model`) must be provided.
+    When this
+
+    property is provided, `model_type`, `model`, `instructions`, `tools`, and
+
+    `tool_choice` must be omitted, and `greeting.tool_choice` cannot be `required`,
+    because
+
+    the engine owns the conversation logic. The initial implementation supports a
+    hosted-agent
+
+    engine.'
+  signature: 'conversation_engine: _models.VoiceConversationEngine | None'
+- uid: azure.ai.projects.models.VoiceAgentDefinition.greeting
+  name: greeting
+  summary: 'Optional session-start greeting. Template mode speaks exact rendered text;
+    LLM-generated mode
+
+    asks the session model to author the opening response and may use configured tools.'
+  signature: 'greeting: _models.VoiceAgentGreetingConfig | None'
+- uid: azure.ai.projects.models.VoiceAgentDefinition.include
+  name: include
+  summary: Additional fields to include in service outputs.
+  signature: 'include: list[typing.Union[str, ForwardRef(''_models.VoiceAgentSessionIncludeOption'')]]
+    | None'
+- uid: azure.ai.projects.models.VoiceAgentDefinition.instructions
+  name: instructions
+  summary: 'A system (or developer) message inserted into the model''s context. Supports
+    template
+
+    substitution via `structured_inputs`, rendered per session before the live session
+    starts.'
+  signature: 'instructions: str | None'
+- uid: azure.ai.projects.models.VoiceAgentDefinition.interim_response
+  name: interim_response
+  summary: Interim-response settings for latency and tool execution.
+  signature: 'interim_response: _models.VoiceAgentInterimResponseConfig | None'
+- uid: azure.ai.projects.models.VoiceAgentDefinition.kind
+  name: kind
+  summary: The kind discriminator for a voice agent definition. Always `voice`. Required.
+    VOICE.
+  signature: 'kind: VOICE: ''voice''>]'
+- uid: azure.ai.projects.models.VoiceAgentDefinition.max_output_tokens
+  name: max_output_tokens
+  summary: 'The maximum output-token count for one response. Is either a int type
+    or a Literal["inf"]
+
+    type.'
+  signature: 'max_output_tokens: _unions.VoiceAgentMaxOutputTokens | None'
+- uid: azure.ai.projects.models.VoiceAgentDefinition.model
+  name: model
+  summary: 'The model to use for this agent. Required with `model_type` for a model-backed
+    voice agent
+
+    and omitted when `conversation_engine` is provided. The model must support realtime
+    or
+
+    cascaded voice.'
+  signature: 'model: str | None'
+- uid: azure.ai.projects.models.VoiceAgentDefinition.model_type
+  name: model_type
+  summary: 'How the model backing this voice agent is served. Required with `model`
+    for a model-backed
+
+    voice agent and omitted when `conversation_engine` is provided. This is independent
+    of the
+
+    architecture (realtime or cascaded), which the service derives from the selected
+    model. Known
+
+    values are: "managed" and "self_deployed".'
+  signature: 'model_type: str | _models.VoiceModelType | None'
+- uid: azure.ai.projects.models.VoiceAgentDefinition.output_modalities
+  name: output_modalities
+  summary: 'The output modalities the agent produces. Defaults to `["audio"]`. `animation`
+    and
+
+    `avatar` are available when an avatar is configured.'
+  signature: 'output_modalities: list[typing.Union[str, ForwardRef(''_models.VoiceOutputModality'')]]
+    | None'
+- uid: azure.ai.projects.models.VoiceAgentDefinition.parallel_tool_calls
+  name: parallel_tool_calls
+  summary: Whether the model may call multiple tools in parallel.
+  signature: 'parallel_tool_calls: bool | None'
+- uid: azure.ai.projects.models.VoiceAgentDefinition.rai_config
+  name: rai_config
+  summary: Configuration for Responsible AI (RAI) content filtering and safety features.
+  signature: 'rai_config: ''_models.RaiConfig'' | None'
+- uid: azure.ai.projects.models.VoiceAgentDefinition.store
+  name: store
+  summary: "Whether conversations with this agent are persisted. A single, all-or-nothing\
+    \ persistence\nswitch that defaults to `false` (privacy-safe: off by default).\
+    \ When `true`, Foundry\npersists the full conversation \u2014 the transcript/event\
+    \ timeline and raw audio. When `false`,\nnothing is persisted and no conversation\
+    \ is surfaced. There is no separate audio-logging\ncontrol; audio is persisted\
+    \ only as part of this switch. Latency/performance telemetry (e.g.\ntime-to-first-audio,\
+    \ inter-token latency, interruption) is observability-only (customer trace /\n\
+    App Insights) and is not part of the persisted conversation content."
+  signature: 'store: bool | None'
+- uid: azure.ai.projects.models.VoiceAgentDefinition.structured_inputs
+  name: structured_inputs
+  summary: 'Set of structured inputs that participate in prompt template substitution,
+    rendered per session
+
+    before the live session starts.'
+  signature: 'structured_inputs: dict[str, ''_models.StructuredInputDefinition'']
+    | None'
+- uid: azure.ai.projects.models.VoiceAgentDefinition.subagent_config
+  name: subagent_config
+  summary: 'Optional configuration for sibling Foundry text agents that this voice
+    agent may consult as
+
+    background specialists.'
+  signature: 'subagent_config: _models.VoiceAgentSubagentConfig | None'
+- uid: azure.ai.projects.models.VoiceAgentDefinition.tool_choice
+  name: tool_choice
+  summary: 'How the model chooses tools for generated responses. `none` prevents tool
+    calls, `auto`
+
+    lets the model decide, `required` requires at least one tool call, and a specific
+    function or
+
+    MCP tool can be selected with an object. Defaults to `auto`. Is one of the following
+    types:
+
+    Literal["none"], Literal["auto"], Literal["required"], ToolChoiceFunction, ToolChoiceMCP'
+  signature: 'tool_choice: _unions.VoiceAgentToolChoice | None'
+- uid: azure.ai.projects.models.VoiceAgentDefinition.tools
+  name: tools
+  summary: 'The tools the voice agent may use. Supported tool kinds are `function`
+    (executed by the
+
+    client), `mcp`, `system` (service-managed session controls), and `toolbox`. Server-side
+
+    tools such as `web_search`, `azure_ai_search`, and `openapi` are provided through
+    a
+
+    toolbox rather than declared directly.'
+  signature: 'tools: list[''_models.VoiceAgentTool''] | None'

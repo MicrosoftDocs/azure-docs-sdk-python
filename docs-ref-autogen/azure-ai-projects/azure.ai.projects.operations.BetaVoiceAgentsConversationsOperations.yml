@@ -1,0 +1,681 @@
+### YamlMime:PythonClass
+uid: azure.ai.projects.operations.BetaVoiceAgentsConversationsOperations
+name: BetaVoiceAgentsConversationsOperations
+fullName: azure.ai.projects.operations.BetaVoiceAgentsConversationsOperations
+module: azure.ai.projects.operations
+summary: "> [!WARNING]\n> DO NOT instantiate this class directly.\n>\n> \n>\n> Instead,\
+  \ you should access the following operations through\n>\n> <xref:azure.ai.projects.AIProjectClient>'s\n\
+  >\n> <xref:conversations> attribute.\n>"
+constructor:
+  syntax: BetaVoiceAgentsConversationsOperations(*args, **kwargs)
+methods:
+- uid: azure.ai.projects.operations.BetaVoiceAgentsConversationsOperations.delete
+  name: delete
+  summary: "Delete a voice agent conversation.\n\nDeletes a conversation and all of\
+    \ its stored data \u2014 responses, items, and any audio (cascade).\nThis is the\
+    \ customer's explicit data-deletion control for voice conversations."
+  signature: 'delete(agent_name: str, conversation_id: str, **kwargs: Any) -> None'
+  parameters:
+  - name: agent_name
+    description: The name of the agent. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: conversation_id
+    description: The id of the conversation to delete. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaVoiceAgentsConversationsOperations.download_audio
+  name: download_audio
+  summary: "Stream a voice agent conversation's merged recording.\n\nStreams the whole-call\
+    \ merged stereo recording as a WAV (`audio/wav`) byte stream through the\nservice\
+    \ (no SAS URL). This route serves Foundry-managed storage only. For\nbring-your-own-storage\
+    \ (BYOS) recordings the bytes are not proxied \u2014 the caller must download\n\
+    directly from customer storage using the `blob_uri` returned by the metadata route\
+    \ \u2014 so this\nroute returns `409 Conflict` for BYOS recordings. While the\
+    \ conversation is `in_progress`,\nthis route returns retriable `409 Conflict`\
+    \ with `error.code = recording_not_ready` and a\n`Retry-After` header when retry\
+    \ guidance is available. When the conversation is `failed`,\nit returns terminal\
+    \ `409 Conflict` with `error.code = recording_unavailable`. For a\n`completed`\
+    \ conversation, content is available subject to the existing BYOS behavior. A\n\
+    conversation without persisted audio (`store = false`) returns `404`."
+  signature: 'download_audio(agent_name: str, conversation_id: str, **kwargs: Any)
+    -> Iterator[bytes]'
+  parameters:
+  - name: agent_name
+    description: The name of the agent. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: conversation_id
+    description: 'The id of the conversation whose merged recording is streamed.
+
+      Required.'
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: Iterator[bytes]
+    types:
+    - <xref:typing.Iterator>[<xref:bytes>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaVoiceAgentsConversationsOperations.download_audio_item
+  name: download_audio_item
+  summary: "Stream a voice agent conversation item's audio.\n\nStreams a single conversation\
+    \ item's audio as a WAV (`audio/wav`) byte stream through the\nservice (no SAS\
+    \ URL). This route serves Foundry-managed storage only. For\nbring-your-own-storage\
+    \ (BYOS) recordings the bytes are not proxied \u2014 the caller must download\n\
+    directly from customer storage using the `blob_uri` returned by the item's `/audio`\n\
+    metadata route \u2014 so this route returns `409 Conflict` for BYOS recordings.\
+    \ Returns `404`\nwhen the conversation, item, or its audio was not persisted (`store\
+    \ = false`)."
+  signature: 'download_audio_item(agent_name: str, conversation_id: str, item_id:
+    str, **kwargs: Any) -> Iterator[bytes]'
+  parameters:
+  - name: agent_name
+    description: The name of the agent. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: conversation_id
+    description: The id of the conversation that contains the item. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: item_id
+    description: The id of the conversation item whose audio is streamed. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: Iterator[bytes]
+    types:
+    - <xref:typing.Iterator>[<xref:bytes>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaVoiceAgentsConversationsOperations.download_generated_audio_item
+  name: download_generated_audio_item
+  summary: 'Stream a voice agent conversation item''s generated audio.
+
+
+    Streams a conversation item''s generated audio as a WAV (`audio/wav`) byte stream
+    through the
+
+    service. This subordinate artifact exists only when playback was interrupted and
+    the service
+
+    rendered more audio than the listener heard, including when the response ends
+    as cancelled.
+
+    This route serves Foundry-managed storage only. For bring-your-own-storage (BYOS)
+    recordings
+
+    the bytes are not proxied, so this route returns `409 Conflict`. Returns `404`
+    when the
+
+    conversation or item was not persisted, or when no generated audio exists beyond
+    the heard
+
+    segment.'
+  signature: 'download_generated_audio_item(agent_name: str, conversation_id: str,
+    item_id: str, **kwargs: Any) -> Iterator[bytes]'
+  parameters:
+  - name: agent_name
+    description: The name of the agent. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: conversation_id
+    description: The id of the conversation that contains the item. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: item_id
+    description: The id of the conversation item whose generated audio is streamed.
+      Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: Iterator[bytes]
+    types:
+    - <xref:typing.Iterator>[<xref:bytes>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaVoiceAgentsConversationsOperations.get
+  name: get
+  summary: 'Get a voice agent conversation.
+
+
+    Retrieves a single conversation recorded for the specified voice agent endpoint
+    by its id.
+
+    Returns `404` when the conversation was not persisted (`store = false`) or does
+    not exist.'
+  signature: 'get(agent_name: str, conversation_id: str, **kwargs: Any) -> VoiceConversation'
+  parameters:
+  - name: agent_name
+    description: The name of the agent. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: conversation_id
+    description: The id of the conversation to retrieve. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: VoiceConversation. The VoiceConversation is compatible with MutableMapping
+    types:
+    - <xref:azure.ai.projects.models.VoiceConversation>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaVoiceAgentsConversationsOperations.get_audio
+  name: get_audio
+  summary: 'Get a voice agent conversation''s merged recording metadata.
+
+
+    Returns metadata for the whole-call merged stereo recording (user audio on the
+    left channel,
+
+    agent audio on the right). The common metadata (format, sample rate, channels,
+    channel layout,
+
+    duration) is returned for both Foundry-managed and bring-your-own-storage (BYOS)
+    recordings;
+
+    for BYOS the response additionally includes `blob_uri`, the URI of the recording
+    in the
+
+    customer''s own storage (no SAS) that the customer downloads with their own credentials.
+    The
+
+    recording is built once from the per-turn segments after persistence finalization
+    succeeds.
+
+    While the conversation is `in_progress`, this route returns retriable `409 Conflict`
+    with
+
+    `error.code = recording_not_ready` and a `Retry-After` header when retry guidance
+    is
+
+    available. When the conversation is `failed`, it returns terminal `409 Conflict`
+    with
+
+    `error.code = recording_unavailable`. For a `completed` conversation, metadata
+    is available
+
+    subject to the existing BYOS behavior. Requires the conversation to have persisted
+    audio
+
+    (`store = true`); otherwise returns `404`.'
+  signature: 'get_audio(agent_name: str, conversation_id: str, **kwargs: Any) -> VoiceRecording'
+  parameters:
+  - name: agent_name
+    description: The name of the agent. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: conversation_id
+    description: 'The id of the conversation whose merged recording metadata is
+
+      retrieved. Required.'
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: VoiceRecording. The VoiceRecording is compatible with MutableMapping
+    types:
+    - <xref:azure.ai.projects.models.VoiceRecording>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaVoiceAgentsConversationsOperations.get_audio_item
+  name: get_audio_item
+  summary: 'Get a voice agent conversation item''s audio metadata.
+
+
+    Returns metadata for a single conversation item''s audio segment, including the
+    common playback
+
+    facts (role, format/codec, sample rate, channels, offset, duration) for both Foundry-managed
+
+    and bring-your-own-storage (BYOS) recordings; for BYOS the response additionally
+    includes
+
+    `blob_uri`, the URI of the recording in the customer''s own storage (no SAS) that
+    the customer
+
+    downloads with their own credentials. Requires the conversation to have persisted
+    audio
+
+    (`store = true`); returns `404` when the conversation, item, or its audio was
+    not
+
+    persisted.'
+  signature: 'get_audio_item(agent_name: str, conversation_id: str, item_id: str,
+    **kwargs: Any) -> VoiceAudioItem'
+  parameters:
+  - name: agent_name
+    description: The name of the agent. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: conversation_id
+    description: The id of the conversation that contains the item. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: item_id
+    description: The id of the conversation item whose audio metadata is retrieved.
+      Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: VoiceAudioItem. The VoiceAudioItem is compatible with MutableMapping
+    types:
+    - <xref:azure.ai.projects.models.VoiceAudioItem>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaVoiceAgentsConversationsOperations.get_generated_audio_item
+  name: get_generated_audio_item
+  summary: 'Get a voice agent conversation item''s generated audio metadata.
+
+
+    Returns metadata for a conversation item''s generated audio. This subordinate
+    artifact is
+
+    separate from the canonical heard-audio segment and exists only when playback
+    was interrupted
+
+    and the service rendered more audio than the listener heard, including when the
+    response ends
+
+    as cancelled. Returns `404` when the conversation or item was not persisted, or
+    when no
+
+    generated audio exists beyond the heard segment.'
+  signature: 'get_generated_audio_item(agent_name: str, conversation_id: str, item_id:
+    str, **kwargs: Any) -> VoiceGeneratedAudioItem'
+  parameters:
+  - name: agent_name
+    description: The name of the agent. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: conversation_id
+    description: The id of the conversation that contains the item. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: item_id
+    description: 'The id of the conversation item whose generated audio metadata is
+      retrieved.
+
+      Required.'
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: VoiceGeneratedAudioItem. The VoiceGeneratedAudioItem is compatible
+      with MutableMapping
+    types:
+    - <xref:azure.ai.projects.models.VoiceGeneratedAudioItem>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaVoiceAgentsConversationsOperations.get_item
+  name: get_item
+  summary: 'Get a voice agent conversation item.
+
+
+    Retrieves a single item from the specified conversation by its id, including its
+    transcript. An
+
+    `input_audio`/`output_audio` content part indicates that audio is available for
+    the item;
+
+    the canonical per-item audio metadata is the `/items/{item_id}/audio` resource,
+    and the bytes
+
+    are streamed by `/items/{item_id}/audio/content`. Returns `404` when the conversation
+    or
+
+    item was not persisted (`store = false`).'
+  signature: 'get_item(agent_name: str, conversation_id: str, item_id: str, **kwargs:
+    Any) -> RealtimeConversationItem'
+  parameters:
+  - name: agent_name
+    description: The name of the agent. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: conversation_id
+    description: The id of the conversation that contains the item. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: item_id
+    description: The id of the conversation item to retrieve. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: 'RealtimeConversationItem. The RealtimeConversationItem is compatible
+      with
+
+      MutableMapping'
+    types:
+    - <xref:azure.ai.projects.models.RealtimeConversationItem>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaVoiceAgentsConversationsOperations.get_response
+  name: get_response
+  summary: 'Get a voice agent conversation response.
+
+
+    Retrieves a single response from the specified conversation by its id, including
+    its `output`
+
+    items, `usage`, and status. Returns `404` when the conversation or response was
+    not
+
+    persisted (`store = false`).'
+  signature: 'get_response(agent_name: str, conversation_id: str, response_id: str,
+    **kwargs: Any) -> VoiceResponse'
+  parameters:
+  - name: agent_name
+    description: The name of the agent. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: conversation_id
+    description: The id of the conversation that contains the response. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: response_id
+    description: The id of the response to retrieve. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: VoiceResponse. The VoiceResponse is compatible with MutableMapping
+    types:
+    - <xref:azure.ai.projects.models.VoiceResponse>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaVoiceAgentsConversationsOperations.list
+  name: list
+  summary: 'List voice agent conversations.
+
+
+    Returns the conversations persisted for the specified voice agent endpoint. Conversations
+    are
+
+    present when the session''s effective `store` setting is `true`, whether inherited
+    from the
+
+    agent definition or enabled by the WebSocket session override.'
+  signature: 'list(agent_name: str, *, limit: int | None = None, order: str | PageOrder
+    | None = None, before: str | None = None, **kwargs: Any) -> ItemPaged[VoiceConversation]'
+  parameters:
+  - name: agent_name
+    description: The name of the agent. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: limit
+    description: 'A limit on the number of objects to be returned. Limit can range
+      between 1 and
+
+      100, and the
+
+      default is 20. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: order
+    description: 'Sort order by the `created_at` timestamp of the objects. `asc` for
+
+      ascending order and``desc``
+
+      for descending order. Known values are: "asc" and "desc". Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.ai.projects.models.PageOrder>
+  - name: before
+    description: 'A cursor for use in pagination. `before` is an object ID that defines
+      your
+
+      place in the list.
+
+      For instance, if you make a list request and receive 100 objects, ending with
+      obj_foo, your
+
+      subsequent call can include before=obj_foo in order to fetch the previous page
+      of the list.
+
+      Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: An iterator like instance of VoiceConversation
+    types:
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.ai.projects.models.VoiceConversation>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaVoiceAgentsConversationsOperations.list_items
+  name: list_items
+  summary: "List items in a voice agent conversation.\n\nReturns a paged collection\
+    \ of items \u2014 the complete ordered conversation history, including user\n\
+    input, assistant output, and client-created tool outputs (transcripts + tool events).\
+    \ Returns\n`404` when the conversation was not persisted (`store = false`)."
+  signature: 'list_items(agent_name: str, conversation_id: str, *, limit: int | None
+    = None, order: str | PageOrder | None = None, before: str | None = None, **kwargs:
+    Any) -> ItemPaged[RealtimeConversationItem]'
+  parameters:
+  - name: agent_name
+    description: The name of the agent. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: conversation_id
+    description: The id of the conversation whose items are listed. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: limit
+    description: 'A limit on the number of objects to be returned. Limit can range
+      between 1 and
+
+      100, and the
+
+      default is 20. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: order
+    description: 'Sort order by the `created_at` timestamp of the objects. `asc` for
+
+      ascending order and``desc``
+
+      for descending order. Known values are: "asc" and "desc". Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.ai.projects.models.PageOrder>
+  - name: before
+    description: 'A cursor for use in pagination. `before` is an object ID that defines
+      your
+
+      place in the list.
+
+      For instance, if you make a list request and receive 100 objects, ending with
+      obj_foo, your
+
+      subsequent call can include before=obj_foo in order to fetch the previous page
+      of the list.
+
+      Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: An iterator like instance of RealtimeConversationItem
+    types:
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.ai.projects.models.RealtimeConversationItem>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaVoiceAgentsConversationsOperations.list_response_items
+  name: list_response_items
+  summary: "List items produced by a voice agent conversation response.\n\nReturns\
+    \ a paged collection of the output items produced by a specific response (the\
+    \ response's\noutput projection). For the complete ordered conversation history\
+    \ \u2014 including user input and\nclient-created tool outputs \u2014 use the\
+    \ conversation items route instead. Returns `404` when\nthe conversation or response\
+    \ was not persisted (`store = false`)."
+  signature: 'list_response_items(agent_name: str, conversation_id: str, response_id:
+    str, *, limit: int | None = None, order: str | PageOrder | None = None, before:
+    str | None = None, **kwargs: Any) -> ItemPaged[RealtimeConversationItem]'
+  parameters:
+  - name: agent_name
+    description: The name of the agent. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: conversation_id
+    description: The id of the conversation that contains the response. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: response_id
+    description: The id of the response whose output items are listed. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: limit
+    description: 'A limit on the number of objects to be returned. Limit can range
+      between 1 and
+
+      100, and the
+
+      default is 20. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: order
+    description: 'Sort order by the `created_at` timestamp of the objects. `asc` for
+
+      ascending order and``desc``
+
+      for descending order. Known values are: "asc" and "desc". Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.ai.projects.models.PageOrder>
+  - name: before
+    description: 'A cursor for use in pagination. `before` is an object ID that defines
+      your
+
+      place in the list.
+
+      For instance, if you make a list request and receive 100 objects, ending with
+      obj_foo, your
+
+      subsequent call can include before=obj_foo in order to fetch the previous page
+      of the list.
+
+      Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: An iterator like instance of RealtimeConversationItem
+    types:
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.ai.projects.models.RealtimeConversationItem>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.projects.operations.BetaVoiceAgentsConversationsOperations.list_responses
+  name: list_responses
+  summary: 'List responses in a voice agent conversation.
+
+
+    Returns a paged collection of the responses (model inference turns) recorded for
+    the specified
+
+    conversation. The per-response `output` projection may be omitted here; use the
+
+    response-items route for the canonical paged output. Returns `404` when the conversation
+    was
+
+    not persisted (`store = false`).'
+  signature: 'list_responses(agent_name: str, conversation_id: str, *, limit: int
+    | None = None, order: str | PageOrder | None = None, before: str | None = None,
+    **kwargs: Any) -> ItemPaged[VoiceResponse]'
+  parameters:
+  - name: agent_name
+    description: The name of the agent. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: conversation_id
+    description: The id of the conversation whose responses are listed. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: limit
+    description: 'A limit on the number of objects to be returned. Limit can range
+      between 1 and
+
+      100, and the
+
+      default is 20. Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: order
+    description: 'Sort order by the `created_at` timestamp of the objects. `asc` for
+
+      ascending order and``desc``
+
+      for descending order. Known values are: "asc" and "desc". Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.ai.projects.models.PageOrder>
+  - name: before
+    description: 'A cursor for use in pagination. `before` is an object ID that defines
+      your
+
+      place in the list.
+
+      For instance, if you make a list request and receive 100 objects, ending with
+      obj_foo, your
+
+      subsequent call can include before=obj_foo in order to fetch the previous page
+      of the list.
+
+      Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: An iterator like instance of VoiceResponse
+    types:
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.ai.projects.models.VoiceResponse>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError

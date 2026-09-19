@@ -1,0 +1,117 @@
+### YamlMime:PythonClass
+uid: azure.ai.projects.aio.operations.AsyncBetaRealtimeConnection
+name: AsyncBetaRealtimeConnection
+fullName: azure.ai.projects.aio.operations.AsyncBetaRealtimeConnection
+module: azure.ai.projects.aio.operations
+summary: "An open realtime WebSocket connection to a voice agent.\n\nIterate over\
+  \ the connection to receive strongly-typed server events, and use the\nsub-namespaces\
+  \ to send strongly-typed client events:\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+  : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\": \"preserve\"\
+  , \"language\": \"default\", \"force\": false, \"linenos\": false} -->\n\n````default\n\
+  \n   async with client.beta.voice_agents.realtime.connect(agent_name=\"my-agent\"\
+  ) as conn:\n       await conn.input_audio_buffer.append(audio=chunk)\n       await\
+  \ conn.input_audio_buffer.commit()\n       await conn.response.create()\n      \
+  \ async for event in conn:\n           if event.type == RealtimeServerEventType.RESPONSE_DONE:\n\
+  \               break\n   ````"
+constructor:
+  syntax: 'AsyncBetaRealtimeConnection(connection: ClientWebSocketResponse, session:
+    ClientSession)'
+  parameters:
+  - name: connection
+    isRequired: true
+  - name: session
+    isRequired: true
+methods:
+- uid: azure.ai.projects.aio.operations.AsyncBetaRealtimeConnection.close
+  name: close
+  summary: Close the connection and release the underlying HTTP session.
+  signature: 'async close(*, code: int = 1000, reason: str = '''') -> None'
+  keywordOnlyParameters:
+  - name: code
+    description: The WebSocket close code.
+    defaultValue: '1000'
+    types:
+    - <xref:int>
+  - name: reason
+    description: The close reason.
+    types:
+    - <xref:str>
+- uid: azure.ai.projects.aio.operations.AsyncBetaRealtimeConnection.recv
+  name: recv
+  summary: 'Receive and parse the next server event.
+
+
+    Known event types are returned as their strongly-typed
+
+    `VoiceAgentServerEventXxx` model. Event types not (yet) represented by a
+
+    generated model are returned as a plain `dict` for forward compatibility.'
+  signature: async recv() -> RealtimeServerEventError | RealtimeServerEventResponseContentPartAdded
+    | RealtimeServerEventConversationItemAdded | RealtimeServerEventConversationItemCreated
+    | RealtimeServerEventConversationItemDeleted | RealtimeServerEventConversationItemDone
+    | RealtimeServerEventConversationItemInputAudioTranscriptionCompleted | RealtimeServerEventConversationItemInputAudioTranscriptionDelta
+    | RealtimeServerEventConversationItemInputAudioTranscriptionFailed | RealtimeServerEventConversationItemInputAudioTranscriptionSegment
+    | RealtimeServerEventConversationItemRetrieved | RealtimeServerEventConversationItemTruncated
+    | RealtimeServerEventInputAudioBufferCleared | RealtimeServerEventInputAudioBufferCommitted
+    | RealtimeServerEventInputAudioBufferSpeechStarted | RealtimeServerEventInputAudioBufferSpeechStopped
+    | RealtimeServerEventInputAudioBufferTimeoutTriggered | RealtimeServerEventMCPListToolsCompleted
+    | RealtimeServerEventMCPListToolsFailed | RealtimeServerEventMCPListToolsInProgress
+    | RealtimeServerEventOutputAudioBufferCleared | RealtimeServerEventRateLimitsUpdated
+    | VoiceAgentServerEventResponseAnimationBlendshapesDelta | VoiceAgentServerEventResponseAnimationBlendshapesDone
+    | VoiceAgentServerEventResponseAnimationVisemeDelta | VoiceAgentServerEventResponseAnimationVisemeDone
+    | RealtimeServerEventResponseAudioDelta | RealtimeServerEventResponseAudioDone
+    | VoiceAgentServerEventResponseAudioTimestampDelta | VoiceAgentServerEventResponseAudioTimestampDone
+    | RealtimeServerEventResponseAudioTranscriptDelta | RealtimeServerEventResponseAudioTranscriptDone
+    | RealtimeServerEventResponseContentPartDone | RealtimeServerEventResponseCreated
+    | RealtimeServerEventResponseDone | RealtimeServerEventResponseFunctionCallArgumentsDelta
+    | RealtimeServerEventResponseFunctionCallArgumentsDone | RealtimeServerEventResponseMCPCallArgumentsDelta
+    | RealtimeServerEventResponseMCPCallArgumentsDone | RealtimeServerEventResponseMCPCallCompleted
+    | RealtimeServerEventResponseMCPCallFailed | RealtimeServerEventResponseMCPCallInProgress
+    | RealtimeServerEventResponseOutputItemAdded | RealtimeServerEventResponseOutputItemDone
+    | RealtimeServerEventResponseTextDelta | RealtimeServerEventResponseTextDone |
+    VoiceAgentServerEventResponseVideoDelta | VoiceAgentServerEventRtcCallError |
+    VoiceAgentServerEventRtcCallSdpCreated | VoiceAgentServerEventSessionAvatarConnecting
+    | VoiceAgentServerEventSessionAvatarSwitchToIdle | VoiceAgentServerEventSessionAvatarSwitchToSpeaking
+    | RealtimeServerEventSessionCreated | VoiceAgentServerEventSessionSubagentAborted
+    | VoiceAgentServerEventSessionSubagentCompleted | VoiceAgentServerEventSessionSubagentStarted
+    | RealtimeServerEventSessionUpdated | VoiceAgentServerEventWarning | Mapping[str,
+    Any]
+  return:
+    description: The parsed server event.
+    types:
+    - <xref:azure.ai.projects.aio.ServerEvent>
+  exceptions:
+  - type: ConnectionResetError
+    description: 'If the connection was closed by the server, gracefully or
+
+      otherwise, or if the transport reported an error. Iterating over the connection
+
+      ( `async for event in conn:`'
+- uid: azure.ai.projects.aio.operations.AsyncBetaRealtimeConnection.send
+  name: send
+  summary: Send a client event over the connection.
+  signature: 'async send(event: RealtimeClientEventConversationItemCreate | RealtimeClientEventConversationItemDelete
+    | RealtimeClientEventConversationItemRetrieve | RealtimeClientEventConversationItemTruncate
+    | RealtimeClientEventInputAudioBufferAppend | RealtimeClientEventInputAudioBufferClear
+    | RealtimeClientEventInputAudioBufferCommit | RealtimeClientEventOutputAudioBufferClear
+    | RealtimeClientEventResponseCancel | RealtimeClientEventResponseCreate | VoiceAgentClientEventRtcCallSdpCreate
+    | VoiceAgentClientEventSessionAvatarConnect | VoiceAgentClientEventSessionUpdate
+    | str | Mapping[str, Any]) -> None'
+  parameters:
+  - name: event
+    description: A strongly-typed client event, a ready-made mapping, or a raw JSON
+      string.
+    isRequired: true
+    types:
+    - <xref:azure.ai.projects.aio.ClientEvent>
+    - <xref:str>
+  exceptions:
+  - type: ValueError
+    description: If `event` is a `str` that is not valid JSON.
+attributes:
+- uid: azure.ai.projects.aio.operations.AsyncBetaRealtimeConnection.closed
+  name: closed
+  summary: Whether the underlying WebSocket connection has been closed.
+  return:
+    types:
+    - <xref:bool>
