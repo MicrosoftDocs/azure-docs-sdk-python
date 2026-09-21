@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: resource-policy
 ---
-# Azure Resource-Policy SDK for Python - preview
-## Packages - preview
+# Azure Resource-Policy SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](resource-policy-index.md)]
