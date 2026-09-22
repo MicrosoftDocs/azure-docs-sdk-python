@@ -1,13 +1,13 @@
 ---
 title: Azure AI Content Safety client library for Python
 keywords: Azure, python, SDK, API, azure-ai-contentsafety, contentsafety
-ms.date: 09/21/2026
+ms.date: 09/22/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: contentsafety
 ---
 
-# Azure AI Content Safety client library for Python - version 1.1.0b1 
+# Azure AI Content Safety client library for Python - version 1.1.0a20260922002 
 
 
 [Azure AI Content Safety][contentsafety_overview] detects harmful user-generated and AI-generated content in applications and services. Content Safety includes text and image APIs that allow you to detect material that is harmful:
@@ -160,7 +160,7 @@ The following section provides several code snippets covering some of the most c
 - [Analyze image](#analyze-image)
 - [Manage text blocklist](#manage-text-blocklist)
 
-Please refer to [sample data](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentsafety_1.1.0b1/sdk/contentsafety/azure-ai-contentsafety/samples/sample_data) for the data used here. For more samples, please refer to [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentsafety_1.1.0b1/sdk/contentsafety/azure-ai-contentsafety/samples).
+Please refer to [sample data](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/contentsafety/azure-ai-contentsafety/samples/sample_data) for the data used here. For more samples, please refer to [samples](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/contentsafety/azure-ai-contentsafety/samples).
 
 ### Analyze text
 
@@ -690,9 +690,9 @@ additional questions or comments.
 <!-- LINKS -->
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [authenticate_with_token]: /azure/cognitive-services/authentication?tabs=powershell#authenticate-with-an-authentication-token
-[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentsafety_1.1.0b1/sdk/identity/azure-identity#credentials
+[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#credentials
 [azure_identity_pip]: https://pypi.org/project/azure-identity/
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentsafety_1.1.0b1/sdk/identity/azure-identity#defaultazurecredential
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#defaultazurecredential
 [pip]: https://pypi.org/project/pip/
 [azure_sub]: https://azure.microsoft.com/free/
 [contentsafety_overview]: https://aka.ms/acs-doc
