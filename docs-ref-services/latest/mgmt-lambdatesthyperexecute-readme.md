@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-lambdatesthyperexecute, lambdatesthyperexecute
-ms.date: 09/17/2026
+ms.date: 09/22/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: lambdatesthyperexecute
