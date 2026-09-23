@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: relationships
 ---
-# Azure Relationships SDK for Python - preview
-## Packages - preview
+# Azure Relationships SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](relationships-index.md)]
