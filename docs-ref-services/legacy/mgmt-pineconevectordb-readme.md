@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-pineconevectordb, pineconevectordb
-ms.date: 09/17/2026
+ms.date: 09/23/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: pineconevectordb
