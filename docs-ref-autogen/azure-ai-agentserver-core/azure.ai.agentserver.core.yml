@@ -58,7 +58,8 @@ functions:
 
     Pass `None` to disable all SDK-managed observability setup.'
   signature: 'configure_observability(*, connection_string: str | None = None, log_level:
-    str | None = None, enable_sensitive_data: bool = False) -> None'
+    str | None = None, enable_sensitive_data: bool = False, instrumentation_options:
+    dict[str, dict[str, Any]] | None = None) -> None'
   keywordOnlyParameters:
   - name: connection_string
     description: Application Insights connection string.
@@ -81,6 +82,18 @@ functions:
     defaultValue: 'False'
     types:
     - <xref:bool>
+  - name: instrumentation_options
+    description: 'Per-library OpenTelemetry instrumentation
+
+      options. Azure SDK, HTTPX, Requests, urllib, and urllib3 instrumentation
+
+      are disabled by default; set a library''s `enabled` option to `True`
+
+      to enable it.'
+    defaultValue: None
+    types:
+    - <xref:dict>[<xref:str>, <xref:dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:None>
 - uid: azure.ai.agentserver.core.create_error_response
   name: create_error_response
   summary: Build a `JSONResponse` with the standard error envelope.
@@ -194,6 +207,29 @@ functions:
     defaultValue: '5000'
     types:
     - <xref:int>
+- uid: azure.ai.agentserver.core.flush_spans_async
+  name: flush_spans_async
+  summary: "> [!NOTE]\n> This is an experimental method, and may change at any time.\
+    \ Please see [https://aka.ms/azure-ai-agentserver-experimental](https://aka.ms/azure-ai-agentserver-experimental)\
+    \ for more information.\n>\n\nNon-blocking variant of <xref:azure.ai.agentserver.core.flush_spans>.\n\
+    \n`TracerProvider.force_flush` blocks the calling thread until the exporter\n\
+    drains its queue.  On the request hot path \u2013 which runs inside an `async`\n\
+    handler \u2013 that blocks the asyncio event loop, serialising every concurrent\n\
+    request behind a single export (head-of-line blocking).  Offload the\nblocking\
+    \ call to the default thread pool so the event loop stays free to\nsend the response\
+    \ and service other requests concurrently.\n\nCancellation is deferred until the\
+    \ flush completes, including when the\nworker is still queued. Exporter failures\
+    \ are handled by <xref:azure.ai.agentserver.core.flush_spans>.\n\nNo-op when the\
+    \ OTel SDK is not installed or the provider does not support\n`force_flush`."
+  signature: 'async flush_spans_async(timeout_millis: int = 5000) -> None'
+  parameters:
+  - name: timeout_millis
+    description: 'Maximum time to wait for the flush, in milliseconds.
+
+      Defaults to 5000 (5 seconds).'
+    defaultValue: '5000'
+    types:
+    - <xref:int>
 - uid: azure.ai.agentserver.core.get_request_context
   name: get_request_context
   summary: 'Return the platform context for the current request.
@@ -281,6 +317,57 @@ functions:
     description: The resolved subdirectory path under the state root.
     types:
     - <xref:Path>
+- uid: azure.ai.agentserver.core.schedule_flush_spans
+  name: schedule_flush_spans
+  summary: '> [!NOTE]
+
+    > This is an experimental method, and may change at any time. Please see [https://aka.ms/azure-ai-agentserver-experimental](https://aka.ms/azure-ai-agentserver-experimental)
+    for more information.
+
+    >
+
+
+    Schedule a coalesced background span flush and return immediately.
+
+
+    Unlike <xref:azure.ai.agentserver.core.flush_spans> / <xref:azure.ai.agentserver.core.flush_spans_async>,
+    this does not delay
+
+    the caller (i.e. the HTTP response) by the export duration.  At most one
+
+    background flush task runs at a time: calls made while a flush is in flight
+
+    are coalesced into a single follow-up flush rather than spawning a task per
+
+    request, so neither the retained task reference nor the executor queue grows
+
+    with the request rate.  Falls back to a synchronous flush when no event loop
+
+    is running.
+
+
+    > [!NOTE]
+
+    > Only safe when the hosting platform guarantees a brief drain window
+
+    >
+
+    > before it suspends/freezes the process after sending a response;
+
+    >
+
+    > otherwise the final request''s spans may be lost.
+
+    >'
+  signature: 'schedule_flush_spans(timeout_millis: int = 5000) -> None'
+  parameters:
+  - name: timeout_millis
+    description: 'Maximum time to wait for the flush, in milliseconds.
+
+      Defaults to 5000 (5 seconds).'
+    defaultValue: '5000'
+    types:
+    - <xref:int>
 - uid: azure.ai.agentserver.core.set_current_span
   name: set_current_span
   summary: 'Set a span as the current span in the OTel context.

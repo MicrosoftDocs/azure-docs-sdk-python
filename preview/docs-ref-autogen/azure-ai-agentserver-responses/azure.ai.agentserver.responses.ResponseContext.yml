@@ -29,13 +29,14 @@ summary: "Runtime context exposed to response handlers and used by hosting orche
   \ / <xref:azure.ai.agentserver.responses.ResponseContext.get_history>."
 constructor:
   syntax: 'ResponseContext(*, response_id: str, mode_flags: ResponseModeFlags, request:
-    CreateResponse | None = None, created_at: datetime | None = None, provider: ResponseProviderProtocol
-    | None = None, input_items: list[InputParam] | list[OutputItem] | None = None,
-    previous_response_id: str | None = None, conversation_id: str | None = None, history_limit:
-    int = 100, client_headers: dict[str, str] | None = None, query_parameters: dict[str,
-    str] | None = None, platform_context: PlatformContext | None = None, prefetched_history_ids:
-    list[str] | None = None, steerable: bool = False, agent_name: str = '''', session_id:
-    str = '''')'
+    _generated_models.CreateResponse | None = None, created_at: datetime | None =
+    None, provider: ResponseProviderProtocol | None = None, input_items: list[_generated_unions.InputParam]
+    | list[_generated_models.OutputItem] | None = None, previous_response_id: str
+    | None = None, conversation_id: str | None = None, history_limit: int = -1, client_headers:
+    dict[str, str] | None = None, query_parameters: dict[str, str] | None = None,
+    platform_context: PlatformContext | None = None, prefetched_history_ids: list[str]
+    | None = None, steerable: bool = False, agent_name: str = '''', session_id: str
+    = '''')'
   keywordOnlyParameters:
   - name: response_id
     isRequired: true
@@ -54,7 +55,7 @@ constructor:
   - name: conversation_id
     defaultValue: None
   - name: history_limit
-    defaultValue: '100'
+    defaultValue: '-1'
   - name: client_headers
     defaultValue: None
   - name: query_parameters
@@ -102,7 +103,13 @@ methods:
 
     the provider''s `get_history_item_ids` call is skipped and only
 
-    `get_items` is invoked to materialise the items.'
+    `get_items` is invoked to materialise the items.
+
+    Concurrent calls share that materialization. ID lookups are also
+
+    shared with persistence for the same provider, query, and identity;
+
+    arbitrary `get_items` requests are not cached here.'
   signature: async get_history() -> Sequence[A2AToolCall | A2AToolCallOutput | OutputItemAdditionalTools
     | OutputItemApplyPatchToolCall | OutputItemApplyPatchToolCallOutput | AzureAISearchToolCall
     | AzureAISearchToolCallOutput | AzureFunctionToolCall | AzureFunctionToolCallOutput
@@ -131,7 +138,9 @@ methods:
     \ subtypes from\nthe original request (e.g. <xref:azure.ai.agentserver.responses.ItemMessage>,\n\
     <xref:azure.ai.agentserver.responses.FunctionCallOutputItemParam>).\n<xref:azure.ai.agentserver.responses.ItemReferenceParam>\
     \ entries are batch-resolved via the\nprovider and converted back to <xref:azure.ai.agentserver.responses.Item>\
-    \ subtypes.\nUnresolvable references (provider returns `None`) are silently dropped."
+    \ subtypes.\nUnresolvable references (provider returns `None`) are silently dropped.\n\
+    Concurrent readers in this request share successful reference resolution.\nA failed\
+    \ or cancelled resolution is not cached and can be retried."
   signature: 'async get_input_items(*, resolve_references: bool = True) -> Sequence[AdditionalToolsItemParam
     | ApplyPatchToolCallItemParam | ApplyPatchToolCallOutputItemParam | ItemCodeInterpreterToolCall
     | CompactionSummaryItemParam | ItemComputerToolCall | ComputerCallOutputItemParam
@@ -195,8 +204,10 @@ attributes:
     \ a conversation chain. It is derived from the partition\nkey embedded in the\
     \ chain's response IDs (chained response IDs all carry\nthe same embedded key),\
     \ so it stays stable across turns and across crash\nrecovery without any history\
-    \ walk. The resilient task backing the\nconversation uses this same hash (with\
-    \ a fixed prefix), so the two never\ndrift apart.\n\nPriority for the underlying\
+    \ walk. The resilient task backing the\nconversation follows the same chain partition,\
+    \ but hosted deployments\nmay apply a private session-incarnation scope and therefore\
+    \ use a\ndifferent physical task id. Treat this value as the stable\nhandler-facing\
+    \ chain identity, not as the task-store record id.\n\nPriority for the underlying\
     \ chain partition:\n\n1. `conversation_id` if supplied on the request. \n\n2.\
     \ `previous_response_id` (steerable chains) \u2014 the shared partition key of\
     \ the sequential chain. \n\n3. `response_id` \u2014 for the first turn, or as\
@@ -237,7 +248,7 @@ attributes:
   signature: 'pending_input_count: int'
 - uid: azure.ai.agentserver.responses.ResponseContext.persisted_response
   name: persisted_response
-  signature: 'persisted_response: ResponseObject | None'
+  signature: 'persisted_response: _generated_models.ResponseObject | None'
 - uid: azure.ai.agentserver.responses.ResponseContext.platform_context
   name: platform_context
   signature: 'platform_context: PlatformContext'
@@ -246,7 +257,7 @@ attributes:
   signature: 'query_parameters: dict[str, str]'
 - uid: azure.ai.agentserver.responses.ResponseContext.request
   name: request
-  signature: 'request: CreateResponse | None'
+  signature: 'request: _generated_models.CreateResponse | None'
 - uid: azure.ai.agentserver.responses.ResponseContext.response_id
   name: response_id
   signature: 'response_id: str'

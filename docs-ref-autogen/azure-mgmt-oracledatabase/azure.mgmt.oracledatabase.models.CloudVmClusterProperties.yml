@@ -11,6 +11,14 @@ variables:
   name: ocid
   types:
   - <xref:str>
+- description: Azure Resource Anchor ID.
+  name: resource_anchor_id
+  types:
+  - <xref:str>
+- description: Azure Network Anchor ID.
+  name: network_anchor_id
+  types:
+  - <xref:str>
 - description: The port number configured for the listener on the cloud VM cluster.
   name: listener_port
   types:
@@ -58,7 +66,7 @@ variables:
   types:
   - <xref:str>
 - description: The hostname for the cloud VM cluster. Required.
-  name: hostname
+  name: hostname_v2
   types:
   - <xref:str>
 - description: The domain name for the cloud VM cluster.
@@ -101,6 +109,25 @@ variables:
   name: data_storage_percentage
   types:
   - <xref:int>
+- description: 'The percentage assigned to RECO storage (database redo logs,
+
+    archive logs, and recovery manager backups). See [Storage Configuration](/Content/Database/Concepts/exaoverview.htm#Exadata)
+    in the Exadata documentation for details
+
+    on the impact of the configuration settings on storage.'
+  name: reco_storage_percentage
+  types:
+  - <xref:int>
+- description: 'The percentage assigned to SPARSE storage (Exadata snapshots).
+
+    See [Storage Configuration](/Content/Database/Concepts/exaoverview.htm#Exadata)
+    in the
+
+    Exadata documentation for details on the impact of the configuration settings
+    on storage.'
+  name: sparse_storage_percentage
+  types:
+  - <xref:int>
 - description: 'If true, database backup on local Exadata storage is configured
 
     for the cloud VM cluster. If false, database backup on local Exadata storage is
@@ -114,6 +141,10 @@ variables:
   name: cloud_exadata_infrastructure_id
   types:
   - <xref:str>
+- description: Proximity placement group settings.
+  name: proximity_placement_group
+  types:
+  - <xref:azure.mgmt.oracledatabase.models.ProximityPlacementGroup>
 - description: 'If true, sparse disk group is configured for the cloud VM
 
     cluster. If false, sparse disk group is not created.'
@@ -173,10 +204,10 @@ variables:
   name: vip_ids
   types:
   - <xref:list>[<xref:str>]
-- description: 'The FQDN of the DNS record for the SCAN IP addresses that are associated
+- description: 'The FQDN of the DNS record for the SCAN IP addresses that are
 
-    with the cloud VM cluster.'
-  name: scan_dns_name
+    associated with the cloud VM cluster.'
+  name: scan_dns_name_v2
   types:
   - <xref:str>
 - description: 'The TCP Single Client Access Name (SCAN) port. The default port
@@ -301,6 +332,13 @@ variables:
   types:
   - <xref:str>
   - <xref:azure.mgmt.oracledatabase.models.ExadataVmClusterStorageManagementType>
+- description: 'Indicates if the Accelerated Networking feature is
+
+    enabled or disabled for provisioning an Exadata VM cluster. The default value
+    is: false.'
+  name: is_accelerated_network_enabled
+  types:
+  - <xref:bool>
 attributes:
 - uid: azure.mgmt.oracledatabase.models.CloudVmClusterProperties.backup_subnet_cidr
   name: backup_subnet_cidr
@@ -400,14 +438,21 @@ attributes:
   name: gi_version
   summary: Oracle Grid Infrastructure (GI) software version. Required.
   signature: 'gi_version: str'
-- uid: azure.mgmt.oracledatabase.models.CloudVmClusterProperties.hostname
-  name: hostname
+- uid: azure.mgmt.oracledatabase.models.CloudVmClusterProperties.hostname_v2
+  name: hostname_v2
   summary: The hostname for the cloud VM cluster. Required.
-  signature: 'hostname: str'
+  signature: 'hostname_v2: str'
 - uid: azure.mgmt.oracledatabase.models.CloudVmClusterProperties.iorm_config_cache
   name: iorm_config_cache
   summary: iormConfigCache details for cloud VM cluster.
   signature: 'iorm_config_cache: _models.ExadataIormConfig | None'
+- uid: azure.mgmt.oracledatabase.models.CloudVmClusterProperties.is_accelerated_network_enabled
+  name: is_accelerated_network_enabled
+  summary: 'Indicates if the Accelerated Networking feature is enabled or disabled
+    for provisioning an
+
+    Exadata VM cluster. The default value is: false.'
+  signature: 'is_accelerated_network_enabled: bool | None'
 - uid: azure.mgmt.oracledatabase.models.CloudVmClusterProperties.is_local_backup_enabled
   name: is_local_backup_enabled
   summary: 'If true, database backup on local Exadata storage is configured for the
@@ -452,6 +497,10 @@ attributes:
   name: memory_size_in_gbs
   summary: The memory to be allocated in GBs.
   signature: 'memory_size_in_gbs: int | None'
+- uid: azure.mgmt.oracledatabase.models.CloudVmClusterProperties.network_anchor_id
+  name: network_anchor_id
+  summary: Azure Network Anchor ID.
+  signature: 'network_anchor_id: str | None'
 - uid: azure.mgmt.oracledatabase.models.CloudVmClusterProperties.node_count
   name: node_count
   summary: The number of nodes in the cloud VM cluster.
@@ -489,13 +538,32 @@ attributes:
 
     and "Provisioning".'
   signature: 'provisioning_state: str | _models.AzureResourceProvisioningState | None'
-- uid: azure.mgmt.oracledatabase.models.CloudVmClusterProperties.scan_dns_name
-  name: scan_dns_name
+- uid: azure.mgmt.oracledatabase.models.CloudVmClusterProperties.proximity_placement_group
+  name: proximity_placement_group
+  summary: Proximity placement group settings.
+  signature: 'proximity_placement_group: _models.ProximityPlacementGroup | None'
+- uid: azure.mgmt.oracledatabase.models.CloudVmClusterProperties.reco_storage_percentage
+  name: reco_storage_percentage
+  summary: 'The percentage assigned to RECO storage (database redo logs, archive logs,
+    and recovery manager
+
+    backups). See [Storage Configuration](/Content/Database/Concepts/exaoverview.htm#Exadata)
+    in
+
+    the Exadata documentation for details on the impact of the configuration settings
+    on storage.'
+  signature: 'reco_storage_percentage: int | None'
+- uid: azure.mgmt.oracledatabase.models.CloudVmClusterProperties.resource_anchor_id
+  name: resource_anchor_id
+  summary: Azure Resource Anchor ID.
+  signature: 'resource_anchor_id: str | None'
+- uid: azure.mgmt.oracledatabase.models.CloudVmClusterProperties.scan_dns_name_v2
+  name: scan_dns_name_v2
   summary: 'The FQDN of the DNS record for the SCAN IP addresses that are associated
     with the cloud VM
 
     cluster.'
-  signature: 'scan_dns_name: str | None'
+  signature: 'scan_dns_name_v2: str | None'
 - uid: azure.mgmt.oracledatabase.models.CloudVmClusterProperties.scan_dns_record_id
   name: scan_dns_record_id
   summary: 'The OCID of the DNS record for the SCAN IP addresses that are associated
@@ -528,6 +596,14 @@ attributes:
   name: shape
   summary: The model name of the Exadata hardware running the cloud VM cluster.
   signature: 'shape: str | None'
+- uid: azure.mgmt.oracledatabase.models.CloudVmClusterProperties.sparse_storage_percentage
+  name: sparse_storage_percentage
+  summary: 'The percentage assigned to SPARSE storage (Exadata snapshots). See [Storage
+    Configuration](/Content/Database/Concepts/exaoverview.htm#Exadata) in the Exadata
+    documentation for details
+
+    on the impact of the configuration settings on storage.'
+  signature: 'sparse_storage_percentage: int | None'
 - uid: azure.mgmt.oracledatabase.models.CloudVmClusterProperties.ssh_public_keys
   name: ssh_public_keys
   summary: 'The public key portion of one or more key pairs used for SSH access to
