@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-arizeaiobservabilityeval, arizeaiobservabilityeval
-ms.date: 09/17/2026
+ms.date: 09/26/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: arizeaiobservabilityeval
