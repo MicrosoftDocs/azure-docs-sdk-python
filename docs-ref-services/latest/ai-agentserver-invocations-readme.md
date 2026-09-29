@@ -1,12 +1,12 @@
 ---
 title: Azure AI Agent Server Invocations client library for Python
 keywords: Azure, python, SDK, API, azure-ai-agentserver-invocations, agentserver
-ms.date: 08/26/2026
+ms.date: 09/29/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: agentserver
 ---
-# Azure AI Agent Server Invocations client library for Python - version 1.1.0 
+# Azure AI Agent Server Invocations client library for Python - version 1.2.0 
 
 
 The `azure-ai-agentserver-invocations` package provides the invocation protocol endpoints for Azure AI Hosted Agent containers. It plugs into the [`azure-ai-agentserver-core`](https://pypi.org/project/azure-ai-agentserver-core/) host framework and supports two transports on the same host:
@@ -306,18 +306,14 @@ app.run()
 - Calls `await websocket.accept()` before invoking your handler.
 - Runs WebSocket Ping/Pong keep-alive in the background — disabled by default; enable by setting the `WS_KEEPALIVE_INTERVAL` environment variable (auto-injected by AgentService into hosted-agent containers). Set the value to `0` to disable. Frames are sent at the WebSocket protocol layer (RFC 6455 opcode `0x9`/`0xA`) by the underlying Hypercorn server, which keeps the connection alive across upstream proxy / load-balancer idle timeouts without any extra application traffic.
 - Closes the connection cleanly on handler return (close code `1000`) or maps an uncaught handler exception to close code `1011`.
-- Emits a structured close-event log line carrying `azure.ai.agentserver.invocations_ws.session_id`, `azure.ai.agentserver.invocations_ws.close_code`, and `azure.ai.agentserver.invocations_ws.duration_ms`. The same fields are recorded as OpenTelemetry span attributes so the connection lifetime is visible end-to-end.
+- Emits a structured close-event log line carrying `azure.ai.agentserver.invocations_ws.session_id`, `azure.ai.agentserver.invocations_ws.close_code`, and `azure.ai.agentserver.invocations_ws.duration_ms`.
 - Inherits `/readiness`, OpenTelemetry export, graceful shutdown, and the `x-platform-server` identity header from `azure-ai-agentserver-core`.
-
-### Per-connection tracing
-
-A WebSocket connection is wrapped by the SDK in a single connection-scoped `websocket_session` OpenTelemetry span. The span carries the GenAI semantic-convention attributes plus `azure.ai.agentserver.invocations_ws.session_id`, `close_code`, and `duration_ms`. Any child spans your handler opens — e.g. via `opentelemetry.trace.get_tracer(...).start_as_current_span(...)` — are automatically parented to the connection span.
 
 ### Handler signature
 
 The handler receives a Starlette [`WebSocket`][starlette-ws] and returns `None`. The full WebSocket API — `iter_text`, `iter_bytes`, `iter_json`, `send_text`, `send_bytes`, `send_json`, `close`, `headers`, `query_params`, `client`, `state` — is available, so application protocols on top of `invocations_ws` are entirely under your control.
 
-[starlette-ws]: https://www.starlette.io/websockets/
+[starlette-ws]: https://starlette.dev/websockets/
 
 ## Typed Voice Live Bridge submodule (preview)
 
@@ -326,6 +322,8 @@ The handler receives a Starlette [`WebSocket`][starlette-ws] and returns `None`.
 send-only `Session`:
 
 ```python
+import asyncio
+
 from azure.ai.agentserver.invocations.voice import (
     ResponseCreated,
     ResponseDone,
@@ -334,6 +332,9 @@ from azure.ai.agentserver.invocations.voice import (
     SessionReady,
     SessionRejected,
     SessionStart,
+    SessionTermination,
+    TargetTurnOrigin,
+    TargetTurnOutcome,
     UserMessage,
     VoiceAgentServerHost,
     new_item_id,
@@ -341,6 +342,21 @@ from azure.ai.agentserver.invocations.voice import (
 )
 
 app = VoiceAgentServerHost()
+
+
+def target_turn_error_outcome(
+    termination: SessionTermination | None,
+) -> TargetTurnOutcome:
+    if termination is SessionTermination.CANCELLED:
+        return TargetTurnOutcome.CANCELLED
+    if termination is SessionTermination.COMPLETED:
+        return TargetTurnOutcome.ABANDONED
+    if termination in {
+        SessionTermination.PROTOCOL_ERROR,
+        SessionTermination.TRANSPORT_ERROR,
+    }:
+        return TargetTurnOutcome.TRANSPORT_ERROR
+    return TargetTurnOutcome.ERROR
 
 
 @app.on_session_start
@@ -358,17 +374,48 @@ async def on_session_start(session: Session, event: SessionStart) -> None:
 async def on_user_message(session: Session, event: UserMessage) -> None:
     response_id = new_response_id()
     item_id = new_item_id()
-    await session.send(
-        ResponseCreated(response_id=response_id, in_reply_to=(event.item_id,))
-    )
-    await session.send(
-        ResponseOutputTextDone(
+    turn = session.start_target_turn(origin=TargetTurnOrigin.USER, input_count=1)
+    response_started = False
+    output_item_count = 0
+    try:
+        with turn.activate():
+            await session.send(
+                ResponseCreated(response_id=response_id, in_reply_to=(event.item_id,))
+            )
+            response_started = True
+            await session.send(
+                ResponseOutputTextDone(
+                    response_id=response_id,
+                    item_id=item_id,
+                    text="Hello from the hosted text agent.",
+                )
+            )
+            output_item_count = 1
+            await session.send(ResponseDone(response_id=response_id))
+        turn.complete(
+            outcome=TargetTurnOutcome.RESPONSE,
             response_id=response_id,
-            item_id=item_id,
-            text="Hello from the hosted text agent.",
+            output_item_count=1,
         )
-    )
-    await session.send(ResponseDone(response_id=response_id))
+    except asyncio.CancelledError:
+        turn.complete(
+            outcome=(
+                target_turn_error_outcome(session.termination)
+                if session.termination is not None
+                else TargetTurnOutcome.CANCELLED
+            ),
+            response_id=response_id if response_started else None,
+            output_item_count=output_item_count,
+        )
+        raise
+    except Exception:
+        if not turn.is_completed:
+            turn.complete(
+                outcome=target_turn_error_outcome(session.termination),
+                response_id=response_id if response_started else None,
+                output_item_count=output_item_count,
+            )
+        raise
 ```
 
 The submodule is deliberately a thin typed event relay. It decodes one inbound frame,
@@ -376,6 +423,37 @@ dispatches the corresponding callback, encodes explicit outbound messages, and
 serializes concurrent WebSocket writes. It does **not** own pending responses,
 terminal arbitration, timeout/cancel operations, generation tasks, history, or
 reconnect state.
+
+### Voice tracing
+
+The typed Voice endpoint extracts W3C context from each WebSocket upgrade and
+creates one `agentserver.connection` span for the physical connection. Each
+registered event dispatch creates a sibling `voice.callback` span. Application
+code opts into a target-decision `invoke_agent` span by calling
+`Session.start_target_turn`, activating the returned handle around all model,
+tool, retrieval, and custom descendant work, and completing it once with the
+application-known outcome.
+
+```text
+Hosted Agents invoke_agent
+└── agentserver.connection
+    ├── voice.callback
+    └── invoke_agent                 # only after start_target_turn(...)
+        └── customer model/tool spans
+```
+
+The SDK never discovers, retains, or awaits application tasks and never infers
+response facts from `Session.send`. Applications that do not call
+`start_target_turn` do not receive an automatic target `invoke_agent` span.
+`Session.termination` exposes the first source-aware physical terminal fact to
+`on_connection_terminating` so the application can classify unfinished work.
+
+Voice propagation accepts only W3C trace context, the five correlation baggage
+keys produced by Hosted Agents, and a bounded `x-request-id`. Transcript,
+output, prompt, tool argument/result, and arbitrary baggage content are not
+added to SDK spans, metrics, or diagnostics. Valid upstream sampling and
+`tracestate` are preserved; unsampled operations still contribute aggregate
+connection and target duration metrics.
 
 When the peer or proxy closes the WebSocket, `@app.on_disconnect` receives a
 local `SessionDisconnected` event. This callback represents only the observed
@@ -412,7 +490,7 @@ from `on_user_message`, and cancels that task from `on_barge_in`,
 `on_response_cancelled`, `on_response_timeout`, or
 `on_connection_terminating`. Each task remains responsible for its own
 asynchronous resource cleanup. See the complete
-[`basic_voice_agent`](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.1.0/sdk/agentserver/azure-ai-agentserver-invocations/samples/basic_voice_agent)
+[`basic_voice_agent`](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.2.0/sdk/agentserver/azure-ai-agentserver-invocations/samples/basic_voice_agent)
 sample.
 
 ### Reference: configuration
@@ -438,15 +516,15 @@ To report an issue with the client library, or request additional features, plea
 
 ## Next steps
 
-Visit the [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.1.0/sdk/agentserver/azure-ai-agentserver-invocations/samples) folder for complete working examples:
+Visit the [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.2.0/sdk/agentserver/azure-ai-agentserver-invocations/samples) folder for complete working examples:
 
 | Sample | Description |
 |---|---|
-| [simple_invoke_agent](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.1.0/sdk/agentserver/azure-ai-agentserver-invocations/samples/simple_invoke_agent/) | Minimal synchronous request-response |
-| [async_invoke_agent](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.1.0/sdk/agentserver/azure-ai-agentserver-invocations/samples/async_invoke_agent/) | Long-running operations with polling and cancellation |
-| [ws_invoke_agent](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.1.0/sdk/agentserver/azure-ai-agentserver-invocations/samples/ws_invoke_agent/) | Combined `POST /invocations` (HTTP) and `/invocations_ws` (WebSocket) host |
-| [ws_bidirectional_streaming_agent](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.1.0/sdk/agentserver/azure-ai-agentserver-invocations/samples/ws_bidirectional_streaming_agent/) | Full-duplex `/invocations_ws` agent: concurrent token streams + mid-flight cancel (relies on the SDK's WS protocol Ping/Pong keep-alive, not application-level heartbeats) |
-| [basic_voice_agent](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.1.0/sdk/agentserver/azure-ai-agentserver-invocations/samples/basic_voice_agent/) | Typed Voice Live Bridge callbacks with developer-owned full-duplex streaming and cancellation |
+| [simple_invoke_agent](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.2.0/sdk/agentserver/azure-ai-agentserver-invocations/samples/simple_invoke_agent/) | Minimal synchronous request-response |
+| [async_invoke_agent](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.2.0/sdk/agentserver/azure-ai-agentserver-invocations/samples/async_invoke_agent/) | Long-running operations with polling and cancellation |
+| [ws_invoke_agent](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.2.0/sdk/agentserver/azure-ai-agentserver-invocations/samples/ws_invoke_agent/) | Combined `POST /invocations` (HTTP) and `/invocations_ws` (WebSocket) host |
+| [ws_bidirectional_streaming_agent](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.2.0/sdk/agentserver/azure-ai-agentserver-invocations/samples/ws_bidirectional_streaming_agent/) | Full-duplex `/invocations_ws` agent: concurrent token streams + mid-flight cancel (relies on the SDK's WS protocol Ping/Pong keep-alive, not application-level heartbeats) |
+| [basic_voice_agent](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-invocations_1.2.0/sdk/agentserver/azure-ai-agentserver-invocations/samples/basic_voice_agent/) | Typed Voice Live Bridge callbacks with developer-owned full-duplex streaming and cancellation |
 
 ## Contributing
 
