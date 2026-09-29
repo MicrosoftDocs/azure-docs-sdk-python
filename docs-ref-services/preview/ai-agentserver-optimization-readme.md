@@ -6,7 +6,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: agentserver
 ---
-# Azure AI Agent Server Optimization client library for Python - version 1.0.0a20260929001 
+# Azure AI Agent Server Optimization client library for Python - version 1.0.0a20260929004 
 
 
 The `azure-ai-agentserver-optimization` package provides a drop-in config loader for optimization-ready Azure AI Hosted Agents. A single `load_config()` call resolves optimization parameters (instructions, model, temperature, skills, tool definitions) from multiple sources with graceful fallback — your agent works unchanged when not running under optimization.

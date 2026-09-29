@@ -6,7 +6,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: agentserver
 ---
-# Azure AI Agent Server Invocations client library for Python - version 1.2.0a20260929001 
+# Azure AI Agent Server Invocations client library for Python - version 1.2.0a20260929004 
 
 
 The `azure-ai-agentserver-invocations` package provides the invocation protocol endpoints for Azure AI Hosted Agent containers. It plugs into the [`azure-ai-agentserver-core`](https://pypi.org/project/azure-ai-agentserver-core/) host framework and supports two transports on the same host:

@@ -6,7 +6,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: agentserver
 ---
-# Azure AI Agent Server Activity client library for Python - version 1.0.0a20260929001 
+# Azure AI Agent Server Activity client library for Python - version 1.0.0a20260929004 
 
 
 The `azure-ai-agentserver-activity` package provides the Foundry container integration host for Activity Protocol traffic in Azure AI Hosted Agent containers. It plugs into [`azure-ai-agentserver-core`](https://pypi.org/project/azure-ai-agentserver-core/) and exposes a protocol endpoint with Foundry-required header, tracing, and error behavior.

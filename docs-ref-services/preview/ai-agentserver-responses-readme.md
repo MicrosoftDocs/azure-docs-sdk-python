@@ -6,7 +6,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: agentserver
 ---
-# Azure AI Agent Server Responses client library for Python - version 2.2.0a20260929001 
+# Azure AI Agent Server Responses client library for Python - version 2.2.0a20260929004 
 
 
 The `azure-ai-agentserver-responses` package provides the Responses protocol endpoints for Azure AI Hosted Agent containers. It plugs into the [`azure-ai-agentserver-core`](https://pypi.org/project/azure-ai-agentserver-core/) host framework and adds the full response lifecycle: create, stream (SSE), cancel, delete, replay, and input-item listing.
