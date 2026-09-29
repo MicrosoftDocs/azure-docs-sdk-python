@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-computeworkloadmanager, compute
-ms.date: 09/25/2026
+ms.date: 09/29/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: compute
@@ -44,11 +44,11 @@ With above configuration, client can be authenticated by following code:
 
 ```python
 from azure.identity import DefaultAzureCredential
-from azure.mgmt.computeworkloadmanager import WorkloadManagerClient
+from azure.mgmt.computeworkloadmanager import ComputeWorkloadManagerMgmtClient
 import os
 
 sub_id = os.getenv("AZURE_SUBSCRIPTION_ID")
-client = WorkloadManagerClient(credential=DefaultAzureCredential(), subscription_id=sub_id)
+client = ComputeWorkloadManagerMgmtClient(credential=DefaultAzureCredential(), subscription_id=sub_id)
 ```
 
 ## Examples
