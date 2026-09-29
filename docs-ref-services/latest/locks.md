@@ -1,0 +1,11 @@
+---
+title: Azure Locks SDK for Python
+description: Reference for Azure Locks SDK for Python
+ms.date: 09/29/2026
+ms.topic: reference
+ms.devlang: python
+ms.service: locks
+---
+# Azure Locks SDK for Python - latest
+## Packages - latest
+[!INCLUDE [packages](locks-index.md)]
