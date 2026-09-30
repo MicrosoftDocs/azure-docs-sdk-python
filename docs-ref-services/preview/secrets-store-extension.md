@@ -1,7 +1,7 @@
 ---
 title: Azure Secrets Store Extension SDK for Python
 description: Reference for Azure Secrets Store Extension SDK for Python
-ms.date: 09/29/2026
+ms.date: 09/30/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: secretsstoreextension
