@@ -1,12 +1,12 @@
 ---
 title: Azure AI Fine-Tuning Sessions client library for Python
 keywords: Azure, python, SDK, API, azure-ai-finetuningsessions, ai
-ms.date: 09/29/2026
+ms.date: 10/01/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: ai
 ---
-# Azure AI Fine-Tuning Sessions client library for Python - version 1.0.0b1 
+# Azure AI Fine-Tuning Sessions client library for Python - version 1.0.0a20261001001 
 
 
 Preview client library for interactive supervised and reinforcement fine-tuning
@@ -366,14 +366,14 @@ additional questions or comments.
 
 <!-- LINKS -->
 [fine-tuning-overview]: https://learn.microsoft.com/azure/foundry-classic/concepts/fine-tuning-overview
-[generation-guide]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-finetuningsessions_1.0.0b1/sdk/ai/azure-ai-finetuningsessions/GENERATION.md
-[snapshot-check]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-finetuningsessions_1.0.0b1/sdk/ai/azure-ai-finetuningsessions/scripts/verify_reference_snapshot.py
-[generation-check]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-finetuningsessions_1.0.0b1/sdk/ai/azure-ai-finetuningsessions/scripts/verify_generation.py
+[generation-guide]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/ai/azure-ai-finetuningsessions/GENERATION.md
+[snapshot-check]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/ai/azure-ai-finetuningsessions/scripts/verify_reference_snapshot.py
+[generation-check]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/ai/azure-ai-finetuningsessions/scripts/verify_generation.py
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [authenticate_with_token]: https://learn.microsoft.com/azure/cognitive-services/authentication?tabs=powershell#authenticate-with-an-authentication-token
-[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-finetuningsessions_1.0.0b1/sdk/identity/azure-identity#credentials
+[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#credentials
 [azure_identity_pip]: https://pypi.org/project/azure-identity/
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-finetuningsessions_1.0.0b1/sdk/identity/azure-identity#defaultazurecredential
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#defaultazurecredential
 [pip]: https://pypi.org/project/pip/
 [azure_sub]: https://azure.microsoft.com/free/
 
