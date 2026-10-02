@@ -3,49 +3,73 @@ uid: azure.ai.textanalytics.TextAnalysisClient
 name: TextAnalysisClient
 fullName: azure.ai.textanalytics.TextAnalysisClient
 module: azure.ai.textanalytics
-summary: 'Create a TextAnalysisClient.
+summary: 'The language service API is a suite of natural language processing (NLP)
+  skills built with
 
-  :param endpoint: Supported Cognitive Services endpoint.
+  best-in-class Microsoft machine learning algorithms.  The API can be used to analyze
 
-  :type endpoint: str
+  unstructured text for tasks such as sentiment analysis, key phrase extraction, language
 
-  :param credential: Key or token credential.
+  detection and question answering. Further documentation can be found at
 
-  :type credential: ~azure.core.credentials.AzureKeyCredential or ~azure.core.credentials.TokenCredential
-
-  :keyword api_version: The API version to use for this operation. Default value is
-
-  "2025-05-15-preview". Note that overriding this default value may result in unsupported
-
-  behavior.
-
-  :paramtype api_version: str`'
+  [https://learn.microsoft.com/azure/cognitive-services/language-service/overview](https://learn.microsoft.com/azure/cognitive-services/language-service/overview).'
 constructor:
   syntax: 'TextAnalysisClient(endpoint: str, credential: AzureKeyCredential | TokenCredential,
-    *, api_version: str | None = None, **kwargs: Any)'
+    **kwargs: Any)'
   parameters:
   - name: endpoint
+    description: 'Supported Cognitive Services endpoint (e.g.,
+
+      [https:/](https:/)/<resource-name>.api.cognitiveservices.azure.com). Required.'
     isRequired: true
+    types:
+    - <xref:str>
   - name: credential
+    description: 'Credential used to authenticate requests to the service. Is either
+      a key
+
+      credential type or a token credential type. Required.'
     isRequired: true
+    types:
+    - <xref:azure.core.credentials.AzureKeyCredential>
+    - <xref:azure.core.credentials.TokenCredential>
   keywordOnlyParameters:
   - name: api_version
-    defaultValue: None
+    description: 'The API version to use for this operation. Known values are
+
+      "2026-05-15-preview" and None. Default value is None. If not set, the operation''s
+      default API
+
+      version will be used. Note that overriding this default value may result in
+      unsupported
+
+      behavior.'
+    types:
+    - <xref:str>
+  - name: polling_interval
+    description: 'Default waiting time between two polls for LRO operations if no
+
+      Retry-After header is present.'
+    types:
+    - <xref:int>
 methods:
 - uid: azure.ai.textanalytics.TextAnalysisClient.analyze_text
   name: analyze_text
   summary: Request text analysis over a collection of documents.
-  signature: 'analyze_text(body: AnalyzeTextInput | MutableMapping[str, Any] | IO[bytes],
-    *, show_stats: bool | None = None, **kwargs: Any) -> AnalyzeTextResult'
+  signature: 'analyze_text(body: AnalyzeTextInput | TextEntityLinkingInput | TextEntityRecognitionInput
+    | TextKeyPhraseExtractionInput | TextLanguageDetectionInput | TextPiiEntitiesRecognitionInput
+    | TextSentimentAnalysisInput | IO[bytes], *, show_stats: bool | None = None, **kwargs:
+    Any) -> AnalyzeTextResult'
   parameters:
   - name: body
-    description: 'The input documents to analyze. Is one of the following types: AnalyzeTextInput,
+    description: 'The input documents to analyze. Is either a AnalyzeTextInput type
+      or a IO[bytes]
 
-      JSON, IO[bytes] Required.'
+      type. Required.'
     isRequired: true
     types:
     - <xref:azure.ai.textanalytics.models.AnalyzeTextInput>
-    - <xref:JSON>
+    - <xref:azure.ai.textanalytics.types.AnalyzeTextInput>
     - <xref:typing.IO>[<xref:bytes>]
   keywordOnlyParameters:
   - name: show_stats
@@ -67,25 +91,31 @@ methods:
     unique tasks to be
 
     executed as a long-running operation.'
-  signature: 'begin_analyze_text_job(*, text_input: _models.MultiLanguageTextInput,
-    actions: list[_models.AnalyzeTextOperationAction], content_type: str = ''application/json'',
-    display_name: str | None = None, default_language: str | None = None, cancel_after:
-    float | None = None, **kwargs: Any) -> AnalyzeTextLROPoller[ItemPaged[''TextActions'']]'
+  signature: 'begin_analyze_text_job(body: ~collections.abc.MutableMapping[str, ~typing.Any]
+    | ~azure.ai.textanalytics.types.AnalyzeTextSubmitJobRequest | ~typing.IO[bytes]
+    = <object object>, *, text_input: ~azure.ai.textanalytics.models._models.MultiLanguageTextInput
+    = <object object>, actions: list[azure.ai.textanalytics.models._models.AnalyzeTextOperationAction]
+    = <object object>, display_name: str | None = None, default_language: str | None
+    = None, cancel_after: float | None = None, **kwargs: ~typing.Any) -> LROPoller[AnalyzeTextOperationState]'
   parameters:
   - name: body
-    description: Is either a JSON type or a IO[bytes] type. Required.
+    description: 'Is one of the following types: JSON, AnalyzeTextSubmitJobRequest,
+      IO[bytes]
+
+      Required.'
     types:
     - <xref:JSON>
+    - <xref:azure.ai.textanalytics.types.AnalyzeTextSubmitJobRequest>
     - <xref:typing.IO>[<xref:bytes>]
   keywordOnlyParameters:
   - name: text_input
     description: Contains the input to be analyzed. Required.
-    defaultValue: <object object at 0x000001FDBB418130>
+    defaultValue: <object object at 0x00000207AC194110>
     types:
     - <xref:azure.ai.textanalytics.models.MultiLanguageTextInput>
   - name: actions
     description: List of tasks to be performed as part of the LRO. Required.
-    defaultValue: <object object at 0x000001FDBB418130>
+    defaultValue: <object object at 0x00000207AC194110>
     types:
     - <xref:list>[<xref:azure.ai.textanalytics.models.AnalyzeTextOperationAction>]
   - name: display_name
@@ -109,10 +139,9 @@ methods:
     types:
     - <xref:float>
   return:
-    description: A poller whose `result()` yields `ItemPaged[TextActions]` and exposes
-      metadata via `.details`.
+    description: An instance of LROPoller that returns AnalyzeTextOperationState
     types:
-    - <xref:azure.ai.textanalytics.AnalyzeTextLROPoller>[ <xref:azure.core.paging.ItemPaged>[<xref:azure.ai.textanalytics.models.TextActions>]]
+    - <xref:azure.core.polling.LROPoller>[<xref:azure.ai.textanalytics.models.AnalyzeTextOperationState>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.ai.textanalytics.TextAnalysisClient.begin_cancel_job

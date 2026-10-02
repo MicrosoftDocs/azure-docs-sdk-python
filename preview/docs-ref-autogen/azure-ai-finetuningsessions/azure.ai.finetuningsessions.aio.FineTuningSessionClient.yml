@@ -1,0 +1,779 @@
+### YamlMime:PythonClass
+uid: azure.ai.finetuningsessions.aio.FineTuningSessionClient
+name: FineTuningSessionClient
+fullName: azure.ai.finetuningsessions.aio.FineTuningSessionClient
+module: azure.ai.finetuningsessions.aio
+summary: Async fine-tuning client with token/key authentication and training APIs.
+constructor:
+  syntax: 'FineTuningSessionClient(endpoint: str, credential: AsyncTokenCredential
+    | AzureKeyCredential, **kwargs: Any)'
+  parameters:
+  - name: endpoint
+    description: Foundry project endpoint.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: credential
+    description: Token credential or API key for the endpoint.
+    isRequired: true
+    types:
+    - <xref:azure.core.credentials_async.AsyncTokenCredential>
+    - <xref:azure.core.credentials.AzureKeyCredential>
+methods:
+- uid: azure.ai.finetuningsessions.aio.FineTuningSessionClient.close
+  name: close
+  summary: Drain all heartbeat tasks before closing the HTTP pipeline.
+  signature: async close() -> None
+- uid: azure.ai.finetuningsessions.aio.FineTuningSessionClient.close_session
+  name: close_session
+  summary: 'Unload the session from the GPU engine.
+
+
+    Stops the background heartbeat, then issues the complete request.'
+  signature: 'async close_session(session_id: str) -> None'
+  parameters:
+  - name: session_id
+    description: The session ID to close.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: None.
+    types:
+    - <xref:None>
+- uid: azure.ai.finetuningsessions.aio.FineTuningSessionClient.create_session
+  name: create_session
+  summary: Create a fine-tuning session and wait until the model is loaded.
+  signature: 'async create_session(*, base_model: str, lora_config: LoRAConfig, type:
+    str = ''training'', from_checkpoint: FromCheckpoint | None = None, timeout_sec:
+    float = 600.0, user_metadata: dict[str, Any] | None = None, training_type: str
+    | TrainingType | None = None) -> str'
+  keywordOnlyParameters:
+  - name: base_model
+    description: Name of the base model to load.
+    types:
+    - <xref:str>
+  - name: lora_config
+    description: Required LoRA adapter configuration, including rank.
+    types:
+    - <xref:azure.ai.finetuningsessions.models.LoRAConfig>
+  - name: type
+    description: Session type string. Defaults to `"training"`.
+    defaultValue: training
+    types:
+    - <xref:str>
+  - name: from_checkpoint
+    description: Optional checkpoint to resume from.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.finetuningsessions.models.FromCheckpoint>
+    - <xref:None>
+  - name: timeout_sec
+    description: Maximum seconds to wait for model load.
+    defaultValue: '600.0'
+    types:
+    - <xref:float>
+  - name: user_metadata
+    description: 'Optional key/value metadata stored on the session
+
+      record.'
+    defaultValue: None
+    types:
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:None>
+  - name: training_type
+    description: 'Training tier, specified as a string or <xref:azure.ai.finetuningsessions.aio.TrainingType>.
+
+      Set this explicitly to select a tier; omission leaves selection to the service.
+
+      Global jobs can run on
+
+      any worker; datazone jobs require a worker in the same datazone as the
+
+      API''s region; Developer Tier jobs use eligible development capacity.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.ai.finetuningsessions.models.TrainingType>
+    - <xref:None>
+  return:
+    description: The `session_id` string (e.g. `"session_abc12345"`).
+    types:
+    - <xref:str>
+- uid: azure.ai.finetuningsessions.aio.FineTuningSessionClient.create_session_from_checkpoint
+  name: create_session_from_checkpoint
+  summary: Create a session resumed from a previously saved training checkpoint.
+  signature: 'async create_session_from_checkpoint(*, checkpoint_path: str, base_model:
+    str, lora_config: LoRAConfig, type: str = ''training'', timeout_sec: float = 600.0)
+    -> str'
+  keywordOnlyParameters:
+  - name: checkpoint_path
+    description: 'Format: `"<source_session_id>/<checkpoint_name>"`
+
+      or `"loom://<source_session_id>/weights/<checkpoint_name>"`.'
+    types:
+    - <xref:str>
+  - name: base_model
+    description: Base model name.
+    types:
+    - <xref:str>
+  - name: lora_config
+    description: Required LoRA configuration matching the checkpoint.
+    types:
+    - <xref:azure.ai.finetuningsessions.models.LoRAConfig>
+  - name: type
+    description: Session type. Defaults to `"training"`.
+    defaultValue: training
+    types:
+    - <xref:str>
+  - name: timeout_sec
+    description: Maximum seconds to wait for model load.
+    defaultValue: '600.0'
+    types:
+    - <xref:float>
+  return:
+    description: The `session_id` string.
+    types:
+    - <xref:str>
+- uid: azure.ai.finetuningsessions.aio.FineTuningSessionClient.delete_session
+  name: delete_session
+  summary: "Delete a session and cascade-delete its models, checkpoints, and sampling\
+    \ sessions.\n\nStops the background heartbeat, then issues an HTTP DELETE against\
+    \ the\nsession resource; the cascade is performed server-side.\n\nIdempotent \u2014\
+    \ a 404 (session already gone) is swallowed.  Any other\nnon-2xx surfaces via\
+    \ the standard SDK error path."
+  signature: 'async delete_session(session_id: str) -> None'
+  parameters:
+  - name: session_id
+    description: The session ID to delete.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: None.
+    types:
+    - <xref:None>
+- uid: azure.ai.finetuningsessions.aio.FineTuningSessionClient.forward
+  name: forward
+  summary: 'Submit a mini-batch for a forward-only pass (no gradients).
+
+
+    Automatically chunks large batches and submits chunks in parallel
+
+    using `asyncio.gather`.'
+  signature: 'async forward(session_id: str, batch: List[Datum], *, loss_fn: str |
+    LossFn = LossFn.CROSS_ENTROPY, loss_fn_config: LossFnConfig | None = None) ->
+    OperationResult'
+  parameters:
+  - name: session_id
+    description: The session ID returned by `create_session`.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: batch
+    description: List of Datum.
+    isRequired: true
+    types:
+    - <xref:list>[<xref:azure.ai.finetuningsessions.models.Datum>]
+  keywordOnlyParameters:
+  - name: loss_fn
+    description: Loss function name. Defaults to `"cross_entropy"`.
+    defaultValue: LossFn.CROSS_ENTROPY
+    types:
+    - <xref:str>
+    - <xref:azure.ai.finetuningsessions.models.LossFn>
+  - name: loss_fn_config
+    description: Optional per-loss hyper-parameters.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.finetuningsessions.models.LossFnConfig>
+    - <xref:None>
+  return:
+    description: 'ForwardBackwardOperationResult with per-datum loss outputs.
+
+      `total_loss` is None for forward-only operations.'
+    types:
+    - <xref:azure.ai.finetuningsessions.models.OperationResult>
+- uid: azure.ai.finetuningsessions.aio.FineTuningSessionClient.forward_async
+  name: forward_async
+  summary: 'Submit a forward-only pass, return an asyncio Task for the result.
+
+
+    Awaits all POSTs (with chunking) so that the server assigns UUID v7
+
+    request IDs *before* this method returns.
+
+
+    **Multi-chunk correctness:** When the batch is split into multiple HTTP
+
+    chunks, this method awaits GPU completion of *all* chunks before
+
+    returning, matching the forward_backward_async behavior.'
+  signature: 'async forward_async(session_id: str, batch: List[Datum], *, loss_fn:
+    str | LossFn = LossFn.CROSS_ENTROPY, loss_fn_config: LossFnConfig | None = None)
+    -> Task[OperationResult]'
+  parameters:
+  - name: session_id
+    description: The session ID.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: batch
+    description: List of Datum.
+    isRequired: true
+    types:
+    - <xref:list>[<xref:azure.ai.finetuningsessions.models.Datum>]
+  keywordOnlyParameters:
+  - name: loss_fn
+    description: Loss function name. Defaults to `"cross_entropy"`.
+    defaultValue: LossFn.CROSS_ENTROPY
+    types:
+    - <xref:str>
+    - <xref:azure.ai.finetuningsessions.models.LossFn>
+  - name: loss_fn_config
+    description: Optional per-loss hyper-parameters.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.finetuningsessions.models.LossFnConfig>
+    - <xref:None>
+  return:
+    description: An asyncio.Task whose result is an OperationResult.
+    types:
+    - <xref:asyncio.Task>[<xref:azure.ai.finetuningsessions.models.OperationResult>]
+    - <xref:asyncio.Future>[<xref:azure.ai.finetuningsessions.models.OperationResult>]
+- uid: azure.ai.finetuningsessions.aio.FineTuningSessionClient.forward_backward
+  name: forward_backward
+  summary: 'Submit a mini-batch for a forward + backward pass.
+
+
+    Automatically chunks large batches and submits chunks in parallel
+
+    using `asyncio.gather`.'
+  signature: 'async forward_backward(session_id: str, batch: List[Datum], *, loss_fn:
+    str | LossFn = LossFn.CROSS_ENTROPY, loss_fn_config: LossFnConfig | None = None)
+    -> OperationResult'
+  parameters:
+  - name: session_id
+    description: The session ID returned by `create_session`.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: batch
+    description: List of Datum.
+    isRequired: true
+    types:
+    - <xref:list>[<xref:azure.ai.finetuningsessions.models.Datum>]
+  keywordOnlyParameters:
+  - name: loss_fn
+    description: Loss function name. Defaults to `"cross_entropy"`.
+    defaultValue: LossFn.CROSS_ENTROPY
+    types:
+    - <xref:str>
+    - <xref:azure.ai.finetuningsessions.models.LossFn>
+  - name: loss_fn_config
+    description: Optional per-loss hyper-parameters.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.finetuningsessions.models.LossFnConfig>
+    - <xref:None>
+  return:
+    description: OperationResult.
+    types:
+    - <xref:azure.ai.finetuningsessions.models.OperationResult>
+- uid: azure.ai.finetuningsessions.aio.FineTuningSessionClient.forward_backward_async
+  name: forward_backward_async
+  summary: "Submit a forward+backward pass, return an asyncio Task for the result.\n\
+    \nAwaits all POSTs (with chunking) so that the server assigns UUID v7\nrequest\
+    \ IDs *before* this method returns.\n\n**Multi-chunk correctness:** When the batch\
+    \ is split into multiple HTTP\nchunks, this method awaits GPU completion of *all*\
+    \ chunks before\nreturning.  This ensures that a subsequent `optim_step_async`\
+    \ POST\ncannot reach the engine until every chunk's gradients have been\naccumulated.\
+    \  The returned task resolves immediately with the combined\nresult.\n\nFor single-chunk\
+    \ batches (the common case), only the poll phase runs\nin the background \u2014\
+    \ fully pipelined, no extra latency.\n\nWhen `max_chunks_per_wave` is set, at\
+    \ most that many HTTP chunks are\nregistered at once. Each wave completes before\
+    \ the next is posted. This\nbounds the worker's pre-optimizer batch while preserving\
+    \ one logical\nforward/backward operation and one subsequent optimizer step."
+  signature: 'async forward_backward_async(session_id: str, batch: List[Datum], *,
+    loss_fn: str | LossFn = LossFn.CROSS_ENTROPY, loss_fn_config: LossFnConfig | None
+    = None, poll_min_sec: float | None = None, poll_max_sec: float | None = None,
+    max_chunks_per_wave: int | None = None) -> Task[OperationResult]'
+  parameters:
+  - name: session_id
+    description: The session ID.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: batch
+    description: List of Datum.
+    isRequired: true
+    types:
+    - <xref:list>[<xref:azure.ai.finetuningsessions.models.Datum>]
+  keywordOnlyParameters:
+  - name: loss_fn
+    description: Loss function name. Defaults to `"cross_entropy"`.
+    defaultValue: LossFn.CROSS_ENTROPY
+    types:
+    - <xref:str>
+    - <xref:azure.ai.finetuningsessions.models.LossFn>
+  - name: loss_fn_config
+    description: Optional per-loss hyper-parameters.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.finetuningsessions.models.LossFnConfig>
+    - <xref:None>
+  - name: poll_min_sec
+    description: Optional minimum pending-result poll interval.
+    defaultValue: None
+    types:
+    - <xref:float>
+    - <xref:None>
+  - name: poll_max_sec
+    description: Optional maximum pending-result poll interval.
+    defaultValue: None
+    types:
+    - <xref:float>
+    - <xref:None>
+  - name: max_chunks_per_wave
+    description: 'Maximum number of chunks to post before waiting
+
+      for their completion. `None` preserves the existing all-at-once behavior.'
+    defaultValue: None
+    types:
+    - <xref:int>
+    - <xref:None>
+  return:
+    description: An asyncio.Task whose result is an OperationResult.
+    types:
+    - <xref:asyncio.Task>[<xref:azure.ai.finetuningsessions.models.OperationResult>]
+    - <xref:asyncio.Future>[<xref:azure.ai.finetuningsessions.models.OperationResult>]
+- uid: azure.ai.finetuningsessions.aio.FineTuningSessionClient.forward_backward_post
+  name: forward_backward_post
+  summary: 'POST a forward+backward pass without polling for completion.
+
+
+    Automatically chunks large batches.  Each chunk''s POST is awaited
+
+    sequentially so the server assigns monotonically increasing UUID v7
+
+    request IDs.  Returns a <xref:azure.ai.finetuningsessions.aio.PendingRequests>
+    handle whose
+
+    `poll_result()` can be awaited later.
+
+
+    Use this instead of <xref:azure.ai.finetuningsessions.aio.FineTuningSessionClient.forward_backward>
+    when you need to
+
+    guarantee that all forward_backward requests are registered on the
+
+    server *before* a subsequent `optim_step_post`.'
+  signature: 'async forward_backward_post(session_id: str, batch: List[Datum], *,
+    loss_fn: str | LossFn = LossFn.CROSS_ENTROPY, loss_fn_config: LossFnConfig | None
+    = None) -> PendingRequests'
+  parameters:
+  - name: session_id
+    description: The session ID.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: batch
+    description: List of Datum.
+    isRequired: true
+    types:
+    - <xref:list>[<xref:azure.ai.finetuningsessions.models.Datum>]
+  keywordOnlyParameters:
+  - name: loss_fn
+    description: Loss function name.
+    defaultValue: LossFn.CROSS_ENTROPY
+    types:
+    - <xref:str>
+    - <xref:azure.ai.finetuningsessions.models.LossFn>
+  - name: loss_fn_config
+    description: Optional per-loss hyper-parameters.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.finetuningsessions.models.LossFnConfig>
+    - <xref:None>
+  return:
+    description: PendingRequests handle.
+    types:
+    - <xref:azure.ai.finetuningsessions.aio._patch.PendingRequests>
+- uid: azure.ai.finetuningsessions.aio.FineTuningSessionClient.forward_post
+  name: forward_post
+  summary: 'POST a forward-only pass without polling for completion.
+
+
+    Automatically chunks large batches.  Each chunk''s POST is awaited
+
+    sequentially so the server assigns monotonically increasing UUID v7
+
+    request IDs.  Returns a <xref:azure.ai.finetuningsessions.aio.PendingRequests>
+    handle whose
+
+    `poll_result()` can be awaited later.'
+  signature: 'async forward_post(session_id: str, batch: List[Datum], *, loss_fn:
+    str | LossFn = LossFn.CROSS_ENTROPY, loss_fn_config: LossFnConfig | None = None)
+    -> PendingRequests'
+  parameters:
+  - name: session_id
+    description: The session ID.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: batch
+    description: List of Datum.
+    isRequired: true
+    types:
+    - <xref:list>[<xref:azure.ai.finetuningsessions.models.Datum>]
+  keywordOnlyParameters:
+  - name: loss_fn
+    description: Loss function name.
+    defaultValue: LossFn.CROSS_ENTROPY
+    types:
+    - <xref:str>
+    - <xref:azure.ai.finetuningsessions.models.LossFn>
+  - name: loss_fn_config
+    description: Optional per-loss hyper-parameters.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.finetuningsessions.models.LossFnConfig>
+    - <xref:None>
+  return:
+    description: PendingRequests handle.
+    types:
+    - <xref:azure.ai.finetuningsessions.aio._patch.PendingRequests>
+- uid: azure.ai.finetuningsessions.aio.FineTuningSessionClient.optim_step
+  name: optim_step
+  summary: Apply accumulated gradients with Adam.
+  signature: 'async optim_step(session_id: str, adam_params: AdamParams) -> OperationResult'
+  parameters:
+  - name: session_id
+    description: The session ID.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: adam_params
+    description: Optimizer hyper-parameters.
+    isRequired: true
+    types:
+    - <xref:azure.ai.finetuningsessions.models.AdamParams>
+  return:
+    description: OperationResult.
+    types:
+    - <xref:azure.ai.finetuningsessions.models.OperationResult>
+- uid: azure.ai.finetuningsessions.aio.FineTuningSessionClient.optim_step_async
+  name: optim_step_async
+  summary: 'Submit an optim_step, return an asyncio Task for the result.
+
+
+    Awaits the POST so the server assigns a UUID v7 *after* all preceding
+
+    forward_backward_async calls.  Only the poll runs in the background.'
+  signature: 'async optim_step_async(session_id: str, adam_params: AdamParams, *,
+    poll_min_sec: float | None = None, poll_max_sec: float | None = None) -> Task[OperationResult]'
+  parameters:
+  - name: session_id
+    description: The session ID.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: adam_params
+    description: Optimizer hyper-parameters.
+    isRequired: true
+    types:
+    - <xref:azure.ai.finetuningsessions.models.AdamParams>
+  keywordOnlyParameters:
+  - name: poll_min_sec
+    description: Optional minimum pending-result poll interval.
+    defaultValue: None
+    types:
+    - <xref:float>
+    - <xref:None>
+  - name: poll_max_sec
+    description: Optional maximum pending-result poll interval.
+    defaultValue: None
+    types:
+    - <xref:float>
+    - <xref:None>
+  return:
+    description: An asyncio.Task whose result is an OperationResult.
+    types:
+    - <xref:asyncio.Task>[<xref:azure.ai.finetuningsessions.models.OperationResult>]
+- uid: azure.ai.finetuningsessions.aio.FineTuningSessionClient.optim_step_post
+  name: optim_step_post
+  summary: 'POST an optim_step without polling for completion.
+
+
+    Returns a <xref:azure.ai.finetuningsessions.aio.PendingRequests> handle whose
+    `poll_result()`
+
+    can be awaited later.'
+  signature: 'async optim_step_post(session_id: str, adam_params: AdamParams) -> PendingRequests'
+  parameters:
+  - name: session_id
+    description: The session ID.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: adam_params
+    description: Optimizer hyper-parameters.
+    isRequired: true
+    types:
+    - <xref:azure.ai.finetuningsessions.models.AdamParams>
+  return:
+    description: PendingRequests handle.
+    types:
+    - <xref:azure.ai.finetuningsessions.aio._patch.PendingRequests>
+- uid: azure.ai.finetuningsessions.aio.FineTuningSessionClient.sample
+  name: sample
+  summary: "Generate completions using current LoRA weights.\n\nConcurrency is bounded\
+    \ by a lifecycle-scoped semaphore (size\n`_MAX_CONCURRENT_SAMPLES`). The permit\
+    \ is held for the FULL submit+poll\nlifecycle so a throttled or slow-generating\
+    \ sample does not release capacity\nto a burst queued behind it. A 429 on submit\
+    \ is treated as healthy\nbackpressure and retried in place \u2014 honoring `Retry-After`\
+    \ + jitter \u2014 until\n`_SAMPLE_THROTTLE_TIMEOUT_SEC`, then a typed `RateLimitedError`\
+    \ is raised."
+  signature: 'async sample(session_id: str, prompt_tokens: List[int] | ModelInput,
+    sampling_params: SamplingParams, *, checkpoint_id: str, num_samples: int = 1,
+    sampling_session_id: str | None = None, seq_id: int | None = None, prompt_logprobs:
+    bool = False, topk_prompt_logprobs: int = 0) -> OperationResult'
+  parameters:
+  - name: session_id
+    description: The session ID.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: prompt_tokens
+    description: 'Tokenised prompt as a list of integer IDs, or a
+
+      structured `ModelInput` for multimodal prompts.'
+    isRequired: true
+    types:
+    - <xref:list>[<xref:int>]
+    - <xref:azure.ai.finetuningsessions.models.ModelInput>
+  - name: sampling_params
+    description: Generation parameters.
+    isRequired: true
+    types:
+    - <xref:azure.ai.finetuningsessions.models.SamplingParams>
+  keywordOnlyParameters:
+  - name: checkpoint_id
+    description: Sampler checkpoint ID from `save_weights_for_sampler`.
+    types:
+    - <xref:str>
+  - name: num_samples
+    description: Number of completions. Default 1.
+    defaultValue: '1'
+    types:
+    - <xref:int>
+  - name: sampling_session_id
+    description: Optional sampling session ID sent with the request.
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:None>
+  - name: seq_id
+    description: Optional sequence ID sent with the sampling request.
+    defaultValue: None
+    types:
+    - <xref:int>
+    - <xref:None>
+  - name: prompt_logprobs
+    description: If True, return per-token log-probabilities for the prompt.
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: topk_prompt_logprobs
+    description: Top-k log-probabilities per prompt token. 0 = none. Must be between
+      0 and 20 (default 0).
+    defaultValue: '0'
+    types:
+    - <xref:int>
+  return:
+    description: OperationResult.
+    types:
+    - <xref:azure.ai.finetuningsessions.models.OperationResult>
+- uid: azure.ai.finetuningsessions.aio.FineTuningSessionClient.save_weights
+  name: save_weights
+  summary: Save a training checkpoint (LoRA weights + optimizer state).
+  signature: 'async save_weights(session_id: str, path: str) -> OperationResult'
+  parameters:
+  - name: session_id
+    description: The session ID.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: path
+    description: Checkpoint name/path.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: OperationResult.
+    types:
+    - <xref:azure.ai.finetuningsessions.models.OperationResult>
+- uid: azure.ai.finetuningsessions.aio.FineTuningSessionClient.save_weights_and_get_sampling_client_async
+  name: save_weights_and_get_sampling_client_async
+  summary: "Sync current LoRA weights to the sampler (ephemeral \u2014 not persisted).\n\
+    \nUsed every training step to push weights for rollout sampling.\nThe engine skips\
+    \ blob persistence because `sampling_session_seq_id`\nis set. The SDK maintains\
+    \ an internal per-session counter \u2014 the user\nnever sees it."
+  signature: 'async save_weights_and_get_sampling_client_async(session_id: str, name:
+    str) -> Task[OperationResult]'
+  parameters:
+  - name: session_id
+    description: The session ID.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: name
+    description: Checkpoint name/identifier (e.g. `"step5"`).
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: 'An asyncio.Task whose result is an OperationResult with
+
+      `checkpoint_id` set to *name*.'
+    types:
+    - <xref:asyncio.Task>[<xref:azure.ai.finetuningsessions.models.OperationResult>]
+- uid: azure.ai.finetuningsessions.aio.FineTuningSessionClient.save_weights_async
+  name: save_weights_async
+  summary: 'Submit a save-weights request, return an asyncio Task for the result.
+
+
+    Awaits the POST so the server assigns a UUID v7 *after* all preceding
+
+    requests.  Only the poll runs in the background.'
+  signature: 'async save_weights_async(session_id: str, path: str, *, step_number:
+    int | None = None, metrics: Dict[str, Any] | None = None) -> Task[OperationResult]'
+  parameters:
+  - name: session_id
+    description: The session ID.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: path
+    description: Checkpoint name/path.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: step_number
+    description: Training step number for this checkpoint.
+    defaultValue: None
+    types:
+    - <xref:int>
+    - <xref:None>
+  - name: metrics
+    description: Evaluation metrics at checkpoint time.
+    defaultValue: None
+    types:
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:None>
+  return:
+    description: An asyncio.Task whose result is an OperationResult.
+    types:
+    - <xref:asyncio.Task>[<xref:azure.ai.finetuningsessions.models.OperationResult>]
+- uid: azure.ai.finetuningsessions.aio.FineTuningSessionClient.save_weights_for_sampler_async
+  name: save_weights_for_sampler_async
+  summary: 'Save sampler weights and persist them to blob storage.
+
+
+    The engine persists the checkpoint because `sampling_session_seq_id`
+
+    is not set.'
+  signature: 'async save_weights_for_sampler_async(session_id: str, name: str) ->
+    Task[OperationResult]'
+  parameters:
+  - name: session_id
+    description: The session ID.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: name
+    description: Checkpoint name/identifier.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: 'An asyncio.Task whose result is an OperationResult with
+
+      `checkpoint_id` set to *name*.'
+    types:
+    - <xref:asyncio.Task>[<xref:azure.ai.finetuningsessions.models.OperationResult>]
+- uid: azure.ai.finetuningsessions.aio.FineTuningSessionClient.save_weights_post
+  name: save_weights_post
+  summary: POST a save-weights request without polling for completion.
+  signature: 'async save_weights_post(session_id: str, path: str, *, step_number:
+    int | None = None, metrics: Dict[str, Any] | None = None) -> PendingRequests'
+  parameters:
+  - name: session_id
+    description: The session ID.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: path
+    description: Checkpoint name/path.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: step_number
+    description: Training step number for this checkpoint.
+    defaultValue: None
+    types:
+    - <xref:int>
+    - <xref:None>
+  - name: metrics
+    description: Evaluation metrics at checkpoint time.
+    defaultValue: None
+    types:
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:None>
+  return:
+    description: PendingRequests handle.
+    types:
+    - <xref:azure.ai.finetuningsessions.aio._patch.PendingRequests>
+- uid: azure.ai.finetuningsessions.aio.FineTuningSessionClient.send_request
+  name: send_request
+  summary: 'Runs the network request through the client''s chained policies.
+
+
+    ```
+
+
+    >>> from azure.core.rest import HttpRequest
+
+    >>> request = HttpRequest("GET", "https://www.example.org/")
+
+    <HttpRequest [GET], url: ''https://www.example.org/''>
+
+    >>> response = await client.send_request(request)
+
+    <AsyncHttpResponse: 200 OK>
+
+    ```
+
+
+    For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> Awaitable[AsyncHttpResponse]'
+  parameters:
+  - name: request
+    description: The network request you want to make. Required.
+    isRequired: true
+    types:
+    - <xref:azure.core.rest.HttpRequest>
+  keywordOnlyParameters:
+  - name: stream
+    description: Whether the response payload will be streamed. Defaults to False.
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  return:
+    description: The response of your network call. Does not do error handling on
+      your response.
+    types:
+    - <xref:azure.core.rest.AsyncHttpResponse>

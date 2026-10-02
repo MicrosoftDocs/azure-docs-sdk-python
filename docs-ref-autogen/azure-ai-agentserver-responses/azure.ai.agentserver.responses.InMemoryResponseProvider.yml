@@ -92,11 +92,12 @@ methods:
     | OutputItemLocalShellToolCallOutput | OutputItemMcpApprovalRequest | OutputItemMcpApprovalResponseResource
     | OutputItemMcpToolCall | OutputItemMcpListTools | MemorySearchToolCallItemResource
     | OutputItemMessage | OAuthConsentRequestOutputItem | OpenApiToolCall | OpenApiToolCallOutput
-    | OutputItemOutputMessage | OutputItemReasoningItem | SharepointGroundingToolCall
-    | SharepointGroundingToolCallOutput | OutputItemFunctionShellCall | OutputItemFunctionShellCallOutput
-    | StructuredOutputsOutputItem | OutputItemToolSearchCall | OutputItemToolSearchOutput
-    | OutputItemWebSearchToolCall | WorkflowActionOutputItem] | None, history_item_ids:
-    Iterable[str] | None, *, context: PlatformContext | None = None) -> None'
+    | OutputItemOutputMessage | OutputItemProgram | OutputItemProgramOutput | OutputItemReasoningItem
+    | SharepointGroundingToolCall | SharepointGroundingToolCallOutput | OutputItemFunctionShellCall
+    | OutputItemFunctionShellCallOutput | StructuredOutputsOutputItem | OutputItemToolSearchCall
+    | OutputItemToolSearchOutput | OutputItemWebSearchToolCall | WorkflowActionOutputItem]
+    | None, history_item_ids: Iterable[str] | None, *, context: PlatformContext |
+    None = None) -> None'
   parameters:
   - name: response
     description: The response envelope to persist.
@@ -193,6 +194,8 @@ methods:
 
     response chain and/or all responses within the given conversation.
 
+    Duplicate item IDs are removed while preserving their first occurrence.
+
     When over *limit*, keeps the most recent N item IDs from the
 
     resolved chain, preserving chronological order in the returned slice.'
@@ -210,7 +213,8 @@ methods:
     types:
     - <xref:str> | <xref:None>
   - name: limit
-    description: Maximum number of item IDs to return (most recent N).
+    description: Maximum number of item IDs to return (most recent N), or -1 for all
+      items.
     isRequired: true
     types:
     - <xref:int>
@@ -221,7 +225,7 @@ methods:
     types:
     - <xref:azure.ai.agentserver.responses.PlatformContext> | <xref:None>
   return:
-    description: A list of item IDs from the resolved chain.
+    description: An ordered list of unique item IDs from the resolved chain.
     types:
     - <xref:list>[<xref:str>]
 - uid: azure.ai.agentserver.responses.InMemoryResponseProvider.get_input_items
@@ -270,6 +274,7 @@ methods:
     azure.ai.agentserver.responses.models._generated.types.OutputItemMessage, azure.ai.agentserver.responses.models._generated.types.OAuthConsentRequestOutputItem,
     azure.ai.agentserver.responses.models._generated.types.OpenApiToolCall, azure.ai.agentserver.responses.models._generated.types.OpenApiToolCallOutput,
     azure.ai.agentserver.responses.models._generated.types.OutputItemOutputMessage,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemProgram, azure.ai.agentserver.responses.models._generated.types.OutputItemProgramOutput,
     azure.ai.agentserver.responses.models._generated.types.OutputItemReasoningItem,
     azure.ai.agentserver.responses.models._generated.types.SharepointGroundingToolCall,
     azure.ai.agentserver.responses.models._generated.types.SharepointGroundingToolCallOutput,
@@ -365,6 +370,7 @@ methods:
     azure.ai.agentserver.responses.models._generated.types.OutputItemMessage, azure.ai.agentserver.responses.models._generated.types.OAuthConsentRequestOutputItem,
     azure.ai.agentserver.responses.models._generated.types.OpenApiToolCall, azure.ai.agentserver.responses.models._generated.types.OpenApiToolCallOutput,
     azure.ai.agentserver.responses.models._generated.types.OutputItemOutputMessage,
+    azure.ai.agentserver.responses.models._generated.types.OutputItemProgram, azure.ai.agentserver.responses.models._generated.types.OutputItemProgramOutput,
     azure.ai.agentserver.responses.models._generated.types.OutputItemReasoningItem,
     azure.ai.agentserver.responses.models._generated.types.SharepointGroundingToolCall,
     azure.ai.agentserver.responses.models._generated.types.SharepointGroundingToolCallOutput,

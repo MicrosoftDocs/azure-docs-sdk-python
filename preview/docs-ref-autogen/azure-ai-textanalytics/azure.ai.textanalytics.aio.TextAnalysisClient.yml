@@ -3,51 +3,73 @@ uid: azure.ai.textanalytics.aio.TextAnalysisClient
 name: TextAnalysisClient
 fullName: azure.ai.textanalytics.aio.TextAnalysisClient
 module: azure.ai.textanalytics.aio
-summary: '**Async** client for Text Analysis APIs.
+summary: 'The language service API is a suite of natural language processing (NLP)
+  skills built with
 
+  best-in-class Microsoft machine learning algorithms.  The API can be used to analyze
 
-  Create a TextAnalysisClient.'
+  unstructured text for tasks such as sentiment analysis, key phrase extraction, language
+
+  detection and question answering. Further documentation can be found at
+
+  [https://learn.microsoft.com/azure/cognitive-services/language-service/overview](https://learn.microsoft.com/azure/cognitive-services/language-service/overview).'
 constructor:
   syntax: 'TextAnalysisClient(endpoint: str, credential: AzureKeyCredential | AsyncTokenCredential,
-    *, api_version: str | None = None, **kwargs: Any)'
+    **kwargs: Any)'
   parameters:
   - name: endpoint
-    description: Supported Cognitive Services endpoint.
+    description: 'Supported Cognitive Services endpoint (e.g.,
+
+      [https:/](https:/)/<resource-name>.api.cognitiveservices.azure.com). Required.'
     isRequired: true
     types:
     - <xref:str>
   - name: credential
-    description: Key or token credential.
+    description: 'Credential used to authenticate requests to the service. Is either
+      a key
+
+      credential type or a token credential type. Required.'
     isRequired: true
     types:
     - <xref:azure.core.credentials.AzureKeyCredential>
-    - <xref:azure.core.credentials.AsyncTokenCredential>
+    - <xref:azure.core.credentials_async.AsyncTokenCredential>
   keywordOnlyParameters:
   - name: api_version
-    description: 'The API version to use for this operation. Default value is
+    description: 'The API version to use for this operation. Known values are
 
-      `"2025-05-15-preview"`. Note that overriding this default value may result in
+      "2026-05-15-preview" and None. Default value is None. If not set, the operation''s
+      default API
+
+      version will be used. Note that overriding this default value may result in
       unsupported
 
       behavior.'
-    defaultValue: None
     types:
     - <xref:str>
+  - name: polling_interval
+    description: 'Default waiting time between two polls for LRO operations if no
+
+      Retry-After header is present.'
+    types:
+    - <xref:int>
 methods:
 - uid: azure.ai.textanalytics.aio.TextAnalysisClient.analyze_text
   name: analyze_text
   summary: Request text analysis over a collection of documents.
-  signature: 'async analyze_text(body: AnalyzeTextInput | MutableMapping[str, Any]
-    | IO[bytes], *, show_stats: bool | None = None, **kwargs: Any) -> AnalyzeTextResult'
+  signature: 'async analyze_text(body: AnalyzeTextInput | TextEntityLinkingInput |
+    TextEntityRecognitionInput | TextKeyPhraseExtractionInput | TextLanguageDetectionInput
+    | TextPiiEntitiesRecognitionInput | TextSentimentAnalysisInput | IO[bytes], *,
+    show_stats: bool | None = None, **kwargs: Any) -> AnalyzeTextResult'
   parameters:
   - name: body
-    description: 'The input documents to analyze. Is one of the following types: AnalyzeTextInput,
+    description: 'The input documents to analyze. Is either a AnalyzeTextInput type
+      or a IO[bytes]
 
-      JSON, IO[bytes] Required.'
+      type. Required.'
     isRequired: true
     types:
     - <xref:azure.ai.textanalytics.models.AnalyzeTextInput>
-    - <xref:JSON>
+    - <xref:azure.ai.textanalytics.types.AnalyzeTextInput>
     - <xref:typing.IO>[<xref:bytes>]
   keywordOnlyParameters:
   - name: show_stats
@@ -69,36 +91,42 @@ methods:
     unique tasks to be
 
     executed as a long-running operation.'
-  signature: 'async begin_analyze_text_job(*, text_input: _models.MultiLanguageTextInput,
-    actions: list[_models.AnalyzeTextOperationAction], content_type: str = ''application/json'',
-    display_name: str | None = None, default_language: str | None = None, cancel_after:
-    float | None = None, **kwargs: Any) -> AnalyzeTextAsyncLROPoller[AsyncItemPaged[''TextActions'']]'
+  signature: 'async begin_analyze_text_job(body: ~collections.abc.MutableMapping[str,
+    ~typing.Any] | ~azure.ai.textanalytics.types.AnalyzeTextSubmitJobRequest | ~typing.IO[bytes]
+    = <object object>, *, text_input: ~azure.ai.textanalytics.models._models.MultiLanguageTextInput
+    = <object object>, actions: list[azure.ai.textanalytics.models._models.AnalyzeTextOperationAction]
+    = <object object>, display_name: str | None = None, default_language: str | None
+    = None, cancel_after: float | None = None, **kwargs: ~typing.Any) -> AsyncLROPoller[AnalyzeTextOperationState]'
   parameters:
   - name: body
-    description: Is either a JSON type or a IO[bytes] type. Required.
+    description: 'Is one of the following types: JSON, AnalyzeTextSubmitJobRequest,
+      IO[bytes]
+
+      Required.'
     types:
     - <xref:JSON>
+    - <xref:azure.ai.textanalytics.types.AnalyzeTextSubmitJobRequest>
     - <xref:typing.IO>[<xref:bytes>]
   keywordOnlyParameters:
   - name: text_input
     description: Contains the input to be analyzed. Required.
-    defaultValue: <object object at 0x000001FDBB41BF20>
+    defaultValue: <object object at 0x00000207AD177910>
     types:
     - <xref:azure.ai.textanalytics.models.MultiLanguageTextInput>
   - name: actions
     description: List of tasks to be performed as part of the LRO. Required.
-    defaultValue: <object object at 0x000001FDBB41BF20>
+    defaultValue: <object object at 0x00000207AD177910>
     types:
     - <xref:list>[<xref:azure.ai.textanalytics.models.AnalyzeTextOperationAction>]
   - name: display_name
-    description: Name for the task. Default value is `None`.
+    description: Name for the task. Default value is None.
     defaultValue: None
     types:
     - <xref:str>
   - name: default_language
     description: 'Default language to use for records requesting automatic language
 
-      detection. Default value is `None`.'
+      detection. Default value is None.'
     defaultValue: None
     types:
     - <xref:str>
@@ -106,17 +134,14 @@ methods:
     description: 'Optional duration in seconds after which the job will be canceled
       if not
 
-      completed. Default value is `None`.'
+      completed. Default value is None.'
     defaultValue: None
     types:
     - <xref:float>
   return:
-    description: 'A poller whose `result()` yields `AsyncItemPaged[TextActions]` and
-      exposes metadata via
-
-      `.details`.'
+    description: An instance of AsyncLROPoller that returns AnalyzeTextOperationState
     types:
-    - <xref:azure.ai.textanalytics.AnalyzeTextAsyncLROPoller>[ <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.ai.textanalytics.models.TextActions>]]
+    - <xref:azure.core.polling.AsyncLROPoller>[<xref:azure.ai.textanalytics.models.AnalyzeTextOperationState>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.ai.textanalytics.aio.TextAnalysisClient.begin_cancel_job
