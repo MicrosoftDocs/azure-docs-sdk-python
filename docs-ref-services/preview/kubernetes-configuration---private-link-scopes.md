@@ -1,7 +1,7 @@
 ---
 title: Azure Kubernetes Configuration - Private Link Scopes SDK for Python
 description: Reference for Azure Kubernetes Configuration - Private Link Scopes SDK for Python
-ms.date: 10/02/2026
+ms.date: 10/05/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: kubernetesconfiguration-privatelinkscopes
