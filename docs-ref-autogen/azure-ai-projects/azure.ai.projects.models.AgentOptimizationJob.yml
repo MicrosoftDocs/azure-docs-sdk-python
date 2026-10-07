@@ -3,9 +3,8 @@ uid: azure.ai.projects.models.AgentOptimizationJob
 name: AgentOptimizationJob
 fullName: azure.ai.projects.models.AgentOptimizationJob
 module: azure.ai.projects.models
-summary: "Agent optimization job resource \u2014 a long-running job that optimizes\
-  \ an agent's configuration\n(instructions, model, skills, tools) to maximize evaluation\
-  \ scores. On success, the result\ncontains scored candidates."
+summary: "Agent optimization job resource \u2014 a long-running job that produces\
+  \ candidate changes to a\nFoundry agent configuration."
 constructor:
   syntax: 'AgentOptimizationJob(*args: Any, **kwargs: Any)'
 variables:
@@ -13,10 +12,6 @@ variables:
   name: id
   types:
   - <xref:str>
-- description: Caller-supplied inputs.
-  name: inputs
-  types:
-  - <xref:azure.ai.projects.models.AgentOptimizationJobInputs>
 - description: Result produced on success.
   name: result
   types:
@@ -32,6 +27,32 @@ variables:
   name: error
   types:
   - <xref:azure.ai.projects.models.ApiError>
+- description: 'Human-readable label. Omitted when no label is needed; it has no
+
+    uniqueness, routing, or idempotency semantics.'
+  name: display_name
+  types:
+  - <xref:str>
+- description: 'Foundry agent whose configuration is optimized. Omitted when the
+
+    workflow does not target a registered Foundry agent.'
+  name: target_configuration
+  types:
+  - <xref:azure.ai.projects.models.AgentOptimizationTargetConfiguration>
+- description: 'Model used to generate candidate changes. An existing
+
+    deployment name is also accepted. Required.'
+  name: optimization_model_configuration
+  types:
+  - <xref:azure.ai.projects.models.AgentOptimizationModelConfiguration>
+- description: Type-specific optimization configuration. Required.
+  name: optimization_configuration
+  types:
+  - <xref:azure.ai.projects.models.AgentOptimizationConfigurationBase>
+- description: Duration for which the job has been running, in milliseconds. Required.
+  name: run_duration_ms
+  types:
+  - <xref:datetime.timedelta>
 - description: The timestamp when the job was created, represented in Unix time. Required.
   name: created_at
   types:
@@ -42,13 +63,10 @@ variables:
   name: updated_at
   types:
   - <xref:datetime.datetime>
-- description: 'Progress snapshot. May be present in terminal states reflecting last-known
+- description: 'Non-fatal warnings emitted during optimization. Omitted when no warnings
+    were
 
-    progress.'
-  name: progress
-  types:
-  - <xref:azure.ai.projects.models.AgentOptimizationJobProgress>
-- description: Non-fatal warnings emitted at any point during optimization.
+    produced.'
   name: warnings
   types:
   - <xref:list>[<xref:str>]
@@ -171,6 +189,13 @@ attributes:
   name: created_at
   summary: The timestamp when the job was created, represented in Unix time. Required.
   signature: 'created_at: datetime'
+- uid: azure.ai.projects.models.AgentOptimizationJob.display_name
+  name: display_name
+  summary: 'Human-readable label. Omitted when no label is needed; it has no uniqueness,
+    routing, or
+
+    idempotency semantics.'
+  signature: 'display_name: str | None'
 - uid: azure.ai.projects.models.AgentOptimizationJob.error
   name: error
   summary: "Error details \u2014 populated only on failure."
@@ -179,25 +204,39 @@ attributes:
   name: id
   summary: Server-assigned unique identifier. Required.
   signature: 'id: str'
-- uid: azure.ai.projects.models.AgentOptimizationJob.inputs
-  name: inputs
-  summary: Caller-supplied inputs.
-  signature: 'inputs: _models.AgentOptimizationJobInputs | None'
-- uid: azure.ai.projects.models.AgentOptimizationJob.progress
-  name: progress
-  summary: Progress snapshot. May be present in terminal states reflecting last-known
-    progress.
-  signature: 'progress: _models.AgentOptimizationJobProgress | None'
+- uid: azure.ai.projects.models.AgentOptimizationJob.optimization_configuration
+  name: optimization_configuration
+  summary: Type-specific optimization configuration. Required.
+  signature: 'optimization_configuration: _models.AgentOptimizationConfigurationBase'
+- uid: azure.ai.projects.models.AgentOptimizationJob.optimization_model_configuration
+  name: optimization_model_configuration
+  summary: 'Model used to generate candidate changes. An existing deployment name
+    is also accepted.
+
+    Required.'
+  signature: 'optimization_model_configuration: _models.AgentOptimizationModelConfiguration'
 - uid: azure.ai.projects.models.AgentOptimizationJob.result
   name: result
   summary: Result produced on success.
   signature: 'result: _models.AgentOptimizationJobResult | None'
+- uid: azure.ai.projects.models.AgentOptimizationJob.run_duration_ms
+  name: run_duration_ms
+  summary: Duration for which the job has been running, in milliseconds. Required.
+  signature: 'run_duration_ms: timedelta'
 - uid: azure.ai.projects.models.AgentOptimizationJob.status
   name: status
   summary: '"queued", "in_progress",
 
     "succeeded", "failed", and "cancelled".'
   signature: 'status: str | _models.JobStatus'
+- uid: azure.ai.projects.models.AgentOptimizationJob.target_configuration
+  name: target_configuration
+  summary: 'Foundry agent whose configuration is optimized. Omitted when the workflow
+    does not target a
+
+    registered Foundry agent.'
+  signature: 'target_configuration: _models.AgentOptimizationTargetConfiguration |
+    None'
 - uid: azure.ai.projects.models.AgentOptimizationJob.updated_at
   name: updated_at
   summary: The timestamp when the job was last updated, represented in Unix time.
@@ -205,5 +244,6 @@ attributes:
   signature: 'updated_at: datetime'
 - uid: azure.ai.projects.models.AgentOptimizationJob.warnings
   name: warnings
-  summary: Non-fatal warnings emitted at any point during optimization.
+  summary: Non-fatal warnings emitted during optimization. Omitted when no warnings
+    were produced.
   signature: 'warnings: list[str] | None'

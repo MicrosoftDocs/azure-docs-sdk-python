@@ -13,10 +13,6 @@ variables:
   name: id
   types:
   - <xref:str>
-- description: Caller-supplied inputs.
-  name: inputs
-  types:
-  - <xref:azure.ai.projects.models.EvaluatorGenerationInputs>
 - description: Result produced on success.
   name: result
   types:
@@ -32,6 +28,68 @@ variables:
   name: error
   types:
   - <xref:azure.ai.projects.models.ApiError>
+- description: "Source materials for generation \u2014 agent descriptions, prompts,\
+    \ traces, or\ndatasets. Each entry is an `EvaluatorGenerationJobSource` variant\
+    \ discriminated by `type`.\nRequired."
+  name: sources
+  types:
+  - <xref:list>[<xref:azure.ai.projects.models.EvaluatorGenerationJobSource>]
+- description: "The LLM model to use for rubric generation (e.g., 'gpt-4o'). Required\
+    \ \u2014 users must\nprovide their own model rather than relying on service-owned\
+    \ capacity. Required."
+  name: model
+  types:
+  - <xref:str>
+- description: 'The evaluator name (immutable identifier). 1-256 characters; allowed
+
+    characters are ASCII letters, digits, underscore (`_`), period (`.`), tilde (`~`),
+    and
+
+    hyphen (`-`). The prefix `builtin.` is reserved for system-managed evaluators
+    and is
+
+    rejected by the service. If an evaluator with this name already exists in the
+    project (and is
+
+    rubric-subtype), the service creates a new version under the same name and uses
+    the prior
+
+    version''s `dimensions` as context for incremental improvement (foundation of
+    the post-//build
+
+    adaptive loop). Old versions remain queryable via `get_version(name, version)`.
+    If the
+
+    existing evaluator is not a rubric-subtype evaluator (built-in, prompt-based,
+    code-based), the
+
+    request is rejected with `400 Bad Request`. Required.'
+  name: evaluator_name
+  types:
+  - <xref:str>
+- description: 'Optional human-friendly display name for the resulting evaluator.
+
+    Surfaced as `EvaluatorVersion.display_name` on the persisted evaluator. When omitted,
+    the
+
+    service uses `evaluator_name` as the display name. The `evaluator_` prefix disambiguates
+
+    this from the immutable `evaluator_name` identifier.'
+  name: evaluator_display_name
+  types:
+  - <xref:str>
+- description: 'Optional human-friendly description for the resulting evaluator.
+
+    Surfaced as `EvaluatorVersion.description` on the persisted evaluator. Typically
+    collected
+
+    from the UI alongside `evaluator_display_name`. The `evaluator_` prefix disambiguates
+    this
+
+    from any other description fields on related models.'
+  name: evaluator_description
+  types:
+  - <xref:str>
 - description: 'The timestamp when the job was created, represented in Unix time (seconds
 
     since January 1, 1970). Required.'
@@ -187,6 +245,60 @@ attributes:
   name: error
   summary: "Error details \u2014 populated only on failure."
   signature: 'error: _models.ApiError | None'
+- uid: azure.ai.projects.models.EvaluatorGenerationJob.evaluator_description
+  name: evaluator_description
+  summary: 'Optional human-friendly description for the resulting evaluator. Surfaced
+    as
+
+    `EvaluatorVersion.description` on the persisted evaluator. Typically collected
+    from the UI
+
+    alongside `evaluator_display_name`. The `evaluator_` prefix disambiguates this
+    from any
+
+    other description fields on related models.'
+  signature: 'evaluator_description: str | None'
+- uid: azure.ai.projects.models.EvaluatorGenerationJob.evaluator_display_name
+  name: evaluator_display_name
+  summary: 'Optional human-friendly display name for the resulting evaluator. Surfaced
+    as
+
+    `EvaluatorVersion.display_name` on the persisted evaluator. When omitted, the
+    service uses
+
+    `evaluator_name` as the display name. The `evaluator_` prefix disambiguates this
+    from the
+
+    immutable `evaluator_name` identifier.'
+  signature: 'evaluator_display_name: str | None'
+- uid: azure.ai.projects.models.EvaluatorGenerationJob.evaluator_name
+  name: evaluator_name
+  summary: 'The evaluator name (immutable identifier). 1-256 characters; allowed characters
+    are ASCII
+
+    letters, digits, underscore (`_`), period (`.`), tilde (`~`), and hyphen (`-`).
+    The
+
+    prefix `builtin.` is reserved for system-managed evaluators and is rejected by
+    the service.
+
+    If an evaluator with this name already exists in the project (and is rubric-subtype),
+    the
+
+    service creates a new version under the same name and uses the prior version''s
+    `dimensions`
+
+    as context for incremental improvement (foundation of the post-//build adaptive
+    loop). Old
+
+    versions remain queryable via `get_version(name, version)`. If the existing evaluator
+    is not
+
+    a rubric-subtype evaluator (built-in, prompt-based, code-based), the request is
+    rejected with
+
+    `400 Bad Request`. Required.'
+  signature: 'evaluator_name: str'
 - uid: azure.ai.projects.models.EvaluatorGenerationJob.finished_at
   name: finished_at
   summary: The timestamp when the job finished, represented in Unix time (seconds
@@ -209,14 +321,22 @@ attributes:
     `EvaluatorVersion.definition` invalidates the advisories.'
   signature: 'input_quality_warnings: list[''_models.RubricGenerationInputQualityWarning'']
     | None'
-- uid: azure.ai.projects.models.EvaluatorGenerationJob.inputs
-  name: inputs
-  summary: Caller-supplied inputs.
-  signature: 'inputs: _models.EvaluatorGenerationInputs | None'
+- uid: azure.ai.projects.models.EvaluatorGenerationJob.model
+  name: model
+  summary: "The LLM model to use for rubric generation (e.g., 'gpt-4o'). Required\
+    \ \u2014 users must provide\ntheir own model rather than relying on service-owned\
+    \ capacity. Required."
+  signature: 'model: str'
 - uid: azure.ai.projects.models.EvaluatorGenerationJob.result
   name: result
   summary: Result produced on success.
   signature: 'result: _models.EvaluatorVersion | None'
+- uid: azure.ai.projects.models.EvaluatorGenerationJob.sources
+  name: sources
+  summary: "Source materials for generation \u2014 agent descriptions, prompts, traces,\
+    \ or datasets. Each entry\nis an `EvaluatorGenerationJobSource` variant discriminated\
+    \ by `type`. Required."
+  signature: 'sources: list[''_models.EvaluatorGenerationJobSource'']'
 - uid: azure.ai.projects.models.EvaluatorGenerationJob.status
   name: status
   summary: '"queued", "in_progress",
