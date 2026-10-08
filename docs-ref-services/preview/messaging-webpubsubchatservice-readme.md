@@ -1,12 +1,12 @@
 ---
 title: Azure Web PubSub Chat service client library for Python
 keywords: Azure, python, SDK, API, azure-messaging-webpubsubchatservice, webpubsub
-ms.date: 10/07/2026
+ms.date: 10/08/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: webpubsub
 ---
-# Azure Web PubSub Chat service client library for Python - version 1.0.0b1 
+# Azure Web PubSub Chat service client library for Python - version 1.0.0a20261008001 
 
 
 [Azure Web PubSub chat][product_docs] is a managed chat capability built on [Azure Web PubSub][webpubsub_docs]. It provides purpose-built client and server APIs for chat scenarios. Applications use the SDKs to communicate with the Azure service and work with chat-native concepts such as rooms, messages, members, and users. The service handles real-time message delivery and ordering, fan-out across a user's devices and browser tabs, room membership, and message persistence and retrieval.
@@ -331,12 +331,12 @@ This project welcomes contributions and suggestions. See the [contributing guide
 This project has adopted the [Microsoft Open Source Code of Conduct][code_of_conduct]. For more information, see the [Code of Conduct FAQ][code_of_conduct_faq] or contact opencode@microsoft.com with questions or comments.
 
 <!-- LINKS -->
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-messaging-webpubsubchatservice_1.0.0b1/sdk/webpubsub/azure-messaging-webpubsubchatservice
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/webpubsub/azure-messaging-webpubsubchatservice
 [package]: https://pypi.org/project/azure-messaging-webpubsubchatservice/
 [api_reference]: https://learn.microsoft.com/python/api/overview/azure/messaging-webpubsubchatservice-readme?view=azure-python-preview
 [product_docs]: https://learn.microsoft.com/azure/azure-web-pubsub/chat-overview
-[samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-messaging-webpubsubchatservice_1.0.0b1/sdk/webpubsub/azure-messaging-webpubsubchatservice/samples
-[changelog]: https://github.com/Azure/azure-sdk-for-python/blob/azure-messaging-webpubsubchatservice_1.0.0b1/sdk/webpubsub/azure-messaging-webpubsubchatservice/CHANGELOG.md
+[samples]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/webpubsub/azure-messaging-webpubsubchatservice/samples
+[changelog]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/webpubsub/azure-messaging-webpubsubchatservice/CHANGELOG.md
 [azure_sub]: https://azure.microsoft.com/free/
 [webpubsub_docs]: https://learn.microsoft.com/azure/azure-web-pubsub/
 [create_instance]: https://learn.microsoft.com/azure/azure-web-pubsub/howto-develop-create-instance
@@ -349,7 +349,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [azure_sdk_logging]: https://learn.microsoft.com/azure/developer/python/sdk/azure-sdk-logging
 [rest_api]: https://learn.microsoft.com/rest/api/webpubsub/dataplane/webpubsubchat/web-pub-sub-chat-service-client
 [design_guidelines]: https://azure.github.io/azure-sdk/python_design.html
-[contributing]: https://github.com/Azure/azure-sdk-for-python/blob/azure-messaging-webpubsubchatservice_1.0.0b1/CONTRIBUTING.md
+[contributing]: https://github.com/Azure/azure-sdk-for-python/blob/main/CONTRIBUTING.md
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [code_of_conduct_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 
