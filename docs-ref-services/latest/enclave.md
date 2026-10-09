@@ -1,7 +1,7 @@
 ---
 title: Azure Enclave SDK for Python
 description: Reference for Azure Enclave SDK for Python
-ms.date: 10/08/2026
+ms.date: 10/09/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: enclave
