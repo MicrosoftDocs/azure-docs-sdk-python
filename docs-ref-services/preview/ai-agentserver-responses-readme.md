@@ -1,12 +1,12 @@
 ---
 title: Azure AI Agent Server Responses client library for Python
 keywords: Azure, python, SDK, API, azure-ai-agentserver-responses, agentserver
-ms.date: 10/01/2026
+ms.date: 10/09/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: agentserver
 ---
-# Azure AI Agent Server Responses client library for Python - version 2.3.0b2 
+# Azure AI Agent Server Responses client library for Python - version 2.4.0a20261009001 
 
 
 The `azure-ai-agentserver-responses` package provides the Responses protocol endpoints for Azure AI Hosted Agent containers. It plugs into the [`azure-ai-agentserver-core`](https://pypi.org/project/azure-ai-agentserver-core/) host framework and adds the full response lifecycle: create, stream (SSE), cancel, delete, replay, and input-item listing.
@@ -167,11 +167,11 @@ flushing. Response completion alone does not guarantee telemetry delivery.
 
 The library orchestrates the complete response lifecycle: `created` → `in_progress` → `completed` (or `failed` / `cancelled`). Cancellation, error handling, and terminal event guarantees are all managed automatically.
 
-For detailed handler implementation guidance, see [docs/handler-implementation-guide.md](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agentserver-responses_2.3.0b2/sdk/agentserver/azure-ai-agentserver-responses/docs/handler-implementation-guide.md).
+For detailed handler implementation guidance, see [docs/handler-implementation-guide.md](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/agentserver/azure-ai-agentserver-responses/docs/handler-implementation-guide.md).
 
 ### Resilience
 
-Crash recovery is **opt-in** via `ResponsesServerOptions(resilient_background=True)`. When opted in, background responses with `store=True` are crash-recoverable: the handler is re-invoked on restart and the recovered context exposes `context.is_recovery == True`. Stream events are persisted incrementally so clients can reconnect and resume from where they left off. Without the opt-in (the default), a crash mid-handler marks the response `failed` instead of re-invoking the handler. For advanced scenarios (metadata checkpointing, multi-turn steering), see the [Resilient Responses Developer Guide](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agentserver-responses_2.3.0b2/sdk/agentserver/azure-ai-agentserver-responses/docs/resilient-responses-developer-guide.md).
+Crash recovery is **opt-in** via `ResponsesServerOptions(resilient_background=True)`. When opted in, background responses with `store=True` are crash-recoverable: the handler is re-invoked on restart and the recovered context exposes `context.is_recovery == True`. Stream events are persisted incrementally so clients can reconnect and resume from where they left off. Without the opt-in (the default), a crash mid-handler marks the response `failed` instead of re-invoking the handler. For advanced scenarios (metadata checkpointing, multi-turn steering), see the [Resilient Responses Developer Guide](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/agentserver/azure-ai-agentserver-responses/docs/resilient-responses-developer-guide.md).
 
 ## Examples
 
@@ -285,6 +285,21 @@ app = ResponsesAgentServerHost(options=options)
 
 ## Troubleshooting
 
+### In-memory storage identity
+
+`InMemoryResponseProvider` partitions response envelopes, input/output items, and
+history by the exact `PlatformContext.user_id_key` supplied by a trusted host.
+Omitting context or setting the user key to `None` selects a separate anonymous
+partition for local development, not unrestricted access to named users' data.
+Empty and whitespace keys remain distinct; `call_id` does not affect the partition.
+Pass the same user key on every related provider operation, including the legacy
+execution/replay helpers when used directly.
+
+The provider does not authenticate callers. Hosts must establish trustworthy
+platform context before accessing it. This storage boundary is not complete
+end-to-end authorization: runtime routing and the process-wide SSE stream registry
+are separate from the provider's envelope, item, and history storage.
+
 ### Common errors
 
 - **400 Bad Request**: The request body failed validation. Check that optional fields such as `model` (when provided) are valid and that `input` items are well-formed.
@@ -297,29 +312,29 @@ To report an issue with the client library, or request additional features, plea
 
 ## Next steps
 
-Visit the [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-responses_2.3.0b2/sdk/agentserver/azure-ai-agentserver-responses/samples) folder for complete working examples:
+Visit the [Samples](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/agentserver/azure-ai-agentserver-responses/samples) folder for complete working examples:
 
 | Sample | Description |
 |---|---|
-| [Getting Started](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-responses_2.3.0b2/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_01_getting_started.py) | Minimal echo handler using `TextResponse` |
-| [Streaming Text Deltas](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-responses_2.3.0b2/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_02_streaming_text_deltas.py) | Token-by-token streaming with `configure` callback |
-| [Full Control](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-responses_2.3.0b2/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_03_full_control.py) | Convenience, streaming, and builder — three ways to emit output |
-| [Function Calling](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-responses_2.3.0b2/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_04_function_calling.py) | Two-turn function calling with convenience and builder variants |
-| [Conversation History](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-responses_2.3.0b2/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_05_conversation_history.py) | Multi-turn study tutor with `context.get_history()` |
-| [Multi-Output](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-responses_2.3.0b2/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_06_multi_output.py) | Reasoning + message in a single response |
-| [Streaming Upstream](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-responses_2.3.0b2/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_10_streaming_upstream.py) | Forward to upstream streaming LLM via `openai` SDK |
-| [Non-Streaming Upstream](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-responses_2.3.0b2/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_11_non_streaming_upstream.py) | Forward to upstream non-streaming LLM, emit items via builders |
-| [Image Generation](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-responses_2.3.0b2/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_12_image_generation.py) | Image gen convenience, streaming partials, and full-control builder |
-| [Image Input](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-responses_2.3.0b2/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_13_image_input.py) | Receive images via URL, base64 data URL, or file ID |
-| [File Inputs](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-responses_2.3.0b2/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_14_file_inputs.py) | Receive files via base64 data URL, URL, or file ID |
-| [Annotations](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-responses_2.3.0b2/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_15_annotations.py) | Attach file_path, file_citation, and url_citation annotations |
-| [Structured Outputs](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-responses_2.3.0b2/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_16_structured_outputs.py) | Return structured JSON as a `structured_outputs` item |
-| [Resilient Streaming](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-responses_2.3.0b2/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_19_resilient_streaming.py) | Framework-checkpoint handler — one item per phase + `stream.checkpoint()`, recovery via `context.persisted_response` |
-| [Resilient Steering](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-responses_2.3.0b2/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_20_resilient_steering.py) | `context.is_steered_turn` on the drain re-entry with `resilient_background=True, steerable_conversations=True`; naive re-run recovery |
-| [Resilient LangGraph](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-responses_2.3.0b2/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_21_resilient_langgraph.py) | Real-time streaming LangGraph agent composing `AsyncSqliteSaver` with framework `stream.checkpoint()` / `context.persisted_response`; graph checkpoint id stored in `internal_metadata` so recovery rewinds to the persisted point (no divergence window) |
-| [Resilient Multi-turn](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-responses_2.3.0b2/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_22_resilient_multiturn.py) | Multi-turn conversation with `resilient_background=True, steerable_conversations=False` |
+| [Getting Started](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_01_getting_started.py) | Minimal echo handler using `TextResponse` |
+| [Streaming Text Deltas](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_02_streaming_text_deltas.py) | Token-by-token streaming with `configure` callback |
+| [Full Control](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_03_full_control.py) | Convenience, streaming, and builder — three ways to emit output |
+| [Function Calling](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_04_function_calling.py) | Two-turn function calling with convenience and builder variants |
+| [Conversation History](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_05_conversation_history.py) | Multi-turn study tutor with `context.get_history()` |
+| [Multi-Output](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_06_multi_output.py) | Reasoning + message in a single response |
+| [Streaming Upstream](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_10_streaming_upstream.py) | Forward to upstream streaming LLM via `openai` SDK |
+| [Non-Streaming Upstream](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_11_non_streaming_upstream.py) | Forward to upstream non-streaming LLM, emit items via builders |
+| [Image Generation](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_12_image_generation.py) | Image gen convenience, streaming partials, and full-control builder |
+| [Image Input](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_13_image_input.py) | Receive images via URL, base64 data URL, or file ID |
+| [File Inputs](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_14_file_inputs.py) | Receive files via base64 data URL, URL, or file ID |
+| [Annotations](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_15_annotations.py) | Attach file_path, file_citation, and url_citation annotations |
+| [Structured Outputs](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_16_structured_outputs.py) | Return structured JSON as a `structured_outputs` item |
+| [Resilient Streaming](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_19_resilient_streaming.py) | Framework-checkpoint handler — one item per phase + `stream.checkpoint()`, recovery via `context.persisted_response` |
+| [Resilient Steering](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_20_resilient_steering.py) | `context.is_steered_turn` on the drain re-entry with `resilient_background=True, steerable_conversations=True`; naive re-run recovery |
+| [Resilient LangGraph](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_21_resilient_langgraph.py) | Real-time streaming LangGraph agent composing `AsyncSqliteSaver` with framework `stream.checkpoint()` / `context.persisted_response`; graph checkpoint id stored in `internal_metadata` so recovery rewinds to the persisted point (no divergence window) |
+| [Resilient Multi-turn](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/agentserver/azure-ai-agentserver-responses/samples/sample_22_resilient_multiturn.py) | Multi-turn conversation with `resilient_background=True, steerable_conversations=False` |
 
-- [Handler implementation guide](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agentserver-responses_2.3.0b2/sdk/agentserver/azure-ai-agentserver-responses/docs/handler-implementation-guide.md) — Detailed reference for building handlers
+- [Handler implementation guide](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/agentserver/azure-ai-agentserver-responses/docs/handler-implementation-guide.md) — Detailed reference for building handlers
 
 ## Contributing
 
