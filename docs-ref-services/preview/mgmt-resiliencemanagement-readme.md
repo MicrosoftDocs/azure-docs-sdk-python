@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-resiliencemanagement, resiliencemanagement
-ms.date: 09/30/2026
+ms.date: 10/10/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: resiliencemanagement
