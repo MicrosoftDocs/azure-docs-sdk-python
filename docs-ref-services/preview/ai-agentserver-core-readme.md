@@ -1,12 +1,12 @@
 ---
 title: Azure AI Agent Server Core client library for Python
 keywords: Azure, python, SDK, API, azure-ai-agentserver-core, agentserver
-ms.date: 09/24/2026
+ms.date: 10/16/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: agentserver
 ---
-# Azure AI Agent Server Core client library for Python - version 2.2.0b2 
+# Azure AI Agent Server Core client library for Python - version 2.3.0b1 
 
 
 The `azure-ai-agentserver-core` package provides the foundation host framework for building Azure AI Hosted Agent containers. It handles the protocol-agnostic infrastructure — health probes, graceful shutdown, OpenTelemetry tracing, and ASGI serving — so that protocol packages can focus on their endpoint logic.
@@ -32,6 +32,7 @@ OpenTelemetry tracing with Azure Monitor and OTLP exporters is included by defau
 `AgentServerHost` is the host process for Azure AI Hosted Agent containers. It provides:
 
 - **Health probe** — `GET /readiness` returns `200 OK` when the server is ready.
+- **Snapshot lifecycle** — Private platform hooks prepare a process for capture and restore session-specific state.
 - **Graceful shutdown** — On `SIGTERM` the server drains in-flight requests (default 30 s timeout) before exiting.
 - **OpenTelemetry tracing** — Automatic span creation with Azure Monitor and OTLP export when configured.
 - **Hypercorn ASGI server** — Serves on `0.0.0.0:${PORT:-8088}` with HTTP/1.1.
@@ -122,6 +123,30 @@ app = MyAgentHost()
 app.run()
 ```
 
+### Readiness handler
+
+By default, `GET /readiness` returns `200 OK` with
+`{"status": "healthy"}`. Register a readiness handler to replace the default
+response with application-specific readiness logic:
+
+```python
+from azure.ai.agentserver.core import AgentServerHost
+from starlette.requests import Request
+from starlette.responses import JSONResponse, Response
+
+app = AgentServerHost()
+
+@app.readiness_handler
+async def readiness(request: Request) -> Response:
+    if await dependencies_ready():
+        return JSONResponse({"status": "healthy"})
+
+    return JSONResponse({"status": "not_ready"}, status_code=503)
+```
+
+When no handler is registered, the built-in healthy response remains
+unchanged.
+
 ### Shutdown handler
 
 Register a cleanup function that runs during graceful shutdown:
@@ -133,6 +158,52 @@ app = AgentServerHost()
 async def on_shutdown():
     # Close database connections, flush buffers, etc.
     pass
+```
+
+### Memory snapshot lifecycle handlers
+
+The host always registers the private platform routes
+`POST /_agent/before-snapshot` and `POST /_agent/after-restore`, with equivalent
+aliases at `POST /_before_snapshot` and `POST /_after_restore`. All four routes
+are processed by the framework, including restore validation and environment
+and configuration hydration. Registering application handlers is optional;
+when absent, only the application callbacks are skipped. Use the hooks to
+release connections that must not be copied into a memory snapshot and rebuild
+them for the restored session:
+
+```python
+from azure.ai.agentserver.core import AgentServerHost, AgentSessionContext
+
+app = AgentServerHost()
+
+@app.before_snapshot_handler
+async def before_snapshot():
+    await database.close()
+
+@app.after_restore_handler
+async def after_restore(context: AgentSessionContext):
+    # context.session_env_overrides has already been applied to os.environ.
+    await database.connect()
+```
+
+Lifecycle calls are serialized and idempotent. A repeated `after-restore`
+request with the same `restore_id` does not invoke the handler again, while a
+new `restore_id` for the same session starts a new restore cycle. The server
+rejects attempts to reuse a restored process for a different session.
+
+Protocol-specific hosts can override the protected `_before_snapshot` and
+`_after_restore` methods to extend the lifecycle before application callbacks
+run. The host still performs validation, session environment and configuration
+hydration, serialization, rollback, and idempotency, so subclass extensions
+cannot accidentally omit those required steps. Overrides should call the
+corresponding `super()` method first so multiple protocol layers compose
+cooperatively:
+
+```python
+class ProtocolAgentHost(AgentServerHost):
+    async def _after_restore(self, context: AgentSessionContext):
+        await super()._after_restore(context)
+        await self._rebuild_protocol_state(context)
 ```
 
 ### Durable state storage
@@ -162,13 +233,20 @@ async with store:
 Reads return typed `StateStoreItem` values; writes return typed item metadata and use
 single-item `If-Match` concurrency. Session/conversation scoping is expressed in
 the store name itself, and item expiry is controlled by the store's
-`item_ttl_seconds` setting. See the [Durable State Store Guide](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agentserver-core_2.2.0b2/sdk/agentserver/azure-ai-agentserver-core/docs/state-store-guide.md)
+`item_ttl_seconds` setting. See the [Durable State Store Guide](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agentserver-core_2.3.0b1/sdk/agentserver/azure-ai-agentserver-core/docs/state-store-guide.md)
 for the full API, the store lifecycle, and common gotchas, and
-[state_store_sample.py](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agentserver-core_2.2.0b2/sdk/agentserver/azure-ai-agentserver-core/samples/state_store_sample.py)
+[state_store_sample.py](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agentserver-core_2.3.0b1/sdk/agentserver/azure-ai-agentserver-core/samples/state_store_sample.py)
 for a runnable end-to-end example.
 
 
 ### Configuring tracing
+
+The default observability setup stamps every OpenTelemetry span and log record
+with a `microsoft.foundry = "True"` attribute, including telemetry from
+protocol packages and underlying frameworks. Conflicting values for this
+attribute are overridden; the existing `gen_ai.provider.name` attribute is
+left untouched. Custom observability callbacks that replace the default setup
+are responsible for configuring their own enrichment.
 
 Tracing is enabled automatically when an Application Insights connection string is available:
 
@@ -252,8 +330,8 @@ result = await process_document.run(
 )
 print(result)  # {"summary": "..."}
 ```
-See the [Developer Guide](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agentserver-core_2.2.0b2/sdk/agentserver/azure-ai-agentserver-core/docs/tasks-guide.md) for streaming, multi-turn suspend/resume, retries, timeouts, steering, and the patterns reference.
-See the [Developer Guide](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agentserver-core_2.2.0b2/sdk/agentserver/azure-ai-agentserver-core/docs/tasks-guide.md) for streaming, multi-turn suspend/resume, retries, timeouts, steering, and the patterns reference.
+See the [Developer Guide](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agentserver-core_2.3.0b1/sdk/agentserver/azure-ai-agentserver-core/docs/tasks-guide.md) for streaming, multi-turn suspend/resume, retries, timeouts, steering, and the patterns reference.
+See the [Developer Guide](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agentserver-core_2.3.0b1/sdk/agentserver/azure-ai-agentserver-core/docs/tasks-guide.md) for streaming, multi-turn suspend/resume, retries, timeouts, steering, and the patterns reference.
 
 ## Troubleshooting
 
@@ -272,8 +350,8 @@ To report an issue with the client library, or request additional features, plea
 ## Next steps
 
 - Install [`azure-ai-agentserver-invocations`](https://pypi.org/project/azure-ai-agentserver-invocations/) to add the invocation protocol endpoints.
-- Read the [Resilient Task Developer Guide](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agentserver-core_2.2.0b2/sdk/agentserver/azure-ai-agentserver-core/docs/tasks-guide.md) for crash-resilient long-running agents.
-- See the [container image spec](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-core_2.2.0b2/sdk/agentserver) for the full hosted agent contract.
+- Read the [Resilient Task Developer Guide](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agentserver-core_2.3.0b1/sdk/agentserver/azure-ai-agentserver-core/docs/tasks-guide.md) for crash-resilient long-running agents.
+- See the [container image spec](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-core_2.3.0b1/sdk/agentserver) for the full hosted agent contract.
 
 ## Contributing
 
