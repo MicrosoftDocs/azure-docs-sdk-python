@@ -1,12 +1,12 @@
 ---
 title: Azure AI Projects client library for Python
 keywords: Azure, python, SDK, API, azure-ai-projects, ai
-ms.date: 10/05/2026
+ms.date: 10/17/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: ai
 ---
-# Azure AI Projects client library for Python - version 2.8.0 
+# Azure AI Projects client library for Python - version 2.9.0 
 
 
 The AI Projects client library is part of the Microsoft Foundry SDK, and provides easy access to
@@ -182,7 +182,7 @@ The table below lists the operation groups supported by the client library, with
 | Topic | Foundry documentation | Samples folder |
 |---|---|---|
 | Agents (create, run, stream) | [Agents overview](https://learn.microsoft.com/azure/foundry/agents/overview) | `samples/agents/` |
-| Agent Insights (preview) | | [On-demand analysis and scheduled monitors](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-projects_2.8.0/sdk/ai/azure-ai-projects/samples/agent_insights) |
+| Agent Insights (preview) | | [On-demand analysis and scheduled monitors](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-projects_2.9.0/sdk/ai/azure-ai-projects/samples/agent_insights) |
 | Hosted agents | [Hosted agents concepts](https://learn.microsoft.com/azure/foundry/agents/concepts/hosted-agents), [Deploy your first hosted agent](https://learn.microsoft.com/azure/foundry/agents/quickstarts/quickstart-hosted-agent) | `samples/hosted_agents/` |
 | Agents tools | [Tool catalog](https://learn.microsoft.com/azure/foundry/agents/concepts/tool-catalog) | `samples/agents/tools/` |
 | Agents optimization | [Prompt optimizer](https://learn.microsoft.com/azure/foundry/observability/how-to/prompt-optimizer), [Agent optimizer overview](https://learn.microsoft.com/azure/foundry/agents/concepts/agent-optimizer-overview) | `samples/agents/optimization/` |
@@ -204,10 +204,40 @@ The table below lists the operation groups supported by the client library, with
 | Toolboxes | [Curate intent-based toolbox in Foundry](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/toolbox?pivots=python) | `samples/hosted_agents/`, `samples/toolboxes/` |
 | Voice agents (preview) | | `samples/agents/voice/` |
 
+### Voice Agent realtime transport (preview)
+
+Select the connection transport with the optional `transport` keyword. The SDK constructs the wire
+query internally; callers do not need to put the transport in `extra_query`. Omitting the option
+preserves the service's default WebSocket behavior.
+
+```python
+from azure.ai.projects.models import VoiceAgentTransport
+
+with project_client.beta.voice_agents.realtime.connect(
+    agent_name="my-voice-agent",
+    transport=VoiceAgentTransport.WEBSOCKET,
+) as connection:
+    print("Voice Agent connection is ready.")
+```
+
+The asynchronous client uses the same keyword:
+
+```python
+async with async_project_client.beta.voice_agents.realtime.connect(
+    agent_name="my-voice-agent",
+    transport=VoiceAgentTransport.WEBSOCKET,
+) as connection:
+    print("Voice Agent connection is ready.")
+```
+
+`VoiceAgentTransport.WEBRTC` selects WebRTC signaling over the WebSocket. The application must manage
+the peer connection, media, and SDP offer/answer exchange using `rtc.call.sdp.create` and
+`rtc.call.sdp.created` events. Selecting this value does not automatically create a WebRTC media client.
 
 ## Client-side tracing
 
 See [Add client-side tracing to Foundry agents (preview)](https://learn.microsoft.com/azure/foundry/observability/how-to/trace-agent-client-side?tabs=python).
+The same global Foundry tracing configuration applies to Voice Agents REST and realtime tracing.
 
 **Important:** GenAI tracing instrumentation is an experimental preview feature. Spans, attributes, and events may be modified in future versions. 
 
@@ -295,7 +325,7 @@ project_client = AIProjectClient(
 
 Note that the log level must be set to `logging.DEBUG` (see above code). Logs will be redacted with any other log level.
 
-See the logging samples in the `samples/logs/` folder for complete end-to-end examples, including console logging, file logging, and OpenAI transport logging.
+See the logging samples in the `samples/logs/` folder for complete end-to-end examples, including console logging, file logging, OpenAI transport logging, and Voice Agent realtime logging.
 
 Be sure to protect non-redacted logs to avoid compromising security.
 
