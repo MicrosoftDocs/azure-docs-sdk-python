@@ -1,7 +1,7 @@
 ---
 title: Azure Commvault ContentStore SDK for Python
 description: Reference for Azure Commvault ContentStore SDK for Python
-ms.date: 10/16/2026
+ms.date: 10/19/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: commvaultcontentstore
