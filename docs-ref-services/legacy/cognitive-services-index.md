@@ -1,6 +1,7 @@
 | Reference | Package | Source |
 |---|---|---|
 |[Anomaly Detector](ai-anomalydetector-readme.md)|[azure-ai-anomalydetector](https://pypi.org/project/azure-ai-anomalydetector)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/anomalydetector/azure-ai-anomalydetector)|
+|Personalizer|[azure-ai-personalizer](https://pypi.org/project/azure-ai-personalizer)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/personalizer/azure-ai-personalizer)|
 |Azure AI Vision SDK|[azure-ai-vision](https://pypi.org/project/azure-ai-vision)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/)|
 |[Anomaly Detector](cognitiveservices-anomalydetector-readme.md)|[azure-cognitiveservices-anomalydetector](https://pypi.org/project/azure-cognitiveservices-anomalydetector)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cognitiveservices/azure-cognitiveservices-anomalydetector)|
 |[Question Answering](cognitiveservices-knowledge-qnamaker-readme.md)|[azure-cognitiveservices-knowledge-qnamaker](https://pypi.org/project/azure-cognitiveservices-knowledge-qnamaker)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cognitiveservices/azure-cognitiveservices-knowledge-qnamaker)|
