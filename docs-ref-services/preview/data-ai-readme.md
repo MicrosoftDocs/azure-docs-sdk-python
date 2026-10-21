@@ -6,7 +6,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: dataai
 ---
-# Azure Data AI client library for Python - version 1.0.0a20261020001 
+# Azure Data AI client library for Python - version 1.0.0a20261021001 
 
 
 `azure-data-ai` provides access to **Azure Data AI**, hosted by Azure Inference Service. This initial preview
