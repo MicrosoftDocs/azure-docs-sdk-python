@@ -1,12 +1,12 @@
 ---
 title: Azure Purview Datamap client library for Python
 keywords: Azure, python, SDK, API, azure-purview-datamap, purview
-ms.date: 10/21/2026
+ms.date: 10/22/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: purview
 ---
-# Azure Purview Datamap client library for Python - version 1.0.0a20261020001 
+# Azure Purview Datamap client library for Python - version 1.0.0a20261021001 
 
 Microsoft Purview Data Map provides the foundation for data discovery and data governance. Microsoft Purview Data Map is a cloud native PaaS service that captures metadata about enterprise data present in analytics and operation systems on-premises and cloud. DataMapClient provides a set of APIs in the Purview Data Map service. For a full list of APIs, please refer to [Data Map API](https://learn.microsoft.com/rest/api/purview/datamapdataplane/operation-groups?view=rest-purview-datamapdataplane-2023-09-01).
 

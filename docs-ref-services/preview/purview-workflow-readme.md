@@ -1,12 +1,12 @@
 ---
 title: Azure Purview Workflow Service client library for Python
 keywords: Azure, python, SDK, API, azure-purview-workflow, purview
-ms.date: 10/21/2026
+ms.date: 10/22/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: purview
 ---
-# Azure Purview Workflow Service client library for Python - version 1.0.0a20261020001 
+# Azure Purview Workflow Service client library for Python - version 1.0.0a20261021001 
 
 
 Workflows are automated, repeatable business processes that users can create within Microsoft Purview to validate and orchestrate CUD (create, update, delete) operations on their data entities. Enabling these processes allow organizations to track changes, enforce policy compliance, and ensure quality data across their data landscape.

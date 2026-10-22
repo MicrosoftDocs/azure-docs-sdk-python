@@ -1,12 +1,12 @@
 ---
 title: Azure Purview Sharing client library for Python
 keywords: Azure, python, SDK, API, azure-purview-sharing, purview
-ms.date: 10/21/2026
+ms.date: 10/22/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: purview
 ---
-# Azure Purview Sharing client library for Python - version 1.0.0a20261020001 
+# Azure Purview Sharing client library for Python - version 1.0.0a20261021001 
 
 
 Microsoft Purview Share is a fully managed cloud service.
