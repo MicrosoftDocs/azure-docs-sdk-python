@@ -1,7 +1,7 @@
 ---
 title: Azure Resource-Bicep SDK for Python
 description: Reference for Azure Resource-Bicep SDK for Python
-ms.date: 10/26/2026
+ms.date: 10/27/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: resource-bicep
