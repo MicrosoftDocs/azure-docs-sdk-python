@@ -6,7 +6,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: deviceregistry
 ---
-# Azure Device Registry Software Update client library for Python - version 1.0.0a20261027001 
+# Azure Device Registry Software Update client library for Python - version 1.0.0a20261028001 
 
 
 Azure Device Registry Software Update enables you to import and manage software updates and inspect device classes for IoT devices registered with Azure Device Registry.
