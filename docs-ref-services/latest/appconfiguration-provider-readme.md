@@ -1,12 +1,12 @@
 ---
 title: Azure App Configuration Python Provider client library for Python
 keywords: Azure, python, SDK, API, azure-appconfiguration-provider, appconfiguration
-ms.date: 05/26/2026
+ms.date: 10/30/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: appconfiguration
 ---
-# Azure App Configuration Python Provider client library for Python - version 2.5.0 
+# Azure App Configuration Python Provider client library for Python - version 2.5.1 
 
 
 Azure App Configuration is a managed service that helps developers centralize their application configurations simply and securely. This provider adds additional functionality above the azure-sdk-for-python.
@@ -15,19 +15,37 @@ Using the provider enables loading sets of configurations from an Azure App Conf
 
 ## Getting started
 
-### Get credentials
+### Creating a provider
 
-Use the [Azure CLI][azure_cli] snippet below to get the connection string from the Configuration Store.
+#### Microsoft Entra ID (recommended)
+
+Microsoft Entra ID authentication is recommended for connecting to Azure App Configuration.
+
+<!-- SNIPPET:entra_id_sample.create_provider_entra_id -->
+
+```python
+import os
+from azure.appconfiguration.provider import load
+from azure.identity import DefaultAzureCredential
+
+endpoint = os.environ["APPCONFIGURATION_ENDPOINT_STRING"]
+credential = DefaultAzureCredential()
+
+# Connecting to Azure App Configuration using Entra ID
+config = load(endpoint=endpoint, credential=credential)
+```
+
+<!-- END SNIPPET -->
+
+#### Connection string
+
+Use the [Azure CLI][azure_cli] snippet below to get the connection string from the Configuration Store:
 
 ```Powershell
 az appconfig credential list --name <config-store-name>
 ```
 
-Alternatively, get the connection string from the Azure Portal.
-
-### Creating a provider
-
-You can create a client with a connection string:
+You can also get the connection string from the Azure portal.
 
 <!-- SNIPPET:connection_string_sample.create_provider_connection_string -->
 
@@ -43,25 +61,7 @@ config = load(connection_string=connection_string, **kwargs)
 
 <!-- END SNIPPET -->
 
-or with Entra ID:
-
-<!-- SNIPPET:entra_id_sample.create_provider_entra_id -->
-
-```python
-import os
-from azure.appconfiguration.provider import load
-from azure.identity import DefaultAzureCredential
-
-endpoint = os.environ["APPCONFIGURATION_ENDPOINT_STRING"]
-credential = DefaultAzureCredential()
-
-# Connecting to Azure App Configuration using Entra ID
-config = load(endpoint=endpoint, credential=credential, **kwargs)
-```
-
-<!-- END SNIPPET -->
-
-these providers will by default load all configurations with `(No Label)` from your configuration store into a dictionary of key/values.
+These providers will by default load all configurations with `(No Label)` from your configuration store into a dictionary of key/values.
 
 ### Features
 
@@ -102,7 +102,6 @@ config = load(
     selects=selects,
     feature_flag_enabled=True,
     feature_flag_selectors=None,
-    **kwargs,
 )
 ```
 
@@ -121,14 +120,14 @@ from azure.appconfiguration.provider import load, SettingSelector
 
 # Filtering by tags
 selects = [SettingSelector(key_filter="*", tag_filters=["env=prod"])]
-config = load(endpoint=endpoint, credential=credential, selects=selects, **kwargs)
+config = load(endpoint=endpoint, credential=credential, selects=selects)
 ```
 
 <!-- END SNIPPET -->
 
 ### Loading from Snapshots
 
-You can load configuration settings from a snapshot by providing `snapshot_name` on `SettingSelector`. When `snapshot_name` is specified, all configuration settings from the snapshot are loaded. Note that `snapshot_name` cannot be used together with `key_filter`, `label_filter`, or `tag_filters`. In the examples below, `endpoint`, `credential`, and `snapshot_name` are assumed to be defined. See the [snapshot sample](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration-provider_2.5.0/sdk/appconfiguration/azure-appconfiguration-provider/samples/snapshot_sample.py) for complete setup.
+You can load configuration settings from a snapshot by providing `snapshot_name` on `SettingSelector`. When `snapshot_name` is specified, all configuration settings from the snapshot are loaded. Note that `snapshot_name` cannot be used together with `key_filter`, `label_filter`, or `tag_filters`. In the examples below, `endpoint`, `credential`, and `snapshot_name` are assumed to be defined. See the [snapshot sample](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration-provider_2.5.1/sdk/appconfiguration/azure-appconfiguration-provider/samples/snapshot_sample.py) for complete setup.
 
 <!-- SNIPPET:snapshot_sample.load_snapshot -->
 
@@ -167,8 +166,6 @@ The provider can be configured to refresh configurations from the store on a set
 import os
 from azure.appconfiguration.provider import load, WatchKey
 
-connection_string = os.environ["APPCONFIGURATION_CONNECTION_STRING"]
-
 config = load(
     endpoint=endpoint,
     credential=credential,
@@ -205,7 +202,7 @@ from azure.appconfiguration.provider import load
 
 # Connecting to Azure App Configuration using Entra ID and trim key prefixes
 trimmed = ["test."]
-config = load(endpoint=endpoint, credential=credential, trim_prefixes=trimmed, **kwargs)
+config = load(endpoint=endpoint, credential=credential, trim_prefixes=trimmed)
 ```
 
 <!-- END SNIPPET -->
@@ -306,7 +303,7 @@ Replica discovery is enabled by default. If you want to disable it, you can set 
 from azure.appconfiguration.provider import load
 
 # Disabling replica discovery
-config = load(endpoint=endpoint, credential=credential, replica_discovery_enabled=False, **kwargs)
+config = load(endpoint=endpoint, credential=credential, replica_discovery_enabled=False)
 ```
 
 <!-- END SNIPPET -->
@@ -319,7 +316,7 @@ You can also enable load balancing to distribute requests across replicas by set
 from azure.appconfiguration.provider import load
 
 # Enabling load balancing across replicas
-config = load(endpoint=endpoint, credential=credential, load_balancing_enabled=True, **kwargs)
+config = load(endpoint=endpoint, credential=credential, load_balancing_enabled=True)
 ```
 
 <!-- END SNIPPET -->
@@ -333,7 +330,7 @@ Feature Flags can be loaded from config stores using the provider. Feature flags
 ```python
 from azure.appconfiguration.provider import load
 
-config = load(endpoint=endpoint, credential=credential, feature_flag_enabled=True, **kwargs)
+config = load(endpoint=endpoint, credential=credential, feature_flag_enabled=True)
 feature_flags = config["feature_management"]["feature_flags"]
 alpha = next(flag for flag in feature_flags if flag["id"] == "Alpha")
 print(alpha["enabled"])
@@ -353,7 +350,6 @@ config = load(
     credential=credential,
     feature_flag_enabled=True,
     feature_flag_selectors=[SettingSelector(key_filter="*", label_filter="dev")],
-    **kwargs,
 )
 feature_flags = config["feature_management"]["feature_flags"]
 alpha = next(flag for flag in feature_flags if flag["id"] == "Alpha")
@@ -369,8 +365,6 @@ To enable refresh for feature flags you need to enable refresh. This will allow 
 ```python
 import os
 from azure.appconfiguration.provider import load, WatchKey
-
-connection_string = os.environ["APPCONFIGURATION_CONNECTION_STRING"]
 
 config = load(
     endpoint=endpoint,
@@ -396,7 +390,7 @@ Configuration settings with a JSON content type (e.g., `application/json`) are a
 from azure.appconfiguration.provider import load
 
 # Settings with JSON content type are automatically deserialized
-config = load(endpoint=endpoint, credential=credential, **kwargs)
+config = load(endpoint=endpoint, credential=credential)
 app_config = config["app/config"]  # Returns a dict if the value is JSON
 print(app_config["timeout"])
 ```
@@ -418,7 +412,7 @@ def my_mapper(setting):
     setting.value = setting.value.strip()
 
 
-config = load(endpoint=endpoint, credential=credential, configuration_mapper=my_mapper, **kwargs)
+config = load(endpoint=endpoint, credential=credential, configuration_mapper=my_mapper)
 ```
 
 <!-- END SNIPPET -->
@@ -432,7 +426,7 @@ The provider supports configurable startup timeout with automatic retry. By defa
 ```python
 from azure.appconfiguration.provider import load
 
-config = load(endpoint=endpoint, credential=credential, startup_timeout=200, **kwargs)
+config = load(endpoint=endpoint, credential=credential, startup_timeout=200)
 ```
 
 <!-- END SNIPPET -->
@@ -447,7 +441,7 @@ The provider includes full async support via the `azure.appconfiguration.provide
 from azure.appconfiguration.provider.aio import load
 
 # Connecting to Azure App Configuration using Entra ID
-config = await load(endpoint=endpoint, credential=credential, **kwargs)
+config = await load(endpoint=endpoint, credential=credential)
 print(config["message"])
 
 await credential.close()
