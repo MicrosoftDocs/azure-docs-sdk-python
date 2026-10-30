@@ -1,12 +1,12 @@
 ---
 title: Azure AI Projects client library for Python
 keywords: Azure, python, SDK, API, azure-ai-projects, ai
-ms.date: 10/17/2026
+ms.date: 10/30/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: ai
 ---
-# Azure AI Projects client library for Python - version 2.9.0 
+# Azure AI Projects client library for Python - version 2.10.0 
 
 
 The AI Projects client library is part of the Microsoft Foundry SDK, and provides easy access to
@@ -75,6 +75,7 @@ To report an issue with the client library, or request additional features, plea
 * Python 3.10 or later.
 * An [Azure subscription][azure_sub].
 * A [project in Microsoft Foundry](https://learn.microsoft.com/azure/foundry/how-to/create-projects).
+* An [Application Insights resource connected to your Foundry project](https://learn.microsoft.com/azure/foundry/observability/how-to/trace-agent-setup) for agent tracing.
 * A Foundry project endpoint URL of the form `https://your-ai-services-account-name.services.ai.azure.com/api/projects/your-project-name`. It can be found in your Microsoft Foundry Project home page. Below we will assume the environment variable `FOUNDRY_PROJECT_ENDPOINT` was defined to hold this value.
 * Client authentication is done using Entra ID. To authenticate, your application needs an object that implements the [TokenCredential](https://learn.microsoft.com/python/api/azure-core/azure.core.credentials.tokencredential) interface. Code samples here use [DefaultAzureCredential](https://learn.microsoft.com/python/api/azure-identity/azure.identity.defaultazurecredential). To get that working, you will need:
   * An appropriate role assignment. See [Role-based access control in Microsoft Foundry portal](https://learn.microsoft.com/azure/foundry/concepts/rbac-foundry). Role assignment can be done via the "Access Control (IAM)" tab of your Azure AI Project resource in the Azure portal.
@@ -171,6 +172,7 @@ See the **responses** folder in the [samples][samples] for additional samples in
 See Foundry documentation:
 
 * **[Microsoft Foundry Agents overview](https://learn.microsoft.com/azure/foundry/agents/overview)** — concepts, setup, and quick-starts.
+* **[Quickstart: Set up Microsoft Foundry resources](https://learn.microsoft.com/azure/foundry/tutorials/quickstart-create-foundry-resources)** — create a project, deploy a model, and connect Application Insights for agent tracing.
 * **[Runtime components](https://learn.microsoft.com/azure/foundry/agents/concepts/runtime-components?tabs=python)** — deep-dive into agent architecture.
 * **[Tool catalog](https://learn.microsoft.com/azure/foundry/agents/concepts/tool-catalog)** — all available tools and agent capabilities.
 * **[SDK samples folder][samples]** — fully runnable Python code for synchronous and asynchronous clients covering all operations below.
@@ -182,7 +184,7 @@ The table below lists the operation groups supported by the client library, with
 | Topic | Foundry documentation | Samples folder |
 |---|---|---|
 | Agents (create, run, stream) | [Agents overview](https://learn.microsoft.com/azure/foundry/agents/overview) | `samples/agents/` |
-| Agent Insights (preview) | | [On-demand analysis and scheduled monitors](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-projects_2.9.0/sdk/ai/azure-ai-projects/samples/agent_insights) |
+| Agent Insights (preview) | | [On-demand analysis and scheduled monitors](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-projects_2.10.0/sdk/ai/azure-ai-projects/samples/agent_insights) |
 | Hosted agents | [Hosted agents concepts](https://learn.microsoft.com/azure/foundry/agents/concepts/hosted-agents), [Deploy your first hosted agent](https://learn.microsoft.com/azure/foundry/agents/quickstarts/quickstart-hosted-agent) | `samples/hosted_agents/` |
 | Agents tools | [Tool catalog](https://learn.microsoft.com/azure/foundry/agents/concepts/tool-catalog) | `samples/agents/tools/` |
 | Agents optimization | [Prompt optimizer](https://learn.microsoft.com/azure/foundry/observability/how-to/prompt-optimizer), [Agent optimizer overview](https://learn.microsoft.com/azure/foundry/agents/concepts/agent-optimizer-overview) | `samples/agents/optimization/` |
