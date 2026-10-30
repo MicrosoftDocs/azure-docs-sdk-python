@@ -1,5 +1,6 @@
 | Reference | Package | Source |
 |---|---|---|
+|[unknown](mgmt-aiinfraoptimization-readme.md)|[azure-mgmt-aiinfraoptimization](https://pypi.org/project/azure-mgmt-aiinfraoptimization)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/aiinfraoptimization/azure-mgmt-aiinfraoptimization)|
 |[unknown](ai-agentserver-invocations-readme.md)|[azure-ai-agentserver-invocations](https://pypi.org/project/azure-ai-agentserver-invocations)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/agentserver/azure-ai-agentserver-invocations)|
 |[unknown](ai-agentserver-optimization-readme.md)|[azure-ai-agentserver-optimization](https://pypi.org/project/azure-ai-agentserver-optimization)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/agentserver/azure-ai-agentserver-optimization)|
 |[unknown](ai-agentserver-responses-readme.md)|[azure-ai-agentserver-responses](https://pypi.org/project/azure-ai-agentserver-responses)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/agentserver/azure-ai-agentserver-responses)|
