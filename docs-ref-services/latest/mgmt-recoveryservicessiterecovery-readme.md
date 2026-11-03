@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-recoveryservicessiterecovery, recoveryservices
-ms.date: 06/30/2026
+ms.date: 11/03/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: recoveryservices
