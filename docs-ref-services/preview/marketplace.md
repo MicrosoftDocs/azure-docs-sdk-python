@@ -1,7 +1,7 @@
 ---
 title: Azure Marketplace SDK for Python
 description: Reference for Azure Marketplace SDK for Python
-ms.date: 11/06/2026
+ms.date: 11/09/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: marketplace
