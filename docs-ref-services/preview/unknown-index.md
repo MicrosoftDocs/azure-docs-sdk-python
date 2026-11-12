@@ -1,6 +1,7 @@
 | Reference | Package | Source |
 |---|---|---|
 |[unknown](ai-agentserver-a2a-readme.md)|[azure-ai-agentserver-a2a](https://pypi.org/project/azure-ai-agentserver-a2a)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/agentserver/azure-ai-agentserver-a2a)|
+|[unknown](mgmt-koreaiartemis-readme.md)|[azure-mgmt-koreaiartemis](https://pypi.org/project/azure-mgmt-koreaiartemis)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/koreaiartemis/azure-mgmt-koreaiartemis)|
 |[unknown](mgmt-sovereign-readme.md)|[azure-mgmt-sovereign](https://pypi.org/project/azure-mgmt-sovereign)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/sovereign/azure-mgmt-sovereign)|
 |[unknown](ai-agentserver-invocations-readme.md)|[azure-ai-agentserver-invocations](https://pypi.org/project/azure-ai-agentserver-invocations)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/agentserver/azure-ai-agentserver-invocations)|
 |[unknown](ai-agentserver-optimization-readme.md)|[azure-ai-agentserver-optimization](https://pypi.org/project/azure-ai-agentserver-optimization)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/agentserver/azure-ai-agentserver-optimization)|
