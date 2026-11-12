@@ -1,12 +1,12 @@
 ---
 title: Azure AI Agent Server A2A client library for Python
 keywords: Azure, python, SDK, API, azure-ai-agentserver-a2a, agentserver
-ms.date: 11/05/2026
+ms.date: 11/12/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: agentserver
 ---
-# Azure AI Agent Server A2A client library for Python - version 1.0.0b1 
+# Azure AI Agent Server A2A client library for Python - version 1.0.0a20261112001 
 
 
 The `azure-ai-agentserver-a2a` package hosts a native A2A v1.0
@@ -252,7 +252,7 @@ storage access with a caller-context error; enabling the endpoint alone is not
 proof that managed persistence is available. Do not disable isolation or supply
 fabricated platform identity headers to work around a missing service handoff.
 
-See [the persistence example](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-agentserver-a2a_1.0.0b1/sdk/agentserver/azure-ai-agentserver-a2a/samples/04-state-store/README.md) for a restart test.
+See [the persistence example](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/agentserver/azure-ai-agentserver-a2a/samples/04-state-store/README.md) for a restart test.
 
 ### Call a Foundry service from an A2A handler
 
@@ -307,7 +307,7 @@ async def handle_invocation(request):
 host.run()
 ```
 
-See the [sample setup and walkthroughs](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-a2a_1.0.0b1/sdk/agentserver/azure-ai-agentserver-a2a/samples)
+See the [sample setup and walkthroughs](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/agentserver/azure-ai-agentserver-a2a/samples)
 for standalone and multi-protocol examples, a native local client,
 and guidance on TaskStore durability and context reuse.
 
@@ -339,7 +339,7 @@ message contents when sharing diagnostic logs.
 
 ## Next steps
 
-- Follow the [sample setup and walkthroughs](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-agentserver-a2a_1.0.0b1/sdk/agentserver/azure-ai-agentserver-a2a/samples)
+- Follow the [sample setup and walkthroughs](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/agentserver/azure-ai-agentserver-a2a/samples)
   to discover an Agent Card, send a message, and retrieve a Task locally.
 - Implement your agent with the native [A2A Python SDK](https://github.com/a2aproject/a2a-python)
   executor, request-handler, and TaskStore interfaces.
