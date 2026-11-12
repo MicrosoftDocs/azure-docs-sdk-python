@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-monitor-opentelemetry-exporter, monitor
-ms.date: 11/05/2026
+ms.date: 11/12/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: monitor
@@ -12,7 +12,7 @@ The exporter for Azure Monitor allows Python applications to export data from th
 
 Prior to using this SDK, please read and understand [Data Collection Basics](https://learn.microsoft.com/azure/azure-monitor/app/opentelemetry-overview?tabs=python), especially the section on [telemetry types](https://learn.microsoft.com/azure/azure-monitor/app/opentelemetry-overview?tabs=python#telemetry-types). OpenTelemetry terminology differs from Application Insights terminology so it is important to understand the way the telemetry types map to each other.
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry-exporter_1.0.0b59/sdk/monitor/azure-monitor-opentelemetry-exporter) | [Package (PyPi)][pypi] | [API reference documentation][api_docs] | [Product documentation][product_docs] | [Samples][exporter_samples] | [Changelog](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-opentelemetry-exporter_1.0.0b59/sdk/monitor/azure-monitor-opentelemetry-exporter/CHANGELOG.md)
+[Source code](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/monitor/azure-monitor-opentelemetry-exporter) | [Package (PyPi)][pypi] | [API reference documentation][api_docs] | [Product documentation][product_docs] | [Samples][exporter_samples] | [Changelog](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/monitor/azure-monitor-opentelemetry-exporter/CHANGELOG.md)
 
 ## Getting started
 
@@ -160,6 +160,93 @@ Separate multiple feature names with commas. Names are case-insensitive; surroun
 ignored. Unset or empty values enable no experimental features. Unknown names are ignored with a warning.
 The selection is shared across exporters in the same Python interpreter and cannot be changed after
 the first exporter is constructed. Experimental features may change or be removed in future releases.
+
+### Multi-endpoint routing (preview)
+
+Add `multi_endpoint_routing` to `APPLICATIONINSIGHTS_EXPERIMENTAL_FEATURES` before
+constructing any exporter to route logs, spans, or metric data points using their
+`microsoft.instrumentation_key` and `microsoft.ingestion_endpoint`
+attributes. Both attributes are required; the endpoint must be HTTPS. Obtain
+destinations from trusted, server-owned configuration, not request headers or baggage.
+Invalid or missing destinations are dropped without falling back to the exporter's
+connection string. With routing enabled, a host connection string is optional.
+If supplied explicitly or through the environment, it is still parsed and validated
+normally. Without host configuration, host retry storage, Statsbeat, and customer
+SDK statistics are not initialized; destination-specific retry storage still works.
+
+```powershell
+$env:APPLICATIONINSIGHTS_EXPERIMENTAL_FEATURES = "multi_endpoint_routing"
+# To enable another experimental feature as well:
+$env:APPLICATIONINSIGHTS_EXPERIMENTAL_FEATURES = "multi_endpoint_routing,gen_ai_input_output_limit_increase"
+```
+
+Routing is disabled unless explicitly selected in this list. The selection is
+shared across log, trace, and metric exporters and is fixed at the first exporter
+construction, as described under [Experimental features](#experimental-features).
+Caller-supplied transports and scalar retry settings remain supported. Complete
+custom pipelines and `HTTPPolicy` instances supplied through named, per-call, or
+per-retry policy options are rejected because routing must construct an independent
+policy chain for each destination. `SansIOHTTPPolicy` entries remain supported.
+
+Items are grouped by normalized endpoint and authentication mode. Set
+`microsoft.ingestion_auth` to `"aad"` to use the exporter's configured credential;
+the value is trimmed and case-insensitive. Other values use key-only authentication
+and do not receive the exporter's token, even when a credential is configured.
+AAD groups without a credential fail without being sent or stored; other groups
+continue exporting.
+Span events follow their parent span's destination, instrumentation key, and
+authentication mode, not routing attributes on the events themselves.
+Metrics use routing attributes on each data point, not the resource or
+instrumentation scope. Points without valid routing attributes are dropped.
+Cloud-role names come from the item's `microsoft.multi_endpoint_cloud_role` attribute;
+missing, blank, or non-string values use `unknown_service`. Span events inherit their
+parent span's role name. Cloud-role instances remain resource-derived.
+
+#### Microsoft Entra authentication
+
+1. Pass a token credential, such as `DefaultAzureCredential`, through `credential`,
+   or configure managed identity using `APPLICATIONINSIGHTS_AUTHENTICATION_STRING`.
+2. Set `microsoft.ingestion_auth` to `"aad"` on telemetry that requires Microsoft
+   Entra authentication, including resources with local authentication disabled.
+3. Assign the identity the **Monitoring Metrics Publisher** role on each destination resource.
+
+The default audience is Azure public cloud. For another cloud, set the audience
+before constructing the exporter, for example:
+
+```powershell
+$env:APPLICATIONINSIGHTS_MULTI_ENDPOINT_AAD_AUDIENCE = "https://monitor.azure.cn/"
+```
+
+All AAD destinations within an exporter share its credential and audience. Use
+separately configured exporters when identities or clouds differ. The host connection
+string's `AadAudience` does not apply to routed telemetry. Custom
+`authentication_policy` is not supported in routing mode.
+
+> **Security:** Use only trusted routing destinations. Custom headers, policies,
+> hooks, transports, or sessions may send credentials to any routed destination,
+> including key-only routes.
+
+Retry storage is separate from the host storage, partitioned by endpoint and
+authentication mode, and shares the configured storage capacity across routed
+partitions. Pending items preserve their original instrumentation keys and are
+retried after a subsequent successful send to the same endpoint/authentication
+group or by a shared background worker. The worker starts when the first
+storage-backed route opens and checks opened routes every `storage_maintenance_period`
+seconds (60 by default). It respects retry backoff, storage toggles, and rate limits,
+and stops when the exporter shuts down. Stored destinations are not discovered at
+startup; their route must be opened by new telemetry before background retries begin.
+For destinations with enabled, available offline storage, retryable failures also
+pause new transmissions to that endpoint/authentication group. New items are stored
+until the retry window expires. The window uses the existing `Retry-After` handling,
+or `storage_min_retry_interval` (60 seconds by default) when no valid delay is available.
+Other destinations continue transmitting. This does not add .NET's exponential
+backoff; export results retain the existing failure semantics.
+Each exporter caches up to 64 endpoint/authentication routes. When storage is
+enabled, those cached routes also receive offline-storage partitions. Different
+keys using the same normalized endpoint and authentication mode share a route.
+Additional destinations still transmit through short-lived clients without
+offline persistence.
+Routing is disabled by default.
 
 ## Examples
 
@@ -651,7 +738,7 @@ For all applications set up with OpenTelemetry SDK and Azure Monitor exporters, 
 
 ## Troubleshooting
 
-The exporter raises exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-opentelemetry-exporter_1.0.0b59/sdk/core/azure-core/README.md#azure-core-library-exceptions).
+The exporter raises exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md#azure-core-library-exceptions).
 
 ### Custom properties truncation
 
@@ -679,7 +766,7 @@ For detailed overview of OpenTelemetry, visit their [overview](https://github.co
 
 For the official OpenTelemetry Python documentation and how to enable other telemetry scenarios, visit the official OpenTelemetry [website](https://opentelemetry.io/docs/instrumentation/python/).
 
-For more information on the Azure Monitor OpenTelemetry Distro, which is a bundle of useful, pre-assembled components (one of them being this current package) that enable telemetry scenarios with Azure Monitor, visit the [README](https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry-exporter_1.0.0b59/sdk/monitor/azure-monitor-opentelemetry).
+For more information on the Azure Monitor OpenTelemetry Distro, which is a bundle of useful, pre-assembled components (one of them being this current package) that enable telemetry scenarios with Azure Monitor, visit the [README](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/monitor/azure-monitor-opentelemetry).
 
 ## Contributing
 
@@ -700,7 +787,7 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 <!-- TODO: Update with documentation link to be python-specific after Python docs have been updated to be like Java: https://learn.microsoft.com/en-us/azure/azure-monitor/app/azure-ad-authentication?tabs=java#environment-variable-configuration-2 -->
 [aad_for_ai_docs]: https://learn.microsoft.com/azure/azure-monitor/app/azure-ad-authentication?tabs=python
 [api_docs]: https://azure.github.io/azure-sdk-for-python/monitor.html#azure-monitor-opentelemetry-exporter
-[exporter_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry-exporter_1.0.0b59/sdk/monitor/azure-monitor-opentelemetry-exporter/samples
+[exporter_samples]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/monitor/azure-monitor-opentelemetry-exporter/samples
 [product_docs]: https://learn.microsoft.com/azure/azure-monitor/overview
 [azure_sub]: https://azure.microsoft.com/free/
 [pip]: https://pypi.org/project/pip/
@@ -716,7 +803,7 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 [logger_provider]: https://opentelemetry-python.readthedocs.io/en/stable/sdk/_logs.html#opentelemetry.sdk._logs.LoggerProvider
 [log_record_processor]: https://opentelemetry-python.readthedocs.io/en/stable/sdk/_logs.html#opentelemetry.sdk._logs.LogRecordProcessor
 [logging_handler]: https://opentelemetry-python.readthedocs.io/en/stable/sdk/_logs.html#opentelemetry.sdk._logs.LoggingHandler
-[log_reference]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-opentelemetry-exporter_1.0.0b59/sdk/monitor/azure-monitor-opentelemetry-exporter/azure/monitor/opentelemetry/exporter/export/logs/_exporter.py
+[log_reference]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/monitor/azure-monitor-opentelemetry-exporter/azure/monitor/opentelemetry/exporter/export/logs/_exporter.py
 [ot_logging_sdk]: https://opentelemetry-python.readthedocs.io/en/stable/sdk/_logs.html
 [metric_concept]: https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/overview.md#metric-signal
 [measurement]: https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/metrics/api.md#measurement
@@ -724,14 +811,14 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 [meter]: https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/metrics/api.md#meter
 [meter_provider]: https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/metrics/api.md#meterprovider
 [metric_reader]:https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/metrics/sdk.md#metricreader
-[metric_reference]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-opentelemetry-exporter_1.0.0b59/sdk/monitor/azure-monitor-opentelemetry-exporter/azure/monitor/opentelemetry/exporter/export/metrics/_exporter.py
+[metric_reference]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/monitor/azure-monitor-opentelemetry-exporter/azure/monitor/opentelemetry/exporter/export/metrics/_exporter.py
 [ot_metrics_sdk]: https://opentelemetry-python.readthedocs.io/en/stable/sdk/metrics.html
 [trace_concept]: https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/overview.md#tracing-signal
 [span]: https://opentelemetry-python.readthedocs.io/en/stable/api/trace.html?highlight=TracerProvider#opentelemetry.trace.Span
 [tracer]: https://opentelemetry-python.readthedocs.io/en/stable/api/trace.html?highlight=TracerProvider#opentelemetry.trace.Tracer
 [tracer_provider]: https://opentelemetry-python.readthedocs.io/en/stable/api/trace.html?highlight=TracerProvider#opentelemetry.trace.TracerProvider
 [span_processor]: https://opentelemetry-python.readthedocs.io/en/stable/_modules/opentelemetry/sdk/trace.html?highlight=SpanProcessor#
-[trace_reference]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-opentelemetry-exporter_1.0.0b59/sdk/monitor/azure-monitor-opentelemetry-exporter/azure/monitor/opentelemetry/exporter/export/trace/_exporter.py
+[trace_reference]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/monitor/azure-monitor-opentelemetry-exporter/azure/monitor/opentelemetry/exporter/export/trace/_exporter.py
 [ot_tracing_sdk]: https://opentelemetry-python.readthedocs.io/en/stable/sdk/trace.html
 [sampler_ref]: https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/trace/sdk.md#sampling
 
