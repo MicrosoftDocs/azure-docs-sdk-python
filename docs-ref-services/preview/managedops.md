@@ -1,7 +1,7 @@
 ---
 title: Azure ManagedOps SDK for Python
 description: Reference for Azure ManagedOps SDK for Python
-ms.date: 11/16/2026
+ms.date: 11/17/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: managedops
