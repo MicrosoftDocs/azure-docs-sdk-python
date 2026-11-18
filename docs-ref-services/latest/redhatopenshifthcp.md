@@ -1,7 +1,7 @@
 ---
 title: Azure Redhatopenshifthcp SDK for Python
 description: Reference for Azure Redhatopenshifthcp SDK for Python
-ms.date: 11/17/2026
+ms.date: 11/18/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: redhatopenshifthcp
