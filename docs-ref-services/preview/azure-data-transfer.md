@@ -1,7 +1,7 @@
 ---
 title: Azure Azure Data Transfer SDK for Python
 description: Reference for Azure Azure Data Transfer SDK for Python
-ms.date: 11/19/2026
+ms.date: 11/20/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: azuredatatransfer
