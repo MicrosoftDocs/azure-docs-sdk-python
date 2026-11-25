@@ -1,7 +1,7 @@
 ---
 title: Azure Compute Workload Manager SDK for Python
 description: Reference for Azure Compute Workload Manager SDK for Python
-ms.date: 11/24/2026
+ms.date: 11/25/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: computeworkloadmanager
