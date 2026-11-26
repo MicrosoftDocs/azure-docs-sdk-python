@@ -1,12 +1,12 @@
 ---
 title: Azure Web PubSub Chat service client library for Python
 keywords: Azure, python, SDK, API, azure-messaging-webpubsubchatservice, webpubsub
-ms.date: 11/16/2026
+ms.date: 11/26/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: webpubsub
 ---
-# Azure Web PubSub Chat service client library for Python - version 1.0.0b2 
+# Azure Web PubSub Chat service client library for Python - version 1.0.0a20261126001 
 
 
 [Azure Web PubSub chat][product_docs] is a managed chat capability built on [Azure Web PubSub][webpubsub_docs]. It provides purpose-built client and server APIs for chat scenarios. Applications use the SDKs to communicate with the Azure service and work with chat-native concepts such as rooms, messages, members, and users. The service handles real-time message delivery and ordering, fan-out across a user's devices and browser tabs, room membership, and message persistence and retrieval.
@@ -179,15 +179,15 @@ Model-based usage is recommended for getting started and is used throughout the
 examples below. Dictionaries are useful when your application already works with
 JSON-shaped data. All three styles call the same client methods; typed dictionaries
 are ordinary dictionaries at runtime and do not add runtime validation. See the
-[examples guide](https://github.com/Azure/azure-sdk-for-python/blob/azure-messaging-webpubsubchatservice_1.0.0b2/sdk/webpubsub/azure-messaging-webpubsubchatservice/samples/README.md#request-body-styles)
+[examples guide](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/webpubsub/azure-messaging-webpubsubchatservice/samples/README.md#request-body-styles)
 for a comparison and examples of each style.
 
 Explore the examples:
 
 - [Model-based and scenario examples][examples], including complete synchronous and
   asynchronous programs.
-- [Model, typed-dictionary, and plain-dictionary comparison](https://github.com/Azure/azure-sdk-for-python/blob/azure-messaging-webpubsubchatservice_1.0.0b2/sdk/webpubsub/azure-messaging-webpubsubchatservice/samples/sample_request_body_styles.py).
-- [Complete operation index](https://github.com/Azure/azure-sdk-for-python/blob/azure-messaging-webpubsubchatservice_1.0.0b2/sdk/webpubsub/azure-messaging-webpubsubchatservice/samples/README.md#complete-operation-index),
+- [Model, typed-dictionary, and plain-dictionary comparison](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/webpubsub/azure-messaging-webpubsubchatservice/samples/sample_request_body_styles.py).
+- [Complete operation index](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/webpubsub/azure-messaging-webpubsubchatservice/samples/README.md#complete-operation-index),
   linking to handwritten examples for each service operation.
 
 ### Generate client access credentials
@@ -232,8 +232,8 @@ print(role.name, role.permissions)
 
 <!-- END SNIPPET -->
 
-See the [synchronous role example](https://github.com/Azure/azure-sdk-for-python/blob/azure-messaging-webpubsubchatservice_1.0.0b2/sdk/webpubsub/azure-messaging-webpubsubchatservice/samples/sample_roles_and_permissions.py)
-and [asynchronous role example](https://github.com/Azure/azure-sdk-for-python/blob/azure-messaging-webpubsubchatservice_1.0.0b2/sdk/webpubsub/azure-messaging-webpubsubchatservice/samples/sample_roles_and_permissions_async.py)
+See the [synchronous role example](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/webpubsub/azure-messaging-webpubsubchatservice/samples/sample_roles_and_permissions.py)
+and [asynchronous role example](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/webpubsub/azure-messaging-webpubsubchatservice/samples/sample_roles_and_permissions_async.py)
 for runnable model-and-enum examples. The selected role is created or replaced
 and remains in the hub; these examples do not create users or rooms.
 
@@ -410,7 +410,7 @@ For conditional updates and deletes, pass the current ETag with
 that another caller has changed. Deleting a topic is a soft delete.
 
 For individual API calls, see the
-[operation examples](https://github.com/Azure/azure-sdk-for-python/blob/azure-messaging-webpubsubchatservice_1.0.0b2/sdk/webpubsub/azure-messaging-webpubsubchatservice/samples/README.md#complete-operation-index).
+[operation examples](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/webpubsub/azure-messaging-webpubsubchatservice/samples/README.md#complete-operation-index).
 
 ### List rooms and users
 
@@ -450,7 +450,7 @@ for room in client.list_rooms_for_user("<user-id>"):
 <!-- END SNIPPET -->
 
 For basic list calls, see the functions in
-[the README snippet sources](https://github.com/Azure/azure-sdk-for-python/blob/azure-messaging-webpubsubchatservice_1.0.0b2/sdk/webpubsub/azure-messaging-webpubsubchatservice/samples/sample_readme_snippets.py).
+[the README snippet sources](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/webpubsub/azure-messaging-webpubsubchatservice/samples/sample_readme_snippets.py).
 Listing rooms for a user requires an existing user ID.
 
 Collection iterators automatically fetch subsequent pages.
@@ -458,7 +458,7 @@ Collection iterators automatically fetch subsequent pages.
 ### Use the asynchronous client
 
 Run this snippet inside an async function with an authenticated async `client`; see
-[the asynchronous client access example](https://github.com/Azure/azure-sdk-for-python/blob/azure-messaging-webpubsubchatservice_1.0.0b2/sdk/webpubsub/azure-messaging-webpubsubchatservice/samples/sample_client_access_async.py)
+[the asynchronous client access example](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/webpubsub/azure-messaging-webpubsubchatservice/samples/sample_client_access_async.py)
 for the complete program.
 
 <!-- SNIPPET:sample_client_access_async.client_access_async -->
@@ -492,7 +492,7 @@ python samples/sample_roles_and_permissions_async.py
 
 Service operations raise `HttpResponseError` or a more specific subclass when a request fails:
 
-The [service error example](https://github.com/Azure/azure-sdk-for-python/blob/azure-messaging-webpubsubchatservice_1.0.0b2/sdk/webpubsub/azure-messaging-webpubsubchatservice/samples/sample_errors.py) reads an existing role,
+The [service error example](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/webpubsub/azure-messaging-webpubsubchatservice/samples/sample_errors.py) reads an existing role,
 prints the status on failure, and re-raises the error. Replace `user.example`
 with the role name to read.
 
@@ -545,7 +545,7 @@ HTTP logs can contain sensitive information. Do not enable detailed logging in p
 
 ## Next steps
 
-Explore the [README snippet sources](https://github.com/Azure/azure-sdk-for-python/blob/azure-messaging-webpubsubchatservice_1.0.0b2/sdk/webpubsub/azure-messaging-webpubsubchatservice/samples/sample_readme_snippets.py) and
+Explore the [README snippet sources](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/webpubsub/azure-messaging-webpubsubchatservice/samples/sample_readme_snippets.py) and
 [complete package examples][examples] to learn how to:
 
 - Authenticate with a connection string, access key, or Microsoft Entra ID.
@@ -555,7 +555,7 @@ Explore the [README snippet sources](https://github.com/Azure/azure-sdk-for-pyth
 - Manage topic lifecycles and iterate over room and user collections.
 - Use synchronous and asynchronous clients.
 
-See also the [request-body style comparison](https://github.com/Azure/azure-sdk-for-python/blob/azure-messaging-webpubsubchatservice_1.0.0b2/sdk/webpubsub/azure-messaging-webpubsubchatservice/samples/sample_request_body_styles.py).
+See also the [request-body style comparison](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/webpubsub/azure-messaging-webpubsubchatservice/samples/sample_request_body_styles.py).
 
 ## Additional resources
 
@@ -571,12 +571,12 @@ This project welcomes contributions and suggestions. See the [contributing guide
 This project has adopted the [Microsoft Open Source Code of Conduct][code_of_conduct]. For more information, see the [Code of Conduct FAQ][code_of_conduct_faq] or contact opencode@microsoft.com with questions or comments.
 
 <!-- LINKS -->
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-messaging-webpubsubchatservice_1.0.0b2/sdk/webpubsub/azure-messaging-webpubsubchatservice
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/webpubsub/azure-messaging-webpubsubchatservice
 [package]: https://pypi.org/project/azure-messaging-webpubsubchatservice/
 [api_reference]: https://learn.microsoft.com/python/api/overview/azure/messaging-webpubsubchatservice-readme?view=azure-python-preview
 [product_docs]: https://learn.microsoft.com/azure/azure-web-pubsub/chat-overview
-[examples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-messaging-webpubsubchatservice_1.0.0b2/sdk/webpubsub/azure-messaging-webpubsubchatservice/samples
-[changelog]: https://github.com/Azure/azure-sdk-for-python/blob/azure-messaging-webpubsubchatservice_1.0.0b2/sdk/webpubsub/azure-messaging-webpubsubchatservice/CHANGELOG.md
+[examples]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/webpubsub/azure-messaging-webpubsubchatservice/samples
+[changelog]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/webpubsub/azure-messaging-webpubsubchatservice/CHANGELOG.md
 [azure_sub]: https://azure.microsoft.com/free/
 [webpubsub_docs]: https://learn.microsoft.com/azure/azure-web-pubsub/
 [create_instance]: https://learn.microsoft.com/azure/azure-web-pubsub/howto-develop-create-instance
@@ -589,7 +589,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [azure_sdk_logging]: https://learn.microsoft.com/azure/developer/python/sdk/azure-sdk-logging
 [rest_api]: https://learn.microsoft.com/rest/api/webpubsub/dataplane/webpubsubchat/web-pub-sub-chat-service-client
 [design_guidelines]: https://azure.github.io/azure-sdk/python_design.html
-[contributing]: https://github.com/Azure/azure-sdk-for-python/blob/azure-messaging-webpubsubchatservice_1.0.0b2/CONTRIBUTING.md
+[contributing]: https://github.com/Azure/azure-sdk-for-python/blob/main/CONTRIBUTING.md
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [code_of_conduct_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 
