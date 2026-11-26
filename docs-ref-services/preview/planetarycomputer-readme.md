@@ -6,7 +6,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: planetarycomputer
 ---
-# Azure Planetary Computer client library for Python - version 1.0.0a20261125001 
+# Azure Planetary Computer client library for Python - version 1.0.0a20261126001 
 
 
 The Azure Planetary Computer client library provides programmatic access to Microsoft Planetary Computer Pro, a geospatial data management service built on Azure's hyperscale infrastructure. Microsoft Planetary Computer Pro empowers organizations to unlock the full potential of geospatial data by providing foundational capabilities to ingest, manage, search, and distribute geospatial datasets using the SpatioTemporal Asset Catalog (STAC) open specification.
