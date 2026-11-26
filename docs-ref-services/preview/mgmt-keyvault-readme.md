@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-keyvault, keyvault
-ms.date: 11/16/2026
+ms.date: 11/26/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: keyvault
