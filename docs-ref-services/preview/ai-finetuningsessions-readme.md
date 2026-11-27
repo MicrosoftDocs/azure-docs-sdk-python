@@ -1,12 +1,12 @@
 ---
 title: Azure AI Fine-Tuning Sessions client library for Python
 keywords: Azure, python, SDK, API, azure-ai-finetuningsessions, ai
-ms.date: 11/13/2026
+ms.date: 11/27/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: ai
 ---
-# Azure AI Fine-Tuning Sessions client library for Python - version 1.0.0b2 
+# Azure AI Fine-Tuning Sessions client library for Python - version 1.0.0a20261127001 
 
 
 Preview client library for Programmed Training in Microsoft Foundry, supporting
@@ -343,6 +343,6 @@ See the [Azure SDK for Python contribution guide][contributing] and
 [overview]: https://learn.microsoft.com/azure/foundry-classic/concepts/fine-tuning-overview
 [subscription]: https://azure.microsoft.com/free/
 [issues]: https://github.com/Azure/azure-sdk-for-python/issues
-[contributing]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-finetuningsessions_1.0.0b2/CONTRIBUTING.md
+[contributing]: https://github.com/Azure/azure-sdk-for-python/blob/main/CONTRIBUTING.md
 [code-of-conduct]: https://opensource.microsoft.com/codeofconduct/
 
