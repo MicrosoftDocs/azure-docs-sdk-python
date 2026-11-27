@@ -1,12 +1,12 @@
 ---
 title: Azure Data AI client library for Python
 keywords: Azure, python, SDK, API, azure-data-ai, dataai
-ms.date: 11/14/2026
+ms.date: 11/27/2026
 ms.topic: reference
 ms.devlang: python
 ms.service: dataai
 ---
-# Azure Data AI client library for Python - version 1.1.0b1 
+# Azure Data AI client library for Python - version 1.1.0a20261126001 
 
 
 `azure-data-ai` provides access to **Azure Data AI**, hosted by Azure Inference Service. It
@@ -381,5 +381,5 @@ additional questions or comments.
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [azure_sub]: https://azure.microsoft.com/free/
 [cosmos_reranker]: https://learn.microsoft.com/azure/cosmos-db/gen-ai/semantic-reranker
-[samples]: https://github.com/Azure/azure-sdk-for-python/blob/azure-data-ai_1.1.0b1/sdk/dataai/azure-data-ai/samples/README.md
+[samples]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/dataai/azure-data-ai/samples/README.md
 
